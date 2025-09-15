@@ -1,0 +1,121 @@
+import React, { useState } from 'react';
+import { Building2, Building, AudioWaveform } from 'lucide-react';
+
+const BOQTemplate = () => {
+    const [hoveredCard, setHoveredCard] = useState(null);
+
+    const templates = [
+        {
+            id: 1,
+            title: 'Residential BOQ',
+            category: 'Building',
+            categoryColor: 'bg-teal-600',
+            description: 'Standard BOQ for mid-rise housing',
+            icon: Building2,
+            gradient: 'from-gray-800 via-gray-700 to-gray-600'
+        },
+        {
+            id: 2,
+            title: 'Commercial BOQ',
+            category: 'Building',
+            categoryColor: 'bg-teal-600',
+            description: 'Template for offices & malls',
+            icon: Building,
+            gradient: 'from-gray-800 via-gray-700 to-gray-600'
+        },
+        {
+            id: 3,
+            title: 'Road Works',
+            category: 'Civil Engg',
+            categoryColor: 'bg-blue-600',
+            description: 'Template for highways & roads',
+            icon: AudioWaveform,
+            gradient: 'from-gray-800 via-gray-700 to-gray-600'
+        }
+    ];
+
+    const handleUse = (templateId) => {
+        console.log(`Using template ${templateId}`);
+    };
+
+    return (
+        <div className="min-h-screen bg-black text-white py-4">
+            <div className="max-w-7xl mx-auto">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold mb-2">Choose Templates</h1>
+                    <p className="text-gray-400">Choose your desired template from the library.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {templates.map((template) => {
+                        const IconComponent = template.icon;
+                        return (
+                            <div
+                                key={template.id}
+                                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                                onMouseEnter={() => setHoveredCard(template.id)}
+                                onMouseLeave={() => setHoveredCard(null)}
+                            >
+                                {/* Background Pattern */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-gray-700/20 to-transparent opacity-50"></div>
+
+                                {/* Geometric Background */}
+                                <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent transform rotate-45 translate-x-8 -translate-y-8"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-white to-transparent transform rotate-45 translate-x-12 -translate-y-4"></div>
+                                </div>
+
+                                <div className="relative p-6 h-full flex flex-col">
+                                    {/* Header with Icon */}
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="p-3 bg-gray-700/50 rounded-lg backdrop-blur-sm">
+                                            {/* <IconComponent className="w-6 h-6 text-white" /> */}
+                                        </div>
+                                        <div className={`px-3 py-1 rounded-full text-xs font-medium text-white ${template.categoryColor}`}>
+                                            Category: {template.category}
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex-1">
+                                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-lime-400 transition-colors duration-200">
+                                            {template.title}
+                                        </h3>
+                                        <p className="text-gray-300 text-sm italic">
+                                            {template.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Use Button */}
+                                    <div className="mt-6">
+                                        <button
+                                            onClick={() => handleUse(template.id)}
+                                            className={`w-full py-2 px-4 bg-lime-400 text-black font-semibold rounded-lg transition-all cursor-pointer duration-200 transform ${hoveredCard === template.id
+                                                ? 'bg-lime-300 scale-105 shadow-lg'
+                                                : 'hover:bg-lime-300 hover:scale-105'
+                                                }`}
+                                        >
+                                            Use
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Hover Effect Overlay */}
+                                <div className={`absolute inset-0 bg-gradient-to-t from-lime-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Additional Info */}
+                <div className="mt-12 text-center">
+                    <p className="text-gray-500 text-sm">
+                        More templates will be added regularly. Contact support for custom templates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default BOQTemplate;
