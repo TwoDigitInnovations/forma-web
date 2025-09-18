@@ -1,27 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { NotebookPen, MapPin, Search, Filter } from 'lucide-react';
+import { NotebookPen, MapPin, Search, Filter, FileCode2 } from 'lucide-react';
 import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ProjectDetailsContext, userContext } from "../_app"
-import CreateBOQModal from '../../../components/createBoqModel';
-import BOQTemplate from '../../../components/boqAllTemplate';
-
 
 const BOQ = (props) => {
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
   const [user] = useContext(userContext)
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [allBoq, setAllBoq] = useState([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails")
     if (stored) {
       const project = JSON.parse(stored)
       setProjectdetails(project)
+      getAllBOQ(project._id)
     }
   }, [])
+
+
+  const getAllBOQ = async (projectId) => {
+    props.loader(true);
+    Api("get", `boq/getBoqsByProject/${projectId}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          // setAllBoq(res.data?.data)
+          console.log(res.data?.data)
+        } else {
+          toast.error(res?.message || "Failed to created status")
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred")
+      });
+  };
 
 
   return (
@@ -42,8 +60,8 @@ const BOQ = (props) => {
             </div>
 
           </div>
-          <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center'
-            onClick={() => setOpen(true)}
+          <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 cursor-pointer rounded-[12px] flex items-center'
+            onClick={() => router.push("/ProjectDetails/Boq/BoqEditor")}
           >
             <NotebookPen size={18} />Create New BOQ</button>
         </div>
@@ -64,9 +82,33 @@ const BOQ = (props) => {
           </button>
         </div>
         <div>
+
          
-          <BOQTemplate />
-          <CreateBOQModal isOpen={open} onClose={() => setOpen(false)} />
+            <div className="bg-custom-black rounded-xl shadow-sm  mt-6">
+              {allBoq.length === 0 ? (
+                <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-2">
+                  <FileCode2 size={68} />
+                  <h3 className="text-xl font-medium text-white ">
+                    No BOQ Document found
+                  </h3>
+                  <p className="text-gray-300">
+                    Try adjusting your filters or search terms
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto px-6">
+                  {/* <Table
+                    // columns={columns}
+                    data={allBoq}
+                  // pagination={pagination}
+                  // onPageChange={(page) => setCurrentPage(page)}
+                  // currentPage={currentPage}
+                  // itemsPerPage={pagination.itemsPerPage}
+                  /> */}
+                </div>
+              )}
+            </div>
+         
         </div>
       </div>
     </div>

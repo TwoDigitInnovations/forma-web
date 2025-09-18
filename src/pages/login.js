@@ -1,3 +1,6 @@
+
+"use client"; 
+
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ShoppingCart } from "lucide-react";
@@ -53,6 +56,8 @@ export default function Login(props) {
       toast.error(err?.message || "Something went Wrong")
     }
   };
+
+
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
