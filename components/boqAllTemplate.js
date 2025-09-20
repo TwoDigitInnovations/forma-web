@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { Building2, X, PlusCircle, FileWarning } from "lucide-react";
 import CreateTemplateForm from "./createTemplate";
 
-const BOQTemplate = ({ selectedOption, templatesData, loader, projectId,
+const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, projectId,
     getAllTemplates }) => {
     const [hoveredCard, setHoveredCard] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [isOpen, setIsOpen] = useState(false)
 
-    const handleUse = (templateId) => {
-        console.log(`Using template ${templateId}`);
+    const handleUse = (template) => {
+        console.log("Using template", template);
+        onLoadTemplate(template)
     };
 
     const handleSee = (template) => {
@@ -47,7 +48,7 @@ const BOQTemplate = ({ selectedOption, templatesData, loader, projectId,
                 {/* Templates Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {templatesData?.length > 0 ? (
-                        templatesData?.map((template,id) => (
+                        templatesData?.map((template, id) => (
                             <div
                                 key={id}
                                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
@@ -88,7 +89,7 @@ const BOQTemplate = ({ selectedOption, templatesData, loader, projectId,
                                     {/* Buttons */}
                                     <div className="mt-6 flex gap-2">
                                         <button
-                                            onClick={() => handleUse(template?.id)}
+                                            onClick={() => handleUse(template)}
                                             className="flex-1 py-2 px-4 bg-lime-400 text-black font-semibold rounded-lg transition-all cursor-pointer duration-200"
                                         >
                                             Use

@@ -1,115 +1,119 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTable } from "react-table";
 
 export default function EditableTable({ columnsConfig, data, onChange }) {
-    const [tableData, setTableData] = useState(data);
+
+    const tableData = useMemo(() => data, [data]);
 
     const handleInputChange = (rowIndex, field, value) => {
-        const updatedData = [...tableData];
+        const updatedData = [...data];
         updatedData[rowIndex] = { ...updatedData[rowIndex], [field]: value };
-        setTableData(updatedData);
         if (onChange) onChange(updatedData);
     };
 
-    // react-table columns config
+    const handleDeleteRow = (rowIndex) => {
+        const updated = tableData.filter((_, idx) => idx !== rowIndex);
+        onChange && onChange(updated);
+    };
+    const handleAddRow = () => {
+        const blankRow = {};
+        columnsConfig.forEach((col) => {
+            if (col.type === "select" && col.options && col.options.length > 0) {
+                blankRow[col.key] = col.options[0];
+            } else if (col.type === "number") {
+                blankRow[col.key] = "";
+            } else {
+                blankRow[col.key] = "";
+            }
+        });
+        const updated = [...tableData, blankRow];
+        onChange && onChange(updated);
+    };
+
     const columns = useMemo(
-        () =>
-            [
-                ...columnsConfig.map((col) => ({
-                    Header: col.label,
-                    accessor: col.key,
-                    Cell: ({ value, row }) => {
-                        const rowIndex = row.index;
+        () => [
+            ...columnsConfig.map((col) => ({
+                Header: col.label,
+                accessor: col.key,
+                Cell: ({ value, row }) => {
+                    const rowIndex = row.index;
 
-                        if (col.type === "text") {
-                            return (
-                                <input
-                                    type="text"
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleInputChange(rowIndex, col.key, e.target.value)
-                                    }
-                                    className="w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm focus:outline-none focus:border-blue-400"
-                                />
-                            );
-                        }
-
-                        if (col.type === "number") {
-                            return (
-                                <input
-                                    type="number"
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleInputChange(rowIndex, col.key, e.target.value)
-                                    }
-                                    className="w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm focus:outline-none focus:border-blue-400"
-                                />
-                            );
-                        }
-
-                        if (col.type === "select") {
-                            return (
-                                <select
-                                    value={value}
-                                    onChange={(e) =>
-                                        handleInputChange(rowIndex, col.key, e.target.value)
-                                    }
-                                    className="w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm focus:outline-none focus:border-blue-400"
-                                >
-                                    {col.options.map((opt) => (
-                                        <option key={opt} value={opt}>
-                                            {opt}
-                                        </option>
-                                    ))}
-                                </select>
-                            );
-                        }
-
-                        if (col.type === "readonly") {
-                            return <span className="font-medium">{value}</span>;
-                        }
-
-                        return value;
-                    },
-                })),
-                {
-                    Header: "Actions",
-                    accessor: "actions",
-                    Cell: ({ row }) => {
-                        const [open, setOpen] = useState(false);
-
+                    if (col.type === "text" || col.type === "number") {
                         return (
-                            <div className="relative inline-block">
-                                <button
-                                    onClick={() => setOpen(!open)}
-                                    className="px-3 py-1 text-sm bg-custom-yellow text-black rounded-md hover:bg-blue-600 cursor-pointer"
-                                >
-                                    ⋮
-                                </button>
-
-                                {open && (
-                                    <div className="absolute bottom-full mb-2 right-0 w-32 bg-white border rounded-md shadow-lg z-10">
-                                        <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">
-                                            Edit
-                                        </button>
-                                        <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">
-                                            Delete
-                                        </button>
-                                        <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100">
-                                            Share
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                            <input
+                                type={col.type}
+                                value={value}
+                                onChange={(e) =>
+                                    handleInputChange(rowIndex, col.key, e.target.value)
+                                }
+                                className="w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm focus:outline-none focus:border-blue-400"
+                            />
                         );
-                    },
+                    }
+
+                    if (col.type === "select") {
+                        return (
+                            <select
+                                value={value}
+                                onChange={(e) =>
+                                    handleInputChange(rowIndex, col.key, e.target.value)
+                                }
+                                className="w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm focus:outline-none focus:border-blue-400"
+                            >
+                                {col.options.map((opt) => (
+                                    <option key={opt} value={opt}>
+                                        {opt}
+                                    </option>
+                                ))}
+                            </select>
+                        );
+                    }
+
+                    if (col.type === "readonly") {
+                        return <span className="font-medium">{value}</span>;
+                    }
+
+                    return value;
                 },
-            ],
-        [tableData]
+            })),
+            {
+                Header: "Actions",
+                accessor: "actions",
+                Cell: ({ row }) => {
+                    const [open, setOpen] = React.useState(false);
+
+                    return (
+                        <div className="relative inline-block">
+                            <button
+                                onClick={() => setOpen(!open)}
+                                className="px-3 py-1 text-sm bg-custom-yellow text-black rounded-md hover:bg-blue-600 cursor-pointer"
+                            >
+                                ⋮
+                            </button>
+
+                            {open && (
+                                <div className="absolute bottom-full mb-2 right-0 w-32 bg-white border rounded-md shadow-lg z-10">
+                                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                                        onClick={() => handleAddRow()}
+                                    >
+                                        Add New Row
+                                    </button>
+                                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => handleDeleteRow(row?.index)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    );
+                },
+            },
+        ],
+        [columnsConfig, data] // columns will update if columnsConfig or data changes
     );
 
     const tableInstance = useTable({ columns, data: tableData });
-
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
         tableInstance;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NotebookPen, MapPin, Search, Filter, FileCode2 } from 'lucide-react';
+import { NotebookPen, MapPin, Search, Filter, FileCode2, X } from 'lucide-react';
 import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { ProjectDetailsContext, userContext } from "@/pages/_app"
 import BOQTemplate from '../../../../components/boqAllTemplate';
 import BOQTemplateModal from '../../../../components/TemplateSelection';
 import EditableTable from '../../../../components/EditableTable';
+import ConfirmModal from '../../../../components/confirmModel';
 
 const BOQ = (props) => {
     const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
@@ -20,8 +21,14 @@ const BOQ = (props) => {
     const [templatesData, setTemplatesData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [loadedTemplate, setLoadedTemplate] = useState(null);
-
+    const [data, setData] = useState([]);
+    const [originalData, setOriginalData] = useState([]);
     const dropdownRef = useRef(null);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [saveBoqOpen, setSaveBoqOpen] = useState(false)
+    const [boqname, setBoqName] = useState("")
+    const [isChanged, setIsChanged] = useState(false);
+
     const columns = [
         { key: "itemNo", label: "Item No.", type: "readonly" },
         { key: "description", label: "Description", type: "text" },
@@ -53,45 +60,32 @@ const BOQ = (props) => {
         { key: "amount", label: "Amount ($)", type: "readonly" },
     ];
 
-    const initialData = [
-        {
-            itemNo: 1,
-            description: "New Item",
-            unit: "No",
-            quantity: 5,
-            rate: 5,
-            amount: 0,
-        },
-        {
-            itemNo: 2,
-            description: "Item-2",
-            unit: "No",
-            quantity: 5,
-            rate: 5,
-            amount: 0,
-        },
-        {
-            itemNo: 2,
-            description: "Item-3",
-            unit: "No",
-            quantity: 6,
-            rate: 5,
-            amount: 0,
-        },
-    ];
+    const addSingleItem = () => {
+        setData((prevData) => {
+            let lastItem = prevData[prevData.length - 1]?.itemNo || "1.0";
+            let [main, sub] = lastItem.split(".");
+            sub = parseInt(sub) + 1;
 
-    const handleTableChange = (updatedData) => {
-        console.log("Updated Table Data:", updatedData);
+            const newItem = {
+                itemNo: `${main}.${sub}`,
+                description: "",
+                unit: "",
+                quantity: 0,
+                rate: 0,
+                amount: 0,
+            };
+            console.log("newItem", newItem)
+            return [...prevData, newItem];
+        });
+
+        setOpen(false);
     };
-    useEffect(() => {
-        function handleClickOutside(e) {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+
+
+    const deleteData = () => {
+        setData([]);
+        toast.success("All Rows Deleted")
+    };
 
     useEffect(() => {
         const stored = localStorage.getItem("projectDetails")
@@ -107,8 +101,27 @@ const BOQ = (props) => {
 
     const handleLoadTemplate = (template) => {
         setLoadedTemplate(template);
-        console.log('Loaded Template:', template);
+
+        const newItems = template?.sections?.flatMap((section) =>
+            section.items.map((item) => ({
+                itemNo: item?.itemNo || "",
+                description: item?.description || "",
+                unit: item?.unit || "",
+                quantity: item?.quantity || 0,
+                rate: item?.rate || 0,
+                amount: (parseFloat(item?.quantity) || 0) * (parseFloat(item?.rate) || 0),
+            }))
+        ) || [];
+
+        setData(newItems);
+        setOriginalData(newItems);
+
+        toast.success("Template loaded successfully");
+        setSelectedOption("boqTable");
+        setIsChanged(false)
     };
+
+
 
     const getAllBOQ = async (projectId) => {
         props.loader(true);
@@ -145,7 +158,43 @@ const BOQ = (props) => {
             });
     };
 
+    const SaveBoq = async () => {
+        props.loader(true);
 
+        const Boqdata = {
+            projectId: projectId,
+            items: data,
+            currency: "USD",
+            quantity: 1,
+            boqName: boqname
+
+        }
+        // return console.log(Boqdata)
+        setSaveBoqOpen(false);
+        Api("post", `boq/createBoq`, Boqdata, router)
+            .then((res) => {
+                props.loader(false);
+                if (res?.status === true) {
+                    toast.success(res?.data?.message)
+                } else {
+                    toast.error(res?.message || "Failed to created status")
+                }
+            })
+            .catch((err) => {
+                props.loader(false);
+                toast.error(err?.message || "An error occurred")
+            });
+    };
+
+    // const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    // const isChanged = !isEqual(originalData, data);
+    // console.log(originalData)
+    // console.log(isChanged)
+    useEffect(() => {
+        const changed =
+            JSON.stringify(data) !== JSON.stringify(originalData);
+        setIsChanged(changed);
+    }, [data, originalData]);
 
     return (
         <div className="h-screen bg-black text-white ">
@@ -167,10 +216,25 @@ const BOQ = (props) => {
                     </div>
                     <div className="flex flex-col justify-center items-center  text-center space-y-2">
                         <div className='flex md:flex-row flex-wrap md:justify-center gap-3 md:items-center mt-4 ' >
-                            <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center'
+                            <button
+                                className={`bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center transition-opacity ${data.length === 0 ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                                    }`}
+                                disabled={data.length === 0 }
+                                onClick={() => setSaveBoqOpen(true)}
                             >
                                 Save Boq
                             </button>
+
+
+                            <button
+                                className={`bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center transition-opacity ${data.length === 0 ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                                    }`}
+                                onClick={() => setIsConfirmModalOpen(true)}
+                                disabled={data.length === 0}
+                            >
+                                <X />
+                            </button>
+
                             <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center'
                                 onClick={() => setIsModalOpen(true)}
                             >
@@ -192,25 +256,24 @@ const BOQ = (props) => {
                                         className="px-4 py-2 hover:bg-[#e0f349] hover:text-black transition-colors duration-300 cursor-pointer"
                                         onClick={() => {
                                             console.log("Start with Section clicked");
-                                            setOpen(false);
+                                            // setOpen(false);
                                         }}
                                     >
                                         Start with Section (Header + Specs + Item)
                                     </li>
                                     <li
                                         className="px-4 py-2 hover:bg-[#e0f349] hover:text-black transition-colors duration-300 cursor-pointer"
-                                        onClick={() => {
-                                            console.log("Add Single Item clicked");
-                                            setOpen(false);
-                                        }}
+                                        onClick={addSingleItem}
                                     >
                                         Add Single Item
                                     </li>
+
+
                                     <li
                                         className="px-4 py-2 hover:bg-[#e0f349] hover:text-black transition-colors duration-300 cursor-pointer"
                                         onClick={() => {
                                             console.log("Import from Excel clicked");
-                                            setOpen(false);
+                                            // setOpen(false);
                                         }}
                                     >
                                         Import from Excel
@@ -249,9 +312,9 @@ const BOQ = (props) => {
                 </div>
                 <div>
                     {selectedOption === "boqTable" && (
-                        <div className="bg-custom-black rounded-xl shadow-sm  mt-6 ">
-                            {/* {allBoq.length === 0 ? (
-                                <div className="px-4 flex flex-col justify-center items-center min-h-[500px] text-center space-y-2">
+                        <div className="  mt-6 ">
+                            {data.length === 0 ? (
+                                <div className="bg-custom-black rounded-xl shadow-sm  px-4 flex flex-col justify-center items-center min-h-[500px] text-center space-y-2">
                                     <FileCode2 size={68} />
                                     <h3 className="text-xl font-medium text-white ">
                                         Start Building Your BOQ
@@ -261,14 +324,14 @@ const BOQ = (props) => {
                                     </p>
                                 </div>
 
-                            ) : ( */}
-                            <div className="overflow-x-auto ">
-                                <EditableTable
-                                    columnsConfig={columns}
-                                    data={initialData}
-                                    onChange={handleTableChange} />
-                            </div>
-                            {/* )} */}
+                            ) : (
+                                <div className=" h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
+                                    <EditableTable
+                                        columnsConfig={columns}
+                                        data={data}
+                                        onChange={setData} />
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -278,6 +341,7 @@ const BOQ = (props) => {
                         loader={props.loader}
                         getAllTemplates={getAllTemplates}
                         projectId={projectId}
+                        onLoadTemplate={handleLoadTemplate}
                     />
 
                     <BOQTemplateModal
@@ -287,7 +351,63 @@ const BOQ = (props) => {
                         templatesData={templatesData}
                     />
 
+                    <ConfirmModal
+                        isOpen={isConfirmModalOpen}
+                        setIsOpen={setIsConfirmModalOpen}
+                        title="Delete Data"
+                        message="Are you sure you want to delete all rows?"
+                        onConfirm={deleteData}
+                        yesText="Yes, Delete"
+                        noText="Cancel"
+                    />
 
+                    {saveBoqOpen && (
+                        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn">
+                            <div
+                                className="bg-custom-black rounded-xl p-6 md:w-full w-[23rem] max-w-lg 
+                                        shadow-[6px_6px_0px_0px_rgba(255,255,0,1)]
+                                  animate-slideUp"
+                            >
+
+                                <p className="text-gray-300 text-sm mb-3 ">
+                                    Enter a name for your BOQ document to save it for later use.
+                                </p>
+
+                                {/* Input */}
+                                <input
+                                    value={boqname}
+                                    onChange={(e) => setBoqName(e.target.value)}
+                                    placeholder="Enter BOQ Name"
+                                    className="w-full px-4 py-2 mb-6 text-black border-2 
+                                                border-custom-yellow rounded-lg bg-gray-100 
+                                                focus:outline-none focus:ring-2 focus:ring-yellow-400
+                                                 hover:bg-gray-200 transition"
+                                />
+
+                                {/* Action Buttons */}
+                                <div className="flex justify-end gap-4">
+                                    <button
+                                        className="px-5 py-2.5 text-sm cursor-pointer font-medium rounded-lg 
+                     border-2 border-custom-yellow text-custom-yellow
+                     hover:bg-custom-yellow hover:text-black 
+                     transition-all shadow-md"
+                                        onClick={() => setSaveBoqOpen(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="px-5 py-2.5 cursor-pointer text-sm font-semibold rounded-lg 
+                     bg-custom-yellow text-black 
+                     hover:bg-yellow-400 transition-all 
+                     shadow-lg hover:scale-105"
+                                        onClick={SaveBoq}
+                                    >
+                                        Save BOQ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </div>

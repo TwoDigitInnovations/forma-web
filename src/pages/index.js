@@ -66,14 +66,14 @@ function Home(props) {
   ];
 
   return (
-    <section className=" bg-[#000000] p-6 text-white h-screen">
+    <section className=" bg-[#000000] md:p-6 p-3 text-white h-screen">
       <div className="max-w-7xl mx-auto h-full space-y-6 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between md:mt-0 mt-4">
           <h1 className='text-3xl font-bold text-custom-yellow'>Dashboard</h1>
         </div>
 
-      
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <DarkStatsCard
             title="Active Projects"
@@ -118,7 +118,7 @@ function Home(props) {
               ))}
             </div>
           </div>
-           <div className="mt-8 md:col-span-2 bg-custom-black rounded-xl p-6 border border-gray-700">
+          <div className="mt-8 md:col-span-2 bg-custom-black rounded-xl p-6 border border-gray-700">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-semibold">Recent Activity</h3>
               <button className="text-custom-yellow text-sm hover:text-yellow-300">View All</button>
@@ -126,19 +126,20 @@ function Home(props) {
             <div className="space-y-4">
               {mockActivityData.map((activity, index) => (
                 <div key={index} className="flex items-start space-x-3">
-                 <Pickaxe className='text-custom-yellow'/>
-                  <div className='flex items-center justify-between'>
+                  <Pickaxe className="text-custom-yellow mt-1" />
+                  <div className="flex w-full justify-between items-center">
                     <p className="text-gray-300 text-sm">{activity.title}</p>
-                    <span className="text-green-500 text-xs bg-green-500/20 px-2 py-1 rounded mt-1 ">
+                    <p className="text-green-500 text-xs bg-green-500/20 px-2 py-1 rounded">
                       {activity.status}
-                    </span>
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
+
           </div>
 
-         
+
           <div className=" mt-8 bg-custom-black rounded-xl p-6 border border-gray-700">
             <h3 className="text-xl font-semibold mb-4">Revenue</h3>
             <div className="flex items-center justify-center h-48">
@@ -198,12 +199,12 @@ function Home(props) {
             <div className="space-y-4">
               {mockTeamData.map((member, index) => (
                 <div key={index} className="flex items-center space-x-3">
-                  <img src="./man.jpg" className='h-12 w-12 object-cover rounded-full'/>
+                  <img src="./man.jpg" className='h-12 w-12 object-cover rounded-full' />
                   <div className="flex-1">
                     <p className="font-semibold text-sm">{member.name}</p>
                     <p className="text-gray-400 text-xs">{member.role}</p>
                   </div>
-                 
+
                   <div className="text-right">
                     <p className="font-semibold text-sm">{member.tasksCompleted}</p>
                     <p className="text-gray-400 text-xs">Tasks Completed</p>
@@ -222,7 +223,7 @@ export default isAuth(Home);
 
 const DarkStatsCard = ({ title, value, subtitle, icon }) => {
   return (
-    <div className="flex flex-col w-full relative gap-8">
+    <div className="flex flex-col w-full relative gap-10">
       <div className="bg-custom-black  rounded-2xl p-4 border border-gray-700 hover:border-gray-600 transition-colors mb-3 z-10">
         <div className="flex items-start justify-between p-2 rounded-lg">
           <div >
@@ -234,13 +235,12 @@ const DarkStatsCard = ({ title, value, subtitle, icon }) => {
           </div>
         </div>
       </div>
-      <div className='md:w-[16.5rem] w-[340px] bg-custom-yellow flex- justify-center items-center rounded-2xl p-2 border border-gray-700 z-10 hover:border-gray-600 transition-colors mb-3 absolute top-22 md:top-24 right-0 mx-auto'>
-        <p
-          className="w-[160px] text-[12px] text-center mt-1 bg-[#5F5F5F] p-1 rounded-2xl"
-        >
+      <div className="md:w-[16.5rem] w-full bg-custom-yellow flex justify-center items-center rounded-2xl p-2 border border-gray-700 z-10 hover:border-gray-600 transition-colors mb-3 absolute top-22 md:top-24 right-1/2 translate-x-1/2">
+        <p className="w-[180px] md:text-[12px] text-[14px] text-center mt-1 bg-[#5F5F5F] p-1 rounded-2xl">
           {subtitle}
         </p>
       </div>
+
     </div>
   );
 };
