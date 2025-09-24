@@ -154,7 +154,7 @@ function Table({
   });
   return (
     <>
-      <div className="sm:flex sm:gap-x-2">
+      <div className="sm:flex sm:gap-x-1">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
@@ -173,7 +173,7 @@ function Table({
       {/* table */}
       <div className="flex flex-col rounded-xl border-[#B9B9B9] border-[1px]">
         <div className="-my-2 overflow-x-auto ">
-          <div className="py-2 align-middle inline-block min-w-full ">
+          <div className="py-1 align-middle inline-block min-w-full ">
             <div className="shadow overflow-hidden  sm:rounded-lg">
               <table
                 {...getTableProps()}
@@ -187,7 +187,7 @@ function Table({
                         <th
                           key={index}
                           scope="col"
-                          className="group pl-2 py-3  text-md font-medium text-black text-left tracking-wider"
+                          className="group pl-2 py-3 bg-custom-yellow  text-md font-medium text-black text-left tracking-wider"
                           {...column.getHeaderProps(
                             column.getSortByToggleProps()
                           )}
@@ -226,7 +226,7 @@ function Table({
                             <td
                               key={index}
                               {...cell.getCellProps()}
-                              className="pl-2 py-4 whitespace-nowrap text-white text-left"
+                              className="pl-2 py-2 whitespace-nowrap text-white text-left"
                               role="cell"
                             >
                               {
@@ -260,12 +260,14 @@ function Table({
           <Button
             onClick={() => onPageChange(pagination?.currentPage - 1)}
             disabled={pagination?.currentPage === 1}
+            className="bg-custom-yellow"
           >
             Previous
           </Button>
           <Button
             onClick={() => onPageChange(pagination?.currentPage + 1)}
             disabled={pagination?.currentPage === pagination?.totalPages}
+            className="bg-custom-yellow"
           >
             Next
           </Button>
@@ -273,7 +275,7 @@ function Table({
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div className="flex gap-x-2 items-baseline">
          
-            <span className="text-sm text-black">
+            <span className="text-sm text-black bg-custom-yellow p-2 rounded-xl px-4">
               Page <span className="font-medium">{currentPage}</span> of{" "}
               <span className="font-medium">{pagination?.totalPages}</span>
             </span>
@@ -300,18 +302,19 @@ function Table({
           </div>
           <div>
             <nav
-              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px cursor-pointer"
+              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px cursor-pointer bg-custom-yellow "
               aria-label="Pagination"
             >
               {/* First Page Button */}
               <PageButton
-                className="rounded-l-md"
+                className="rounded-l-md bg-custom-yellow"
                 onClick={() => onPageChange(1)}
                 disabled={pagination?.currentPage === 1}
+                
               >
                 <span className="sr-only">First</span>
                 <MdOutlineKeyboardDoubleArrowLeft
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-black"
                   aria-hidden="true"
                 />
               </PageButton>
@@ -320,10 +323,11 @@ function Table({
               <PageButton
                 onClick={() => onPageChange(pagination?.currentPage - 1)}
                 disabled={pagination?.currentPage === 1}
+                className="bg-custom-yellow"
               >
                 <span className="sr-only cursor-pointer">Previous</span>
                 <MdKeyboardArrowLeft
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-black"
                   aria-hidden="true"
                 />
               </PageButton>
@@ -332,23 +336,25 @@ function Table({
               <PageButton
                 onClick={() => onPageChange(pagination?.currentPage + 1)}
                 disabled={pagination?.currentPage === pagination?.totalPages}
+                className="bg-custom-yellow"
               >
                 <span className="sr-only">Next</span>
                 <MdOutlineKeyboardArrowRight
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-black"
                   aria-hidden="true"
                 />
               </PageButton>
 
               {/* Last Page Button */}
               <PageButton
-                className="rounded-r-md"
+                className="rounded-r-md bg-custom-yellow"
                 onClick={() => onPageChange(pagination?.totalPages)}
                 disabled={pagination?.currentPage === pagination?.totalPages}
+                
               >
                 <span className="sr-only">Last</span>
                 <MdOutlineKeyboardDoubleArrowRight
-                  className="h-5 w-5 text-gray-400"
+                  className="h-5 w-5 text-black"
                   aria-hidden="true"
                 />
               </PageButton>

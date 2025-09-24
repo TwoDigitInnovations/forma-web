@@ -17,7 +17,6 @@ const BOQ = (props) => {
     const [open, setOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState("boqTable");
     const [projectId, SetProjectId] = useState(null);
-    const [allBoq, setAllBoq] = useState([]);
     const [templatesData, setTemplatesData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [loadedTemplate, setLoadedTemplate] = useState(null);
@@ -28,6 +27,8 @@ const BOQ = (props) => {
     const [saveBoqOpen, setSaveBoqOpen] = useState(false)
     const [boqname, setBoqName] = useState("")
     const [isChanged, setIsChanged] = useState(false);
+    const [total, setTotal] = useState('')
+    const updateId = router.query.id;
 
     const columns = [
         { key: "itemNo", label: "Item No.", type: "readonly" },
@@ -81,7 +82,6 @@ const BOQ = (props) => {
         setOpen(false);
     };
 
-
     const deleteData = () => {
         setData([]);
         toast.success("All Rows Deleted")
@@ -93,52 +93,69 @@ const BOQ = (props) => {
             const project = JSON.parse(stored)
             setProjectdetails(project)
             SetProjectId(project._id)
-            getAllBOQ(project._id)
             getAllTemplates(project._id)
+
         }
-    }, [])
+    }, [selectedOption])
 
 
-    const handleLoadTemplate = (template) => {
-        setLoadedTemplate(template);
+    useEffect(() => {
+        if (!updateId) return;
+        getBoqDocByID(updateId);
+    }, [updateId]);
 
-        const newItems = template?.sections?.flatMap((section) =>
-            section.items.map((item) => ({
-                itemNo: item?.itemNo || "",
-                description: item?.description || "",
-                unit: item?.unit || "",
-                quantity: item?.quantity || 0,
-                rate: item?.rate || 0,
-                amount: (parseFloat(item?.quantity) || 0) * (parseFloat(item?.rate) || 0),
-            }))
-        ) || [];
-
-        setData(newItems);
-        setOriginalData(newItems);
-
-        toast.success("Template loaded successfully");
-        setSelectedOption("boqTable");
-        setIsChanged(false)
-    };
-
-
-
-    const getAllBOQ = async (projectId) => {
+    const getBoqDocByID = async (id) => {
         props.loader(true);
-        Api("get", `boq/getBoqsByProject/${projectId}`, "", router)
+        Api("get", `boq/getBoqById?&id=${id}`, "", router)
             .then((res) => {
                 props.loader(false);
                 if (res?.status === true) {
-                    setAllBoq(res.data?.data)
-                    console.log(res.data?.data)
-                } else {
-                    toast.error(res?.message || "Failed to created status")
+                    console.log("res.data?.data", res.data?.data);
+                    const data = res.data?.data
+                    setBoqName(data?.boqName)
+                    setData(
+                        data.items.map((item) => ({
+                            itemNo: item.itemNo,
+                            description: item.description,
+                            unit: item.unit || "",
+                            quantity: item.quantity || 0,
+                            rate: item.rate || 0,
+                            amount: (item.quantity || 0) * (item.rate || 0),
+                        }))
+                    );
+
                 }
             })
             .catch((err) => {
                 props.loader(false);
                 toast.error(err?.message || "An error occurred")
             });
+    };
+
+    const handleLoadTemplate = (template) => {
+        setLoadedTemplate(template);
+
+        const newItems =
+            template?.sections?.flatMap((section) =>
+                section.items.map((item) => ({
+                    itemNo: item?.itemNo || "",
+                    description: item?.description || "",
+                    unit: item?.unit || "",
+                    quantity: item?.quantity || 0,
+                    rate: item?.rate || 0,
+                    amount:
+                        (parseFloat(item?.quantity) || 0) *
+                        (parseFloat(item?.rate) || 0),
+                }))
+            ) || [];
+
+        // ✅ Append instead of replace
+        setData((prev) => [...prev, ...newItems]);
+        setOriginalData((prev) => [...prev, ...newItems]);
+
+        toast.success("Template loaded successfully");
+        setSelectedOption("boqTable");
+        setIsChanged(false);
     };
 
     const getAllTemplates = async (projectId) => {
@@ -164,14 +181,15 @@ const BOQ = (props) => {
         const Boqdata = {
             projectId: projectId,
             items: data,
+            rate: total,
             currency: "USD",
             quantity: 1,
             boqName: boqname
-
         }
-        // return console.log(Boqdata)
+        const url = updateId ? `boq/updateBoqById?id=${updateId} ` : "boq/createBoq"
         setSaveBoqOpen(false);
-        Api("post", `boq/createBoq`, Boqdata, router)
+
+        Api("post", url, Boqdata, router)
             .then((res) => {
                 props.loader(false);
                 if (res?.status === true) {
@@ -190,6 +208,7 @@ const BOQ = (props) => {
     // const isChanged = !isEqual(originalData, data);
     // console.log(originalData)
     // console.log(isChanged)
+
     useEffect(() => {
         const changed =
             JSON.stringify(data) !== JSON.stringify(originalData);
@@ -209,7 +228,7 @@ const BOQ = (props) => {
                             </h1>
                             <div className='flex items-center-safe gap-3'>
                                 <p className="md:text-[32px] text-[24px] text-white mt-1">Item Count</p>
-                                <p className="md:text-[14px] text-[13px] text-white mt-1">Total Item: 3 Item</p>
+                                <p className="md:text-[14px] text-[13px] text-white mt-1">Total Item: {data?.length} Item</p>
                             </div>
                         </div>
 
@@ -219,12 +238,11 @@ const BOQ = (props) => {
                             <button
                                 className={`bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center transition-opacity ${data.length === 0 ? "opacity-50 cursor-not-allowed" : "opacity-100"
                                     }`}
-                                disabled={data.length === 0 }
+                                disabled={data.length === 0}
                                 onClick={() => setSaveBoqOpen(true)}
                             >
-                                Save Boq
+                                {updateId ? "Update Boq" : "Save Boq"}
                             </button>
-
 
                             <button
                                 className={`bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center transition-opacity ${data.length === 0 ? "opacity-50 cursor-not-allowed" : "opacity-100"
@@ -329,7 +347,9 @@ const BOQ = (props) => {
                                     <EditableTable
                                         columnsConfig={columns}
                                         data={data}
-                                        onChange={setData} />
+                                        onChange={setData}
+                                        setTotal={setTotal}
+                                    />
                                 </div>
                             )}
                         </div>
@@ -369,8 +389,11 @@ const BOQ = (props) => {
                                   animate-slideUp"
                             >
 
-                                <p className="text-gray-300 text-sm mb-3 ">
+                                <p className="text-gray-300 text-md mb-1 ">
                                     Enter a name for your BOQ document to save it for later use.
+                                </p>
+                                <p className="text-gray-300 text-md mb-3 ">
+                                    Total Rate: ${total || "0.00"}
                                 </p>
 
                                 {/* Input */}
@@ -388,18 +411,18 @@ const BOQ = (props) => {
                                 <div className="flex justify-end gap-4">
                                     <button
                                         className="px-5 py-2.5 text-sm cursor-pointer font-medium rounded-lg 
-                     border-2 border-custom-yellow text-custom-yellow
-                     hover:bg-custom-yellow hover:text-black 
-                     transition-all shadow-md"
+                                                    border-2 border-custom-yellow text-custom-yellow
+                                                hover:bg-custom-yellow hover:text-black 
+                                                transition-all shadow-md hover:scale-105"
                                         onClick={() => setSaveBoqOpen(false)}
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         className="px-5 py-2.5 cursor-pointer text-sm font-semibold rounded-lg 
-                     bg-custom-yellow text-black 
-                     hover:bg-yellow-400 transition-all 
-                     shadow-lg hover:scale-105"
+                                                bg-custom-yellow text-black 
+                                                hover:bg-yellow-400 transition-all 
+                                                shadow-lg hover:scale-105"
                                         onClick={SaveBoq}
                                     >
                                         Save BOQ

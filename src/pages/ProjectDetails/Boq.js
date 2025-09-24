@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { NotebookPen, MapPin, Search, Filter, FileCode2 } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { NotebookPen, MapPin, Search, Filter, FileCode2, Eye, Edit, DeleteIcon, Delete, Trash2 } from 'lucide-react';
 import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ProjectDetailsContext, userContext } from "../_app"
+import Table from '../../../components/table';
+import ConfirmModal from '../../../components/confirmModel';
 
 const BOQ = (props) => {
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
   const [user] = useContext(userContext)
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const [allBoq, setAllBoq] = useState([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [grandTotal, setGrandTotal] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [pagination, setPagination] = useState({
+    totalPages: 1,
+    currentPage: 1,
+    itemsPerPage: 10,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [popUpData, setPopUpData] = useState([])
+  const [projectId, SetProjectId] = useState([])
+  const [popUpDataTrue, setPopUpDataTrue] = useState(false)
+  const [boqId, setBoqId] = useState("")
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails")
@@ -19,6 +33,7 @@ const BOQ = (props) => {
       const project = JSON.parse(stored)
       setProjectdetails(project)
       getAllBOQ(project._id)
+      SetProjectId(project._id)
     }
   }, [])
 
@@ -29,7 +44,7 @@ const BOQ = (props) => {
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
-          // setAllBoq(res.data?.data)
+          setAllBoq(res.data?.data)
           console.log(res.data?.data)
         } else {
           toast.error(res?.message || "Failed to created status")
@@ -41,6 +56,150 @@ const BOQ = (props) => {
       });
   };
 
+  const deleteBoq = async (id) => {
+    props.loader(true);
+    Api("delete", `boq/deleteBoq/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          toast.success(res?.data?.message || "Boq Deleted Sucessfully")
+          getAllBOQ(projectId)
+        } else {
+          toast.error(res?.message || "Failed to created status")
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred")
+      });
+  }
+
+  useEffect(() => {
+    if (allBoq && allBoq.length > 0) {
+      const grand = allBoq.reduce(
+        (sum, item) =>
+          sum + (item.quantity && item.rate ? item.quantity * item.rate : 0),
+        0
+      );
+      setGrandTotal(grand);
+    }
+  }, [allBoq]);
+
+  const BoqName = ({ value }) => (
+    <div className=" flex  justify-center items-center">
+      <p className="text-gray-800 text-[16px] font-medium">{value}</p>
+    </div>
+  );
+
+  const Quantity = ({ value }) => (
+    <div className=" flex justify-center items-center">
+      <p className="text-gray-800 text-[16px] ">{value}</p>
+    </div>
+  );
+
+  const rate = ({ value }) => (
+    <div className="flex items-center justify-center">
+      <p className="text-gray-800 text-[16px] ">{value}</p>
+    </div>
+  );
+
+  const Include = ({ }) => (
+    <div className="flex items-center justify-center">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={() => {
+          console.log(checked)
+          setChecked(!checked)
+        }}
+        className={`
+          w-5 h-5 rounded-full border-2 cursor-pointer transition-colors
+          appearance-none
+          ${checked ? "bg-custom-yellow border-custom-yellow" : "border-gray-400 bg-white"}
+        `}
+      />
+    </div>
+  );
+
+  const Total = ({ row }) => {
+    const total = (row.original?.quantity || 0) * (row.original?.rate || 0);
+
+    return (
+      <div className="flex items-center justify-center">
+        {total.toFixed(2)}
+      </div>
+    );
+  };
+
+
+
+  const renderActions = ({ row }) => (
+    <div className="flex items-center justify-center">
+      <button
+        className="flex items-center px-2 py-2 bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all cursor-pointer hover:text-[#e0f349]"
+        onClick={() => router.push(`/ProjectDetails/Boq/BoqEditor?id=${row.original._id}`)}
+      >
+        <Edit />
+      </button>
+      <button
+        className="flex items-center px-2 py-2 bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all cursor-pointer hover:text-[#b2f349]"
+        onClick={() => {
+          setPopUpData(row.original)
+          setPopUpDataTrue(true)
+        }}
+      >
+        <Eye />
+      </button>
+      <button
+        className="flex items-center px-2 py-2 bg-opacity-10 rounded-lg hover:bg-opacity-20 transition-all cursor-pointer hover:text-red-500"
+        onClick={() => {
+          setIsConfirmModalOpen(true)
+          setBoqId(row.original._id)
+          // deleteBoq(row.original._id)
+        }}
+      >
+        <Trash2 />
+      </button>
+    </div>
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Include",
+        Cell: Include,
+        width: 20
+      },
+      {
+        Header: "NAME",
+        accessor: 'boqName',
+        Cell: BoqName,
+
+      },
+      {
+        Header: "Quantity",
+        accessor: 'quantity',
+        Cell: Quantity
+      },
+      {
+        Header: "Rate",
+        accessor: 'rate',
+        Cell: rate,
+      },
+      {
+        Header: "Grand Total",
+        // accessor: 'createdAt',
+        Cell: Total,
+      },
+
+      {
+        Header: "ACTIONS",
+        Cell: renderActions,
+        width: 120
+      },
+    ],
+    []
+  );
 
   return (
     <div className="h-screen bg-black text-white ">
@@ -83,32 +242,59 @@ const BOQ = (props) => {
         </div>
         <div>
 
-         
-            <div className="bg-custom-black rounded-xl shadow-sm  mt-6">
-              {allBoq.length === 0 ? (
-                <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-2">
-                  <FileCode2 size={68} />
-                  <h3 className="text-xl font-medium text-white ">
-                    No BOQ Document found
-                  </h3>
-                  <p className="text-gray-300">
-                    Try adjusting your filters or search terms
-                  </p>
+
+          <div className="bg-custom-black rounded-xl shadow-sm  mt-6">
+            {allBoq.length === 0 ? (
+              <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-2">
+                <FileCode2 size={68} />
+                <h3 className="text-xl font-medium text-white ">
+                  No BOQ Document found
+                </h3>
+                <p className="text-gray-300">
+                  Try adjusting your filters or search terms
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto px-3 md:px-6 pb-10 md:mb-20 mb-10">
+                <p className='md:mt-6 mt-4 md:text-2xl text-[20px]'> Project Summary </p>
+                <Table
+                  columns={columns}
+                  data={allBoq}
+                  pagination={pagination}
+                  onPageChange={(page) => setCurrentPage(page)}
+                  currentPage={currentPage}
+                  itemsPerPage={pagination.itemsPerPage}
+                />
+                <div className='flex justify-between items-center'>
+                  <p className='md:text-[20px] text-[18px]'> Project Grand Total </p>
+                  <p className='text-[20px]'> ${grandTotal || "0.00"} </p>
                 </div>
-              ) : (
-                <div className="overflow-x-auto px-6">
-                  {/* <Table
-                    // columns={columns}
-                    data={allBoq}
-                  // pagination={pagination}
-                  // onPageChange={(page) => setCurrentPage(page)}
-                  // currentPage={currentPage}
-                  // itemsPerPage={pagination.itemsPerPage}
-                  /> */}
-                </div>
-              )}
+              </div>
+            )}
+          </div>
+
+          <ConfirmModal
+            isOpen={isConfirmModalOpen}
+            setIsOpen={setIsConfirmModalOpen}
+            title="Delete Boq Document"
+            message="Are you sure you want to delete ?"
+            onConfirm={() => deleteBoq(boqId)}
+            yesText="Yes, Delete"
+            noText="Cancel"
+          />
+
+
+          {popUpDataTrue && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn ">
+              <div
+                className="bg-custom-black rounded-lg p-6 w-lg 
+                   shadow-[5px_5px_0px_0px_rgba(255,255,0,1)]
+                   animate-slideUp max-w-2xl"
+              >
+                {popUpData?.BoqName}
+              </div>
             </div>
-         
+          )}
         </div>
       </div>
     </div>
