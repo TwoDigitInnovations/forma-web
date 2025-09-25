@@ -29,13 +29,6 @@ const Projects = (props) => {
     }
   };
 
-  const getProgressColor = (progress) => {
-    if (progress === 100) return '#4caf50';
-    if (progress >= 70) return '#e0f349';
-    if (progress >= 40) return '#00bcd4';
-    return '#ff9800';
-  };
-
   useEffect(() => {
     getAllProject()
   }, [])
@@ -127,7 +120,7 @@ const Projects = (props) => {
 
         {/* Projects List */}
         <div className="space-y-4">
-          {AllProjectData.map((project,key) => (
+          {AllProjectData.map((project, key) => (
             <div
               key={key}
               className="rounded-[16px] border border-gray-700 p-4 hover:border-gray-600 transition-colors hover:bg-[#dff34940] cursor-pointer bg-[#2a2a2a]"
@@ -168,7 +161,7 @@ const Projects = (props) => {
                         className="h-2 rounded-full transition-all duration-300"
                         style={{
                           width: `${project?.progress || 80}%`,
-                          backgroundColor: getProgressColor(project?.progress)
+                          backgroundColor: "#e0f349"
                         }}
                       ></div>
                     </div>
@@ -176,7 +169,7 @@ const Projects = (props) => {
                   <div className="text-right">
                     <span
                       className="text-lg font-bold"
-                      style={{ color: getProgressColor(project?.progress) }}
+                      style={{ color: "#e0f349" }}
                     >
                       {project?.progress || 80}%
                     </span>
