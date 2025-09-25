@@ -12,7 +12,7 @@ const ConfirmModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn ">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn md:px-0 px-4">
       <div
         className="bg-custom-black rounded-lg p-6 w-lg 
                    shadow-[5px_5px_0px_0px_rgba(255,255,0,1)]

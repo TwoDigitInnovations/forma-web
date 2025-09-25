@@ -235,7 +235,7 @@ const DarkStatsCard = ({ title, value, subtitle, icon }) => {
           </div>
         </div>
       </div>
-      <div className="md:w-[16.5rem] w-full bg-custom-yellow flex justify-center items-center rounded-2xl p-2 border border-gray-700 z-10 hover:border-gray-600 transition-colors mb-3 absolute top-22 md:top-24 right-1/2 translate-x-1/2">
+      <div className=" w-full bg-custom-yellow flex justify-center items-center rounded-2xl p-2 border border-gray-700 z-10 hover:border-gray-600 transition-colors mb-3 absolute top-22 md:top-24 right-1/2 translate-x-1/2">
         <p className="w-[180px] md:text-[12px] text-[14px] text-center mt-1 bg-[#5F5F5F] p-1 rounded-2xl">
           {subtitle}
         </p>

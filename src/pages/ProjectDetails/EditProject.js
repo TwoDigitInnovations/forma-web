@@ -221,8 +221,8 @@ const EditProject = (props) => {
   };
 
   return (
-    <div className="h-screen bg-black text-white ">
-      <div className=" w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-8  mx-auto">
+    <div className="h-full bg-black text-white ">
+      <div className="w-full h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-58 md:p-6 p-4 md:px-8  mx-auto mb-20">
         {/* Header */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between ">
           <div className="flex items-center gap-4">

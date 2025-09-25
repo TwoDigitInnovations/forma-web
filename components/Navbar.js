@@ -27,7 +27,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      confirmButtonColor: "#FF700099",
+      confirmButtonColor: "#e0f349",
       customClass: {
         confirmButton: 'px-12 rounded-xl',
         title: 'text-[20px] text-black',

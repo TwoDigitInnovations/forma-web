@@ -155,7 +155,7 @@ const Projects = (props) => {
                     </div>
                     <div className="flex items-center gap-1">
                       <CalendarClock size={20} />
-                      <span>Last Updated: {project?.lastUpdated}</span>
+                      <span>Last Updated: <span>{new Date(project?.updatedAt).toLocaleString()}</span></span>
                     </div>
                   </div>
                 </div>
@@ -167,7 +167,7 @@ const Projects = (props) => {
                       <div
                         className="h-2 rounded-full transition-all duration-300"
                         style={{
-                          width: `${project?.progress}%`,
+                          width: `${project?.progress || 80}%`,
                           backgroundColor: getProgressColor(project?.progress)
                         }}
                       ></div>
@@ -178,7 +178,7 @@ const Projects = (props) => {
                       className="text-lg font-bold"
                       style={{ color: getProgressColor(project?.progress) }}
                     >
-                      {project?.progress}%
+                      {project?.progress || 80}%
                     </span>
                   </div>
                 </div>

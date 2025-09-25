@@ -171,7 +171,7 @@ const CreateTemplateForm = ({ setIsOpen, loader, getAllTemplates, isOpen, projec
                 if (res?.status === true) {
                     toast.success("BOQ Template created successfully");
                     getAllTemplates(projectId);
-                    // setIsOpen(false);
+                    setIsOpen(false);
                 } else {
                     toast.error(res?.message || "Failed to create template");
                 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Plus, ChevronLeft, MapPin, Clock, Calendar, ChevronDown, FileText, Upload, Image, FileCheck, Video, CalendarClock, PlusCircle, FolderPlus } from 'lucide-react';
+import { Search, Plus, ChevronLeft, MapPin, Clock, Calendar, ChevronDown, FileText, Upload, Image, FileCheck, Video, CalendarClock, PlusCircle, FolderPlus, Volleyball, BookText, NotebookIcon, NotebookPen } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Api } from '@/services/service';
@@ -126,20 +126,57 @@ const ProjectDetailsPage = (props) => {
                 </div>
               </div>
             </div>
-            <div className="mt-3">
+            <div className="mt-3 w-full flex justify-start items-start gap-4">
               <div className="bg-[#5AC6AE] text-white px-3 py-1 rounded-full text-xs font-medium mb-2">
                 {projectDetails?.status}
               </div>
-              <div className="text-right">
-                <span className="text-3xl font-bold text-[#e0f349]">80%</span>
+              <div className="text-right flex-1">
+                
+                <div className="w-full bg-gray-700 rounded-full h-5 overflow-hidden">
+               
+                  <div
+                    className="bg-[#e0f349] h-5 rounded-full transition-all duration-500"
+                    style={{ width: `${80}%` }}
+                  ></div>
+                </div>
+
+          
+                <span className="text-2xl font-bold text-[#e0f349] mt-2 inline-block">
+                  80%
+                </span>
               </div>
+
             </div>
           </div>
-          <div className="rounded-2xl bg-custom-black flex justify-between p-6 items-start">
-            <div>
-              <h2 className="text-2xl font-bold text-white mb-4">Actions</h2>
-            </div>
+          <div className="rounded-2xl bg-custom-black p-6">
+            <h2 className="text-2xl font-bold text-white mb-4">Actions</h2>
+            <div className="flex flex-wrap gap-4">
+              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
+                onClick={() => router.push(`/ProjectDetails/ManagePhotos`)}
+              >
+                Manage Photos
+                <Image size={18} />
+              </button>
+              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
+                onClick={() => router.push("/ProjectDetails/EditProjectSocpe")}
+              >
+                Add Scope
+                <Volleyball size={18} />
+              </button>
 
+              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
+                onClick={() => router.push("/ProjectDetails/work-plan")}
+              >
+                Work Plan
+                <NotebookPen size={18} />
+              </button>
+              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
+                onClick={() => router.push("/ProjectDetails/Boq")}
+              >
+                BOQs
+                <BookText size={18} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -257,23 +294,7 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-[#2a2a2a] rounded-2xl p-6 mt-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Quick Actions</h3>
-          <div className="flex flex-wrap gap-4">
-            <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1 rounded-lg font-medium hover:opacity-80 cursor-pointer"
-              onClick={() => router.push(`/ProjectDetails/ManagePhotos`)}
-            >
-              Manage Photos
-              <Image size={18} />
-            </button>
-            <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1 rounded-lg font-medium hover:opacity-80 cursor-pointer">
 
-              Schedule Meeting
-              <CalendarClock size={18} />
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

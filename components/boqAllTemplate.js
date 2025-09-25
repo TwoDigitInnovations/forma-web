@@ -1,13 +1,19 @@
 import React, { useState } from "react";
-import { Building2, X, PlusCircle, FileWarning } from "lucide-react";
+import { Building2, X, PlusCircle, FileWarning, Eye, Trash2, CheckCircle } from "lucide-react";
 import CreateTemplateForm from "./createTemplate";
+import ConfirmModal from "./confirmModel";
+import { toast } from "react-toastify";
+import { Api } from "@/services/service";
+import { useRouter } from "next/router";
 
 const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, projectId,
     getAllTemplates }) => {
-    const [hoveredCard, setHoveredCard] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [templateId, setTemplateId] = useState("");
+    const router = useRouter();
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
     const handleUse = (template) => {
         console.log("Using template", template);
@@ -23,6 +29,24 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
         setShowModal(false);
         setSelectedTemplate(null);
     };
+
+    const deleteTemplate = async (id) => {
+        loader(true);
+        Api("delete", `template/deleteTemplate/${id}`, "", router)
+            .then((res) => {
+                loader(false);
+                if (res?.status === true) {
+                    toast.success(res?.data?.message || "Boq Deleted Sucessfully")
+                    getAllTemplates(projectId)
+                } else {
+                    toast.error(res?.message || "Failed to created status")
+                }
+            })
+            .catch((err) => {
+                loader(false);
+                toast.error(err?.message || "An error occurred")
+            });
+    }
 
     if (selectedOption === "boqTable") return null;
 
@@ -52,8 +76,6 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                             <div
                                 key={id}
                                 className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                                onMouseEnter={() => setHoveredCard(template.id)}
-                                onMouseLeave={() => setHoveredCard(null)}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-gray-700/20 to-transparent opacity-50"></div>
 
@@ -86,21 +108,38 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                                         </p>
                                     </div>
 
-                                    {/* Buttons */}
-                                    <div className="mt-6 flex gap-2">
+
+
+                                    <div className="mt-6 flex gap-3">
                                         <button
                                             onClick={() => handleUse(template)}
-                                            className="flex-1 py-2 px-4 bg-lime-400 text-black font-semibold rounded-lg transition-all cursor-pointer duration-200"
+                                            className="flex-1 flex items-center justify-center gap-2 py-2 px-4  bg-lime-400 text-black font-semibold rounded-lg transition-all duration-200 hover:bg-lime-500 cursor-pointer"
                                         >
+                                            <CheckCircle className="w-5 h-5" />
                                             Use
                                         </button>
+
                                         <button
                                             onClick={() => handleSee(template)}
-                                            className="flex-1 py-2 px-4 bg-gray-600 text-white font-semibold rounded-lg transition-all cursor-pointer duration-200"
+                                            className="flex-1 flex items-center justify-center gap-2 py-2 px-4  bg-gray-600 text-white font-semibold rounded-lg  transition-all duration-200 hover:bg-gray-700 cursor-pointer"
                                         >
+                                            <Eye className="w-5 h-5" />
                                             See
                                         </button>
+
+                                        <button
+                                            onClick={() => {
+                                                setTemplateId(template?._id)
+                                                console.log(template?._id);
+                                                setIsConfirmModalOpen(true)
+                                            }}
+                                            className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-red-500 text-white font-semibold rounded-lg transition-all duration-200 hover:bg-red-600 cursor-pointer"
+                                        >
+                                            <Trash2 className="w-5 h-5" />
+                                            Delete
+                                        </button>
                                     </div>
+
                                 </div>
 
                                 {/* Hover Overlay */}
@@ -111,10 +150,6 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                         <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
                             <FileWarning className="w-12 h-12 text-gray-400 mb-4" />
                             <p className="text-gray-300 text-lg mb-4">No templates found</p>
-                            {/* <button className="flex items-center gap-2 px-4 py-2 bg-custom-yellow text-black rounded-[12px] cursor-pointer transition-all duration-200 hover:scale-105">
-                                <PlusCircle className="w-5 h-5" />
-                                Create Template
-                            </button> */}
                         </div>
                     )}
                 </div>
@@ -215,6 +250,15 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                 loader={loader}
                 getAllTemplates={getAllTemplates}
                 projectId={projectId}
+            />
+            <ConfirmModal
+                isOpen={isConfirmModalOpen}
+                setIsOpen={setIsConfirmModalOpen}
+                title="Delete This Template"
+                message="Are you sure you want to delete ?"
+                onConfirm={() => deleteTemplate(templateId)}
+                yesText="Yes, Delete"
+                noText="Cancel"
             />
         </div>
     );

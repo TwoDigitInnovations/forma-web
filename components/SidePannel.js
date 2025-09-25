@@ -5,7 +5,7 @@ import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Handshake, LayoutDashboard, LoaderCircle, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, X } from "lucide-react";
+import { Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, X } from "lucide-react";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -121,8 +121,8 @@ const SidePannel = ({ setOpenTab, openTab }) => {
               <p className="text-3xl text-custom-yellow font-bold"> LOGO</p>
             </div>
 
-            <div className="flex flex-col justify-between row-span-4 w-full">
-              <ul className="w-full flex flex-col text-left mt-5">
+            <div className="relative flex flex-col justify-between row-span-4 w-full">
+              <ul className=" w-full flex flex-col text-left mt-5">
                 {currentMenuItems.map((item, i) =>
                   item?.access?.includes(user?.role) ? (
                     <li key={i} className="w-full">
@@ -168,6 +168,16 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                   ) : null
                 )}
               </ul>
+              {isProjectDetailsRoute && (
+                <div className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
+                  onClick={() => router.push("/project")}
+                >
+                  <MoveLeft />
+                  <button className="text-white  py-3 cursor-pointer">
+                    Back to Project</button>
+                </div>
+              )}
+
             </div>
           </div>
         </div>
@@ -245,12 +255,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
         </div>
 
         <div className="flex flex-col justify-center items-start row-span-2 h-full w-full">
-          <ul className="w-full h-full flex flex-col text-left justify-start items-center border-t-2 border-white">
+          <ul className="w-full h-full flex flex-col text-left justify-start items-center border-t-1 border-white">
             {currentMenuItems.map((item, i) =>
               item?.access?.includes(user?.role) ? (
                 <li
                   key={i}
-                  className="w-full text-white border-b-2 border-white"
+                  className="w-full text-white border-b-1 border-white"
                 >
                   <div
                     className="flex justify-between items-center w-full px-6 py-3 cursor-pointer hover:bg-gray-100"

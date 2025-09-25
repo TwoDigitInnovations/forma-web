@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { NotebookPen, MapPin, Search, Filter, FileCode2, Eye, Edit, DeleteIcon, Delete, Trash2 } from 'lucide-react';
+import { NotebookPen, MapPin, Search, Filter, FileCode2, Eye, Edit, DeleteIcon, Delete, Trash2, X } from 'lucide-react';
 import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -44,8 +44,12 @@ const BOQ = (props) => {
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
-          setAllBoq(res.data?.data)
-          console.log(res.data?.data)
+          const withInclude = res.data?.data.map(item => ({
+            ...item,
+            include: true
+          }));
+          setAllBoq(withInclude);
+
         } else {
           toast.error(res?.message || "Failed to created status")
         }
@@ -78,12 +82,15 @@ const BOQ = (props) => {
     if (allBoq && allBoq.length > 0) {
       const grand = allBoq.reduce(
         (sum, item) =>
-          sum + (item.quantity && item.rate ? item.quantity * item.rate : 0),
+          item.include && item.quantity && item.rate
+            ? sum + item.quantity * item.rate
+            : sum,
         0
       );
       setGrandTotal(grand);
     }
   }, [allBoq]);
+
 
   const BoqName = ({ value }) => (
     <div className=" flex  justify-center items-center">
@@ -103,23 +110,29 @@ const BOQ = (props) => {
     </div>
   );
 
-  const Include = ({ }) => (
+  const Include = ({ row }) => (
     <div className="flex items-center justify-center">
       <input
         type="checkbox"
-        checked={checked}
+        checked={row.original.include}
         onChange={() => {
-          console.log(checked)
-          setChecked(!checked)
+          setAllBoq(prev =>
+            prev.map(item =>
+              item._id === row.original._id
+                ? { ...item, include: !item.include }
+                : item
+            )
+          );
         }}
         className={`
-          w-5 h-5 rounded-full border-2 cursor-pointer transition-colors
-          appearance-none
-          ${checked ? "bg-custom-yellow border-custom-yellow" : "border-gray-400 bg-white"}
-        `}
+        w-5 h-5 rounded-full border-2 cursor-pointer transition-colors
+        appearance-none
+        ${row.original.include ? "bg-custom-yellow border-custom-yellow" : "border-gray-400 bg-white"}
+      `}
       />
     </div>
   );
+
 
   const Total = ({ row }) => {
     const total = (row.original?.quantity || 0) * (row.original?.rate || 0);
@@ -155,7 +168,6 @@ const BOQ = (props) => {
         onClick={() => {
           setIsConfirmModalOpen(true)
           setBoqId(row.original._id)
-          // deleteBoq(row.original._id)
         }}
       >
         <Trash2 />
@@ -214,7 +226,7 @@ const BOQ = (props) => {
               </h1>
               <div className='flex items-center-safe gap-3'>
                 <p className="md:text-[32px] text-[24px] text-white mt-1">BOQs Document</p>
-                <p className="md:text-[14px] text-[13px] text-white mt-1">Total BOQ: 3 Document</p>
+                <p className="md:text-[14px] text-[13px] text-white mt-1">Total BOQ: {allBoq.length}  Document</p>
               </div>
             </div>
 
@@ -226,24 +238,18 @@ const BOQ = (props) => {
         </div>
 
         <div className="flex items-center gap-3 w-full">
-          {/* Search Box */}
           <div className="relative ">
             <input
-              className="ps-10 md:w-[22rem] w-full bg-[#5F5F5F] border-black border text-white rounded-3xl px-4 py-2"
+              className="ps-10 md:w-[28rem] w-full bg-[#5F5F5F] border-black border text-white rounded-3xl px-4 py-2"
               placeholder="Search"
             />
             <Search className="absolute top-3 left-4 text-gray-300" size={18} />
           </div>
-
-          {/* Filter Button */}
-          <button className="bg-[#5F5F5F] text-white rounded-[50px] px-10 py-2 text-[14px] flex justify-center items-center gap-1">
-            Filter <Filter size={18} />
-          </button>
         </div>
         <div>
 
 
-          <div className="bg-custom-black rounded-xl shadow-sm  mt-6">
+          <div className="bg-custom-black rounded-xl shadow-sm mt-6">
             {allBoq.length === 0 ? (
               <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-2">
                 <FileCode2 size={68} />
@@ -255,7 +261,7 @@ const BOQ = (props) => {
                 </p>
               </div>
             ) : (
-              <div className="overflow-x-auto px-3 md:px-6 pb-10 md:mb-20 mb-10">
+              <div className="overflow-x-auto px-3 md:px-4 pb-10 md:mb-20 mb-10">
                 <p className='md:mt-6 mt-4 md:text-2xl text-[20px]'> Project Summary </p>
                 <Table
                   columns={columns}
@@ -265,10 +271,13 @@ const BOQ = (props) => {
                   currentPage={currentPage}
                   itemsPerPage={pagination.itemsPerPage}
                 />
-                <div className='flex justify-between items-center'>
-                  <p className='md:text-[20px] text-[18px]'> Project Grand Total </p>
-                  <p className='text-[20px]'> ${grandTotal || "0.00"} </p>
+                <div className="flex justify-between items-center">
+                  <p className="md:text-[20px] text-[18px]"> Project Grand Total </p>
+                  <p className="text-[20px]">
+                    ${!isNaN(parseFloat(grandTotal)) ? parseFloat(grandTotal).toFixed(2) : "0.00"}
+                  </p>
                 </div>
+
               </div>
             )}
           </div>
@@ -283,18 +292,45 @@ const BOQ = (props) => {
             noText="Cancel"
           />
 
-
           {popUpDataTrue && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn ">
-              <div
-                className="bg-custom-black rounded-lg p-6 w-lg 
-                   shadow-[5px_5px_0px_0px_rgba(255,255,0,1)]
-                   animate-slideUp max-w-2xl"
-              >
-                {popUpData?.BoqName}
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn">
+              <div className="bg-white rounded-xl p-6 w-full max-w-lg shadow-lg animate-slideUp relative">
+                {/* Close Button */}
+                <button
+                  onClick={() => setPopUpDataTrue(false)}
+                  className="absolute top-4 right-4 text-gray-500 hover:text-black cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Title */}
+                <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
+                  {popUpData?.boqName || "BOQ Details"}
+                </h2>
+
+                {/* Details in a card format */}
+                <div className="space-y-3 text-sm text-gray-700">
+                  <div className="flex justify-between">
+                    <span className="font-medium">Items:</span>
+                    <span>{popUpData?.items?.length || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Created At:</span>
+                    <span>{new Date(popUpData?.createdAt).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Updated At:</span>
+                    <span>{new Date(popUpData?.updatedAt).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Rate:</span>
+                    <span>{popUpData?.rate || "-"}</span>
+                  </div>
+                </div>
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
