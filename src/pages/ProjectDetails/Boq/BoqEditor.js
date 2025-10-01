@@ -9,6 +9,7 @@ import BOQTemplate from '../../../../components/boqAllTemplate';
 import BOQTemplateModal from '../../../../components/TemplateSelection';
 import EditableTable from '../../../../components/EditableTable';
 import ConfirmModal from '../../../../components/confirmModel';
+import ProjectSummary from '../../../../components/projectSummary';
 
 const BOQ = (props) => {
     const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
@@ -96,7 +97,6 @@ const BOQ = (props) => {
             getAllTemplates(project._id)
         }
     }, [selectedOption])
-
 
     useEffect(() => {
         if (!updateId) return;
@@ -215,7 +215,7 @@ const BOQ = (props) => {
     }, [data, originalData]);
 
     return (
-        <div className="h-screen bg-black text-white ">
+        <div className="h-screen bg-black text-white">
             <div className=" w-full h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-8  mx-auto">
                 <button
                     onClick={() => router.push(`/ProjectDetails/Boq`)}
@@ -274,7 +274,7 @@ const BOQ = (props) => {
                             </button>
                         </div>
                         {open && (
-                            <div className="absolute mt-2 w-72 bg-custom-black border border-gray-200 rounded-md shadow-lg z-10 pt-4 px-2">
+                            <div className="absolute mt-2 right-14 top-58 w-72 bg-custom-black border border-gray-200 rounded-md shadow-lg z-10 pt-4 px-2">
                                 <ul className="relative py-1 text-sm text-white">
                                     <X onClick={() => setOpen(false)} className='absolute right-0 -top-2  text-right cursor-pointer' />
                                     <li
@@ -308,23 +308,29 @@ const BOQ = (props) => {
                     </div>
                 </div>
 
-
                 <div className="w-full flex rounded-lg bg-gray-700 ">
 
                     <button
                         onClick={() => setSelectedOption("boqTable")}
                         className={`w-1/2 px-4 py-2 cursor-pointer rounded-lg font-medium transition-colors duration-200 ${selectedOption === "boqTable"
                             ? "bg-custom-yellow text-black"
-                            : "bg-gray-700 text-white hover:bg-gray-600"
+                            : "bg-gray-700 text-white"
                             }`}>
                         Boq Table
                     </button>
-
+                    <button
+                        onClick={() => setSelectedOption("Summary")}
+                        className={`w-1/2 px-4 py-2  cursor-pointer rounded-lg font-medium transition-colors duration-200 ${selectedOption === "Summary"
+                            ? "bg-custom-yellow text-black"
+                            : "bg-gray-700 text-white "
+                            }`}>
+                        Project Summary
+                    </button>
                     <button
                         onClick={() => setSelectedOption("template")}
                         className={`w-1/2 px-4 py-2  cursor-pointer rounded-lg font-medium transition-colors duration-200 ${selectedOption === "template"
                             ? "bg-custom-yellow text-black"
-                            : "bg-gray-700 text-white hover:bg-gray-600"
+                            : "bg-gray-700 text-white "
                             }`}>
                         Template
                     </button>
@@ -370,6 +376,11 @@ const BOQ = (props) => {
                         onClose={() => setIsModalOpen(false)}
                         onLoadTemplate={handleLoadTemplate}
                         templatesData={templatesData}
+                    />
+
+                    <ProjectSummary
+                        selectedOption={selectedOption}
+                        loader={props.loader}
                     />
 
                     <ConfirmModal

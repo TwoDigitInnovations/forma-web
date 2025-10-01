@@ -48,7 +48,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
             });
     }
 
-    if (selectedOption === "boqTable") return null;
+    if (selectedOption === "boqTable" || selectedOption === "Summary") return null;
 
     return (
         <div className="min-h-screen bg-black text-white py-4">

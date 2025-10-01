@@ -107,7 +107,6 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        {/* Project Header Card */}
         <div className=" mb-6 relative overflow-hidden grid md:grid-cols-2 gap-6">
           <div className="rounded-2xl bg-custom-green p-6 flex flex-col  justify-between items-start">
             <div>
@@ -180,7 +179,7 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        {/* Project Statistics */}
+    
         <div className="bg-[#2a2a2a] rounded-2xl p-6 mb-6">
           <h3 className="text-xl font-semibold text-white mb-4">Project Statistics</h3>
           <div className="grid grid-cols-4 gap-8">
@@ -204,7 +203,7 @@ const ProjectDetailsPage = (props) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Project Scope */}
+     
           <div className="lg:col-span-2 bg-[#2a2a2a] rounded-2xl ">
             <div className="flex items-center justify-between mb-6 rounded-tl-2xl rounded-tr-2xl bg-custom-green px-4 py-4">
               <h3 className="text-xl font-semibold text-white">Project Scope</h3>
@@ -233,7 +232,6 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        {/* Project Details */}
         <div className="bg-custom-black rounded-2xl  mt-6">
           <div className='bg-custom-green p-6 rounded-tl-2xl rounded-tr-2xl'>
             <h3 className="text-xl font-semibold text-white ">Project Details</h3>
@@ -293,7 +291,6 @@ const ProjectDetailsPage = (props) => {
             </div>
           </div>
         </div>
-
 
       </div>
     </div>
