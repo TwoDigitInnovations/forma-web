@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Edit2, Trash2 } from 'lucide-react';
+   import {PackageOpen} from "lucide-react";
 
 const ProjectSummaryTable = ({
-    projectName = "proposed construction of daynille road",
-    date = "10/1/2025",
     items = [],
     showTax = false,
     showContingency = false,
@@ -22,7 +21,7 @@ const ProjectSummaryTable = ({
         num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     const subtotal = items.reduce(
-        (sum, item) => (item.include ? sum + item.quantity * item.rate : sum),
+        (sum, item) => (item.include ? sum + item.quantity * item.amount : sum),
         0
     );
 
@@ -36,10 +35,9 @@ const ProjectSummaryTable = ({
 
     return (
         <div className="w-full rounded-lg md:p-8 p-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex md:flex-row flex-col items-start gap-4 md:gap-0 md:items-center justify-between mb-6">
                 <h1 className="text-3xl font-bold text-white">Project Summary</h1>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                     {[
                         { label: 'Add Subtotal', toggle: onToggleSubtotal, active: showSubtotal },
                         { label: 'Add Tax', toggle: onToggleTax, active: showTax },
@@ -61,13 +59,6 @@ const ProjectSummaryTable = ({
                 </div>
             </div>
 
-            {/* Project Info */}
-            <div className="flex gap-8 mb-6 text-white">
-                <div><span className="font-semibold">Project: </span>{projectName}</div>
-                <div><span className="font-semibold">Date: </span>{date}</div>
-            </div>
-
-            {/* Table */}
             <div className="overflow-x-auto border border-gray-200 rounded-lg">
                 <table className="w-full">
                     <thead>
@@ -78,24 +69,50 @@ const ProjectSummaryTable = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {/* Regular Items */}
-                        {items.map((item, index) => (
-                            <tr key={index} className="border-b border-gray-100">
-                                <td className="px-4 py-3">
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${item.include ? 'bg-custom-yellow' : 'bg-gray-200'}`}>
-                                        {item.include && <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>}
+
+                     
+                        {items.length > 0 ? (
+                            items.map((item, index) => (
+                                <tr key={index} className="border-b border-gray-100">
+                                    <td className="px-4 py-3">
+                                        <div
+                                            className={`w-6 h-6 rounded-full flex items-center justify-center ${item.include ? "bg-custom-yellow" : "bg-gray-200"
+                                                }`}
+                                        >
+                                            {item.include && (
+                                                <svg
+                                                    className="w-4 h-4 text-black"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3 text-white">{item.description}</td>
+                                    <td className="px-4 py-3 text-white">{item.unit || "No"}</td>
+                                    <td className="px-4 py-3 text-white">{item.quantity}</td>
+                                    <td className="px-4 py-3 text-white">{formatCurrency(item?.amount)}</td>
+                                    <td className="px-4 py-3 font-semibold text-white">
+                                        {formatCurrency(item.quantity * item.amount)}
+                                    </td>
+                                    <td className="px-4 py-3"></td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={7} className="text-center py-6 text-gray-400 h-[400px]">
+                                    <div className="flex flex-col items-center justify-center">
+                                        <PackageOpen className="w-10 h-10 mb-2 text-gray-400" />
+                                        <p>No Summary available. Please add some data.</p>
                                     </div>
                                 </td>
-                                <td className="px-4 py-3 text-white">{item.name}</td>
-                                <td className="px-4 py-3 text-white">{item.unit}</td>
-                                <td className="px-4 py-3 text-white">{item.quantity}</td>
-                                <td className="px-4 py-3 text-white">{formatCurrency(item.rate)}</td>
-                                <td className="px-4 py-3 font-semibold text-white">{formatCurrency(item.quantity * item.rate)}</td>
-                                <td className="px-4 py-3">
-
-                                </td>
                             </tr>
-                        ))}
+                        )}
+
 
                         {rowsConfig.map((row) => row.show && (
                             <tr key={row.key} className={`${row.isSummary ? (row.isGrand ? 'bg-custom-black' : 'bg-custom-black') : 'border-b border-gray-100'}`}>
@@ -119,7 +136,9 @@ const ProjectSummaryTable = ({
                                 <td className="px-4 py-3">
                                     <div className="flex gap-2">
                                         <button className={`text-gray-600 hover:text-yellow-600 transition-colors`}><Edit2 size={18} /></button>
-                                        <button className={`text-gray-600 hover:text-red-500 transition-colors`}><Trash2 size={18} /></button>
+                                        <button className={`text-gray-600 hover:text-red-500 transition-colors`}
+                                        onClick={() => { toggle }}
+                                        ><Trash2 size={18} /></button>
                                     </div>
                                 </td>
                             </tr>
@@ -131,23 +150,31 @@ const ProjectSummaryTable = ({
     );
 };
 
-export default function App({ selectedOption, loader }) {
-    const [showTax, setShowTax] = useState(true);
-    const [showContingency, setShowContingency] = useState(true);
-    const [showSubtotal, setShowSubtotal] = useState(true);
-    const [showGrandTotal, setShowGrandTotal] = useState(true);
+export default function App({ selectedOption, loader, projectDetails, data }) {
+    const [showTax, setShowTax] = useState(false);
+    const [showContingency, setShowContingency] = useState(false);
+    const [showSubtotal, setShowSubtotal] = useState(false);
+    const [showGrandTotal, setShowGrandTotal] = useState(false);
 
-    const sampleItems = [
-        { name: "Subtotal 1", unit: "No", quantity: 5, rate: 5000.0, include: true },
-        { name: "Grand Total", unit: "No", quantity:1, rate: 15000.0, include: true },
-    ];
+    const getSummaryItems = (data) => {
+        return data
+            ?.filter(row => row.rowType === "subtotal" || row.rowType === "grandtotal")
+            .map(item => ({
+                ...item,
+                include: true,
+                quantity :1,
+            }));
+    };
+
+    const sampleItems = getSummaryItems(data);
+    console.log("sampleItems", sampleItems);
+
     if (selectedOption === "boqTable" || selectedOption === "template") return null;
 
     return (
         <div className="min-h-screen bg-custom-black text-white mt-6 rounded-lg">
             <ProjectSummaryTable
-                projectName="proposed construction of daynille road"
-                date="10/1/2025"
+                projectDetails={projectDetails}
                 items={sampleItems}
                 showTax={showTax}
                 showContingency={showContingency}

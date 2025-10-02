@@ -14,6 +14,7 @@ import ProjectSummary from '../../../../components/projectSummary';
 const BOQ = (props) => {
     const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
     const [user] = useContext(userContext)
+    const [tableData, setTableData] = useState([]);
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState("boqTable");
@@ -82,6 +83,48 @@ const BOQ = (props) => {
 
         setOpen(false);
     };
+    const addItemsectionHeader = () => {
+        setData((prevData) => {
+            let lastItem = prevData[prevData.length - 1]?.itemNo || "1.0";
+            let [main, sub] = lastItem.split(".");
+            sub = parseInt(sub) + 1;
+
+            const baseItemNo = `${main}.${sub}`;
+
+            const newRows = [
+                {
+                    rowType: "section_title",
+                    description: "Section 1",
+                    unit: "",
+                    quantity: 0,
+                    rate: 0,
+                    amount: 0,
+                },
+                {
+
+                    rowType: "section_desc",
+                    description: "Section Description",
+                    unit: "",
+                    quantity: 0,
+                    rate: 0,
+                    amount: 0,
+                },
+                {
+                    itemNo: baseItemNo,
+                    rowType: "normal",
+                    description: "",
+                    unit: "",
+                    quantity: 0,
+                    rate: 0,
+                    amount: 0,
+                },
+            ];
+
+            return [...prevData, ...newRows];
+        });
+
+        setOpen(false);
+    };
 
     const deleteData = () => {
         setData([]);
@@ -109,7 +152,6 @@ const BOQ = (props) => {
             .then((res) => {
                 props.loader(false);
                 if (res?.status === true) {
-                    console.log("res.data?.data", res.data?.data);
                     const data = res.data?.data
                     setBoqName(data?.boqName)
                     setData(
@@ -279,10 +321,7 @@ const BOQ = (props) => {
                                     <X onClick={() => setOpen(false)} className='absolute right-0 -top-2  text-right cursor-pointer' />
                                     <li
                                         className="px-4 py-2 hover:bg-[#e0f349] hover:text-black transition-colors duration-300 cursor-pointer"
-                                        onClick={() => {
-                                            console.log("Start with Section clicked");
-                                            // setOpen(false);
-                                        }}
+                                        onClick={addItemsectionHeader}
                                     >
                                         Start with Section (Header + Specs + Item)
                                     </li>
@@ -356,6 +395,7 @@ const BOQ = (props) => {
                                         data={data}
                                         onChange={setData}
                                         setTotal={setTotal}
+                                        setSummaryData={setTableData}
                                     />
                                 </div>
                             )}
@@ -381,6 +421,8 @@ const BOQ = (props) => {
                     <ProjectSummary
                         selectedOption={selectedOption}
                         loader={props.loader}
+                        projectDetails={projectDetails}
+                        data={tableData}
                     />
 
                     <ConfirmModal

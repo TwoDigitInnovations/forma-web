@@ -1,9 +1,47 @@
-import { Delete, DeleteIcon, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import React, { useMemo, useRef, useEffect } from "react";
 import { useTable } from "react-table";
 
-export default function EditableTable({ columnsConfig, data, onChange, setTotal }) {
+const ROW_TYPES = {
+    NORMAL: 'normal',
+    SUBTOTAL: 'subtotal',
+    GRANDTOTAL: 'grandtotal',
+    SECTION_TITLE: 'section_title',
+    SECTION_DESC: 'section_desc',
+    SUBSECTION: 'subsection',
+    SUBSECTION_ITEM: 'subsection_item'
+};
+
+const ROW_TYPE_CONFIG = {
+    [ROW_TYPES.NORMAL]: { label: 'Normal Item', bgColor: '', fontWeight: '' },
+    [ROW_TYPES.SUBTOTAL]: { label: 'Subtotal', bgColor: 'bg-blue-50', fontWeight: 'font-bold' },
+    [ROW_TYPES.GRANDTOTAL]: { label: 'Grand Total', bgColor: 'bg-gray-100', fontWeight: 'font-bold' },
+    [ROW_TYPES.SECTION_TITLE]: { label: 'Section Title', bgColor: 'bg-yellow-50', fontWeight: 'font-semibold' },
+    [ROW_TYPES.SECTION_DESC]: { label: 'Section Description', bgColor: 'bg-yellow-25', fontWeight: '' },
+    [ROW_TYPES.SUBSECTION]: { label: 'Subsection', bgColor: 'bg-green-50', fontWeight: 'font-medium' },
+    [ROW_TYPES.SUBSECTION_ITEM]: { label: 'Subsection Item', bgColor: '', fontWeight: '' }
+};
+
+export default function EditableTable({ columnsConfig, data, onChange, setTotal, setSummaryData }) {
     const tableData = useMemo(() => data, [data]);
+
+    useEffect(() => {
+        setSummaryData(tableData);
+    }, [tableData, setSummaryData]);
+
+    const calculateTotal = (dataArray) => {
+        return dataArray
+            .filter(row => !isCalculatedRow(row.rowType))
+            .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+    };
+
+    const isCalculatedRow = (rowType) => {
+        return [ROW_TYPES.SUBTOTAL, ROW_TYPES.GRANDTOTAL].includes(rowType);
+    };
+
+    const isEditableRow = (rowType) => {
+        return ![ROW_TYPES.SUBTOTAL, ROW_TYPES.GRANDTOTAL].includes(rowType);
+    };
 
     const handleUpdateRow = (rowIndex, field, value) => {
         const updatedData = [...data];
@@ -11,161 +49,112 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
 
         row[field] = value;
 
-        if (field === "amount") {
-            const rate = parseFloat(row.rate) || 0;
-            const quantity = parseFloat(row.quantity) || 0;
-            row.amount = rate * quantity;
-        }
-
-        if (field === "rate" || field === "quantity") {
+        if ((field === "rate" || field === "quantity") && isEditableRow(row.rowType)) {
             const rate = field === "rate" ? parseFloat(value) || 0 : parseFloat(row.rate) || 0;
-            const quantity =
-                field === "quantity" ? parseFloat(value) || 0 : parseFloat(row.quantity) || 0;
+            const quantity = field === "quantity" ? parseFloat(value) || 0 : parseFloat(row.quantity) || 0;
             row.amount = rate * quantity;
         }
 
         updatedData[rowIndex] = row;
 
-        const total = updatedData.reduce(
-            (sum, item) => sum + (parseFloat(item.amount) || 0),
-            0
-        );
+        const total = calculateTotal(updatedData);
         setTotal(total);
 
-        onChange && onChange(updatedData);
+        onChange?.(updatedData);
     };
+
 
     const handleDeleteRow = (rowIndex) => {
         const updated = tableData.filter((_, idx) => idx !== rowIndex);
         const renumbered = recalculateItemNumbers(updated);
-        onChange && onChange(renumbered);
+        onChange?.(renumbered);
     };
 
-    const handleAddRow = (position = 'end', rowIndex = null) => {
-        const blankRow = {};
+
+    const createBlankRow = (rowType = ROW_TYPES.NORMAL) => {
+        const blankRow = { rowType };
+
         columnsConfig.forEach((col) => {
-            if (col.type === "select" && col.options && col.options.length > 0) {
+            if (col.type === "select" && col.options?.length > 0) {
                 blankRow[col.key] = col.options[0];
             } else {
                 blankRow[col.key] = "";
             }
         });
 
+        return blankRow;
+    };
+
+    const handleAddRow = (position = 'end', rowIndex = null, rowType = ROW_TYPES.NORMAL) => {
+        const blankRow = createBlankRow(rowType);
         let updated;
+
         if (position === 'above' && rowIndex !== null) {
-            updated = [
-                ...tableData.slice(0, rowIndex),
-                blankRow,
-                ...tableData.slice(rowIndex)
-            ];
+            updated = [...tableData.slice(0, rowIndex), blankRow, ...tableData.slice(rowIndex)];
         } else if (position === 'below' && rowIndex !== null) {
-            updated = [
-                ...tableData.slice(0, rowIndex + 1),
-                blankRow,
-                ...tableData.slice(rowIndex + 1)
-            ];
+            updated = [...tableData.slice(0, rowIndex + 1), blankRow, ...tableData.slice(rowIndex + 1)];
         } else {
             updated = [...tableData, blankRow];
         }
 
-        // Recalculate item numbers
         const renumbered = recalculateItemNumbers(updated);
-
-        onChange && onChange(renumbered);
+        onChange?.(renumbered);
     };
 
-    const handleAddSubtotal = (position, rowIndex) => {
-        const subtotalRow = {};
+    const handleAddCalculatedRow = (position, rowIndex, rowType) => {
+        const calculatedRow = { rowType };
+
         columnsConfig.forEach((col) => {
             if (col.key === 'item' || col.key === 'description') {
-                subtotalRow[col.key] = 'Subtotal';
-            } else if (col.key === 'amount') {
+                calculatedRow[col.key] = ROW_TYPE_CONFIG[rowType].label;
+            } else if (col.key === 'amount' || col.key === 'rate') {
                 const endIndex = position === 'above' ? rowIndex : rowIndex + 1;
-                const subtotalAmount = tableData
+                const amount = tableData
                     .slice(0, endIndex)
-                    .filter(row => row.rowType !== 'subtotal' && row.rowType !== 'grandtotal')
+                    .filter(row => !isCalculatedRow(row.rowType))
                     .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-                subtotalRow[col.key] = subtotalAmount.toFixed(2);
+                calculatedRow[col.key] = amount.toFixed(2);
             } else {
-                subtotalRow[col.key] = '';
+                calculatedRow[col.key] = '';
             }
         });
-        subtotalRow.rowType = 'subtotal';
 
         let updated;
         if (position === 'above') {
-            updated = [
-                ...tableData.slice(0, rowIndex),
-                subtotalRow,
-                ...tableData.slice(rowIndex)
-            ];
+            updated = [...tableData.slice(0, rowIndex), calculatedRow, ...tableData.slice(rowIndex)];
+        } else if (position === 'below') {
+            updated = [...tableData.slice(0, rowIndex + 1), calculatedRow, ...tableData.slice(rowIndex + 1)];
         } else {
-            updated = [
-                ...tableData.slice(0, rowIndex + 1),
-                subtotalRow,
-                ...tableData.slice(rowIndex + 1)
-            ];
+            updated = [...tableData, calculatedRow];
         }
 
         const renumbered = recalculateItemNumbers(updated);
-        onChange && onChange(renumbered);
+        onChange?.(renumbered);
     };
 
-    const handleAddGrandTotal = () => {
-        const grandTotalRow = {};
-        columnsConfig.forEach((col) => {
-            if (col.key === 'item' || col.key === 'description') {
-                grandTotalRow[col.key] = 'Grand Total';
-            } else if (col.key === 'amount') {
-                const total = tableData
-                    .filter(row => row.rowType !== 'subtotal' && row.rowType !== 'grandtotal')
-                    .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-                grandTotalRow[col.key] = total.toFixed(2);
-            } else {
-                grandTotalRow[col.key] = '';
-            }
-        });
-        grandTotalRow.rowType = 'grandtotal';
-
-        const updated = [...tableData, grandTotalRow];
-        onChange && onChange(updated);
-    };
 
     const recalculateItemNumbers = (dataArray) => {
         let currentNumber = 1;
-        let currentSubNumber = 0;
-        let lastMainIndex = 0;
 
-        return dataArray.map((row, index) => {
+        return dataArray.map((row) => {
             const newRow = { ...row };
 
-            if (row.rowType === 'subtotal' || row.rowType === 'grandtotal') {
-                // Don't number subtotals or grand totals
+            if (isCalculatedRow(row.rowType) ||
+                row.rowType === ROW_TYPES.SECTION_TITLE ||
+                row.rowType === ROW_TYPES.SECTION_DESC) {
                 return newRow;
             }
 
-            // Check if this should be a main item or sub-item
-            // If there's an item column, update it with numbering
             const itemCol = columnsConfig.find(col => col.key === 'item');
             if (itemCol) {
-                // Simple sequential numbering: 1, 2, 3, etc.
-                // For sub-items logic, you can enhance this based on your needs
-                const prevRow = index > 0 ? dataArray[index - 1] : null;
-
-                if (prevRow && prevRow.rowType !== 'subtotal' && prevRow.rowType !== 'grandtotal') {
-                    // Check if should be sub-item (you can add custom logic here)
-                    // For now, simple sequential numbering
-                    newRow.item = `${currentNumber}`;
-                    currentNumber++;
-                } else {
-                    newRow.item = `${currentNumber}`;
-                    currentNumber++;
-                }
+                newRow.item = `${currentNumber}`;
+                currentNumber++;
             }
 
             return newRow;
         });
     };
+
 
     const DropdownMenu = ({ row, rowIndex }) => {
         const [open, setOpen] = React.useState(false);
@@ -176,26 +165,15 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
         useEffect(() => {
             if (open && buttonRef.current) {
                 const buttonRect = buttonRef.current.getBoundingClientRect();
-                const spaceAbove = buttonRect.top;
                 const spaceBelow = window.innerHeight - buttonRect.bottom;
-                const dropdownHeight = 280;
-
-                if (spaceAbove < dropdownHeight && spaceBelow > spaceAbove) {
-                    setDropdownPosition('below');
-                } else {
-                    setDropdownPosition('above');
-                }
+                setDropdownPosition(spaceBelow < 300 ? 'above' : 'below');
             }
         }, [open]);
 
         useEffect(() => {
             const handleClickOutside = (event) => {
-                if (
-                    dropdownRef.current &&
-                    !dropdownRef.current.contains(event.target) &&
-                    buttonRef.current &&
-                    !buttonRef.current.contains(event.target)
-                ) {
+                if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+                    buttonRef.current && !buttonRef.current.contains(event.target)) {
                     setOpen(false);
                 }
             };
@@ -203,13 +181,25 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
             if (open) {
                 document.addEventListener('mousedown', handleClickOutside);
             }
-
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
+            return () => document.removeEventListener('mousedown', handleClickOutside);
         }, [open]);
 
-        const isSpecialRow = row.original.rowType === 'subtotal' || row.original.rowType === 'grandtotal';
+        const isSpecialRow = isCalculatedRow(row.original.rowType);
+
+        const menuItems = [
+            { label: 'Add Normal Item Above', action: () => handleAddRow('above', rowIndex, ROW_TYPES.NORMAL) },
+            { label: 'Add Normal Item Below', action: () => handleAddRow('below', rowIndex, ROW_TYPES.NORMAL) },
+            { label: 'Add Subsection Above', action: () => handleAddRow('above', rowIndex, ROW_TYPES.SUBSECTION) },
+            { label: 'Add Subsection Below', action: () => handleAddRow('below', rowIndex, ROW_TYPES.SUBSECTION) },
+            { label: 'Add Subtotal Above', action: () => handleAddCalculatedRow('above', rowIndex, ROW_TYPES.SUBTOTAL) },
+            { label: 'Add Subtotal Below', action: () => handleAddCalculatedRow('below', rowIndex, ROW_TYPES.SUBTOTAL) },
+            { label: 'Add Grand Total', action: () => handleAddCalculatedRow('end', null, ROW_TYPES.GRANDTOTAL) },
+        ];
+
+
+
+        console.log("", tableData);
+
 
         return (
             <div className="relative inline-block">
@@ -217,73 +207,37 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
                     <button
                         ref={buttonRef}
                         onClick={() => setOpen(!open)}
-                        className="px-3 py-1 text-sm bg-custom-yellow text-black rounded-md  cursor-pointer"
+                        className="px-3 py-1 text-sm bg-custom-yellow text-black rounded-md cursor-pointer hover:bg-yellow-400"
                     >
                         ⋮
                     </button>
                 ) : (
                     <button
-                        className="w-full flex justify-center items-center py-2 text-left hover:bg-red-50 text-black cursor-pointer"
-                        onClick={() => {
-                            handleDeleteRow(rowIndex);
-                            setOpen(false);
-                        }}
+                        className="w-full flex justify-center items-center py-2 hover:bg-red-50 text-red-600 cursor-pointer"
+                        onClick={() => handleDeleteRow(rowIndex)}
                     >
                         <Trash size={20} />
-                    </button>)}
+                    </button>
+                )}
 
                 {open && (
                     <div
                         ref={dropdownRef}
-                        className={`absolute ${dropdownPosition === 'above' ? '-bottom-40 right-10 mb-2' : 'bootom-0 mt-2'
-                            } right-0 w-48 bg-white border rounded-md shadow-lg z-10`}
+                        className={`absolute ${dropdownPosition === 'above' ? 'top-full mb-2' : 'top-full mt-2'
+                            } right-0 w-56 bg-white border rounded-md shadow-lg z-10 max-h-96 overflow-y-auto`}
                     >
-
-                        <button
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b cursor-pointer"
-                            onClick={() => {
-                                handleAddRow('above', rowIndex);
-                                setOpen(false);
-                            }}
-                        >
-                            Add Row Above
-                        </button>
-                        <button
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b"
-                            onClick={() => {
-                                handleAddRow('below', rowIndex);
-                                setOpen(false);
-                            }}
-                        >
-                            Add Row Below
-                        </button>
-                        <button
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b"
-                            onClick={() => {
-                                handleAddSubtotal('above', rowIndex);
-                                setOpen(false);
-                            }}
-                        >
-                            Add Subtotal Above
-                        </button>
-                        <button
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b"
-                            onClick={() => {
-                                handleAddSubtotal('below', rowIndex);
-                                setOpen(false);
-                            }}
-                        >
-                            Add Subtotal Below
-                        </button>
-                        <button
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b"
-                            onClick={() => {
-                                handleAddGrandTotal();
-                                setOpen(false);
-                            }}
-                        >
-                            Add Grand Total
-                        </button>
+                        {menuItems.map((item, idx) => (
+                            <button
+                                key={idx}
+                                className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 border-b cursor-pointer"
+                                onClick={() => {
+                                    item.action();
+                                    setOpen(false);
+                                }}
+                            >
+                                {item.label}
+                            </button>
+                        ))}
                         <button
                             className="w-full px-4 py-2 text-left text-sm hover:bg-red-50 text-red-600 cursor-pointer"
                             onClick={() => {
@@ -299,6 +253,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
         );
     };
 
+
     const columns = useMemo(
         () => [
             ...columnsConfig.map((col) => ({
@@ -307,16 +262,32 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
                 Cell: ({ value, row }) => {
                     const rowIndex = row.index;
                     const [localValue, setLocalValue] = React.useState(value ?? "");
-                    const isSpecialRow = row.original.rowType === 'subtotal' || row.original.rowType === 'grandtotal';
+                    const rowType = row.original.rowType || ROW_TYPES.NORMAL;
+                    const config = ROW_TYPE_CONFIG[rowType];
 
                     React.useEffect(() => {
                         setLocalValue(value ?? "");
                     }, [value]);
 
-                    if (isSpecialRow) {
-                        return <span className="font-bold text-gray-900">{value}</span>;
+                    if (isCalculatedRow(rowType)) {
+                        return <span className={`${config.fontWeight} text-gray-900`}>{value}</span>;
                     }
 
+                    if ([ROW_TYPES.SECTION_TITLE, ROW_TYPES.SUBSECTION].includes(rowType)) {
+                        if (col.key === 'item' || col.key === 'description') {
+                            return (
+                                <input
+                                    type="text"
+                                    value={localValue}
+                                    onChange={(e) => setLocalValue(e.target.value)}
+                                    onBlur={() => handleUpdateRow(rowIndex, col.key, localValue)}
+                                    className={`w-full bg-transparent border-b border-gray-300 px-1 py-1 text-sm ${config.fontWeight} focus:outline-none focus:border-blue-400`}
+                                />
+                            );
+                        }
+                    }
+
+                    // Editable inputs
                     if (col.type === "text" || col.type === "number") {
                         return (
                             <input
@@ -358,17 +329,14 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
             {
                 Header: "Actions",
                 accessor: "actions",
-                Cell: ({ row }) => {
-                    return <DropdownMenu row={row} rowIndex={row.index} />;
-                },
+                Cell: ({ row }) => <DropdownMenu row={row} rowIndex={row.index} />,
             },
         ],
         [columnsConfig, data]
     );
 
     const tableInstance = useTable({ columns, data: tableData });
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        tableInstance;
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
 
     return (
         <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -392,12 +360,14 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal 
                 <tbody {...getTableBodyProps()} className="divide-y divide-gray-200 bg-white">
                     {rows.map((row) => {
                         prepareRow(row);
-                        const isSpecialRow = row.original.rowType === 'subtotal' || row.original.rowType === 'grandtotal';
+                        const rowType = row.original.rowType || ROW_TYPES.NORMAL;
+                        const config = ROW_TYPE_CONFIG[rowType];
+
                         return (
                             <tr
                                 {...row.getRowProps()}
                                 key={row.id}
-                                className={isSpecialRow ? 'bg-gray-50' : ''}
+                                className={config.bgColor}
                             >
                                 {row.cells.map((cell) => (
                                     <td
