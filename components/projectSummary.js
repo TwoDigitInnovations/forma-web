@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Edit2, Trash2 } from 'lucide-react';
-   import {PackageOpen} from "lucide-react";
+import {PackageOpen} from "lucide-react";
 
 const ProjectSummaryTable = ({
     items = [],
@@ -31,7 +31,6 @@ const ProjectSummaryTable = ({
         { key: 'subtotal', label: 'SUBTOTAL', show: showSubtotal, value: subtotal + (showTax ? (subtotal * taxRate) / 100 : 0) + (showContingency ? (subtotal * contingencyRate) / 100 : 0), isSummary: true },
         { key: 'grandTotal', label: 'GRAND TOTAL', show: showGrandTotal, value: subtotal + (showTax ? (subtotal * taxRate) / 100 : 0) + (showContingency ? (subtotal * contingencyRate) / 100 : 0), isSummary: true, isGrand: true },
     ];
-
 
     return (
         <div className="w-full rounded-lg md:p-8 p-4">

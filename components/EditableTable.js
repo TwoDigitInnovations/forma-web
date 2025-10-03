@@ -24,7 +24,8 @@ const ROW_TYPE_CONFIG = {
 
 export default function EditableTable({ columnsConfig, data, onChange, setTotal, setSummaryData }) {
     const tableData = useMemo(() => data, [data]);
-
+    console.log("tableData", tableData);
+    
     useEffect(() => {
         setSummaryData(tableData);
     }, [tableData, setSummaryData]);
@@ -63,22 +64,27 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
         onChange?.(updatedData);
     };
 
-
     const handleDeleteRow = (rowIndex) => {
         const updated = tableData.filter((_, idx) => idx !== rowIndex);
         const renumbered = recalculateItemNumbers(updated);
         onChange?.(renumbered);
     };
 
-
-    const createBlankRow = (rowType = ROW_TYPES.NORMAL) => {
+    const createBlankRow = (rowType = ROW_TYPES.NORMAL, tableData) => {
         const blankRow = { rowType };
 
         columnsConfig.forEach((col) => {
             if (col.type === "select" && col.options?.length > 0) {
                 blankRow[col.key] = col.options[0];
             } else {
-                blankRow[col.key] = "";
+                if (col.key === "itemNo") {
+                    let lastItem = tableData[tableData.length - 1]?.itemNo || "1.0";
+                    let [main, sub] = lastItem.split(".");
+                    sub = parseInt(sub) + 1;
+                    blankRow[col.key] = `${main}.${sub}`;
+                } else {
+                    blankRow[col.key] = "";
+                }
             }
         });
 
@@ -86,7 +92,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
     };
 
     const handleAddRow = (position = 'end', rowIndex = null, rowType = ROW_TYPES.NORMAL) => {
-        const blankRow = createBlankRow(rowType);
+        const blankRow = createBlankRow(rowType, tableData);
         let updated;
 
         if (position === 'above' && rowIndex !== null) {
@@ -132,7 +138,6 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
         onChange?.(renumbered);
     };
 
-
     const recalculateItemNumbers = (dataArray) => {
         let currentNumber = 1;
 
@@ -154,7 +159,6 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
             return newRow;
         });
     };
-
 
     const DropdownMenu = ({ row, rowIndex }) => {
         const [open, setOpen] = React.useState(false);
@@ -196,10 +200,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
             { label: 'Add Grand Total', action: () => handleAddCalculatedRow('end', null, ROW_TYPES.GRANDTOTAL) },
         ];
 
-
-
         console.log("", tableData);
-
 
         return (
             <div className="relative inline-block">
@@ -252,7 +253,6 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
             </div>
         );
     };
-
 
     const columns = useMemo(
         () => [

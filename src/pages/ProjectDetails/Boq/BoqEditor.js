@@ -76,6 +76,7 @@ const BOQ = (props) => {
                 quantity: 0,
                 rate: 0,
                 amount: 0,
+                rowType: "normal",
             };
             console.log("newItem", newItem)
             return [...prevData, newItem];
@@ -125,7 +126,6 @@ const BOQ = (props) => {
 
         setOpen(false);
     };
-
     const deleteData = () => {
         setData([]);
         toast.success("All Rows Deleted")
