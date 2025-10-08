@@ -162,7 +162,7 @@ const BOQ = (props) => {
             })
             .catch((err) => {
                 props.loader(false);
-                // toast.error(err?.message || "An error occurred")
+                toast.error(err?.message || "An error occurred")
             });
     };
 
@@ -238,10 +238,7 @@ const BOQ = (props) => {
             });
     };
 
-    // const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-    // const isChanged = !isEqual(originalData, data);
-    // console.log(originalData)
-    // console.log(isChanged)
+  
 
     useEffect(() => {
         const changed =
