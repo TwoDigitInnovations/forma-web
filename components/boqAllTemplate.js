@@ -5,6 +5,8 @@ import ConfirmModal from "./confirmModel";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
+import CreateTemplatebyExelsheet from "./createTemplatebyExelsheet";
+
 
 const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, projectId,
     getAllTemplates }) => {
@@ -21,6 +23,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
     };
 
     const handleSee = (template) => {
+        console.log("Seeing template", template);
         setSelectedTemplate(template);
         setShowModal(true);
     };
@@ -168,9 +171,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                     <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                            <h2 className="text-2xl font-bold text-gray-900">
-                                Template Details
-                            </h2>
+                            <h2 className="text-2xl font-bold text-gray-900">Template Details</h2>
                             <button
                                 onClick={closeModal}
                                 className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -185,72 +186,180 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                                 Template Sections ({selectedTemplate?.sections?.length || 0})
                             </h3>
 
+                            {/* ✅ FIX: Now properly mapping over sections */}
                             {selectedTemplate?.sections?.map((section, sectionIndex) => (
                                 <div key={sectionIndex} className="mb-8">
                                     {/* Section Header */}
-                                    <h4 className="text-md font-bold text-gray-800 mb-2">
-                                        {section.sectionName} ({section.items?.length || 0} items)
-                                    </h4>
-
-                                    {/* Items Table */}
-                                    <div className="bg-gray-50 rounded-lg overflow-hidden">
-                                        <div className="overflow-x-auto">
-                                            <table className="w-full">
-                                                <thead className="bg-gray-100">
-                                                    <tr>
-                                                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                                                            Item No.
-                                                        </th>
-                                                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                                                            Description
-                                                        </th>
-                                                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                                                            Unit
-                                                        </th>
-                                                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                                                            Type
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-white">
-                                                    {section.items?.map((item, index) => (
-                                                        <tr
-                                                            key={index}
-                                                            className={
-                                                                index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                                            }
-                                                        >
-                                                            <td className="px-4 py-3 text-sm text-gray-900">
-                                                                {item.itemNo}
-                                                            </td>
-                                                            <td className="px-4 py-3 text-sm text-gray-900">
-                                                                {item.description}
-                                                            </td>
-                                                            <td className="px-4 py-3 text-sm text-gray-900">
-                                                                {item.unit}
-                                                            </td>
-                                                            <td className="px-4 py-3 text-sm text-gray-600">
-                                                                {item.itemType}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
+                                    <div className="flex items-center justify-between mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                                        <div>
+                                            <h4 className="text-lg font-bold text-gray-800">
+                                                {section.sectionName}
+                                            </h4>
+                                            <p className="text-sm text-gray-600 mt-1">
+                                                {section.items?.length || 0} items
+                                            </p>
+                                        </div>
+                                        <div className="bg-white rounded-lg px-3 py-1 shadow-sm">
+                                            <span className="text-xs font-medium text-blue-600">
+                                                Section {sectionIndex + 1}
+                                            </span>
                                         </div>
                                     </div>
+
+                                    {/* Section Items */}
+                                    {section.items?.length > 0 && (
+                                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
+                                                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                                                Item No.
+                                                            </th>
+                                                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                                                Description
+                                                            </th>
+                                                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                                                Unit
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-gray-100">
+                                                        {section.items.map((item, index) => (
+                                                            <tr
+                                                                key={index}
+                                                                className="transition-colors hover:bg-gray-50"
+                                                            >
+                                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                    {item.itemNo}
+                                                                </td>
+                                                                <td className="px-6 py-4 text-sm text-gray-700">
+                                                                    {item.description}
+                                                                </td>
+                                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                                    {item.unit}
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Subsections */}
+                                    {section.subSections?.length > 0 && (
+                                        <div className="mt-6">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <div className="h-5 w-1 bg-blue-500 rounded-full"></div>
+                                                <h5 className="text-base font-semibold text-gray-800">
+                                                    Subsections ({section.subSections.length})
+                                                </h5>
+                                            </div>
+
+                                            <div className="space-y-6">
+                                                {section.subSections.map((sub, subIndex) => (
+                                                    <div
+                                                        key={subIndex}
+                                                        className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                                                    >
+                                                        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                                                            <div className="flex items-center justify-between">
+                                                                <h6 className="text-sm font-semibold text-gray-700">
+                                                                    {sub.subSectionName}
+                                                                </h6>
+                                                                <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                                                    {sub.items?.length || 0} items
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        {sub.items?.length > 0 ? (
+                                                            <div className="overflow-x-auto">
+                                                                <table className="w-full">
+                                                                    <thead className="bg-gray-50">
+                                                                        <tr>
+                                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                                Item No.
+                                                                            </th>
+                                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                                Description
+                                                                            </th>
+                                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                                Unit
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody className="divide-y divide-gray-100">
+                                                                        {sub.items.map((subItem, subItemIndex) => (
+                                                                            <tr
+                                                                                key={subItemIndex}
+                                                                                className="transition-colors hover:bg-gray-50"
+                                                                            >
+                                                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                                    {subItem.itemNo}
+                                                                                </td>
+                                                                                <td className="px-6 py-4 text-sm text-gray-700">
+                                                                                    {subItem.description}
+                                                                                </td>
+                                                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                                                    {subItem.unit}
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="px-6 py-8 text-center">
+                                                                <div className="text-gray-400 mb-2">
+                                                                    <svg
+                                                                        className="w-12 h-12 mx-auto"
+                                                                        fill="none"
+                                                                        stroke="currentColor"
+                                                                        viewBox="0 0 24 24"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                    >
+                                                                        <path
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            strokeWidth={1.5}
+                                                                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+                                                                        />
+                                                                    </svg>
+                                                                </div>
+                                                                <p className="text-sm text-gray-500">
+                                                                    No items in this subsection.
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
             )}
-            <CreateTemplateForm
+
+
+            {/* <CreateTemplateForm
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 loader={loader}
                 getAllTemplates={getAllTemplates}
                 projectId={projectId}
-            />
+            /> */}
+            <CreateTemplatebyExelsheet
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                loader={loader}
+                getAllTemplates={getAllTemplates}
+                projectId={projectId} />
+
             <ConfirmModal
                 isOpen={isConfirmModalOpen}
                 setIsOpen={setIsConfirmModalOpen}

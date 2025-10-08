@@ -24,8 +24,7 @@ const ROW_TYPE_CONFIG = {
 
 export default function EditableTable({ columnsConfig, data, onChange, setTotal, setSummaryData }) {
     const tableData = useMemo(() => data, [data]);
-    console.log("tableData", tableData);
-    
+
     useEffect(() => {
         setSummaryData(tableData);
     }, [tableData, setSummaryData]);
@@ -37,7 +36,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
     };
 
     const isCalculatedRow = (rowType) => {
-        return [ROW_TYPES.SUBTOTAL, ROW_TYPES.GRANDTOTAL].includes(rowType);
+        return [ROW_TYPES.SUBTOTAL, ROW_TYPES.GRANDTOTAL, , ROW_TYPES.SECTION_TITLE, ROW_TYPES.SECTION_DESC].includes(rowType);
     };
 
     const isEditableRow = (rowType) => {
@@ -59,6 +58,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
         updatedData[rowIndex] = row;
 
         const total = calculateTotal(updatedData);
+        console.log("totalAmount", total);
         setTotal(total);
 
         onChange?.(updatedData);
@@ -110,6 +110,41 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
     const handleAddCalculatedRow = (position, rowIndex, rowType) => {
         const calculatedRow = { rowType };
 
+       
+        if (rowType === ROW_TYPES.GRANDTOTAL) {
+            const totalAmount = tableData
+                .filter(row => !isCalculatedRow(row.rowType))
+                .reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
+
+            const existingGrandTotalIndex = tableData.findIndex(row => row.rowType === ROW_TYPES.GRANDTOTAL);
+
+            const updatedRow = {
+                ...calculatedRow,
+            };
+
+            columnsConfig.forEach((col) => {
+                if (col.key === 'item' || col.key === 'description') {
+                    updatedRow[col.key] = ROW_TYPE_CONFIG[rowType].label;
+                } else if (col.key === 'amount') {
+                    updatedRow[col.key] = totalAmount.toFixed(2);
+                } else {
+                    updatedRow[col.key] = '';
+                }
+            });
+
+            let updatedData = [...tableData.filter(r => r.rowType !== ROW_TYPES.GRANDTOTAL)];
+
+            // Always put Grand Total at the end
+            updatedData.push(updatedRow);
+
+            const renumbered = recalculateItemNumbers(updatedData);
+            onChange?.(renumbered);
+            console.log("totalAmount", totalAmount);
+            setTotal(totalAmount);
+            return;
+        }
+
+      
         columnsConfig.forEach((col) => {
             if (col.key === 'item' || col.key === 'description') {
                 calculatedRow[col.key] = ROW_TYPE_CONFIG[rowType].label;
@@ -137,6 +172,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
         const renumbered = recalculateItemNumbers(updated);
         onChange?.(renumbered);
     };
+
 
     const recalculateItemNumbers = (dataArray) => {
         let currentNumber = 1;
@@ -200,7 +236,6 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
             { label: 'Add Grand Total', action: () => handleAddCalculatedRow('end', null, ROW_TYPES.GRANDTOTAL) },
         ];
 
-        console.log("", tableData);
 
         return (
             <div className="relative inline-block">

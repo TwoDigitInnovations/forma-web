@@ -71,14 +71,14 @@ const BOQ = (props) => {
 
             const newItem = {
                 itemNo: `${main}.${sub}`,
-                description: "",
+                description: "New item in this section",
                 unit: "",
                 quantity: 0,
                 rate: 0,
                 amount: 0,
                 rowType: "normal",
             };
-            console.log("newItem", newItem)
+           
             return [...prevData, newItem];
         });
 
@@ -95,25 +95,17 @@ const BOQ = (props) => {
             const newRows = [
                 {
                     rowType: "section_title",
-                    description: "Section 1",
-                    unit: "",
-                    quantity: 0,
-                    rate: 0,
-                    amount: 0,
+                    description: "SECTION 1 - NEW SECTION",
                 },
                 {
 
                     rowType: "section_desc",
-                    description: "Section Description",
-                    unit: "",
-                    quantity: 0,
-                    rate: 0,
-                    amount: 0,
+                    description: "Technical specifications and requirements for this section.",
                 },
                 {
                     itemNo: baseItemNo,
                     rowType: "normal",
-                    description: "",
+                    description: "New item in this section",
                     unit: "",
                     quantity: 0,
                     rate: 0,
@@ -159,9 +151,10 @@ const BOQ = (props) => {
                             itemNo: item.itemNo,
                             description: item.description,
                             unit: item.unit || "",
-                            quantity: item.quantity || 0,
-                            rate: item.rate || 0,
-                            amount: (item.quantity || 0) * (item.rate || 0),
+                            quantity: item.quantity || "",
+                            rowType:item.rowType || "normal",
+                            rate: item.rate || "",
+                            amount: (item?.quantity || 1) * (item?.rate) || "",
                         }))
                     );
 
@@ -265,7 +258,7 @@ const BOQ = (props) => {
                 >
                     <ChevronLeft size={20} /> Go back
                 </button>
-                <div className="bg-[#DFF34940] py-6 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between mb-6">
+                <div className="bg-[#DFF34940] py-6 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-start md:justify-between mb-6">
                     <div className="flex  justify-between items-center gap-4">
                         <div>
                             <h1 className="md:text-[14px] text-[13px] font-bold text-white  flex items-center gap-2">

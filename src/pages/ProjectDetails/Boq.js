@@ -260,7 +260,7 @@ const BOQ = (props) => {
 
         <div className='p-6 rounded-xl bg-custom-black '>
           <div className="flex flex-col md:flex-row md:justify-between ">
-            <p className="text-2xl mb-2">Project Summary</p>
+            <p className="md:text-2xl text-xl mb-2">Project Summary</p>
             <div className="flex flex-wrap gap-3">
               {[
                 { label: 'Add Subtotal', toggle: onToggleSubtotal, active: showSubtotal },
@@ -386,7 +386,7 @@ const BOQ = (props) => {
                 </table>
 
                 <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-700">
-                  <p className="text-xl font-semibold">Project Grand Total</p>
+                  <p className="md:text-xl text-md font-semibold">Project Grand Total</p>
                   <p className="text-xl font-bold text-yellow-400">
                     ${formatCurrency(finalGrandTotal)}
                   </p>

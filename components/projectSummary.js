@@ -136,7 +136,7 @@ const ProjectSummaryTable = ({
                                     <div className="flex gap-2">
                                         <button className={`text-gray-600 hover:text-yellow-600 transition-colors`}><Edit2 size={18} /></button>
                                         <button className={`text-gray-600 hover:text-red-500 transition-colors`}
-                                        onClick={() => { toggle }}
+                                        // onClick={() => { toggle }}
                                         ><Trash2 size={18} /></button>
                                     </div>
                                 </td>
@@ -166,7 +166,7 @@ export default function App({ selectedOption, loader, projectDetails, data }) {
     };
 
     const sampleItems = getSummaryItems(data);
-    console.log("sampleItems", sampleItems);
+    // console.log("sampleItems", sampleItems);
 
     if (selectedOption === "boqTable" || selectedOption === "template") return null;
 

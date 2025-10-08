@@ -181,7 +181,7 @@ export default function Login(props) {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-xs text-custom-green/70">© 2025 MacheGlobal(Marketplace) All rights reserved.</p>
+            <p className="text-xs text-custom-green/70">© 2025 Forma All rights reserved.</p>
           </div>
         </div>
 
