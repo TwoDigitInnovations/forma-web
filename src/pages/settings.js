@@ -1,6 +1,7 @@
 import React from 'react'
+import isAuth from '../../components/isAuth';
 
-export default function Settings() {
+function Settings() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="text-center">
@@ -10,3 +11,4 @@ export default function Settings() {
     </div>
   );
 }
+export default isAuth(Settings);

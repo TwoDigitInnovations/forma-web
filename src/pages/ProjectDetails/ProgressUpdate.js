@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, X, Edit, ChevronLeft, NotebookPen, LocateFixedIcon, MapPin } from 'lucide-react';
-import { Api } from '@/services/service';
-import { toast } from 'react-toastify';
+import { MapPin } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ProjectDetailsContext, userContext } from "../_app"
-
+import isAuth from '../../../components/isAuth';
 
 const ProgressUpdate = (props) => {
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
-  const [user] = useContext(userContext)
-  const router = useRouter();
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails")
@@ -19,8 +15,6 @@ const ProgressUpdate = (props) => {
       setProjectdetails(project)
     }
   }, [])
-
-  console.log("projectDetails", projectDetails)
 
   return (
     <div className="h-screen bg-black text-white ">
@@ -31,7 +25,7 @@ const ProgressUpdate = (props) => {
             <div>
               <h1 className="md:text-[14px] text-[13px] font-bold text-white  flex items-center gap-2">
                 {projectDetails.projectName}
-                <span className='ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1 '> <MapPin size={15}/> {projectDetails.location}</span>
+                <span className='ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1 '> <MapPin size={15} /> {projectDetails.location}</span>
 
               </h1>
               <p className="md:text-[32px] text-[24px] text-white mt-1">Progress Update</p>
@@ -46,4 +40,4 @@ const ProgressUpdate = (props) => {
   );
 };
 
-export default ProgressUpdate;
+export default isAuth(ProgressUpdate);

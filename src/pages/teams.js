@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Eye, Edit } from 'lucide-react';
-
+import isAuth from '../../components/isAuth';
 const TeamMembers = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -169,4 +169,4 @@ const TeamMembers = () => {
   );
 };
 
-export default TeamMembers;
+export default isAuth(TeamMembers);

@@ -1,6 +1,6 @@
 import React from 'react'
-
-export default function task() {
+import isAuth from '../../components/isAuth';
+function task() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="text-center">
@@ -10,3 +10,5 @@ export default function task() {
     </div>
   );
 }
+
+export default isAuth(task);

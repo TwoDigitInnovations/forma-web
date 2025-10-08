@@ -1,39 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const isAuth = (Component) => {
-  return function IsAuth(props) {
+  return function ProtectedRoute(props) {
     const router = useRouter();
-    let auth = false;
-
-    if (typeof window !== "undefined") {
-      const user = localStorage.getItem("userDetail");
-      const token = localStorage.getItem("token");
-
-      if (user) {
-        const u = JSON.parse(user);
-        const token = localStorage.getItem("token");
-        if (
-          router?.pathname === "/" 
-        ) {
-          auth =
-            token && (u?.role === "Admin" || u?.role === "Provider")
-              ? true
-              : false;
-        } else {
-          auth = token && u?.role === "Admin" ? true : false;
-        }
-      }
-    }
+    const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
-      if (!auth) {
-        localStorage.clear();
-        router.replace("/login");
+      if (typeof window === "undefined") return;
+
+      const token = localStorage.getItem("token");
+      const userData = localStorage.getItem("userDetail");
+
+      if (!token || !userData) {
+        console.log(token, userData);
+        redirectToLogin();
+        return;
+      }
+      console.log(token, userData);
+      try {
+        const user = JSON.parse(userData);
+        if (!user || !user._id) {
+          redirectToLogin();
+          return;
+        }
+        console.log(user);
+        setIsAuthorized(true);
+      } catch (err) {
+        console.error("Invalid user data:", err);
+        redirectToLogin();
       }
     }, []);
 
-    return <Component {...props} />;
+    const redirectToLogin = () => {
+      localStorage.clear();
+      setIsAuthorized(false);
+      router.replace("/login");
+    };
+
+    if (isAuthorized === null) return null;
+
+    return isAuthorized ? <Component {...props} /> : null;
   };
 };
 

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, X, Edit, ChevronLeft, NotebookPen, LocateFixedIcon, MapPin } from 'lucide-react';
-import { Api } from '@/services/service';
-import { toast } from 'react-toastify';
+import {  NotebookPen, MapPin } from 'lucide-react';
+
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ProjectDetailsContext, userContext } from "../_app"
+import isAuth from '../../../components/isAuth';
 
 
 const WorkPlan = (props) => {
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
-  const [user] = useContext(userContext)
-  const router = useRouter();
+
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails")
@@ -46,4 +45,4 @@ const WorkPlan = (props) => {
   );
 };
 
-export default WorkPlan;
+export default isAuth(WorkPlan);

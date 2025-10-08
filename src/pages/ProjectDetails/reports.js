@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { ProjectDetailsContext, userContext } from "../_app"
+import isAuth from '../../../components/isAuth';
 
 
 const reports = (props) => {
@@ -59,4 +60,4 @@ const reports = (props) => {
   );
 };
 
-export default reports;
+export default isAuth(reports);

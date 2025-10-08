@@ -1,22 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from "next/router";
-import { Api } from '@/services/service';
-import { toast } from 'react-toastify';
-import { FastForward, Plus, Boxes, DollarSign, Pencil, TrendingUp, Archive, Building, HandCoins, Users, CheckCircle, Activity, Handshake, CircleCheck, Pickaxe } from 'lucide-react';
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  Area,
-  AreaChart,
-  Tooltip as RechartsTooltip
-} from "recharts";
+import { Building, Handshake, CircleCheck, Pickaxe } from 'lucide-react';
 
 import isAuth from '../../components/isAuth';
 import { userContext } from './_app';
@@ -30,7 +14,7 @@ function Home(props) {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
-  // Mock data for demo
+
   const mockActivityData = [
     { title: "Foundation work completed ahead of schedule", status: "3 days ago", type: "completed" },
     { title: "Plumbing installation completed for floors 1-5", status: "5 days ago", type: "completed" },

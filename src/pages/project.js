@@ -6,6 +6,7 @@ import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { ProjectDetailsContext } from "./_app";
+import isAuth from '../../components/isAuth';
 
 const Projects = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -184,4 +185,4 @@ const Projects = (props) => {
   );
 };
 
-export default Projects;
+export default isAuth(Projects);

@@ -206,7 +206,6 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                                         </div>
                                     </div>
 
-                                    {/* Section Items */}
                                     {section.items?.length > 0 && (
                                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
                                             <div className="overflow-x-auto">
@@ -247,7 +246,6 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                                         </div>
                                     )}
 
-                                    {/* Subsections */}
                                     {section.subSections?.length > 0 && (
                                         <div className="mt-6">
                                             <div className="flex items-center gap-2 mb-4">
@@ -353,6 +351,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                 getAllTemplates={getAllTemplates}
                 projectId={projectId}
             /> */}
+            
             <CreateTemplatebyExelsheet
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}

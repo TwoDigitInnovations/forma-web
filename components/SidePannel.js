@@ -5,7 +5,7 @@ import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, X } from "lucide-react";
+import { Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, X } from "lucide-react";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -49,6 +49,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/settings",
       title: "Settings",
       img: <Settings className="text-3xl" />,
+      access: ["Admin", "Provider"],
+    },
+      {
+      href: "/Admin",
+      title: "Admin",
+      img: <Shield className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
   ];
@@ -96,6 +102,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Settings className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
+  
   ];
 
   const imageOnError = (event) => {

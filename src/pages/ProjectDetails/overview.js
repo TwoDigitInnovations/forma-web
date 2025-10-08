@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Search, Plus, ChevronLeft, MapPin, Clock, Calendar, ChevronDown, FileText, Upload, Image, FileCheck, Video, CalendarClock, PlusCircle, FolderPlus, Volleyball, BookText, NotebookIcon, NotebookPen } from 'lucide-react';
+import { ChevronLeft, MapPin, Clock, ChevronDown, Image, FolderPlus, Volleyball, BookText, NotebookPen } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Api } from '@/services/service';
 import { useContext } from 'react';
 import { ProjectDetailsContext } from "../_app"
+import isAuth from '../../../components/isAuth';
+
 
 const ProjectDetailsPage = (props) => {
 
@@ -130,16 +132,16 @@ const ProjectDetailsPage = (props) => {
                 {projectDetails?.status}
               </div>
               <div className="text-right flex-1">
-                
+
                 <div className="w-full bg-gray-700 rounded-full h-5 overflow-hidden">
-               
+
                   <div
                     className="bg-[#e0f349] h-5 rounded-full transition-all duration-500"
                     style={{ width: `${80}%` }}
                   ></div>
                 </div>
 
-          
+
                 <span className="text-2xl font-bold text-[#e0f349] mt-2 inline-block">
                   80%
                 </span>
@@ -179,7 +181,7 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-    
+
         <div className="bg-[#2a2a2a] rounded-2xl p-6 mb-6">
           <h3 className="text-xl font-semibold text-white mb-4">Project Statistics</h3>
           <div className="grid grid-cols-4 gap-8">
@@ -203,7 +205,7 @@ const ProjectDetailsPage = (props) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-     
+
           <div className="lg:col-span-2 bg-[#2a2a2a] rounded-2xl ">
             <div className="flex items-center justify-between mb-6 rounded-tl-2xl rounded-tr-2xl bg-custom-green px-4 py-4">
               <h3 className="text-xl font-semibold text-white">Project Scope</h3>
@@ -297,4 +299,4 @@ const ProjectDetailsPage = (props) => {
   );
 };
 
-export default ProjectDetailsPage;
+export default isAuth(ProjectDetailsPage);
