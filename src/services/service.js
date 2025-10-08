@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const ConstantsUrl = "http://localhost:3002/";
-
+// const ConstantsUrl = "http://localhost:3002/";
+const ConstantsUrl = "https://api.plansera.com/";
 
 function handleAuthError(err, router) {
   if (typeof window !== "undefined") {

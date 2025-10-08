@@ -102,7 +102,6 @@ const ProjectPhotos = () => {
                     </div>
                 )}
 
-                {/* Upload Modal */}
                 {isModalOpen && (
                     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4 ">
                         <div className="bg-custom-black text-white rounded-[38px] md:p-8 p-4 w-full max-w-2xl">
