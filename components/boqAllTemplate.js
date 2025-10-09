@@ -59,7 +59,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                 {/* Header */}
                 <div className="mb-8 flex md:flex-row flex-col justify-start md:gap-0 gap-2 md:justify-between item-start md:items-center">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">Choose Templates</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold mb-2">Choose Templates</h1>
                         <p className="text-gray-400">
                             Choose your desired template from the library.
                         </p>
@@ -89,7 +89,7 @@ const BOQTemplate = ({ selectedOption, onLoadTemplate, templatesData, loader, pr
                                 </div>
 
                                 {/* Card Content */}
-                                <div className="relative p-6 h-full flex flex-col">
+                                <div className="relative md:p-6 px-3 py-4 h-full flex flex-col">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="p-3 bg-gray-700/50 rounded-lg backdrop-blur-sm">
                                             <Building2 className="w-6 h-6 text-white" />

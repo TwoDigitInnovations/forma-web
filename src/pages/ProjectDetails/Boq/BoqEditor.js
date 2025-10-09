@@ -78,7 +78,7 @@ const BOQ = (props) => {
                 amount: 0,
                 rowType: "normal",
             };
-           
+
             return [...prevData, newItem];
         });
 
@@ -152,7 +152,7 @@ const BOQ = (props) => {
                             description: item.description,
                             unit: item.unit || "",
                             quantity: item.quantity || "",
-                            rowType:item.rowType || "normal",
+                            rowType: item.rowType || "normal",
                             rate: item.rate || "",
                             amount: (item?.quantity || 1) * (item?.rate) || "",
                         }))
@@ -211,6 +211,7 @@ const BOQ = (props) => {
 
     const SaveBoq = async () => {
         props.loader(true);
+        const total = data.reduce((sum, item) => item.rowType === "normal" ? sum + (parseFloat(item.amount) || 0) : sum, 0);
 
         const Boqdata = {
             projectId: projectId,
@@ -238,7 +239,7 @@ const BOQ = (props) => {
             });
     };
 
-  
+
 
     useEffect(() => {
         const changed =
@@ -248,14 +249,14 @@ const BOQ = (props) => {
 
     return (
         <div className="h-screen bg-black text-white">
-            <div className=" w-full h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-8  mx-auto">
+            <div className=" w-full h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-3 mx-auto">
                 <button
                     onClick={() => router.push(`/ProjectDetails/Boq`)}
-                    className="py-2 flex underline text-md cursor-pointer rounded-lg transition-colors mb-3"
+                    className="py-2 flex underline text-md cursor-pointer rounded-lg transition-colors mb-2"
                 >
                     <ChevronLeft size={20} /> Go back
                 </button>
-                <div className="bg-[#DFF34940] py-6 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-start md:justify-between mb-6">
+                <div className="bg-[#DFF34940] md:p-6 p-4 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-start md:justify-between mb-6">
                     <div className="flex  justify-between items-center gap-4">
                         <div>
                             <h1 className="md:text-[14px] text-[13px] font-bold text-white  flex items-center gap-2">
@@ -384,7 +385,6 @@ const BOQ = (props) => {
                                         columnsConfig={columns}
                                         data={data}
                                         onChange={setData}
-                                        setTotal={setTotal}
                                         setSummaryData={setTableData}
                                     />
                                 </div>
@@ -433,14 +433,10 @@ const BOQ = (props) => {
                                   animate-slideUp"
                             >
 
-                                <p className="text-gray-300 text-md mb-1 ">
+                                <p className="text-gray-300 text-md mb-3 ">
                                     Enter a name for your BOQ document to save it for later use.
                                 </p>
-                                <p className="text-gray-300 text-md mb-3 ">
-                                    Total Rate: ${total || "0.00"}
-                                </p>
 
-                                {/* Input */}
                                 <input
                                     value={boqname}
                                     onChange={(e) => setBoqName(e.target.value)}

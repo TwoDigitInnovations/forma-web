@@ -57,7 +57,7 @@ const Projects = (props) => {
   };
 
   return (
-    <div className="h-screen p-6 bg-black text-white">
+    <div className="h-screen p-3 md:p-6 bg-black text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -93,25 +93,26 @@ const Projects = (props) => {
           {/* Filter Buttons */}
           <div className="flex items-center gap-2">
             <button
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors"
+              className="md:w-full w-[140px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
               <FolderKanban size={26} />
               All Projects
             </button>
             <button
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors"
+              className="md:w-full w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
               <CircleDashed size={26} />
               All Status
             </button>
             <button
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors"
+              className=" md:w-full w-[160px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
-              Last Updated
+
               <ClockArrowDown size={26} />
+              Last Updated
             </button>
           </div>
         </div>

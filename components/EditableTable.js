@@ -22,7 +22,7 @@ const ROW_TYPE_CONFIG = {
     [ROW_TYPES.SUBSECTION_ITEM]: { label: 'Subsection Item', bgColor: '', fontWeight: '' }
 };
 
-export default function EditableTable({ columnsConfig, data, onChange, setTotal, setSummaryData }) {
+export default function EditableTable({ columnsConfig, data, onChange, setSummaryData }) {
     const tableData = useMemo(() => data, [data]);
 
     useEffect(() => {
@@ -58,9 +58,7 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
         updatedData[rowIndex] = row;
 
         const total = calculateTotal(updatedData);
-        console.log("totalAmount", total);
-        setTotal(total);
-
+   
         onChange?.(updatedData);
     };
 
@@ -134,13 +132,9 @@ export default function EditableTable({ columnsConfig, data, onChange, setTotal,
 
             let updatedData = [...tableData.filter(r => r.rowType !== ROW_TYPES.GRANDTOTAL)];
 
-            // Always put Grand Total at the end
             updatedData.push(updatedRow);
-
             const renumbered = recalculateItemNumbers(updatedData);
             onChange?.(renumbered);
-            console.log("totalAmount", totalAmount);
-            setTotal(totalAmount);
             return;
         }
 

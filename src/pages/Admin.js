@@ -140,9 +140,9 @@ const Admin = (props) => {
     );
     return (
         <div className="h-screen bg-black to-black text-white">
-            <div className="w-full max-w-7xl mx-auto px-4 py-6 md:p-6 h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-54 ">
+            <div className="w-full max-w-7xl mx-auto p-3 py-6 md:p-6 h-full overflow-y-scroll scrollbar-hide overflow-scroll pb-54 ">
 
-                <div className="bg-custom-green py-6 px-6 flex flex-col rounded-2xl mb-8 shadow-lg">
+                <div className="bg-custom-green py-6 md:px-6 px-3 flex flex-col rounded-2xl mb-8 shadow-lg">
                     <div className="flex md:flex-row flex-col md:justify-between justify-start md:items-center gap-3  mb-2">
                         <div className='flex gap-2 items-center'>
                             <Shield className="text-white" size={40} />

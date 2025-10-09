@@ -52,8 +52,6 @@ const ProjectDetailsPage = (props) => {
       });
   };
 
-  console.log("abcd", projectDetails)
-
   function formatTodayDate(d) {
     const date = new Date(d);
     if (isNaN(date)) return "Invalid Date";
@@ -86,7 +84,7 @@ const ProjectDetailsPage = (props) => {
 
   return (
     <div className="h-screen bg-black text-white ">
-      <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-6">
+      <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

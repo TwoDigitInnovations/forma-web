@@ -13,7 +13,7 @@ const isAuth = (Component) => {
       const userData = localStorage.getItem("userDetail");
 
       if (!token || !userData) {
-        console.log(token, userData);
+
         redirectToLogin();
         return;
       }
@@ -24,10 +24,9 @@ const isAuth = (Component) => {
           redirectToLogin();
           return;
         }
-        console.log(user);
+
         setIsAuthorized(true);
       } catch (err) {
-        console.error("Invalid user data:", err);
         redirectToLogin();
       }
     }, []);

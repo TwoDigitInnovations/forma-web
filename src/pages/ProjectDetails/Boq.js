@@ -223,10 +223,10 @@ const BOQ = (props) => {
 
 
   return (
-    <div className="h-full bg-black text-white p-6">
+    <div className="h-full bg-black text-white p-3 md:p-6">
       <div className="max-w-7xl w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 mx-auto">
         {/* Header */}
-        <div className="bg-custom-green py-6 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between mb-6">
+        <div className="bg-custom-green md:p-6 p-4 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <div>
               <h1 className="md:text-[14px] text-[13px] font-bold text-white  flex items-center gap-2">
@@ -258,7 +258,7 @@ const BOQ = (props) => {
           </div>
         </div>
 
-        <div className='p-6 rounded-xl bg-custom-black '>
+        <div className='md:p-6 p-3 rounded-xl bg-custom-black '>
           <div className="flex flex-col md:flex-row md:justify-between ">
             <p className="md:text-2xl text-xl mb-2">Project Summary</p>
             <div className="flex flex-wrap gap-3">

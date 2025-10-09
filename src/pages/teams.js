@@ -90,7 +90,7 @@ const TeamMembers = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-black text-white" >
+    <div className="min-h-screen p-3 md:p-6 bg-black text-white" >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">

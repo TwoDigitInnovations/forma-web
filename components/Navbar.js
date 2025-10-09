@@ -52,7 +52,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
   return (
     <nav className="w-full bg-custom-black z-20 sticky top-0 max-w-screen shadow-sm ">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between md:h-20 h-18">
+        <div className="flex items-center justify-between md:h-20 h-16">
           {/* Logo */}
           <div className=" flex items-center">
             {/* <img 
@@ -76,10 +76,10 @@ const Navbar = ({ setOpenTab, openTab }) => {
                     className="ps-10 w-[20rem] bg-[#FFFFFF4A] border-black border text-white rounded-3xl px-4 py-2"
                     placeholder="Search"
                   />
-                  <Search className='absolute top-7 left-8 text-gray-300' size={18} />
+                  <Search className='absolute top-6 left-8 text-gray-300' size={18} />
                 </div>
                 <p className="p-2 bg-custom-lightgold rounded-full"><Bell className="text-custom-yellow" /> </p>
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e0f349] flex-shrink-0"
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e0f349] flex-shrink-0 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                   <img
@@ -90,20 +90,20 @@ const Navbar = ({ setOpenTab, openTab }) => {
                   />
                 </div>
                 <div className="flex flex-col text-left">
-                  <p className="text-custom-yellow text-xs">{user?.role}</p>
+                  <p className="text-custom-yellow text-md">{user?.role}</p>
                 </div>
 
               </div>
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10 border border-gray-100">
-                  <button
+                  {/* <button
                     onClick={() => router.push("/myProfile")}
                     className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <User size={16} className="text-black" />
                     <span>My Profile</span>
-                  </button>
+                  </button> */}
                   <button
                     onClick={handleLogout}
                     className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
