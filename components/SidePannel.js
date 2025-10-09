@@ -51,7 +51,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Settings className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-      {
+    {
       href: "/Admin",
       title: "Admin",
       img: <Shield className="text-3xl" />,
@@ -102,7 +102,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Settings className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-  
+
   ];
 
   const imageOnError = (event) => {
@@ -122,14 +122,14 @@ const SidePannel = ({ setOpenTab, openTab }) => {
         <div>
           <div className="bg-custom-black py-5 overflow-y-scroll h-screen scrollbar-hide">
             <div
-              className="bg-custom-black pt-5 pb-5 row-span-1 flex items-center justify-center cursor-pointer mx-5 rounded"
+              className="bg-custom-black pt-3 pb-5 row-span-1 flex items-center justify-center cursor-pointer mx-5 rounded"
               onClick={() => router.push("/")}
             >
               <p className="text-3xl text-custom-yellow font-bold"> LOGO</p>
             </div>
 
             <div className="relative flex flex-col justify-between row-span-4 w-full">
-              <ul className=" w-full flex flex-col text-left mt-5">
+              <ul className=" w-full flex flex-col text-left">
                 {currentMenuItems.map((item, i) =>
                   item?.access?.includes(user?.role) ? (
                     <li key={i} className="w-full">
@@ -262,12 +262,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
         </div>
 
         <div className="flex flex-col justify-center items-start row-span-2 h-full w-full">
-          <ul className="w-full h-full flex flex-col text-left justify-start items-center border-t-1 border-white">
+          <ul className="w-full h-full flex flex-col text-left justify-start items-center border-t-1 border-white ">
             {currentMenuItems.map((item, i) =>
               item?.access?.includes(user?.role) ? (
                 <li
                   key={i}
-                  className="w-full text-white border-b-1 border-white"
+                  className="relative w-full text-white border-b-1 border-white"
                 >
                   <div
                     className="flex justify-between items-center w-full px-6 py-3 cursor-pointer hover:bg-gray-100"
@@ -306,9 +306,22 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                       ))}
                     </ul>
                   )}
+
+
                 </li>
-              ) : null
+            ) : null
             )}
+            { isProjectDetailsRoute && (
+                <div className="absolute bottom-0 w-full mx-auto bg-custom-green flex gap-3 justify-start ps-10 items-center  cursor-pointer"
+                  onClick={() => {
+                    setOpenTab(!openTab)
+                    router.push("/project")}}
+                >
+                  <MoveLeft />
+                  <button className="text-white  py-3 cursor-pointer">
+                    Back to Project</button>
+                </div>
+              )}
           </ul>
         </div>
       </div>

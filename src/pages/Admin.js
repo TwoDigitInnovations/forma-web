@@ -87,11 +87,11 @@ const Admin = (props) => {
 
     const renderActions = ({ row }) => (
         <div className="flex items-center justify-center gap-1">
-            <button
+            {/* <button
                 className="flex items-center px-2 py-2 rounded-lg hover:bg-yellow-50 transition-all cursor-pointer hover:text-yellow-600"
             >
                 <Edit size={18} />
-            </button>
+            </button> */}
             <button
                 className="flex items-center px-2 py-2 rounded-lg hover:bg-green-50 transition-all cursor-pointer hover:text-green-600"
                 onClick={() => {
