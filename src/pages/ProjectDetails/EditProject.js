@@ -89,6 +89,9 @@ const EditProject = (props) => {
             projectNo: project?.projectNo || "",
             Duration: project?.Duration || "",
             LiabilityPeriod: project?.LiabilityPeriod || "",
+            LocationSummary: project?.LocationSummary || "",
+            ProjectScope: project?.ProjectScope || "",
+            ExcuetiveSummary: project?.ExcuetiveSummary || "",
           });
           const contracter = project?.contractorInfo
           setContractorDetails({
