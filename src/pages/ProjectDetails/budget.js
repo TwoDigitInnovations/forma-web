@@ -8,7 +8,7 @@ import { ProjectDetailsContext, userContext } from "../_app"
 import isAuth from '../../../components/isAuth';
 
 
-const widgets = (props) => {
+const budget = (props) => {
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
   const [user] = useContext(userContext)
   const router = useRouter();
@@ -35,12 +35,12 @@ const widgets = (props) => {
                 <span className='ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1 '> <MapPin size={15} /> {projectDetails.location}</span>
 
               </h1>
-              <p className="md:text-[32px] text-[24px] text-white mt-1">Widgets</p>
+              <p className="md:text-[32px] text-[24px] text-white mt-1">budget</p>
             </div>
 
           </div>
           <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center'>
-            <NotebookPen size={18} />Create Widgets</button>
+            <NotebookPen size={18} />Create budget</button>
         </div>
 
    
@@ -48,7 +48,7 @@ const widgets = (props) => {
           <div className="bg-custom-yellow rounded-full p-4 mb-4">
             <Puzzle size={48} className="text-black" />
           </div>
-          <p className="text-[14px] font-semibold text-white ">No Widgets created yet.</p>
+          <p className="text-[14px] font-semibold text-white ">No budget created yet.</p>
           <p className="text-[14px] text-custom-yellow mb-1">Create your first widget to get started.</p>
           <button className="bg-custom-yellow hover:bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg mt-2 flex items-center gap-2 shadow">
             <NotebookPen size={20} /> Create Widget
@@ -60,4 +60,4 @@ const widgets = (props) => {
   );
 };
 
-export default isAuth(widgets);
+export default isAuth(budget);

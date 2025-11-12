@@ -5,7 +5,7 @@ import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, X } from "lucide-react";
+import { BadgePercent, BrickWall, Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Dock, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, ShieldCheck, Users, X } from "lucide-react";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -66,12 +66,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <LayoutDashboard className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-    {
-      href: "/ProjectDetails/Boq",
-      title: "BOQs",
-      img: <ReceiptText className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
+    // {
+    //   href: "/ProjectDetails/Boq",
+    //   title: "BOQs",
+    //   img: <ReceiptText className="text-3xl" />,
+    //   access: ["Admin", "Provider"],
+    // },
     {
       href: "/ProjectDetails/work-plan",
       title: "Work Plan",
@@ -80,28 +80,47 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     },
     {
       href: "/ProjectDetails/ProgressUpdate",
-      title: "Progress Update",
+      title: "Progress",
       img: <LoaderCircle className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
     {
-      href: "/ProjectDetails/widgets",
-      title: "Widgets",
-      img: <Puzzle className="text-3xl" />,
+      href: "/ProjectDetails/budget",
+      title: "Budget",
+      img: <BadgePercent className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
     {
-      href: "/ProjectDetails/reports",
-      title: "Reports",
-      img: <ChartNoAxesCombined className="text-3xl" />,
+      href: "/ProjectDetails/Safety",
+      title: "Safety",
+      img: <ShieldCheck className="text-3xl" />,
+      access: ["Admin", "Provider"],
+    },
+     {
+      href: "/ProjectDetails/Pre-construction",
+      title: "Pre-construction",
+      img: <BrickWall className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
     {
-      href: "/ProjectDetails/ProjectSetting",
-      title: "Settings",
+      href: "/ProjectDetails/teams",
+      title: "Teams",
+      img: <Users className="text-3xl" />,
+      access: ["Admin", "Provider"],
+    },
+    {
+      href: "/ProjectDetails/documents",
+      title: "Documents",
+      img: <Dock className="text-3xl" />,
+      access: ["Admin", "Provider"],
+    },
+    {
+      href: "/ProjectDetails/siteLogs",
+      title: "Site Logs",
       img: <Settings className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
+   
 
   ];
 

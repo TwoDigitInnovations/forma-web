@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronLeft, MapPin, Clock, ChevronDown, Image, FolderPlus, Volleyball, BookText, NotebookPen } from 'lucide-react';
+import { ChevronLeft, MapPin, Clock, ChevronDown, Image, FolderPlus, Volleyball, BookText, NotebookPen, Clock1, CircleAlert, TriangleAlert } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { Api } from '@/services/service';
@@ -84,8 +84,8 @@ const ProjectDetailsPage = (props) => {
 
   return (
     <div className="h-screen bg-black text-white ">
-      <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-6">
-        {/* Header */}
+      <div className="max-w-7xl mx-auto w-full h-[85vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-6">
+
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="md:text-2xl text-[20px] font-bold text-[#e0f349]">Project overview</h1>
@@ -232,12 +232,54 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6'>
+          <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
+            <div className='flex flex-col justify-start items-start'>
+              <div className='flex justify-start items-start gap-2 space-y-2'>
+                <Clock1 className='text-custom-yellow'/>
+                <p className='text-white text-md'> Milestones</p>
+              </div>
+              <p className='text-white text-sm'>Upcoming and overdue</p>
+            </div>
+
+            <div className='min-h-[170px] flex justify-center items-center'>
+              <p className='text-white text-md'> No milestones due soon</p>
+            </div>
+          </div>
+          <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
+            <div className='flex flex-col justify-start items-start'>
+              <div className='flex justify-start items-start gap-2 space-y-2'>
+                <TriangleAlert className='text-custom-yellow'/>
+                <p className='text-white text-md'> Overdue Action Points</p>
+              </div>
+              <p className='text-white text-sm'>Missed deadlines</p>
+            </div>
+
+            <div className='min-h-[170px] flex justify-center items-center'>
+              <p className='text-white text-md'>No overdue action points</p>
+            </div>
+          </div>
+           <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
+            <div className='flex flex-col justify-start items-start'>
+              <div className='flex justify-start items-start gap-2 space-y-2'>
+                <CircleAlert className='text-custom-yellow'/>
+                <p className='text-white text-md'>Critical Safety Issues</p>
+              </div>
+              <p className='text-white text-sm'>Open high-priority</p>
+            </div>
+
+            <div className='min-h-[170px] flex justify-center items-center'>
+              <p className='text-white text-md'> No critical issues</p>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-custom-black rounded-2xl  mt-6">
           <div className='bg-custom-green p-6 rounded-tl-2xl rounded-tr-2xl'>
             <h3 className="text-xl font-semibold text-white ">Project Details</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
-            {/* Contract Details */}
+           
             <div>
               <h4 className="text-white font-semibold mb-4">Contract Details</h4>
               <div className="space-y-3 text-sm">
@@ -269,23 +311,31 @@ const ProjectDetailsPage = (props) => {
                   <div className="text-white"> {projectDetails?.contractorInfo?.contractorName}</div>
                 </div>
                 <div>
-                  <div className="text-white">Address</div>
-                  <div className="text-white">{projectDetails?.contractorInfo?.contractorAddress}</div>
+                  <div className="text-white">Email</div>
+                  <div className="text-white">{projectDetails?.contractorInfo?.Email}</div>
+                </div>
+                <div>
+                  <div className="text-white">Phone</div>
+                  <div className="text-white">{projectDetails?.contractorInfo?.phone}</div>
                 </div>
               </div>
             </div>
 
             {/* Employer Details */}
             <div>
-              <h4 className="text-white font-semibold mb-4">Employer Details</h4>
+              <h4 className="text-white font-semibold mb-4">Clients Details</h4>
               <div className="space-y-3 text-sm">
                 <div>
                   <div className="text-white">Name</div>
-                  <div className="text-white">Person</div>
+                  <div className="text-white">{projectDetails?.clientInfo?.ClientName}</div>
                 </div>
                 <div>
                   <div className="text-white">Address</div>
-                  <div className="text-white">Anywhere Place, Pincode - 654321</div>
+                  <div className="text-white">{projectDetails?.clientInfo?.Address}</div>
+                </div>
+                <div>
+                  <div className="text-white">Phone</div>
+                  <div className="text-white">{projectDetails?.clientInfo?.phone}</div>
                 </div>
               </div>
             </div>
