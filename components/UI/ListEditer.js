@@ -10,28 +10,43 @@ export default function RichTextEditor({ label = "Executive Summary", value, onC
   const editor = useRef(null);
   const [content, setContent] = useState(value || "");
 
-  // Configuration
-  const editorConfig = {
-    height: 400,
-    toolbarAdaptive: false,
-    toolbarSticky: true,
-    toolbarButtonSize: "middle",
-    buttons: [
-      "bold", "italic", "underline", "strikethrough", "|",
-      "fontsize", "font", "paragraph", "brush", "|",
-      "left", "center", "right", "justify", "|",
-      "ul", "ol", "indent", "outdent", "|",
-      "link", "image", "video", "table", "hr", "emoji", "|",
-      "undo", "redo", "|",
-      "cut", "copy", "paste", "|",
-      "brush", "background", "|",
-      "source", "fullsize"
-    ],
-    uploader: {
-      insertImageAsBase64URI: true,
-    },
-    removeButtons: ["about"],
-  };
+const editorConfig = {
+  height: 300,
+  toolbarAdaptive: false,
+  toolbarSticky: true,
+  toolbarButtonSize: "middle",
+  readonly: false,
+  askBeforePasteHTML: false,
+  askBeforePasteFromWord: false,
+  defaultActionOnPaste: "insert_clear_html",
+  enableDragAndDropFileToEditor: true,
+  allowPasteImages: true,
+  useNativeTooltip: false,
+  spellcheck: true,
+
+  buttons: [
+    "bold", "italic", "underline", "strikethrough", "|",
+    "fontsize", "font", "paragraph", "brush", "|",
+    "left", "center", "right", "justify", "|",
+    "ul", "ol", "indent", "outdent", "|",
+    "link", "image", "video", "table", "hr", "emoji", "|",
+    "undo", "redo", "|",
+    "cut", "copy", "paste", "|",
+    "brush", "background", "|",
+    "source", "fullsize"
+  ],
+
+  uploader: {
+    insertImageAsBase64URI: true,
+  },
+
+  clipboard: {
+    matchVisual: false,
+  },
+
+  removeButtons: ["about"],
+};
+
 
   return (
     <div className="flex flex-col gap-2 mb-4">

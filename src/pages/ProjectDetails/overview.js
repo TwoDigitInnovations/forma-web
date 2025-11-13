@@ -156,24 +156,12 @@ const ProjectDetailsPage = (props) => {
                 Manage Photos
                 <Image size={18} />
               </button>
-              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
-                onClick={() => router.push("/ProjectDetails/EditProjectSocpe")}
-              >
-                Add Scope
-                <Volleyball size={18} />
-              </button>
 
               <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
                 onClick={() => router.push("/ProjectDetails/work-plan")}
               >
                 Work Plan
                 <NotebookPen size={18} />
-              </button>
-              <button className="flex items-center gap-2 bg-[#DFF349] text-black px-4 py-1.5 rounded-lg font-medium hover:opacity-80 cursor-pointer text-[15px]"
-                onClick={() => router.push("/ProjectDetails/Boq")}
-              >
-                BOQs
-                <BookText size={18} />
               </button>
             </div>
           </div>
@@ -202,7 +190,7 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[250px]">
 
           <div className="lg:col-span-2 bg-[#2a2a2a] rounded-2xl ">
             <div className="flex items-center justify-between mb-6 rounded-tl-2xl rounded-tr-2xl bg-custom-green px-4 py-4">
@@ -223,10 +211,9 @@ const ProjectDetailsPage = (props) => {
             </div>
           </div>
 
-          {/* Recent Tasks */}
           <div className="bg-[#2a2a2a] rounded-2xl p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Recent Tasks</h3>
-            <div className="text-center text-gray-400 mt-12">
+            <div className="text-center text-gray-400 mt-20">
               <div className="text-sm">No tasks found on this project</div>
             </div>
           </div>
@@ -236,7 +223,7 @@ const ProjectDetailsPage = (props) => {
           <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
             <div className='flex flex-col justify-start items-start'>
               <div className='flex justify-start items-start gap-2 space-y-2'>
-                <Clock1 className='text-custom-yellow'/>
+                <Clock1 className='text-custom-yellow' />
                 <p className='text-white text-md'> Milestones</p>
               </div>
               <p className='text-white text-sm'>Upcoming and overdue</p>
@@ -249,7 +236,7 @@ const ProjectDetailsPage = (props) => {
           <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
             <div className='flex flex-col justify-start items-start'>
               <div className='flex justify-start items-start gap-2 space-y-2'>
-                <TriangleAlert className='text-custom-yellow'/>
+                <TriangleAlert className='text-custom-yellow' />
                 <p className='text-white text-md'> Overdue Action Points</p>
               </div>
               <p className='text-white text-sm'>Missed deadlines</p>
@@ -259,10 +246,10 @@ const ProjectDetailsPage = (props) => {
               <p className='text-white text-md'>No overdue action points</p>
             </div>
           </div>
-           <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
+          <div className=' bg-[#2a2a2a] rounded-2xl min-h-[250px] p-4'>
             <div className='flex flex-col justify-start items-start'>
               <div className='flex justify-start items-start gap-2 space-y-2'>
-                <CircleAlert className='text-custom-yellow'/>
+                <CircleAlert className='text-custom-yellow' />
                 <p className='text-white text-md'>Critical Safety Issues</p>
               </div>
               <p className='text-white text-sm'>Open high-priority</p>
@@ -279,7 +266,7 @@ const ProjectDetailsPage = (props) => {
             <h3 className="text-xl font-semibold text-white ">Project Details</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
-           
+
             <div>
               <h4 className="text-white font-semibold mb-4">Contract Details</h4>
               <div className="space-y-3 text-sm">

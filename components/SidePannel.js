@@ -5,7 +5,7 @@ import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { BadgePercent, BrickWall, Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Dock, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, ShieldCheck, Users, X } from "lucide-react";
+import { BadgePercent, BrickWall, Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Dock, DockIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, ShieldCheck, Users, X } from "lucide-react";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -34,29 +34,18 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       access: ["Admin", "Provider"],
     },
     {
+      href: "/Reports",
+      title: "Reports",
+      img: <DockIcon className="text-3xl" />,
+      access: ["Admin", "Provider"],
+    },
+    {
       href: "/teams",
       title: "Teams",
-      img: <Handshake className="text-3xl" />,
+      img: <Users className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-    {
-      href: "/task",
-      title: "Task",
-      img: <ClipboardList className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
-    {
-      href: "/settings",
-      title: "Settings",
-      img: <Settings className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
-    {
-      href: "/Admin",
-      title: "Admin",
-      img: <Shield className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
+  
   ];
 
   const menuItemsProject = [
@@ -195,7 +184,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                 )}
               </ul>
               {isProjectDetailsRoute && (
-                <div className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
+                <div className="absolute -bottom-30 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
                   onClick={() => router.push("/project")}
                 >
                   <MoveLeft />

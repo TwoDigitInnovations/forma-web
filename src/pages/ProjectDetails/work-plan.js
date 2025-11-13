@@ -26,14 +26,13 @@ const WorkPlan = (props) => {
     itemsPerPage: 5,
   });
 
-
   useEffect(() => {
     const stored = localStorage.getItem('projectDetails');
     if (stored) {
       const project = JSON.parse(stored);
       setProjectId(project._id);
       setProjectDetails(project);
-      getAllPlanByProjectId(project._id);
+      // getAllPlanByProjectId(project._id);
     }
   }, []);
 
@@ -113,7 +112,7 @@ const WorkPlan = (props) => {
       },
       {
         Header: 'Total Activities',
-        accessor: 'workActivity',
+        accessor: 'workActivities',
         Cell: ({ value }) => (
           <p className="min-w-[140px] text-center text-[15px] font-medium text-gray-800">
             {value?.length || 0}
@@ -125,14 +124,14 @@ const WorkPlan = (props) => {
         Cell: ({ row }) => (
           <div className="flex items-center justify-center gap-2 min-w-[150px]">
             <button
-              className="p-2 rounded-md hover:bg-green-100 hover:text-green-700 transition-all"
+              className="p-2 rounded-md cursor-pointer hover:bg-green-100 hover:text-green-700 transition-all"
               title="View Details"
             // onClick={() => router.push(`/ProjectDetails/WorkPlan/details?id=${row.original._id}`)}
             >
               <Eye size={18} />
             </button>
             <button
-              className="p-2 rounded-md hover:bg-yellow-100 hover:text-yellow-700 transition-all"
+              className="p-2 rounded-md cursor-pointer hover:bg-yellow-100 hover:text-yellow-700 transition-all"
               title="Edit Plan"
             onClick={() =>
               router.push(`/ProjectDetails/EditActivity?PlanId=${row.original._id}`)
@@ -141,7 +140,7 @@ const WorkPlan = (props) => {
               <Edit size={18} />
             </button>
             <button
-              className="p-2 rounded-md hover:bg-red-100 hover:text-red-600 transition-all"
+              className="p-2 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-600 transition-all"
               title="Delete Plan"
               onClick={() => {
                 setShowDeleteModal(true);

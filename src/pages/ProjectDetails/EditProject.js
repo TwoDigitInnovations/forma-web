@@ -10,7 +10,7 @@ import SelectField from '../../../components/UI/SelectField';
 import ClientProjectInfo from '../../../components/ClientProjectInfo';
 import ContractorProjectInfo from '../../../components/ContractorProjectInfo';
 import IntroductionInfo from '../../../components/IntroductionInfo';
-
+import moment from 'moment';
 
 const EditProject = (props) => {
   const [formData, setFormData] = useState({
@@ -67,6 +67,34 @@ const EditProject = (props) => {
     }
   }, [])
 
+  function dateFormet(date) {
+    if (!date) return "";
+    return moment(date).format("YYYY-MM-DD");
+  }
+
+  useEffect(() => {
+    if (formData.startDate && formData.Duration) {
+      const calculatedEnd = moment(formData.startDate)
+        .add(Number(formData.Duration), "months")
+        .format("YYYY-MM-DD");
+      setFormData((prev) => ({ ...prev, endDate: calculatedEnd }));
+    }
+  }, [formData.startDate, formData.Duration]);
+
+  useEffect(() => {
+    if (formData.startDate && formData.endDate) {
+      const durationMonths = moment(formData.endDate).diff(
+        moment(formData.startDate),
+        "months",
+        true
+      );
+      setFormData((prev) => ({
+        ...prev,
+        Duration: Math.max(1, Math.ceil(durationMonths)),
+      }));
+    }
+  }, [formData.endDate]);
+
 
   const getProjectbyId = async (id) => {
     props.loader(true);
@@ -122,7 +150,6 @@ const EditProject = (props) => {
         toast.error(err?.message || "An error occurred");
       });
   };
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -273,7 +300,7 @@ const EditProject = (props) => {
         </button>
 
         <div onSubmit={handleSubmit} className="space-y-8 ">
-          {/* Basic Information */}
+
           <div className="bg-custom-black rounded-[38px] md:px-6 px-3 pt-4 pb-6 min-h-[600px]">
             <div className="flex justify-between items-center gap-6 ">
               {["basicInfo", "client", "contractor", "introduction"].map((tab) => (
@@ -379,7 +406,8 @@ const EditProject = (props) => {
                   label="Start Date"
                   type="date"
                   name="startDate"
-                  value={formData.startDate}
+
+                  value={dateFormet(formData.startDate || "")}
                   onChange={handleInputChange}
                   error={errors.startDate}
                 />
@@ -388,7 +416,7 @@ const EditProject = (props) => {
                   label="Expected Completion"
                   type="date"
                   name="endDate"
-                  value={formData.endDate}
+                  value={dateFormet(formData.endDate || "")}
                   onChange={handleInputChange}
                   error={errors.endDate}
                 />
@@ -398,7 +426,7 @@ const EditProject = (props) => {
                   type="number"
                   name="Duration"
                   placeholder="e.g., 6"
-                  value={formData.Duration}
+                  value={formData.Duration || ""}
                   onChange={handleInputChange}
                   error={errors.Duration}
                 />

@@ -59,7 +59,7 @@ const Projects = (props) => {
   return (
     <div className="h-screen p-3 md:p-6 bg-black text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
-        {/* Header */}
+
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold" style={{ color: '#e0f349' }}>Projects</h1>
           <button
@@ -71,13 +71,14 @@ const Projects = (props) => {
             New Project
           </button>
         </div>
+
         {isOpen && (
           <CreateProject setIsOpen={setIsOpen} loader={props.loader} getAllProject={getAllProject} />
         )
         }
-        {/* Filters */}
+    
         <div className="flex flex-wrap items-center gap-4 mb-6">
-          {/* Search Bar */}
+     
           <div className="relative flex w-[31rem]">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -90,24 +91,24 @@ const Projects = (props) => {
             />
           </div>
 
-          {/* Filter Buttons */}
-          <div className="flex items-center gap-2">
+
+          <div className="flex justify-start items-center gap-2">
             <button
-              className="md:w-full w-[140px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
+              className=" w-[140px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
               <FolderKanban size={26} />
               All Projects
             </button>
             <button
-              className="md:w-full w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
+              className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
               <CircleDashed size={26} />
               All Status
             </button>
             <button
-              className=" md:w-full w-[160px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
+              className=" w-[160px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
               style={{ backgroundColor: '#FFFFFF75' }}
             >
 
@@ -117,10 +118,9 @@ const Projects = (props) => {
           </div>
         </div>
 
-        {/* Projects Header */}
         <h2 className="text-xl font-semibold mb-6">All Projects</h2>
 
-        {/* Projects List */}
+
         <div className="space-y-4">
           {AllProjectData.map((project, key) => (
             <div
