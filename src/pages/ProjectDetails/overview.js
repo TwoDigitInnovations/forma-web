@@ -84,7 +84,7 @@ const ProjectDetailsPage = (props) => {
 
   return (
     <div className="h-screen bg-black text-white ">
-      <div className="max-w-7xl mx-auto w-full h-[85vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-6">
+      <div className="max-w-7xl mx-auto w-full h-full md:h-[85vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-6">
 
         <div className="flex items-center justify-between mb-6">
           <div>
