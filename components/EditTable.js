@@ -11,7 +11,6 @@ const EditableTable = ({ planId, loader }) => {
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [plan, setPlan] = useState(null);
 
-    // ✅ Fetch plan with activities
     useEffect(() => {
         if (planId) fetchPlan();
     }, [planId]);
