@@ -32,7 +32,7 @@ const WorkPlan = (props) => {
       const project = JSON.parse(stored);
       setProjectId(project._id);
       setProjectDetails(project);
-      // getAllPlanByProjectId(project._id);
+      getAllPlanByProjectId(project._id);
     }
   }, []);
 
