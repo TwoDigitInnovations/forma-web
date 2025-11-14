@@ -63,8 +63,9 @@ const EditActivity = (props) => {
     const handleSave = async (PlanId) => {
 
         if (activities.length <= 0) {
-            return toast.error("work acitivity should be 1 or 2");
+            return toast.error("At least one section or activity is required.");
         }
+
         props.loader(true);
         try {
             const payload = { workActivities: activities };
@@ -85,7 +86,7 @@ const EditActivity = (props) => {
     const handleGoBack = () => {
         router.push("/ProjectDetails/work-plan")
     };
-    
+
     return (
         <div className="h-screen bg-black text-white md:p-6 p-4">
             <button

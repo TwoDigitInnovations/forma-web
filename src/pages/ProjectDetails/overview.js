@@ -42,7 +42,6 @@ const ProjectDetailsPage = (props) => {
         if (res?.status === true) {
           setProjectData(res.data?.data);
           setProjectdetails(res.data?.data);
-          // update localStorage also
           localStorage.setItem("projectDetails", JSON.stringify(res.data?.data));
         }
       })

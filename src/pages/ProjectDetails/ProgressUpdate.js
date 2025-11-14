@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { MapPin, Plus, Trash2 } from "lucide-react";
+import { MapPin, Plus, Save, Trash2 } from "lucide-react";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { ProjectDetailsContext } from "../_app";
@@ -9,18 +9,52 @@ import Milestones from "../../../components/Milestones";
 import Updates from "../../../components/Updates";
 import CreateTracker from "../../../components/CreateTracker";
 import { toast } from "react-toastify";
-import ConfirmModal from "../../../components/confirmModel";
+import { Certificates, ConfirmModal, SummaryCards } from "../../../components/AllComponents"
+import WorkplanProgress from "../../../components/activites";
+import RoadLineTracker from "../../../components/RoadLineTracker";
 
 const ProgressUpdate = (props) => {
   const router = useRouter();
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [currentTab, setCurrentTab] = useState("progresstracking");
   const [projectId, setProjectId] = useState("");
+  const [projectData, setProjectData] = useState("");
   const [allTrackerData, setAllTrackerData] = useState([]);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [allPlanData, setAllPlanData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTracker, setSelectedTracker] = useState(null);
+  const [activities, setActivities] = useState("");
+  const [certificates, setCertificates] = useState([]);
+  const [summary, setSummary] = useState({
+    contractAmount: 0,
+    amountPaid: 0,
+    amountLeft: 0,
+    progress: 0
+  });
+
+  useEffect(() => {
+    if (!projectData) return;
+
+    const contractAmount = Number(projectData?.projectBudget || 0);
+    const amountPaid = Number(projectData?.paidAmount || 0);
+
+    const amountLeft = contractAmount - amountPaid;
+
+    const progress =
+      contractAmount > 0
+        ? Number(((amountPaid / contractAmount) * 100).toFixed(2))
+        : 0;
+
+    setSummary({
+      contractAmount,
+      amountPaid,
+      amountLeft,
+      progress
+    });
+  }, [projectData]);
+
+
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
@@ -30,9 +64,27 @@ const ProgressUpdate = (props) => {
       setProjectId(project._id);
       getAllPlanByProjectId(project._id);
       getAllTracker(project._id);
+      getProjectbyId(project._id)
     }
   }, []);
 
+
+  const getProjectbyId = async (id) => {
+    props.loader(true);
+    Api("get", `project/getProjectById/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          const data = res.data?.data
+          setProjectData(data);
+          setCertificates(data?.certificates)
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   const getAllPlanByProjectId = async (id) => {
     props.loader(true);
@@ -52,7 +104,6 @@ const ProgressUpdate = (props) => {
       });
   };
 
-  // ✅ Get all trackers
   const getAllTracker = async (id) => {
     props.loader(true);
     let url = `tracker/getAll?projectId=${id}`;
@@ -70,7 +121,6 @@ const ProgressUpdate = (props) => {
         toast.error(err?.message || "An error occurred");
       });
   };
-
 
   const handleTrackerSelect = (e) => {
     const selected = allTrackerData.find((t) => t._id === e.target.value);
@@ -103,12 +153,163 @@ const ProgressUpdate = (props) => {
     }
   };
 
+  console.log("", selectedTracker)
+
+  const updateTracker = async () => {
+    props.loader(true);
+    const data = {
+      trackerActivityProgress: activities
+    }
+    try {
+      const res = await Api("put", `tracker/update/${selectedTracker._id}`, data, router);
+      props.loader(false);
+      if (res?.status === true) {
+        toast.success("Tracker updated successfully!");
+      } else {
+        toast.error(res?.message || "Failed to updated tracker");
+      }
+    } catch (err) {
+      props.loader(false);
+      toast.error(err?.message || "An updated occurred");
+    }
+  }
+
+
+  useEffect(() => {
+    if (!selectedTracker) return;
+
+    const raw = selectedTracker?.WorkplanId?.workActivities || [];
+
+    const sections = [];
+    let currentSection = null;
+    let sectionCounter = 1;
+    let activityCounter = 1;
+
+    raw.forEach((item) => {
+      if (item.rowType === "section") {
+        currentSection = {
+          id: sectionCounter++,
+          name: item.description,
+          activities: [],
+        };
+
+        sections.push(currentSection);
+        activityCounter = 1;
+      }
+
+      else if (item.rowType === "activity") {
+        if (!currentSection) return;
+
+        currentSection.activities.push({
+          id: Number(`${currentSection.id}${activityCounter++}`),
+          name: item.description,
+          qtyInBOQ: "0.00",
+          qtyDone: "0.00",
+          weight: "0.00",
+        });
+      }
+    });
+
+    setActivities(sections);
+  }, [selectedTracker]);
+
+  const handleAddAdvance = async (amount) => {
+    props.loader(true);
+
+    try {
+      const res = await Api(
+        "post",
+        `project/update-advance-payment/${projectId}`,
+        { advanceAmount: amount },
+        router
+      );
+
+      props.loader(false);
+
+      if (res?.status === true) {
+        toast.success("Advance payment added successfully!");
+        getProjectbyId(projectId);
+      } else {
+        toast.error(res?.message || "Failed to add advance payment");
+      }
+    } catch (err) {
+      props.loader(false);
+      toast.error(err?.message || "An error occurred");
+    }
+  };
+
+  const handleAddCertificate = async (cert) => {
+    props.loader(true);
+
+    try {
+      const res = await Api(
+        "post",
+        `project/addCertificate/${projectId}`,
+        {
+          certificateNo: cert.certNo,
+          amount: Number(cert.amount),
+          date: cert.date,
+          status: "Submitted"
+        },
+        router
+      );
+
+      props.loader(false);
+
+      if (res?.status === true) {
+        toast.success("Certificate added successfully!");
+        getProjectbyId(projectId); // refresh table
+        setCert({ certNo: "", amount: "", date: "", status: "Submitted" });
+      } else {
+        toast.error(res?.message || "Failed to add certificate");
+      }
+    } catch (err) {
+      props.loader(false);
+      toast.error(err?.message || "Something went wrong");
+    }
+  };
+
+  const handleStatusChange = async (certificateId, status, amount) => {
+    props.loader(true);
+
+    try {
+      const res = await Api(
+        "post",
+        `project/update-certificate-status/${certificateId}/${projectId}`,
+        { status },
+        router
+      );
+
+      if (res?.status !== true) {
+        props.loader(false);
+        toast.error(res?.message || "Failed to update certificate status");
+        return;
+      }
+      if (status === "Paid") {
+        await Api(
+          "post",
+          `project/update-payment-paid/${projectId}`,
+          { paidAmount: Number(amount) },
+          router
+        );
+      }
+
+      props.loader(false);
+      toast.success("Status updated successfully!");
+
+      getProjectbyId(projectId);
+    } catch (err) {
+      props.loader(false);
+      toast.error(err?.message || "Something went wrong");
+    }
+  };
+
   return (
     <div className="h-screen bg-black text-white">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 md:px-8 mx-auto">
-        {/* ===== Header Section ===== */}
+
         <div className="bg-[#DFF34940] py-4 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center md:gap-4 gap-1">
             <p className="md:text-[32px] text-[24px] text-white mt-1">Progress Update</p>
             <h1 className="md:text-[14px] text-[13px] font-bold text-white flex items-center gap-2">
               {projectDetails.projectName}
@@ -119,10 +320,9 @@ const ProgressUpdate = (props) => {
           </div>
         </div>
 
-        {/* ===== Tabs Section ===== */}
         <div className="mt-6 bg-custom-black rounded-[38px] md:px-6 px-3 pt-4 pb-6 min-h-[700px] md:min-h-[600px]">
-          <div className="flex overflow-x-auto justify-between items-center gap-6">
-            {["progresstracking", "milestones", "financial", "updates"].map((tab) => (
+          <div className="flex overflow-x-auto scrollbar-hide overflow-scroll justify-between items-center gap-6">
+            {["progresstracking", "milestones", "financial", "updates", "roadLineTracker"].map((tab) => (
               <button
                 key={tab}
                 type="button"
@@ -132,9 +332,14 @@ const ProgressUpdate = (props) => {
                   : "text-gray-400 hover:text-[#e0f349]"
                   }`}
               >
-                {tab === "progresstracking"
-                  ? "Progress Tracking"
-                  : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {
+                  tab === "progresstracking"
+                    ? "Progress Tracking"
+                    : tab === "roadLineTracker"
+                      ? "Road Line Tracker"
+                      : tab.charAt(0).toUpperCase() + tab.slice(1)
+                }
+
               </button>
             ))}
           </div>
@@ -150,17 +355,29 @@ const ProgressUpdate = (props) => {
                       Track progress based on work plan activities
                     </p>
                   </div>
-                  <button
-                    onClick={() => setIsOpen(true)}
-                    className="md:w-[160px] w-full justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
-                  >
-                    <Plus size={18} />
-                    Create Tracker
-                  </button>
+                  <div className="flex gap-2 justify-center">
+                    <button
+                      onClick={() => setIsOpen(true)}
+                      className="md:w-[160px] w-[180px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                    >
+                      <Plus size={18} />
+                      Create Tracker
+                    </button>
+                    {selectedTracker && (
+                      <button
+                        onClick={updateTracker}
+                        className="md:w-[160px] w-[180px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                      >
+                        <Save size={18} />
+                        Save Tracker
+                      </button>
+                    )}
+
+                  </div>
                 </div>
 
                 {allTrackerData.length > 0 ? (
-                 
+
                   <div className="mt-4 flex flex-row md:gap-3 gap-2 md:items-center">
                     <div className="flex-1">
                       <label className="block text-sm font-medium mb-2">
@@ -195,28 +412,32 @@ const ProgressUpdate = (props) => {
                 ) : (
                   <p className="text-gray-400 mt-4">No trackers found. Create one to get started.</p>
                 )}
-
-
                 {selectedTracker && (
-                  <div className="mt-4 p-4 cursor-pointer bg-[#1c1c1c] rounded-lg border border-gray-700">
-                    <h3 className="text-lg font-semibold text-custom-yellow mb-2">
-                      {selectedTracker.trackerName}
-                    </h3>
-                    <p className="text-gray-300 text-sm mb-1">
-                      <strong>Work Plan:</strong>{" "}
-                      {selectedTracker.WorkplanId?.planName || "N/A"}
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      {selectedTracker.description || "No description available"}
-                    </p>
-                  </div>
+                  <WorkplanProgress activities={activities} />
                 )}
+
               </>
             )}
 
             {currentTab === "milestones" && <Milestones />}
-            {currentTab === "financial" && <Financial />}
+            {currentTab === "financial" && (
+              <>
+                <SummaryCards
+                  contractAmount={summary?.contractAmount}
+                  amountPaid={summary?.amountPaid}
+                  amountLeft={summary?.amountLeft}
+                  progress={summary?.progress}
+                />
+                <Certificates
+                  certificates={certificates}
+                  onAddAdvance={handleAddAdvance}
+                  onAddCertificate={handleAddCertificate}
+                  onUpdateStatus={handleStatusChange}
+                />
+              </>
+            )}
             {currentTab === "updates" && <Updates />}
+            {currentTab === "roadLineTracker" && <RoadLineTracker />}
           </div>
 
 
