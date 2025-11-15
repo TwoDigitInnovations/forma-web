@@ -27,7 +27,7 @@ const budget = (props) => {
     <div className="h-screen bg-black text-white ">
       <div className=" w-full md:h-[90vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-8  mx-auto">
 
-        <div className="bg-[#DFF34940] py-4 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between">
+        <div className="bg-custom-green py-4 px-6 flex flex-col rounded-[16px] md:flex-row gap-4 items-center justify-between">
           <div className="flex flex-wrap items-center md:gap-4 gap-1">
             <p className="md:text-[32px] text-[24px] text-white mt-1">Budget</p>
             <h1 className="md:text-[14px] text-[13px] font-bold text-white flex items-center gap-2">
@@ -41,8 +41,8 @@ const budget = (props) => {
 
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 mt-8">
-          {/* Total Budget Card */}
-          <div className="bg-[#27272a] rounded-lg p-6 border border-[#3f3f46]">
+         
+          <div className="bg-custom-black rounded-lg p-6 border border-[#3f3f46]">
             <div className="flex items-center justify-between mb-2">
               <p className="text-gray-400 text-sm">Total Budget</p>
               <NotebookPen size={20} className="text-gray-400" />
@@ -52,7 +52,7 @@ const budget = (props) => {
           </div>
 
           {/* Spent Amount Card */}
-          <div className="bg-[#27272a] rounded-lg p-6 border border-[#3f3f46]">
+          <div className="bg-custom-black rounded-lg p-6 border border-[#3f3f46]">
             <div className="flex items-center justify-between mb-2">
               <p className="text-gray-400 text-sm">Spent Amount</p>
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ const budget = (props) => {
           </div>
 
           {/* Remaining Budget Card */}
-          <div className="bg-[#27272a] rounded-lg p-6 border border-[#3f3f46]">
+          <div className="bg-custom-black rounded-lg p-6 border border-[#3f3f46]">
             <div className="flex items-center justify-between mb-2">
               <p className="text-gray-400 text-sm">Remaining Budget</p>
               <span className="text-gray-400">$</span>
@@ -75,7 +75,7 @@ const budget = (props) => {
         </div>
 
 
-        <div className="bg-[#27272a] rounded-lg p-6 border border-[#3f3f46] mb-8">
+        <div className="bg-custom-black rounded-lg p-6 border border-[#3f3f46] mb-8">
           <h3 className="text-xl font-semibold text-white mb-2">Budget Utilization</h3>
           <p className="text-sm text-gray-400 mb-6">Visual representation of budget usage</p>
 
@@ -102,7 +102,7 @@ const budget = (props) => {
         </div>
 
 
-        <div className="bg-[#27272a] rounded-lg p-6 border border-[#3f3f46]">
+        <div className="bg-custom-black rounded-lg p-6 border border-[#3f3f46]">
           <h3 className="text-xl font-semibold text-white mb-2">Expense Tracking</h3>
           <p className="text-sm text-gray-400 mb-8">Detailed expense records and tracking</p>
 

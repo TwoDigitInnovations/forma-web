@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, X, Edit, ChevronLeft, NotebookPen, LocateFixedIcon, MapPin, Puzzle, ChartNoAxesCombined } from 'lucide-react';
+import { Upload, X, Edit, ChevronLeft, NotebookPen, LocateFixedIcon, MapPin, Puzzle, ChartNoAxesCombined, BookOpenText, TriangleAlert } from 'lucide-react';
 import { Api } from '@/services/service';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -35,24 +35,21 @@ const reports = (props) => {
                 <span className='ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1 '> <MapPin size={15} /> {projectDetails.location}</span>
 
               </h1>
-              <p className="md:text-[32px] text-[24px] text-white mt-1">Reports</p>
+              <p className="md:text-[32px] text-[24px] text-white mt-1">Safety Incidents</p>
             </div>
 
           </div>
-          <button className='bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center'>
-            <NotebookPen size={18} />Create Reports</button>
+          <button className='bg-custom-yellow py-1.5 px-6 text-black gap-2 rounded-[12px] flex items-center'>
+            <BookOpenText size={18} />Report Incident</button>
         </div>
 
    
         <div className='min-h-[500px] flex flex-col items-center justify-center bg-[#18181b] rounded-xl mt-8 shadow-lg'>
-          <div className="bg-custom-yellow rounded-full p-4 mb-4">
-            <ChartNoAxesCombined size={48} className="text-black" />
-          </div>
-          <p className="text-[14px] font-semibold text-white ">No Reports created yet.</p>
-          <p className="text-[14px] text-custom-yellow mb-1">Create your first Reports to get started.</p>
-          <button className="bg-custom-yellow hover:bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg mt-2 flex items-center gap-2 shadow">
-            <NotebookPen size={20} /> Create Reports
-          </button>
+          {/* <div className="bg-custom-yellow rounded-full p-4 mb-4"> */}
+            <TriangleAlert size={55} className="text-white mb-4" />
+          {/* </div> */}
+          <p className="text-[16px] font-semibold text-white mb-1">No safety incidents recorded.</p>
+          <p className="text-[14px] text-custom-yellow mb-1">Maintaining a safe work environment.</p>
         </div>
 
       </div>
