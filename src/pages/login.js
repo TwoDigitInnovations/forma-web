@@ -167,7 +167,7 @@ export default function Login(props) {
               className="w-full bg-custom-yellow text-black font-semibold py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:ring-4 focus:ring-custom-green/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg hover:bg-custom-yellow"
             >
               {loading ? (
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center cursor-pointer">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-2"></div>
                   Signing In...
                 </div>

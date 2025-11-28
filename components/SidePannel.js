@@ -73,18 +73,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <LoaderCircle className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-    {
-      href: "/ProjectDetails/budget",
-      title: "Budget",
-      img: <BadgePercent className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
-    {
-      href: "/ProjectDetails/Safety",
-      title: "Safety",
-      img: <ShieldCheck className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
      {
       href: "/ProjectDetails/Pre-construction",
       title: "Pre-construction",
@@ -184,7 +172,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                 )}
               </ul>
               {isProjectDetailsRoute && (
-                <div className="absolute -bottom-30 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
+                <div className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
                   onClick={() => router.push("/project")}
                 >
                   <MoveLeft />
