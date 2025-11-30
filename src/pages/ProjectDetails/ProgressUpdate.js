@@ -59,8 +59,6 @@ const ProgressUpdate = (props) => {
     });
   }, [projectData]);
 
-  console.log(summary);
-
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
@@ -186,41 +184,70 @@ const ProgressUpdate = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (!selectedTracker) return;
+ useEffect(() => {
+  if (!selectedTracker) return;
 
-    const raw = selectedTracker?.WorkplanId?.workActivities || [];
+  const raw = selectedTracker?.WorkplanId?.workActivities || [];
+  const saved = selectedTracker?.trackerActivityProgress || [];
+  console.log("Saved (Full):", saved);
 
-    const sections = [];
-    let currentSection = null;
-    let sectionCounter = 1;
-    let activityCounter = 1;
+  // 🔥 Flatten all saved activities from all sections
+  const allSavedActivities = saved.flatMap(sec => sec.activities || []);
 
-    raw.forEach((item) => {
-      if (item.rowType === "section") {
-        currentSection = {
-          id: sectionCounter++,
-          name: item.description,
-          activities: [],
-        };
+  const sections = [];
+  let currentSection = null;
+  let sectionCounter = 1;
+  let activityCounter = 1;
 
-        sections.push(currentSection);
-        activityCounter = 1;
-      } else if (item.rowType === "activity") {
-        if (!currentSection) return;
+  raw.forEach((item) => {
+    if (item.rowType === "section") {
+      currentSection = {
+        id: sectionCounter++,
+        sectionId: item._id,
+        rowType: "section",
+        name: item.description,
+        activities: [],
+      };
 
-        currentSection.activities.push({
-          id: Number(`${currentSection.id}${activityCounter++}`),
-          name: item.description,
-          qtyInBOQ: "0.00",
-          qtyDone: "0.00",
-          weight: "0.00",
-        });
-      }
-    });
+      sections.push(currentSection);
+      activityCounter = 1;
+    }
 
-    setActivities(sections);
-  }, [selectedTracker]);
+    if (item.rowType === "activity") {
+      if (!currentSection) return;
+
+      // 🔥 FIXED MATCHING
+      const savedActivity = allSavedActivities.find(
+        (s) => s.activityId?.toString() === item._id?.toString()
+      );
+
+      // Debug logs
+      console.log("==== MATCH CHECK ====");
+      console.log("RAW:", item._id?.toString());
+      console.log(
+        "ALL SAVED IDS:",
+        allSavedActivities.map((x) => x.activityId)
+      );
+      console.log("MATCHED:", savedActivity);
+
+      currentSection.activities.push({
+        id: Number(`${currentSection.id}${activityCounter++}`),
+        activityId: item._id,
+        name: item.description,
+        rowType: "activity",
+        qtyInBOQ: savedActivity?.qtyInBOQ || "0.00",
+        qtyDone: savedActivity?.qtyDone || "0.00",
+        Rate: savedActivity?.Rate || "0.00",
+        Amount: savedActivity?.Amount || "0.00",
+        amountDone: savedActivity?.amountDone || "0.00",
+      });
+    }
+  });
+
+  setActivities(sections);
+}, [selectedTracker]);
+
+  console.log("all", activities);
 
   return (
     <div className="h-screen bg-black text-white">
@@ -287,7 +314,7 @@ const ProgressUpdate = (props) => {
                   <div className="flex gap-2 justify-center">
                     <button
                       onClick={() => setIsOpen(true)}
-                      className="md:w-[160px] w-[180px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                      className="md:w-[160px] w-[160px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
                     >
                       <Plus size={18} />
                       Create Tracker
@@ -295,7 +322,7 @@ const ProgressUpdate = (props) => {
                     {selectedTracker && (
                       <button
                         onClick={updateTracker}
-                        className="md:w-[160px] w-[180px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                        className="md:w-[160px] w-[150px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
                       >
                         <Save size={18} />
                         Save Tracker
@@ -345,7 +372,10 @@ const ProgressUpdate = (props) => {
                   </p>
                 )}
                 {selectedTracker && (
-                  <WorkplanProgress activities={activities} />
+                  <WorkplanProgress
+                    activities={activities}
+                    setActivities={setActivities}
+                  />
                 )}
               </>
             )}

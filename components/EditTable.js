@@ -11,8 +11,7 @@ const EditableTable = ({ activities, setActivities }) => {
     const newRow = {
       description: type === "section" ? "New Section" : "New Activity",
       duration: type === "section" ? null : "1",
-      startDate:
-        type === "section" ? null : moment().format("YYYY-MM-DD"),
+      startDate: type === "section" ? null : moment().format("YYYY-MM-DD"),
       endDate: type === "section" ? null : "",
       rowType: type,
     };
@@ -34,9 +33,7 @@ const EditableTable = ({ activities, setActivities }) => {
 
   const handleChange = (index, field, value) => {
     setActivities((prev) =>
-      prev.map((row, i) =>
-        i === index ? { ...row, [field]: value } : row
-      )
+      prev.map((row, i) => (i === index ? { ...row, [field]: value } : row))
     );
   };
 
@@ -149,14 +146,19 @@ const EditableTable = ({ activities, setActivities }) => {
           {activities.map((row, i) => {
             const num = getNumbering(i);
             const isSection = row.rowType === "section";
+            const duration =
+              row.startDate && row.endDate
+                ? moment(row.endDate).diff(moment(row.startDate), "months")
+                : "";
 
             return (
               <tr
                 key={i}
-                className={`border-b ${isSection
-                  ? "bg-gray-100 text-black font-semibold"
-                  : "bg-white text-black"
-                  }`}
+                className={`border-b ${
+                  isSection
+                    ? "bg-gray-100 text-black font-semibold"
+                    : "bg-white text-black"
+                }`}
               >
                 <td className="text-center py-2">{num}</td>
 
@@ -172,7 +174,7 @@ const EditableTable = ({ activities, setActivities }) => {
 
                 <td className="text-center">
                   {isSection ? (
-                    <p className="text-gray-400">—</p>
+                    <p className="text-gray-600 text-center">{duration}</p>
                   ) : (
                     <input
                       type="number"
@@ -181,7 +183,7 @@ const EditableTable = ({ activities, setActivities }) => {
                       onChange={(e) =>
                         handleChange(i, "duration", e.target.value)
                       }
-                      className="w-full text-center bg-transparent outline-none"
+                      className="md:ps-3 w-full text-center bg-transparent outline-none"
                     />
                   )}
                 </td>
@@ -217,7 +219,6 @@ const EditableTable = ({ activities, setActivities }) => {
 
                 <td className="text-center">
                   {isSection ? (
-                    // show section's computed end date (read-only) instead of "—"
                     <input
                       type="date"
                       value={
@@ -245,9 +246,7 @@ const EditableTable = ({ activities, setActivities }) => {
                 <td className="relative text-center">
                   <button
                     className="p-2 cursor-pointer"
-                    onClick={() =>
-                      setMenuIndex(menuIndex === i ? null : i)
-                    }
+                    onClick={() => setMenuIndex(menuIndex === i ? null : i)}
                   >
                     <EllipsisVertical />
                   </button>
@@ -271,10 +270,11 @@ const EditableTable = ({ activities, setActivities }) => {
                           handleAddRow("activity", i);
                           setMenuIndex(null);
                         }}
-                        className={`block w-full cursor-pointer text-left px-3 py-2 border-b text-sm ${hasSection
-                          ? "hover:bg-gray-100"
-                          : "opacity-50 cursor-not-allowed"
-                          }`}
+                        className={`block w-full cursor-pointer text-left px-3 py-2 border-b text-sm ${
+                          hasSection
+                            ? "hover:bg-gray-100"
+                            : "opacity-50 cursor-not-allowed"
+                        }`}
                       >
                         + Add Activity
                       </button>
@@ -305,14 +305,14 @@ const EditableTable = ({ activities, setActivities }) => {
           + Add Section
         </button>
 
-        {/* ✔ Add Activity disabled until a section exists */}
         <button
           disabled={!hasSection}
           onClick={() => hasSection && handleAddRow("activity")}
-          className={`px-4 py-2 rounded-lg ${hasSection
-            ? "bg-custom-yellow text-black"
-            : "bg-gray-300 text-gray-600 cursor-not-allowed"
-            }`}
+          className={`px-4 py-2 rounded-lg ${
+            hasSection
+              ? "bg-custom-yellow text-black"
+              : "bg-gray-300 text-gray-600 cursor-not-allowed"
+          }`}
         >
           + Add Activity
         </button>
