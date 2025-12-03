@@ -24,7 +24,7 @@ const getOverallProgress = (sections) => {
   return ((totalQty / totalBoq) * 100).toFixed(2);
 };
 
-const WorkplanProgress = ({ activities,setActivities }) => {
+const WorkplanProgress = ({ activities, setActivities }) => {
   if (!activities) return;
   const [data, setData] = useState(activities || []);
   useEffect(() => {
@@ -129,7 +129,6 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                     transition={{ duration: 0.3 }}
                     className="border-b text-sm text-white px-4 py-3"
                   >
-                    {/* Mobile card layout */}
                     <div className="sm:hidden flex flex-col gap-3">
                       <div className="font-semibold">{act.name}</div>
 
@@ -231,7 +230,6 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                       </div>
                     </div>
 
-                    {/* Desktop table layout */}
                     <div className="hidden sm:grid grid-cols-7 gap-4 items-center">
                       <div>{act.name}</div>
 
@@ -248,6 +246,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                           )
                         }
                       />
+
                       <input
                         type="number"
                         className="bg-gray-700 p-1 rounded w-20"
@@ -261,6 +260,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                           )
                         }
                       />
+
                       <input
                         type="number"
                         className="bg-gray-700 p-1 rounded w-20"
@@ -289,6 +289,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                           )
                         }
                       />
+
                       <input
                         type="number"
                         className="bg-gray-700 p-1 rounded w-20"
