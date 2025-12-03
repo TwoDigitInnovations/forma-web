@@ -28,6 +28,7 @@ const ProgressUpdate = (props) => {
   const [selectedTracker, setSelectedTracker] = useState(null);
   const [activities, setActivities] = useState("");
   const [certificates, setCertificates] = useState([]);
+  
   const [summary, setSummary] = useState({
     contractAmount: 0,
     amountPaid: 0,

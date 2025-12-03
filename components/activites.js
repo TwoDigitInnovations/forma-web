@@ -170,6 +170,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                         <span>Amount</span>
                         <input
                           type="number"
+                          disabled
                           className="bg-gray-700 p-1 rounded w-20"
                           value={act.Amount}
                           onChange={(e) =>
@@ -202,6 +203,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                         <span>Amount Done</span>
                         <input
                           type="number"
+                          disabled
                           className="bg-gray-700 p-1 rounded w-20"
                           value={act.amountDone}
                           onChange={(e) =>
@@ -263,6 +265,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                         type="number"
                         className="bg-gray-700 p-1 rounded w-20"
                         value={act.Amount}
+                        disabled
                         onChange={(e) =>
                           handleChange(
                             section.id,
@@ -290,6 +293,7 @@ const WorkplanProgress = ({ activities,setActivities }) => {
                         type="number"
                         className="bg-gray-700 p-1 rounded w-20"
                         value={act.amountDone}
+                        disabled
                         onChange={(e) =>
                           handleChange(
                             section.id,
