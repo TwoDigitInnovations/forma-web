@@ -33,12 +33,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Building className="text-3xl" />,
       access: ["Admin", "Provider"],
     },
-    {
-      href: "/Reports",
-      title: "Reports",
-      img: <DockIcon className="text-3xl" />,
-      access: ["Admin", "Provider"],
-    },
+
     {
       href: "/teams",
       title: "Teams",
