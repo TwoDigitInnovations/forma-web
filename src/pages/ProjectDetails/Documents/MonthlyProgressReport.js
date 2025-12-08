@@ -13,12 +13,36 @@ function MonthlyProgressReport(props) {
   const [projectId, setProjectId] = useState("");
   const [editId, setEditId] = useState("");
   const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
-  const [isGenerating, setIsGenerating] = useState(false);
   const contentRef = useRef(null);
   const [topLogo, setTopLogo] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [leftLogo, setLeftLogo] = useState("");
   const [rightLogo, setRightLogo] = useState("");
+  const [editData, setEditData] = useState("");
+
+    const [data, setData] = useState({
+      clientName: "",
+      ProjectScope: "",
+      ProjectSummary: "",
+      ExcuetiveSummary: "",
+      coverUrl: "",
+      leftLogo: "",
+      rightLogo: "",
+      projectTitle: "",
+      projectNo: "",
+      LogoImage: "",
+      contractorName: "",
+      contractorContact: "",
+      certificateNo: "",
+      location: "",
+      employerName: "",
+      contractAmount: "",
+      reportMonth: "",
+      reportYear: "",
+      contractorEquipment: [],
+      contractorPersonnel: {},
+      clientPersonnel: {},
+    });
 
   const generateDocumentName = (type) => {
     const formattedType = type
@@ -33,48 +57,6 @@ function MonthlyProgressReport(props) {
     });
 
     return `${formattedType} - ${dateStr}`;
-  };
-
-  const downloadPDF = async () => {
-    const input = contentRef.current;
-    if (!input) return;
-
-    setIsGenerating(true);
-
-    try {
-      await new Promise((res) => setTimeout(res, 300));
-
-      const html2canvas = (await import("html2canvas")).default;
-      const jsPDF = (await import("jspdf")).default;
-
-      const canvas = await html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
-
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      const imgData = canvas.toDataURL("image/png");
-      const imgWidth = pdfWidth;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      if (imgHeight > pdfHeight) {
-        imgHeight = pdfHeight - 2;
-      }
-
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-      // Auto Name
-      const fileName = generateDocumentName(router.query.type || "Document");
-      pdf.save(`${fileName}.pdf`);
-    } catch (error) {
-      console.error("PDF Error:", error);
-    } finally {
-      setIsGenerating(false);
-    }
   };
 
   useEffect(() => {
@@ -118,20 +100,20 @@ function MonthlyProgressReport(props) {
       if (editId) {
         url = `documents/update/${editId}`;
         method = "put";
-        data = {
-          data: { topLogo, coverPhoto, leftLogo, rightLogo },
+        maindata = {
+          data: { topLogo, coverPhoto, leftLogo, rightLogo , ...data },
         };
       } else {
         url = `documents/create`;
-        data = {
+        maindata = {
           type: router.query.type,
           projectId: projectId,
-          data: { topLogo, coverPhoto, leftLogo, rightLogo },
+          data: { topLogo, coverPhoto, leftLogo, rightLogo, ...data },
           name: documentName,
         };
       }
 
-      const res = await Api(method, url, data, router);
+      const res = await Api(method, url, maindata, router);
 
       props.loader(false);
 
@@ -159,6 +141,7 @@ function MonthlyProgressReport(props) {
           setLeftLogo(data?.leftLogo);
           setRightLogo(data?.rightLogo);
           setTopLogo(data?.topLogo);
+          setEditData();
         }
       })
       .catch((err) => {
@@ -367,7 +350,11 @@ function MonthlyProgressReport(props) {
           rightLogo,
           coverPhoto,
         }}
+        data={data}
+        setData={setData}
         contentRef={contentRef}
+        editData={editData}
+        editId={editId}
         projectDetails={projectDetails}
       />
     </div>

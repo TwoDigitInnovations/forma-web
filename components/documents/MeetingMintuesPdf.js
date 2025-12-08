@@ -37,7 +37,6 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
     });
   }, [formData, projectDetails]);
 
-
   return (
     <div className="min-h-screen bg-custom-black mt-8 rounded-2xl p-6">
       <div className="max-w-4xl mx-auto">
