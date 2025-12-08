@@ -1,52 +1,87 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-// Import Jodit dynamically (to avoid SSR issues)
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-export default function RichTextEditor({ label = "Executive Summary", value, onChange }) {
+export default function RichTextEditor({
+  label = "Executive Summary",
+  value,
+  onChange,
+}) {
   const editor = useRef(null);
-  const [content, setContent] = useState(value || "");
+  const [content, setContent] = useState("");
 
-const editorConfig = {
-  height: 300,
-  toolbarAdaptive: false,
-  toolbarSticky: true,
-  toolbarButtonSize: "middle",
-  readonly: false,
-  askBeforePasteHTML: false,
-  askBeforePasteFromWord: false,
-  defaultActionOnPaste: "insert_clear_html",
-  enableDragAndDropFileToEditor: true,
-  allowPasteImages: true,
-  useNativeTooltip: false,
-  spellcheck: true,
+  // 🚀 FIX: When "value" changes (edit mode), update editor content
+  useEffect(() => {
+    if (value !== undefined && value !== null) {
+      setContent(value);
+    }
+  }, [value]); // <-- CRITICAL FIX!
 
-  buttons: [
-    "bold", "italic", "underline", "strikethrough", "|",
-    "fontsize", "font", "paragraph", "brush", "|",
-    "left", "center", "right", "justify", "|",
-    "ul", "ol", "indent", "outdent", "|",
-    "link", "image", "video", "table", "hr", "emoji", "|",
-    "undo", "redo", "|",
-    "cut", "copy", "paste", "|",
-    "brush", "background", "|",
-    "source", "fullsize"
-  ],
-
-  uploader: {
-    insertImageAsBase64URI: true,
-  },
-
-  clipboard: {
-    matchVisual: false,
-  },
-
-  removeButtons: ["about"],
-};
-
+  const editorConfig = {
+    height: 300,
+    toolbarAdaptive: false,
+    toolbarSticky: true,
+    toolbarButtonSize: "middle",
+    readonly: false,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
+    enableDragAndDropFileToEditor: true,
+    allowPasteImages: true,
+    useNativeTooltip: false,
+    spellcheck: true,
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "|",
+      "fontsize",
+      "font",
+      "paragraph",
+      "brush",
+      "|",
+      "left",
+      "center",
+      "right",
+      "justify",
+      "|",
+      "ul",
+      "ol",
+      "indent",
+      "outdent",
+      "|",
+      "link",
+      "image",
+      "video",
+      "table",
+      "hr",
+      "emoji",
+      "|",
+      "undo",
+      "redo",
+      "|",
+      "cut",
+      "copy",
+      "paste",
+      "|",
+      "brush",
+      "background",
+      "|",
+      "source",
+      "fullsize",
+    ],
+    uploader: {
+      insertImageAsBase64URI: true,
+    },
+    clipboard: {
+      matchVisual: false,
+    },
+    removeButtons: ["about"],
+  };
 
   return (
     <div className="flex flex-col gap-2 mb-4">

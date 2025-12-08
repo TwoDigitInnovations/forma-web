@@ -2,11 +2,15 @@ import React, { useRef, useState } from 'react'
 import InputField from './UI/InputField'
 import { Plus, Trash, Upload } from 'lucide-react'
 import TextAreaField from './UI/TextAreaField';
+import { toast } from 'react-toastify';
+import Compressor from 'compressorjs';
+import { ApiFormData } from '@/services/service';
+import { useRouter } from 'next/router';
 
 function ClientProjectInfo({ clientDetails, setClientDetails }) {
     const fileInputRef = useRef(null);
     const [currentTab, setCurrentTab] = useState("clientDetails");
-
+    const router = useRouter();
     const [newMember, setNewMember] = useState({
         name: "",
         qualification: "",
@@ -22,17 +26,46 @@ function ClientProjectInfo({ clientDetails, setClientDetails }) {
         }));
     };
 
+     const handleFileChange = (event, i) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const fileSizeInMb = file.size / (1024 * 1024);
+    if (fileSizeInMb > 1) {
+      toast.error("Too large file Please upload a smaller image")
+      return;
+    } else {
+      new Compressor(file, {
+        quality: 0.6,
+        success: (compressedResult) => {
+          
+          const data = new FormData();
+          data.append("file", compressedResult);
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const fileURL = URL.createObjectURL(file);
-            setClientDetails((prev) => ({
+          ApiFormData("post", "user/fileUpload", data, router).then(
+            (res) => {
+             
+              const fileURL = res.data.fileUrl;
+              console.log("res================>", res.data.fileUrl);
+              if (res.status) {
+                setClientDetails((prev) => ({
                 ...prev,
                 ClientLogo: fileURL
             }));
-        }
-    };
+              toast.success("file uploaded")
+              }
+            },
+            (err) => {
+              
+              console.log(err);
+             
+            }
+          );
+        },
+      });
+    }
+    const reader = new FileReader();
+     };
+console.log(clientDetails);
 
     // ✅ Handle member input
     const handleMemberChange = (e) => {

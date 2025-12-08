@@ -37,8 +37,6 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
     });
   }, [formData, projectDetails]);
 
-  console.log(formData);
-  console.log(data);
 
   return (
     <div className="min-h-screen bg-custom-black mt-8 rounded-2xl p-6">
@@ -185,9 +183,11 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 >
                   Attendees
                 </p>
-                <p style={{ fontSize: "14px", color: "#374151" }}>
-                  {data.attendees}
-                </p>
+
+                <div
+                  style={{ fontSize: "14px", color: "#374151" }}
+                  dangerouslySetInnerHTML={{ __html: data.attendees }}
+                ></div>
               </div>
 
               {/* Agenda */}
@@ -202,9 +202,10 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 >
                   Agenda
                 </p>
-                <p style={{ fontSize: "14px", color: "#374151" }}>
-                  {data.agenda}
-                </p>
+                <div
+                  style={{ fontSize: "14px", color: "#374151" }}
+                  dangerouslySetInnerHTML={{ __html: data.agenda }}
+                ></div>
               </div>
 
               {/* Discussions & Decisions */}
@@ -219,9 +220,10 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 >
                   Discussions & Decisions
                 </p>
-                <p style={{ fontSize: "14px", color: "#374151" }}>
-                  {data.discussions}
-                </p>
+                <div
+                  style={{ fontSize: "14px", color: "#374151" }}
+                  dangerouslySetInnerHTML={{ __html: data.discussions }}
+                ></div>
               </div>
 
               {/* Action Items */}
@@ -236,9 +238,11 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 >
                   Action Items
                 </p>
-                <p style={{ fontSize: "14px", color: "#374151" }}>
-                  {data.actionItems}
-                </p>
+
+                <div
+                  style={{ fontSize: "14px", color: "#374151" }}
+                  dangerouslySetInnerHTML={{ __html: data.actionItems }}
+                ></div>
               </div>
 
               {/* Footer */}

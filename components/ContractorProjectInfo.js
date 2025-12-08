@@ -2,11 +2,15 @@ import React, { useRef, useState } from "react";
 import InputField from "./UI/InputField";
 import { Plus, Trash, Upload } from "lucide-react";
 import SelectField from "./UI/SelectField";
+import { toast } from "react-toastify";
+import Compressor from "compressorjs";
+import { ApiFormData } from "@/services/service";
+import { useRouter } from "next/router";
 
 function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
   const fileInputRef = useRef(null);
   const [currentTab, setCurrentTab] = useState("contractorDetails");
-
+   const router = useRouter();
   const [newMember, setNewMember] = useState({
     name: "",
     qualification: "",
@@ -29,16 +33,40 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
     }));
   };
 
-  // 🟡 File upload for logo
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file);
-      setContractorDetails((prev) => ({
-        ...prev,
-        contractorLogo: fileURL,
-      }));
+  const handleFileChange = (event, i) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const fileSizeInMb = file.size / (1024 * 1024);
+    if (fileSizeInMb > 1) {
+      toast.error("Too large file Please upload a smaller image");
+      return;
+    } else {
+      new Compressor(file, {
+        quality: 0.6,
+        success: (compressedResult) => {
+          const data = new FormData();
+          data.append("file", compressedResult);
+
+          ApiFormData("post", "user/fileUpload", data, router).then(
+            (res) => {
+              const fileURL = res.data.fileUrl;
+              console.log("res================>", res.data.fileUrl);
+              if (res.status) {
+                setContractorDetails((prev) => ({
+                  ...prev,
+                  contractorLogo: fileURL,
+                }));
+                toast.success("file uploaded");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        },
+      });
     }
+    const reader = new FileReader();
   };
 
   // 🟡 Team Members
@@ -99,9 +127,10 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
             key={tab}
             onClick={() => setCurrentTab(tab)}
             className={`relative cursor-pointer flex-1 text-center py-2 text-md font-medium transition-all duration-300 
-              ${currentTab === tab
-                ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e0f349]"
-                : "text-gray-300 hover:text-[#e0f349]"
+              ${
+                currentTab === tab
+                  ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e0f349]"
+                  : "text-gray-300 hover:text-[#e0f349]"
               }`}
           >
             {tab === "contractorDetails"
@@ -110,7 +139,6 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
           </p>
         ))}
       </div>
-
 
       {currentTab === "contractorDetails" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 mt-8">
@@ -181,7 +209,6 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
         </div>
       )}
 
-
       {currentTab === "personal" && (
         <div>
           {/* Team Members Table */}
@@ -190,18 +217,35 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
               <table className="min-w-full text-left text-gray-200 border-collapse">
                 <thead className="bg-[#4E4E4E] border-b border-gray-500">
                   <tr>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Name</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Qualification</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Designation</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Action</th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Name
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Qualification
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Designation
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {contractorDetails?.teamMembers?.map((member, index) => (
-                    <tr key={index} className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0">
-                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">{member.name}</td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">{member.qualification}</td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">{member.designation}</td>
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0"
+                    >
+                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">
+                        {member.name}
+                      </td>
+                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                        {member.qualification}
+                      </td>
+                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                        {member.designation}
+                      </td>
                       <td className="px-6 py-3 whitespace-nowrap">
                         <button
                           onClick={() => handleDeleteMember(index)}
@@ -214,7 +258,10 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
                   ))}
                   {contractorDetails?.teamMembers?.length === 0 && (
                     <tr>
-                      <td colSpan="4" className="text-center text-gray-400 py-6 text-sm">
+                      <td
+                        colSpan="4"
+                        className="text-center text-gray-400 py-6 text-sm"
+                      >
                         No members found.
                       </td>
                     </tr>
@@ -226,9 +273,24 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
 
           {/* Add Member Form */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 mt-8">
-            <InputField name="name" value={newMember.name} onChange={handleMemberChange} placeholder="Full Name" />
-            <InputField name="qualification" value={newMember.qualification} onChange={handleMemberChange} placeholder="e.g., B.Eng Civil" />
-            <InputField name="designation" value={newMember.designation} onChange={handleMemberChange} placeholder="e.g., Site Engineer" />
+            <InputField
+              name="name"
+              value={newMember.name}
+              onChange={handleMemberChange}
+              placeholder="Full Name"
+            />
+            <InputField
+              name="qualification"
+              value={newMember.qualification}
+              onChange={handleMemberChange}
+              placeholder="e.g., B.Eng Civil"
+            />
+            <InputField
+              name="designation"
+              value={newMember.designation}
+              onChange={handleMemberChange}
+              placeholder="e.g., Site Engineer"
+            />
             <button
               onClick={handleAddMember}
               className="flex justify-center items-center gap-2 rounded-lg text-white bg-gray-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
@@ -247,20 +309,41 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
               <table className="min-w-full text-left text-gray-200 border-collapse">
                 <thead className="bg-[#4E4E4E] border-b border-gray-500">
                   <tr>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Equipment Name</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Type</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Quantity</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Condition</th>
-                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">Action</th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Equipment Name
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Type
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Quantity
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Condition
+                    </th>
+                    <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {contractorDetails?.equipment?.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0">
-                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">{item.name}</td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">{item.type}</td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">{item.quantity}</td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">{item.condition}</td>
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0"
+                    >
+                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">
+                        {item.name}
+                      </td>
+                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                        {item.type}
+                      </td>
+                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                        {item.quantity}
+                      </td>
+                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                        {item.condition}
+                      </td>
                       <td className="px-6 py-3 whitespace-nowrap">
                         <button
                           onClick={() => handleDeleteEquipment(index)}
@@ -273,7 +356,10 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
                   ))}
                   {contractorDetails?.equipment?.length === 0 && (
                     <tr>
-                      <td colSpan="5" className="text-center text-gray-400 py-6 text-sm">
+                      <td
+                        colSpan="5"
+                        className="text-center text-gray-400 py-6 text-sm"
+                      >
                         No equipment found.
                       </td>
                     </tr>
@@ -285,10 +371,31 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
 
           {/* Add Equipment Form */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 mt-8">
-            <InputField name="name" value={equipment.name} onChange={handleEquipmentChange} placeholder="e.g., Excavator" />
-            <InputField name="type" value={equipment.type} onChange={handleEquipmentChange} placeholder="e.g., Heavy machinery" />
-            <InputField name="quantity" type="number" value={equipment.quantity} onChange={handleEquipmentChange} placeholder="1" />
-            <SelectField name="condition" value={equipment.condition} onChange={handleEquipmentChange} options={["Excellent", "Good", "Fair", "Poor"]} />
+            <InputField
+              name="name"
+              value={equipment.name}
+              onChange={handleEquipmentChange}
+              placeholder="e.g., Excavator"
+            />
+            <InputField
+              name="type"
+              value={equipment.type}
+              onChange={handleEquipmentChange}
+              placeholder="e.g., Heavy machinery"
+            />
+            <InputField
+              name="quantity"
+              type="number"
+              value={equipment.quantity}
+              onChange={handleEquipmentChange}
+              placeholder="1"
+            />
+            <SelectField
+              name="condition"
+              value={equipment.condition}
+              onChange={handleEquipmentChange}
+              options={["Excellent", "Good", "Fair", "Poor"]}
+            />
             <button
               onClick={handleAddEquipment}
               className="flex justify-center items-center gap-2 rounded-lg text-white bg-gray-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
@@ -298,8 +405,6 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

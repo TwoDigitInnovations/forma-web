@@ -3,6 +3,7 @@ import { ArrowLeft, X, Save, Download } from "lucide-react";
 import { useRouter } from "next/router";
 import InputField from "../../../../components/UI/InputField";
 import TextAreaField from "../../../../components/UI/TextAreaField";
+import RichTextEditor from "../../../../components/UI/ListEditer";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import MeetingMinutesPdf from "../../../../components/documents/MeetingMintuesPdf";
@@ -187,6 +188,8 @@ function MeetingMinutes(props) {
       });
   };
 
+  console.log(formData);
+  
   return (
     <div className="bg-black  md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
       <div className="w-full bg-custom-green rounded-[16px] px-4 py-4 flex-wrap gap-4">
@@ -267,42 +270,46 @@ function MeetingMinutes(props) {
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
+          <RichTextEditor
             label="Attendees"
             name="attendees"
             value={formData.attendees}
-            onChange={handleInputChange}
-            placeholder="List of people attending the meeting"
+            onChange={(content) => {
+              setFormData({ ...formData, attendees: content });
+            }}
           />
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
+          <RichTextEditor
             label="Agenda"
             name="agenda"
             value={formData.agenda}
-            onChange={handleInputChange}
-            placeholder="Meeting agenda points"
+            onChange={(content) => {
+              setFormData({ ...formData, agenda: content });
+            }}
           />
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
+          <RichTextEditor
             label="Discussions & Decisions"
             name="discussions"
             value={formData.discussions}
-            onChange={handleInputChange}
-            placeholder="Key discussions and decisions"
+            onChange={(content) => {
+              setFormData({ ...formData, discussions: content });
+            }}
           />
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
+          <RichTextEditor
             label="Action Items"
             name="actionItems"
             value={formData.actionItems}
-            onChange={handleInputChange}
-            placeholder="Tasks assigned to members"
+            onChange={(content) => {
+              setFormData({ ...formData, actionItems: content });
+            }}
           />
         </div>
 
