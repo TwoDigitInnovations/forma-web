@@ -40,7 +40,7 @@ const ProgressUpdate = (props) => {
   useEffect(() => {
     if (!projectData) return;
 
-    const contractAmount = Number(projectData.projectBudget || 0);
+    const contractAmount = Number(projectData.contractAmount || 0);
     const paidAmount = Number(projectData.paidAmount || 0);
     const advancePayment = Number(projectData.advancePayment || 0);
 

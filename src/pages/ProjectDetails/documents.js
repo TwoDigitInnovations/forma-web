@@ -16,7 +16,7 @@ import { ConfirmModal } from "../../../components/AllComponents";
 
 const documents = (props) => {
   const router = useRouter();
-  const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
+  const [projectDetails, setProjectdetails] = useState({});
   const [projectId, setProjectId] = useState("");
   const [SelectedType, setSelectedType] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -28,12 +28,29 @@ const documents = (props) => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
       const project = JSON.parse(stored);
-      setProjectdetails(project);
+
       setProjectId(project._id);
       getAllDocuments(project._id);
+      getProjectbyId(project._id);
     }
   }, []);
 
+  const getProjectbyId = async (id) => {
+    props.loader(true);
+    Api("get", `project/getProjectById/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          const project = res.data?.data;
+          setProjectdetails(project);
+          localStorage.setItem("projectDetails", JSON.stringify(project));
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
   const menuRef = useRef(null);
 
   useEffect(() => {

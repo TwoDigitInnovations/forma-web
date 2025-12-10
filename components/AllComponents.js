@@ -136,11 +136,11 @@ export const Certificates = ({
     status: "Submitted",
   });
 
-  useEffect(() => {
-    if (summary) {
-      setAdvanceAmount(summary.advancePayment || 0);
-    }
-  }, [summary]);
+  // useEffect(() => {
+  //   if (summary) {
+  //     setAdvanceAmount(summary.advancePayment || 0);
+  //   }
+  // }, [summary]);
 
   const handleAddCertificate = async () => {
     if (!cert.certNo || !cert.amount || !cert.date) {
@@ -268,6 +268,7 @@ export const Certificates = ({
       toast.error("Error updating status");
     }
   };
+
   const handleStatusConfirm = async () => {
     if (!pendingId || !pendingStatus) return;
 
@@ -333,6 +334,22 @@ export const Certificates = ({
       toast.error(err?.message || "An error occurred");
     }
   };
+
+  let totalSubmitted = 0;
+  let totalInProcess = 0;
+  let totalPaid = 0;
+
+  certificates?.forEach((certificate) => {
+    const amt = Number(certificate.amount || 0);
+
+    if (certificate.status === "Submitted") {
+      totalSubmitted += amt;
+    } else if (certificate.status === "In-Process") {
+      totalInProcess += amt;
+    } else if (certificate.status === "Paid") {
+      totalPaid += amt;
+    }
+  });
 
   return (
     <div className="mt-10 bg-transparent py-4 rounded-xl shadow">
@@ -473,6 +490,32 @@ export const Certificates = ({
             </thead>
 
             <tbody>
+              <tr className="border-b transition">
+                <td className="p-3">{"Advance Payment"}</td>
+
+                <td className="p-3">{"-"}</td>
+
+                <td className="p-3">{"-"}</td>
+
+                <td className="p-3 ">{advanceAmount || "-"}</td>
+
+                <td className="p-3 ">
+                  <p className="border p-2 rounded cursor-pointer text-white w-26">
+                    {" "}
+                    {"Paid"}
+                  </p>
+                </td>
+
+                <td className="p-3 flex gap-3 justify-center">
+                  <button
+                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                    onClick={() => setAdvanceAmount(summary.advancePayment || 0)}
+                  >
+                    <Edit />
+                  </button>
+                </td>
+              </tr>
+
               {certificates?.map((item) => (
                 <tr key={item._id} className="border-b transition">
                   <td className="p-3">{item.certificateNo}</td>
@@ -542,6 +585,15 @@ export const Certificates = ({
                   </td>
                 </tr>
               ))}
+              <tr className=" font-semibold">
+                <td className="p-3 text-left">Total:</td>
+                <td className="p-3">${totalSubmitted}</td>
+                <td className="p-3">${totalInProcess}</td>
+                <td className="p-3">${totalPaid + advanceAmount}</td>
+                <td className="p-3"></td>
+                <td className="p-3"></td>
+        
+              </tr>
             </tbody>
           </table>
         </div>

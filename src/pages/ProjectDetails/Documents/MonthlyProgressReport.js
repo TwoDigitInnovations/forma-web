@@ -12,37 +12,17 @@ function MonthlyProgressReport(props) {
   const router = useRouter();
   const [projectId, setProjectId] = useState("");
   const [editId, setEditId] = useState("");
-  const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
+  const [projectDetails, setProjectDetails] = useState({});
   const contentRef = useRef(null);
   const [topLogo, setTopLogo] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [leftLogo, setLeftLogo] = useState("");
   const [rightLogo, setRightLogo] = useState("");
   const [editData, setEditData] = useState("");
-
-    const [data, setData] = useState({
-      clientName: "",
-      ProjectScope: "",
-      ProjectSummary: "",
-      ExcuetiveSummary: "",
-      coverUrl: "",
-      leftLogo: "",
-      rightLogo: "",
-      projectTitle: "",
-      projectNo: "",
-      LogoImage: "",
-      contractorName: "",
-      contractorContact: "",
-      certificateNo: "",
-      location: "",
-      employerName: "",
-      contractAmount: "",
-      reportMonth: "",
-      reportYear: "",
-      contractorEquipment: [],
-      contractorPersonnel: {},
-      clientPersonnel: {},
-    });
+  const [allItems, setAllItems] = useState([]);
+  const [data, setData] = useState({});
+  const [Summary, setSummary] = useState({});
+  const [allPlanData, setAllPlanData] = useState([]);
 
   const generateDocumentName = (type) => {
     const formattedType = type
@@ -63,10 +43,29 @@ function MonthlyProgressReport(props) {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
       const project = JSON.parse(stored);
-      setProjectDetails(project);
+      getProjectbyId(project._id);
       setProjectId(project._id);
+      getAllActionPoints(project._id);
+      getAllPlanByProjectId(project._id);
     }
   }, []);
+
+  const getProjectbyId = async (id) => {
+    props.loader(true);
+    Api("get", `project/getProjectById/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          const project = res.data?.data;
+          setProjectDetails(project);
+          localStorage.setItem("projectDetails", JSON.stringify(project));
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -77,6 +76,63 @@ function MonthlyProgressReport(props) {
       getDetails(id);
     }
   }, [router.isReady, router.query.editId]);
+
+  useEffect(() => {
+    if (!projectDetails || !allItems) return;
+
+    const base = {
+      clientName: projectDetails?.clientInfo?.ClientName || "BRA",
+      coverUrl: coverPhoto || "",
+      leftLogo: leftLogo || "",
+      rightLogo: rightLogo || "",
+      ProjectScope: projectDetails?.ProjectScope || "",
+      ProjectSummary: projectDetails?.description || "",
+      ExcuetiveSummary: projectDetails?.ExcuetiveSummary || "",
+      projectTitle:
+        projectDetails?.projectName || "proposed construction of daynille road",
+      projectNo: projectDetails?.projectNo || "",
+      LogoImage: topLogo || "",
+      contractorName:
+        projectDetails?.contractorInfo?.contractorName || "Contractor Name",
+      contractorContact:
+        projectDetails?.contractorInfo?.phone || "Contractor Contact",
+      certificateNo: projectDetails?.certificateNo || "TOC-undefined-2025",
+      location: projectDetails?.location || "Mogadishu",
+      employerName: projectDetails?.clientInfo?.ClientName || "BRA",
+      contractAmount: projectDetails?.contractAmount || "0.00",
+      advancePayment: projectDetails?.advancePayment || "0.00",
+      paidAmount: projectDetails?.paidAmount || "0.00",
+      certificates: projectDetails?.certificates || [],
+      reportMonth: "DECEMBER",
+      reportYear: "2025",
+      contractorEquipment: projectDetails?.contractorInfo?.equipment || [],
+      contractorPersonnel: projectDetails?.contractorInfo || {},
+      clientPersonnel: projectDetails?.clientInfo || {},
+      issuesConcern: allItems,
+      workplan:allPlanData
+    };
+    setData(base);
+
+    // if (editId && editData) {
+    //   console.log("editData", editData);
+
+    //   setData({
+    //     ...base,
+    //     ...editData,
+    //   });
+    // } else {
+    //   console.log("base", base);
+    // }
+  }, [
+    projectDetails,
+    allItems,
+    topLogo,
+    coverPhoto,
+    rightLogo,
+    leftLogo,
+    editId,
+    editData,
+  ]);
 
   const reset = () => {
     setCoverPhoto("");
@@ -95,13 +151,13 @@ function MonthlyProgressReport(props) {
       let method = "post";
       const documentName = generateDocumentName(router.query.type);
 
-      let data;
+      let maindata;
 
       if (editId) {
         url = `documents/update/${editId}`;
         method = "put";
         maindata = {
-          data: { topLogo, coverPhoto, leftLogo, rightLogo , ...data },
+          data: { topLogo, coverPhoto, leftLogo, rightLogo, ...data },
         };
       } else {
         url = `documents/create`;
@@ -120,6 +176,8 @@ function MonthlyProgressReport(props) {
       if (res?.status) {
         toast.success(editId ? "Documents updated!" : "Documents created!");
         router.push(`/ProjectDetails/Documents`);
+        const data = res.data?.data?.data;
+        setEditData(data);
       } else {
         toast.error(res?.message || "Something went wrong");
       }
@@ -136,12 +194,14 @@ function MonthlyProgressReport(props) {
       .then((res) => {
         props.loader(false);
         if (res?.status) {
-          const data = res.data.data.data;
-          setCoverPhoto(data?.coverPhoto);
-          setLeftLogo(data?.leftLogo);
-          setRightLogo(data?.rightLogo);
-          setTopLogo(data?.topLogo);
-          setEditData();
+          const d = res.data.data.data;
+
+          setCoverPhoto(d.coverPhoto);
+          setLeftLogo(d.leftLogo);
+          setRightLogo(d.rightLogo);
+          setTopLogo(d.topLogo);
+
+          setEditData(d);
         }
       })
       .catch((err) => {
@@ -183,6 +243,45 @@ function MonthlyProgressReport(props) {
       },
     });
   };
+
+  const getAllActionPoints = async (id) => {
+    const projectId = id;
+    props.loader(true);
+    Api("get", `action-Point/getAlllist/${projectId}`)
+      .then((res) => {
+        if (res?.status === true) {
+          console.log(res?.data.data);
+          setAllItems(res?.data.data);
+          props.loader(false);
+        }
+      })
+      .catch(() => {
+        props.loader(false);
+        toast.error("Failed to fetch action points");
+      });
+  };
+
+  const getAllPlanByProjectId = async (id) => {
+    props.loader(true);
+
+    let url = `workplan/getAllPlans?projectId=${id}`;
+
+    Api("get", url, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllPlanData(res?.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch work plans");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  console.log(allItems);
 
   return (
     <div className="bg-black md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
@@ -344,18 +443,9 @@ function MonthlyProgressReport(props) {
       </div>
 
       <MonthlyProgressReportPdf
-        formData={{
-          topLogo,
-          leftLogo,
-          rightLogo,
-          coverPhoto,
-        }}
         data={data}
-        setData={setData}
-        contentRef={contentRef}
-        editData={editData}
-        editId={editId}
-        projectDetails={projectDetails}
+        Summary={Summary}
+        setSummary={setSummary}
       />
     </div>
   );
