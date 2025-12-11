@@ -14,7 +14,6 @@ function PricingPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <BeforeLoginNavbar />
       <section className="max-w-7xl mx-auto px-4 py-20 text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
           Choose the perfect plan
@@ -34,8 +33,7 @@ function PricingPage() {
           </button>
         </div>
       </section>
-
-      {/* Pricing Cards */}
+   
       <section className="max-w-7xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
           {/* Individual Plan */}
@@ -74,7 +72,7 @@ function PricingPage() {
           </div>
 
           {/* Team Plan - Featured */}
-          <div className="bg-gradient-to-b from-orange-500/20 to-gray-900 rounded-2xl p-8 border-2 border-orange-500 relative">
+          <div className="bg-gradient-to-b from-yellow-500/20 to-gray-900 rounded-2xl p-8 border-2 border-yellow-400 relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span
                 style={{ backgroundColor: "#e0f349" }}
@@ -175,7 +173,6 @@ function PricingPage() {
         </div>
       </section>
 
-      {/* Compare Features */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <h2 className="text-4xl font-bold text-center mb-4">
           Compare features
@@ -285,7 +282,7 @@ function PricingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
+    
       <section className="max-w-4xl mx-auto px-4 py-20">
         <h2 className="text-4xl font-bold text-center mb-12">
           Frequently Asked Questions
@@ -328,9 +325,6 @@ function PricingPage() {
           ))}
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

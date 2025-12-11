@@ -5,40 +5,36 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import SidePannel from "./SidePannel";
 import Navbar from "./Navbar";
+import BeforeLoginNavbar from "./beforLoginNavbar";
+import Footer from "./Footer";
 
-const Layout = ({ children, loader, toaster }) => {
+const Layout = ({ children }) => {
   const router = useRouter();
   const [openTab, setOpenTab] = useState(false);
 
-  return (
-    <div className="h-screen max-w-screen bg-white">
-      <div className="md:h-[10vh] h-[8vh] w-full">
-        <div className="max-w-screen flex  relative ">
-          {!(
-            router.pathname.includes("/login") ||
-            router.pathname.includes("/PlanPage")
-          ) && <SidePannel setOpenTab={setOpenTab} openTab={openTab} />}
-          <div
-            className={
-              !(
-                router.pathname.includes("/login") ||
-                router.pathname.includes("/PlanPage")
-              )
-                ? "w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]"
-                : "w-full"
-            }
-          >
-            <main className={"w-full h-screen relative"}>
-              {!(
-                router.pathname.includes("/login") ||
-                router.pathname.includes("/PlanPage")
-              ) && <Navbar setOpenTab={setOpenTab} openTab={openTab} />}
+  const isBeforeLoginPage =
+    router.pathname.includes("/login") ||
+    router.pathname.includes("/PlanPage"); // <- These two pages show BeforeLoginNavbar + Footer
 
-              {children}
-            </main>
+  return (
+    <div className="min-h-screen max-w-screen bg-white flex flex-col">
+
+      {isBeforeLoginPage && <BeforeLoginNavbar />}
+
+      {!isBeforeLoginPage && (
+        <div className="flex w-full">
+          <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
+
+          <div className="w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]">
+            <Navbar setOpenTab={setOpenTab} openTab={openTab} />
+            {children}
           </div>
         </div>
-      </div>
+      )}
+
+      {isBeforeLoginPage && <main className="flex-1">{children}</main>}
+
+      {isBeforeLoginPage && <Footer />}
     </div>
   );
 };
