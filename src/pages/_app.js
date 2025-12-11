@@ -10,7 +10,7 @@ export const ProjectDetailsContext = createContext();
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
-  const [projectDetails, setProjectdetails] = useState({})
+  const [projectDetails, setProjectdetails] = useState({});
   const [open, setOpen] = useState(false); // loader state
   const [toast, setToast] = useState({
     type: "",
@@ -31,21 +31,29 @@ export default function App({ Component, pageProps }) {
     getUserDetail();
   }, []);
 
+  const publicRoutes = ["/planpage", "/login"];
+
   const getUserDetail = () => {
+    let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
+    const isPublic = publicRoutes.includes(currentPath);
+
     const user = localStorage.getItem("userDetail");
-    if (user) {
-      setUser(JSON.parse(user));
-    } else {
-      if (router.route !== "/login") {
-        router.push("/login");
+
+    if (!user) {
+      if (!isPublic) {
+        router.push("/PlanPage");
       }
+    } else {
+      setUser(JSON.parse(user));
     }
   };
 
   return (
     <>
       <userContext.Provider value={[user, setUser]}>
-        <ProjectDetailsContext.Provider value={[projectDetails, setProjectdetails]}>
+        <ProjectDetailsContext.Provider
+          value={[projectDetails, setProjectdetails]}
+        >
           <Loader open={open} />
           <ToastContainer position="top-right" autoClose={3000} />
           <Layout loader={setOpen} toaster={setToast}>

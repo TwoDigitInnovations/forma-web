@@ -6,6 +6,11 @@ const isAuth = (Component) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
+    const publicRoutes = ["/planpage", "/login"];
+
+    let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
+    const isPublic = publicRoutes.includes(currentPath);
+
     useEffect(() => {
       if (typeof window === "undefined") return;
 
@@ -13,34 +18,29 @@ const isAuth = (Component) => {
       const userData = localStorage.getItem("userDetail");
 
       if (!token || !userData) {
-
-        redirectToLogin();
+        if (!isPublic) router.replace("/PlanPage");
+        else setIsAuthorized(true);
         return;
       }
-      console.log(token, userData);
+
       try {
         const user = JSON.parse(userData);
         if (!user || !user._id) {
-          redirectToLogin();
+          router.replace("/PlanPage");
           return;
         }
 
         setIsAuthorized(true);
-      } catch (err) {
-        redirectToLogin();
+      } catch {
+        router.replace("/PlanPage");
       }
-    }, []);
+    }, [router.pathname]);
 
-    const redirectToLogin = () => {
-      localStorage.clear();
-      setIsAuthorized(false);
-      router.replace("/login");
-    };
+    if (isAuthorized === null && !isPublic) return null;
 
-    if (isAuthorized === null) return null;
-
-    return isAuthorized ? <Component {...props} /> : null;
+    return <Component {...props} />;
   };
 };
 
 export default isAuth;
+

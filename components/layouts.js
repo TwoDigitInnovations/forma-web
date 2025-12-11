@@ -8,32 +8,37 @@ import Navbar from "./Navbar";
 
 const Layout = ({ children, loader, toaster }) => {
   const router = useRouter();
-  const [openTab, setOpenTab] = useState(false)
+  const [openTab, setOpenTab] = useState(false);
 
   return (
     <div className="h-screen max-w-screen bg-white">
-
-      <div className="md:h-[10vh] h-[8vh] w-full"
-      >
+      <div className="md:h-[10vh] h-[8vh] w-full">
         <div className="max-w-screen flex  relative ">
-          {
-            !(router.pathname.includes('/login')) &&
-            <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
-          }
-          <div className={
-            !(router.pathname.includes('/login')) ? "w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]" : "w-full"}>
-            <main className={"w-full h-screen relative overflow-hidden"}>
-              {
-                !(router.pathname.includes('/login')) &&
-                <Navbar setOpenTab={setOpenTab} openTab={openTab} />
-              }
+          {!(
+            router.pathname.includes("/login") ||
+            router.pathname.includes("/PlanPage")
+          ) && <SidePannel setOpenTab={setOpenTab} openTab={openTab} />}
+          <div
+            className={
+              !(
+                router.pathname.includes("/login") ||
+                router.pathname.includes("/PlanPage")
+              )
+                ? "w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]"
+                : "w-full"
+            }
+          >
+            <main className={"w-full h-screen relative"}>
+              {!(
+                router.pathname.includes("/login") ||
+                router.pathname.includes("/PlanPage")
+              ) && <Navbar setOpenTab={setOpenTab} openTab={openTab} />}
+
               {children}
             </main>
           </div>
-
         </div>
       </div>
-
     </div>
   );
 };
