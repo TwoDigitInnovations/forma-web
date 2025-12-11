@@ -1,7 +1,12 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
-const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
+const MonthlyProgressReportPdf = ({
+  data,
+  Summary,
+  setSummary,
+  contentRef,
+}) => {
   useEffect(() => {
     if (!data) return;
 
@@ -43,31 +48,117 @@ const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
     });
   }, [data]);
 
+  const tdStyle = {
+    border: "1px solid #D1D5DB",
+    padding: "12px",
+    backgroundColor: "#FFFFFF",
+  };
+
   return (
-    <div className="min-h-screen mt-8 rounded-2xl">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
-          <div className="w-[300mm] min-h-[297mm] bg-white text-black font-sans px-12 py-10">
-            <div className="text-center mb-10">
+    <div
+      style={{
+        minHeight: "100vh",
+        marginTop: "32px",
+        borderRadius: "16px",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1200px",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#ffffff",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            ref={contentRef}
+            style={{
+              width: "300mm",
+              minHeight: "297mm",
+              backgroundColor: "#ffffff",
+              color: "#000000",
+              fontFamily: "sans-serif",
+              paddingLeft: "48px",
+              paddingRight: "48px",
+              paddingTop: "40px",
+              paddingBottom: "40px",
+              boxSizing: "border-box",
+            }}
+          >
+            <div style={{ textAlign: "center", marginBottom: "40px" }}>
               {data.LogoImage && (
                 <img
                   src={data.LogoImage}
                   alt="Logo"
-                  className="max-w-[120px] h-auto mx-auto mb-8"
+                  style={{
+                    maxWidth: "120px",
+                    height: "auto",
+                    margin: "0 auto 32px auto",
+                    display: "block",
+                  }}
                 />
               )}
 
-              <h1 className="text-2xl font-bold mb-1">{data.clientName}</h1>
-              <p className="text-sm text-gray-600 mb-2">{data.projectTitle}</p>
+              <h1
+                style={{
+                  fontSize: "22px",
+                  fontWeight: "bold",
+                  marginBottom: "6px",
+                }}
+              >
+                {data.clientName}
+              </h1>
 
-              <div className="inline-block bg-amber-300 px-5 py-2 rounded text-sm font-medium">
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: "#666",
+                  marginBottom: "10px",
+                }}
+              >
+                {data.projectTitle}
+              </p>
+
+              <div
+                style={{
+                  display: "inline-block",
+                  background: "#FCD34D",
+                  padding: "8px 20px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                }}
+              >
                 {data.projectTitle}
               </div>
             </div>
 
-            <div className="text-center my-10">
-              <div className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg shadow-lg">
-                <h2 className="text-[22px] text-white font-bold tracking-wide">
+            <div style={{ textAlign: "center", margin: "40px 0" }}>
+              <div
+                style={{
+                  display: "inline-block",
+                  background: "linear-gradient(to right, #2563EB, #3B82F6)",
+                  padding: "16px 28px",
+                  borderRadius: "10px",
+                  boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: "22px",
+                    color: "white",
+                    fontWeight: "bold",
+                    letterSpacing: "1px",
+                    margin: 0,
+                  }}
+                >
                   MONTHLY PROGRESS REPORT – {data.reportMonth} {data.reportYear}
                 </h2>
               </div>
@@ -77,22 +168,35 @@ const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
               <img
                 src={data?.coverUrl}
                 alt="Cover"
-                className="max-w-[420px] h-auto mx-auto mb-8"
+                style={{
+                  maxWidth: "420px",
+                  height: "auto",
+                  margin: "0 auto 32px auto",
+                  display: "block",
+                }}
               />
             )}
 
-            <div className="text-center my-8">
-              <p className="text-lg font-semibold">
+            <div style={{ textAlign: "center", margin: "30px 0" }}>
+              <p style={{ fontSize: "18px", fontWeight: 600 }}>
                 {data.reportMonth} 5, {data.reportYear}
               </p>
             </div>
 
-            <div className="flex justify-center items-center gap-5 my-10">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "20px",
+                margin: "40px 0",
+              }}
+            >
               {data?.leftLogo && (
                 <img
                   src={data?.leftLogo}
                   alt="Left Logo"
-                  className="max-w-[110px] h-auto"
+                  style={{ maxWidth: "110px", height: "auto" }}
                 />
               )}
 
@@ -100,61 +204,114 @@ const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
                 <img
                   src={data?.rightLogo}
                   alt="Right Logo"
-                  className="max-w-[110px] h-auto"
+                  style={{ maxWidth: "110px", height: "auto" }}
                 />
               )}
             </div>
 
-            <div className="mt-14">
-              <h3 className="text-lg font-bold mb-5">TABLE OF CONTENTS</h3>
+            {/* TABLE OF CONTENTS */}
+            <div style={{ marginTop: "56px" }}>
+              <h3
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginBottom: "20px",
+                }}
+              >
+                TABLE OF CONTENTS
+              </h3>
 
-              <div className="text-sm leading-7">
-                <p className="font-semibold">1. INTRODUCTION</p>
-                <p className="ml-5">1.1 Project Summary</p>
-                <p className="ml-5 mb-3">1.2 Location and Extents of Works</p>
+              <div style={{ fontSize: "14px", lineHeight: "24px" }}>
+                <p style={{ fontWeight: 600 }}>1. INTRODUCTION</p>
+                <p style={{ marginLeft: "20px" }}>1.1 Project Summary</p>
+                <p style={{ marginLeft: "20px", marginBottom: "12px" }}>
+                  1.2 Location and Extents of Works
+                </p>
 
-                <p className="font-semibold">2. PROJECT INFORMATION</p>
+                <p style={{ fontWeight: 600 }}>2. PROJECT INFORMATION</p>
 
-                <p className="font-semibold mt-2">3. SCOPE OF WORK</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  3. SCOPE OF WORK
+                </p>
 
-                <p className="font-semibold mt-2">4. PROGRESS</p>
-                <p className="ml-5">4.1 Overall Progress</p>
-                <p className="ml-5">4.2 Work Progress</p>
-                <p className="ml-5 mb-2">4.3 Financial Progress</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  4. PROGRESS
+                </p>
+                <p style={{ marginLeft: "20px" }}>4.1 Overall Progress</p>
+                <p style={{ marginLeft: "20px" }}>4.2 Work Progress</p>
+                <p style={{ marginLeft: "20px", marginBottom: "10px" }}>
+                  4.3 Financial Progress
+                </p>
 
-                <p className="font-semibold mt-2">5. WORK PLAN</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  5. WORK PLAN
+                </p>
 
-                <p className="font-semibold mt-2">6. CLIENT PERSONNEL</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  6. CLIENT PERSONNEL
+                </p>
 
-                <p className="font-semibold mt-2">7. CONTRACTOR PERSONNEL</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  7. CONTRACTOR PERSONNEL
+                </p>
 
-                <p className="font-semibold mt-2">8. CONTRACTOR'S EQUIPMENT</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  8. CONTRACTOR'S EQUIPMENT
+                </p>
 
-                <p className="font-semibold mt-2">9. ISSUES AND CONCERNS</p>
+                <p style={{ fontWeight: 600, marginTop: "10px" }}>
+                  9. ISSUES AND CONCERNS
+                </p>
               </div>
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold">1. INTRODUCTION</h2>
-              <h3 className="text-base font-bold mt-4">1.1 Project Summary</h3>
+            {/* INTRODUCTION */}
+            <div style={{ marginTop: "32px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                1. INTRODUCTION
+              </h2>
+
+              <h3
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  marginTop: "16px",
+                }}
+              >
+                1.1 Project Summary
+              </h3>
+
               {data?.ProjectSummary ? (
-                <p className="text-sm text-gray-600">{data?.ProjectSummary}</p>
+                <p style={{ fontSize: "14px", color: "#555" }}>
+                  {data?.ProjectSummary}
+                </p>
               ) : (
-                <p className="text-sm text-gray-600">
+                <p style={{ fontSize: "14px", color: "#555" }}>
                   No description provided for this project.
                 </p>
               )}
 
-              <h3 className="text-base font-bold mt-4">
+              <h3
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  marginTop: "16px",
+                }}
+              >
                 1.2 Location and Extents of Works
               </h3>
-              <p className="text-sm text-gray-600">
-                <span className="font-semibold">Location:</span> {data.location}
+
+              <p style={{ fontSize: "14px", color: "#555" }}>
+                <span style={{ fontWeight: 600 }}>Location:</span>{" "}
+                {data.location}
               </p>
             </div>
 
-            <div className="mt-10">
-              <h2 className="text-lg font-bold">2. PROJECT INFORMATION</h2>
+            {/* PROJECT INFO */}
+            <div style={{ marginTop: "40px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                2. PROJECT INFORMATION
+              </h2>
 
               <div
                 dangerouslySetInnerHTML={{
@@ -162,13 +319,38 @@ const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
                 }}
               ></div>
 
-              <table className="w-full border-collapse text-sm mt-5 mb-6">
+              {/* TABLE */}
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: "14px",
+                  marginTop: "20px",
+                  marginBottom: "24px",
+                }}
+              >
                 <thead>
                   <tr>
-                    <th className="border border-gray-300 p-2 bg-gray-100 font-semibold">
+                    <th
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "8px",
+                        background: "#f5f5f5",
+                        fontWeight: 600,
+                        textAlign: "left",
+                      }}
+                    >
                       Item
                     </th>
-                    <th className="border border-gray-300 p-2 bg-gray-100 font-semibold">
+                    <th
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "8px",
+                        background: "#f5f5f5",
+                        fontWeight: 600,
+                        textAlign: "left",
+                      }}
+                    >
                       Details
                     </th>
                   </tr>
@@ -195,495 +377,794 @@ const MonthlyProgressReportPdf = ({ data, Summary, setSummary }) => {
                     ["14. Percentage of amount certified to date", "0%"],
                   ].map(([item, value], index) => (
                     <tr key={index}>
-                      <td className="border border-gray-300 p-2">{item}</td>
-                      <td className="border border-gray-300 p-2">{value}</td>
+                      <td
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "8px",
+                          verticalAlign: "top",
+                        }}
+                      >
+                        {item}
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "8px",
+                          verticalAlign: "top",
+                        }}
+                      >
+                        {value}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold">3. SCOPE OF WORK</h2>
+          
+            <div style={{ marginTop: "32px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                3. SCOPE OF WORK
+              </h2>
+
               {data.ProjectScope ? (
                 <div
-                  dangerouslySetInnerHTML={{
-                    __html: data?.ProjectScope || "",
-                  }}
+                  dangerouslySetInnerHTML={{ __html: data.ProjectScope }}
+                  style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}
                 ></div>
               ) : (
-                <p className="text-base text-gray-600 mt-2 mb-5">
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#666",
+                    marginTop: "8px",
+                    marginBottom: "20px",
+                  }}
+                >
                   No scope of work details provided.
                 </p>
               )}
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold mb-2">4. PROGRESS</h2>
-              <div>
-                <p className="text-base text-gray-600 mb-5">
-                  4.1 Overall Progress
-                </p>
-                <div className="w-full mb-6">
-                  <div className="grid grid-cols-3 gap-10">
-                    <div>
-                      <p className="text-sm text-gray-500">Completion Status</p>
-                      <p className="text-2xl font-bold">4%</p>
+        
+            <div style={{ marginTop: "32px" }}>
+              <h2
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginBottom: "8px",
+                }}
+              >
+                4. PROGRESS
+              </h2>
 
-                      <div className="w-full bg-gray-300 h-3 rounded-full mt-2">
-                        <div
-                          className="h-3 bg-custom-yellow rounded-full"
-                          style={{ width: "10%" }}
-                        ></div>
-                      </div>
+              {/* 4.1 Overall Progress */}
+              <p
+                style={{
+                  fontSize: "15px",
+                  color: "#666",
+                  marginBottom: "20px",
+                }}
+              >
+                4.1 Overall Progress
+              </p>
+
+              <div style={{ width: "100%", marginBottom: "24px" }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: "40px",
+                  }}
+                >
+                  {/* Completion Status */}
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Completion Status
+                    </p>
+                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>4%</p>
+
+                    <div
+                      style={{
+                        width: "100%",
+                        background: "#d1d5db",
+                        height: "12px",
+                        borderRadius: "10px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "12px",
+                          width: "10%",
+                          background: "#fbbf24",
+                          borderRadius: "10px",
+                        }}
+                      ></div>
                     </div>
+                  </div>
 
-                    {/* Days Elapsed */}
-                    <div>
-                      <p className="text-sm text-gray-500">Days Elapsed</p>
-                      <p className="text-2xl font-bold">63%</p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        150 / 239 days
-                      </p>
+                  {/* Days Elapsed */}
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Days Elapsed
+                    </p>
+                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>63%</p>
+                    <p
+                      style={{
+                        fontSize: "13px",
+                        color: "#777",
+                        marginTop: "5px",
+                      }}
+                    >
+                      150 / 239 days
+                    </p>
 
-                      <div className="w-full bg-gray-300 h-3 rounded-full mt-2">
-                        <div
-                          className="h-3 bg-custom-yellow rounded-full"
-                          style={{ width: "63%" }}
-                        ></div>
-                      </div>
+                    <div
+                      style={{
+                        width: "100%",
+                        background: "#d1d5db",
+                        height: "12px",
+                        borderRadius: "10px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "12px",
+                          width: "63%",
+                          background: "#fbbf24",
+                          borderRadius: "10px",
+                        }}
+                      ></div>
                     </div>
+                  </div>
 
-                    <div>
-                      <p className="text-sm text-gray-500">Budget Used</p>
-                      <p className="text-2xl font-bold">{Summary?.progress}%</p>
+                  {/* Budget Used */}
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Budget Used
+                    </p>
+                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>
+                      {Summary?.progress}%
+                    </p>
 
-                      <div className="w-full bg-gray-300 h-3 rounded-full mt-2">
-                        <div
-                          className="h-3 bg-custom-yellow rounded-full"
-                          style={{ width: Summary?.progress }}
-                        ></div>
-                      </div>
+                    <div
+                      style={{
+                        width: "100%",
+                        background: "#d1d5db",
+                        height: "12px",
+                        borderRadius: "10px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "12px",
+                          width: Summary?.progress + "%",
+                          background: "#fbbf24",
+                          borderRadius: "10px",
+                        }}
+                      ></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <p className="text-base text-gray-600 mb-5">4.2 Work Progress</p>
-              <p className="text-base text-gray-600 mb-6">---</p>
+              <p
+                style={{
+                  fontSize: "15px",
+                  color: "#666",
+                  marginBottom: "20px",
+                }}
+              >
+                4.2 Financial Progress
+              </p>
 
-              <div className="">
-                <p className="text-base text-gray-600 mb-5">
-                  4.3 Financial Progress
-                </p>
-                <div className="w-full ">
-                  <div className="grid grid-cols-4 gap-6 mb-6">
-                    <div>
-                      <p className="text-sm text-gray-500">Contract Amount</p>
-                      <p className="text-xl font-semibold">
-                        ${Summary.contractAmount}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Total Certified</p>
-                      <p className="text-xl font-semibold">
-                        ${Summary.paidAmount}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Balance</p>
-                      <p className="text-xl font-semibold text-red-600">
-                        -${Summary.remainingPayment}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">
-                        Financial Progress
-                      </p>
-                      <p className="text-xl font-semibold">
-                        {Summary.progress}%
-                      </p>
-                    </div>
+              <div style={{ width: "100%" }}>
+                
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(4, 1fr)",
+                    gap: "24px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Contract Amount
+                    </p>
+                    <p style={{ fontSize: "20px", fontWeight: "600" }}>
+                      ${Summary.contractAmount}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-3">
-                    Interim Payment Certificates (IPCs)
-                  </h3>
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Total Certified
+                    </p>
+                    <p style={{ fontSize: "20px", fontWeight: "600" }}>
+                      ${Summary.paidAmount}
+                    </p>
+                  </div>
 
-                  <table className="w-full border-separate border-spacing-y-2">
-                    <thead>
-                      <tr className="text-left text-gray-600 text-sm">
-                        <th className="py-2">#</th>
-                        <th className="py-2">Certificate No.</th>
-                        <th className="py-2">Date Certified</th>
-                        <th className="py-2">Submitted Amount</th>
-                        <th className="py-2">In Process Amount</th>
-                        <th className="py-2">Amount Paid</th>
-                        <th className="py-2">Payment Status</th>
-                      </tr>
-                    </thead>
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>Balance</p>
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        color: "red",
+                      }}
+                    >
+                      -${Summary.remainingPayment}
+                    </p>
+                  </div>
 
-                    <tbody>
-                      <tr className="bg-white">
-                        <td className="p-2">1.</td>
-                        <td className="p-2">Advance Payment</td>
-                        <td className="p-2">-</td>
-                        <td className="p-2">-</td>
-                        <td className="p-2">-</td>
-                        <td className="p-2">${Summary.advancePayment}</td>
-                        <td className="p-2">
-                          <span className="px-3 py-1 bg-gray-800 text-white text-sm rounded-full">
-                            Paid
-                          </span>
-                        </td>
-                      </tr>
-
-                      {data.certificates?.map((certificate, key) => {
-                        let submittedAmount = "-";
-                        let inProcessAmount = "-";
-                        let paidAmount = "-";
-
-                        if (certificate.status === "Submitted") {
-                          submittedAmount = `$${certificate.amount}`;
-                        } else if (certificate.status === "In-Process") {
-                          inProcessAmount = `$${certificate.amount}`;
-                        } else if (certificate.status === "Paid") {
-                          paidAmount = `$${certificate.amount}`;
-                        }
-
-                        return (
-                          <tr className="bg-white" key={key}>
-                            <td className="p-2">{key + 1}.</td>
-                            <td className="p-2">{certificate.certificateNo}</td>
-                            <td className="p-2">
-                              {" "}
-                              {moment(certificate.date).format("DD-MM-YYYY")}
-                            </td>
-
-                            <td className="p-2">{submittedAmount}</td>
-                            <td className="p-2">{inProcessAmount}</td>
-                            <td className="p-2">{paidAmount}</td>
-
-                            <td className="p-2">
-                              <span className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
-                                {certificate.status}
-                              </span>
-                            </td>
-                          </tr>
-                        );
-                      })}
-
-                      {/* TOTAL ROW */}
-                      <tr className="bg-gray-100 font-semibold">
-                        <td className="p-2"></td>
-                        <td className="p-2"></td>
-                        <td className="p-2 text-right">Total:</td>
-
-                        <td className="p-2">${Summary?.totalSubmitted}</td>
-                        <td className="p-2">${Summary?.totalInProcess}</td>
-                        <td className="p-2">
-                          ${Summary?.totalPaid + Summary?.advancePayment}
-                        </td>
-
-                        <td className="p-2"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h2 className="text-lg font-bold">5. WORK PLAN</h2>
-
-              <div className="w-full  rounded-lg">
-                <div className=" gap-6">
-                  <div className="">
-                    {data?.workplan?.map((plan, key) => {
-                      return (
-                        <div key={key} className="mb-6 mt-4">
-                          <p className="font-semibold text-base mb-2">
-                            {plan.planName}
-                          </p>
-
-                          <table className="w-full text-left">
-                            <thead>
-                              <tr className="border-b">
-                                <th className="p-2 text-sm font-semibold">
-                                  Activity Name
-                                </th>
-                                <th className="p-2 text-sm font-semibold">
-                                  Start Date
-                                </th>
-                                <th className="p-2 text-sm font-semibold">
-                                  Duration
-                                </th>
-                                <th className="p-2 text-sm font-semibold">
-                                  End Date
-                                </th>
-                              </tr>
-                            </thead>
-
-                            <tbody>
-                              {plan?.workActivities?.length > 0 ? (
-                                plan.workActivities.map((item, index) => (
-                                  <tr key={index} className="border-b text-sm">
-                                    <td className="p-2">
-                                      {item.description || "-"}
-                                    </td>
-
-                                    <td className="p-2">
-                                      {item.startDate
-                                        ? moment(item.startDate).format(
-                                            "MMMM DD, YYYY"
-                                          )
-                                        : "-"}
-                                    </td>
-
-                                    <td className="p-2">
-                                      {item.duration
-                                        ? `${item.duration} days`
-                                        : "days"}
-                                    </td>
-
-                                    <td className="p-2">
-                                      {item.endDate
-                                        ? moment(item.endDate).format(
-                                            "MMMM DD, YYYY"
-                                          )
-                                        : "-"}
-                                    </td>
-                                  </tr>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td
-                                    colSpan={4}
-                                    className="text-center py-3 text-gray-500 italic"
-                                  >
-                                    No activities available for this workplan.
-                                  </td>
-                                </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      );
-                    })}
+                  <div>
+                    <p style={{ fontSize: "13px", color: "#777" }}>
+                      Financial Progress
+                    </p>
+                    <p style={{ fontSize: "20px", fontWeight: "600" }}>
+                      {Summary.progress}%
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold mb-4">6. CLIENT PERSONNEL</h2>
+                {/* IPC TABLE */}
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "600",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Interim Payment Certificates (IPCs)
+                </h3>
 
-              {data?.clientPersonnel ? (
-                <table className="w-full border-collapse text-sm mt-3">
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "separate",
+                    borderSpacing: "0 8px",
+                    fontSize: "14px",
+                  }}
+                >
                   <thead>
-                    <tr className="bg-blue-50">
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Client Name
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Email
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Contact Person
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Contact
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Address
-                      </th>
+                    <tr
+                      style={{
+                        color: "#666",
+                        fontSize: "13px",
+                        textAlign: "left",
+                      }}
+                    >
+                      <th style={{ padding: "8px" }}>#</th>
+                      <th style={{ padding: "8px" }}>Certificate No.</th>
+                      <th style={{ padding: "8px" }}>Date Certified</th>
+                      <th style={{ padding: "8px" }}>Submitted Amount</th>
+                      <th style={{ padding: "8px" }}>In Process Amount</th>
+                      <th style={{ padding: "8px" }}>Amount Paid</th>
+                      <th style={{ padding: "8px" }}>Payment Status</th>
                     </tr>
                   </thead>
+
                   <tbody>
-                    <tr className="hover:bg-gray-50">
-                      <td className="border border-gray-300 p-3">
+                    {/* Advance Row */}
+                    <tr style={{ background: "#ffffff" }}>
+                      <td style={{ padding: "8px" }}>1.</td>
+                      <td style={{ padding: "8px" }}>Advance Payment</td>
+                      <td style={{ padding: "8px" }}>-</td>
+                      <td style={{ padding: "8px" }}>-</td>
+                      <td style={{ padding: "8px" }}>-</td>
+                      <td style={{ padding: "8px" }}>
+                        ${Summary.advancePayment}
+                      </td>
+                      <td style={{ padding: "8px" }}>
+                        <span
+                          style={{
+                            padding: "4px 10px",
+                            background: "#1f2937",
+                            color: "white",
+                            fontSize: "12px",
+                            borderRadius: "50px",
+                          }}
+                        >
+                          Paid
+                        </span>
+                      </td>
+                    </tr>
+
+                    {/* dynamic rows */}
+                    {data.certificates?.map((certificate, key) => {
+                      let submittedAmount = "-";
+                      let inProcessAmount = "-";
+                      let paidAmount = "-";
+
+                      if (certificate.status === "Submitted") {
+                        submittedAmount = `$${certificate.amount}`;
+                      } else if (certificate.status === "In-Process") {
+                        inProcessAmount = `$${certificate.amount}`;
+                      } else if (certificate.status === "Paid") {
+                        paidAmount = `$${certificate.amount}`;
+                      }
+
+                      return (
+                        <tr key={key} style={{ background: "#ffffff" }}>
+                          <td style={{ padding: "8px" }}>{key + 1}.</td>
+                          <td style={{ padding: "8px" }}>
+                            {certificate.certificateNo}
+                          </td>
+                          <td style={{ padding: "8px" }}>
+                            {moment(certificate.date).format("DD-MM-YYYY")}
+                          </td>
+                          <td style={{ padding: "8px" }}>{submittedAmount}</td>
+                          <td style={{ padding: "8px" }}>{inProcessAmount}</td>
+                          <td style={{ padding: "8px" }}>{paidAmount}</td>
+                          <td style={{ padding: "8px" }}>
+                            <span
+                              style={{
+                                padding: "4px 10px",
+                                background: "#e5e7eb",
+                                color: "#555",
+                                fontSize: "12px",
+                                borderRadius: "50px",
+                              }}
+                            >
+                              {certificate.status}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {/* TOTAL ROW */}
+                    <tr style={{ background: "#f3f4f6", fontWeight: "bold" }}>
+                      <td style={{ padding: "8px" }}></td>
+                      <td style={{ padding: "8px" }}></td>
+                      <td style={{ padding: "8px", textAlign: "right" }}>
+                        Total:
+                      </td>
+
+                      <td style={{ padding: "8px" }}>
+                        ${Summary?.totalSubmitted}
+                      </td>
+                      <td style={{ padding: "8px" }}>
+                        ${Summary?.totalInProcess}
+                      </td>
+                      <td style={{ padding: "8px" }}>
+                        ${Summary?.totalPaid + Summary?.advancePayment}
+                      </td>
+                      <td style={{ padding: "8px" }}></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          
+            <div style={{ marginTop: "32px" }}>
+              <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                5. WORK PLAN
+              </h2>
+
+              <div style={{ width: "100%", borderRadius: "10px" }}>
+                {data?.workplan?.map((plan, key) => (
+                  <div
+                    key={key}
+                    style={{ marginBottom: "24px", marginTop: "16px" }}
+                  >
+                    <p
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "16px",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {plan.planName}
+                    </p>
+
+                    <table
+                      style={{
+                        width: "100%",
+                        fontSize: "14px",
+                        borderCollapse: "collapse",
+                      }}
+                    >
+                      <thead>
+                        <tr style={{ borderBottom: "1px solid #ddd" }}>
+                          <th style={{ padding: "8px", fontWeight: "600" }}>
+                            Activity Name
+                          </th>
+                          <th style={{ padding: "8px", fontWeight: "600" }}>
+                            Start Date
+                          </th>
+                          <th style={{ padding: "8px", fontWeight: "600" }}>
+                            Duration
+                          </th>
+                          <th style={{ padding: "8px", fontWeight: "600" }}>
+                            End Date
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {plan?.workActivities?.length > 0 ? (
+                          plan.workActivities.map((item, index) => (
+                            <tr
+                              key={index}
+                              style={{ borderBottom: "1px solid #ddd" }}
+                            >
+                              <td style={{ padding: "8px" }}>
+                                {item.description || "-"}
+                              </td>
+                              <td style={{ padding: "8px" }}>
+                                {item.startDate
+                                  ? moment(item.startDate).format(
+                                      "MMMM DD, YYYY"
+                                    )
+                                  : "-"}
+                              </td>
+                              <td style={{ padding: "8px" }}>
+                                {item.duration
+                                  ? `${item.duration} days`
+                                  : "days"}
+                              </td>
+                              <td style={{ padding: "8px" }}>
+                                {item.endDate
+                                  ? moment(item.endDate).format("MMMM DD, YYYY")
+                                  : "-"}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan={4}
+                              style={{
+                                textAlign: "center",
+                                padding: "12px",
+                                color: "#666",
+                                fontStyle: "italic",
+                              }}
+                            >
+                              No activities available for this workplan.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginTop: "32px" }}>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  marginBottom: "16px",
+                }}
+              >
+                6. CLIENT PERSONNEL
+              </h2>
+
+              {data?.clientPersonnel ? (
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    fontSize: "14px",
+                    marginTop: "12px",
+                  }}
+                >
+                  <thead>
+                    <tr style={{ backgroundColor: "#EFF6FF" }}>
+                      {[
+                        "Client Name",
+                        "Email",
+                        "Contact Person",
+                        "Contact",
+                        "Address",
+                      ].map((item) => (
+                        <th
+                          key={item}
+                          style={{
+                            border: "1px solid #D1D5DB",
+                            padding: "12px",
+                            textAlign: "left",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr style={{ backgroundColor: "#fff" }}>
+                      <td style={tdStyle}>
                         {data.clientPersonnel?.ClientName || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data.clientPersonnel?.Email || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data.clientPersonnel?.contactPerson || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data.clientPersonnel?.phone || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data.clientPersonnel?.Address || "-"}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               ) : (
-                <p className="text-sm text-gray-600 italic">
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#4B5563",
+                    fontStyle: "italic",
+                  }}
+                >
                   No client personnel recorded for this project.
                 </p>
               )}
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold mb-4">
+            <div style={{ marginTop: "32px" }}>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  marginBottom: "16px",
+                }}
+              >
                 7. CONTRACTOR PERSONNEL
               </h2>
 
               {data?.contractorPersonnel ? (
-                <table className="w-full border-collapse text-sm mt-3">
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    fontSize: "14px",
+                    marginTop: "12px",
+                  }}
+                >
                   <thead>
-                    <tr className="bg-amber-50">
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Name
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Email
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Contact Person
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Contact
-                      </th>
+                    <tr style={{ backgroundColor: "#FFFBEB" }}>
+                      {["Name", "Email", "Contact Person", "Contact"].map(
+                        (item) => (
+                          <th
+                            key={item}
+                            style={{
+                              border: "1px solid #D1D5DB",
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {item}
+                          </th>
+                        )
+                      )}
                     </tr>
                   </thead>
+
                   <tbody>
-                    <tr className="hover:bg-gray-50">
-                      <td className="border border-gray-300 p-3">
+                    <tr>
+                      <td style={tdStyle}>
                         {data?.contractorPersonnel?.contractorName || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data?.contractorPersonnel?.Email || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data?.contractorPersonnel?.contactPerson || "-"}
                       </td>
-                      <td className="border border-gray-300 p-3">
+                      <td style={tdStyle}>
                         {data?.contractorPersonnel?.phone || "-"}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               ) : (
-                <p className="text-sm text-gray-600 italic">
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#4B5563",
+                    fontStyle: "italic",
+                  }}
+                >
                   No contractor personnel recorded for this project.
                 </p>
               )}
             </div>
 
-            <div className="mt-8">
-              <h2 className="text-lg font-bold mb-4">
+            {/* 8. CONTRACTOR EQUIPMENT */}
+            <div style={{ marginTop: "32px" }}>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  marginBottom: "16px",
+                }}
+              >
                 8. CONTRACTOR'S EQUIPMENT
               </h2>
 
               {data.contractorEquipment &&
               data.contractorEquipment.length > 0 ? (
-                <table className="w-full border-collapse text-sm mt-3">
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    fontSize: "14px",
+                    marginTop: "12px",
+                  }}
+                >
                   <thead>
-                    <tr className="bg-green-50">
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        S/N
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Name
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Equipment Type
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Quantity
-                      </th>
-                      <th className="border border-gray-300 p-3 text-left font-semibold">
-                        Condition
-                      </th>
+                    <tr style={{ backgroundColor: "#ECFDF5" }}>
+                      {[
+                        "S/N",
+                        "Name",
+                        "Equipment Type",
+                        "Quantity",
+                        "Condition",
+                      ].map((item) => (
+                        <th
+                          key={item}
+                          style={{
+                            border: "1px solid #D1D5DB",
+                            padding: "12px",
+                            textAlign: "left",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item}
+                        </th>
+                      ))}
                     </tr>
                   </thead>
+
                   <tbody>
                     {data.contractorEquipment.map((equipment, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 p-3">
-                          {index + 1}
-                        </td>
-                        <td className="border border-gray-300 p-3">
-                          {equipment.name || "-"}
-                        </td>
-                        <td className="border border-gray-300 p-3">
-                          {equipment.type || "-"}
-                        </td>
-                        <td className="border border-gray-300 p-3">
-                          {equipment.quantity || "-"}
-                        </td>
-                        <td className="border border-gray-300 p-3">
-                          {equipment.condition || "-"}
-                        </td>
+                      <tr key={index}>
+                        <td style={tdStyle}>{index + 1}</td>
+                        <td style={tdStyle}>{equipment.name || "-"}</td>
+                        <td style={tdStyle}>{equipment.type || "-"}</td>
+                        <td style={tdStyle}>{equipment.quantity || "-"}</td>
+                        <td style={tdStyle}>{equipment.condition || "-"}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               ) : (
-                <p className="text-sm text-gray-600 italic">
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#4B5563",
+                    fontStyle: "italic",
+                  }}
+                >
                   No contractor equipment recorded for this project.
                 </p>
               )}
             </div>
 
-            <div className="mt-10">
-              <h2 className="text-lg font-bold">9. ISSUES AND CONCERNS</h2>
+            {/* 9. ISSUES AND CONCERNS */}
+            <div style={{ marginTop: "40px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
+                9. ISSUES AND CONCERNS
+              </h2>
 
               {data?.issuesConcern && data.issuesConcern.length > 0 ? (
                 data.issuesConcern.map((issue, key) => (
                   <div
                     key={key}
-                    className="w-full p-2.5 rounded-lg border shadow-sm bg-custom-green mt-3"
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "8px",
+                      border: "1px solid #E5E7EB",
+                      background: "#F3FDF3",
+                      marginTop: "12px",
+                    }}
                   >
-                    {/* Description */}
-                    <p className="text-gray-800 font-medium mb-3">
+                    <p
+                      style={{
+                        color: "#1F2937",
+                        fontWeight: 500,
+                        marginBottom: "8px",
+                      }}
+                    >
                       {issue.description}
                     </p>
 
-                    {/* Status & Date */}
-                    <div className="flex items-center justify-start gap-4">
-                      <span className="px-3 py-1 text-sm rounded-full font-semibold bg-yellow-200 text-yellow-900">
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span
+                        style={{
+                          padding: "4px 12px",
+                          fontSize: "13px",
+                          borderRadius: "14px",
+                          background: "#FEF3C7",
+                          color: "#B45309",
+                          fontWeight: 600,
+                        }}
+                      >
                         {issue.status}
                       </span>
 
-                      <span className="text-sm text-gray-600">
+                      <span style={{ fontSize: "13px", color: "#4B5563" }}>
                         {moment(issue.dueDate).format("DD-MM-YYYY")}
                       </span>
                     </div>
                   </div>
                 ))
               ) : (
-                <h3 className="text-base mt-1 mb-6">
+                <h3
+                  style={{
+                    fontSize: "16px",
+                    marginTop: "8px",
+                    marginBottom: "20px",
+                  }}
+                >
                   No issues or concerns recorded for this project.
                 </h3>
               )}
 
-              <div className="flex justify-between mt-10 mb-6">
+              {/* Prepared / Reviewed */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "32px",
+                  marginBottom: "24px",
+                }}
+              >
                 <div>
-                  <p className="text-lg font-bold">Prepared by:</p>
-                  <p className="text-sm">Project Manager</p>
+                  <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                    Prepared by:
+                  </p>
+                  <p style={{ fontSize: "14px" }}>Project Manager</p>
                 </div>
 
                 <div>
-                  <p className="text-lg font-bold">Reviewed by:</p>
-                  <p className="text-sm">Client Representative</p>
-                  <p className="text-sm">{data.clientName}</p>
+                  <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                    Reviewed by:
+                  </p>
+                  <p style={{ fontSize: "14px" }}>Client Representative</p>
+                  <p style={{ fontSize: "14px" }}>{data.clientName}</p>
                 </div>
               </div>
 
-              <p className="text-center text-base">
+              <p style={{ textAlign: "center", fontSize: "16px" }}>
                 5 {data.reportMonth} {data.reportYear}
               </p>
 
-              <p className="text-center text-sm mt-6">
+              <p
+                style={{
+                  textAlign: "center",
+                  fontSize: "14px",
+                  marginTop: "24px",
+                }}
+              >
                 This report is confidential and intended solely for the use of{" "}
                 {data.clientName}
               </p>
 
-              <p className="text-center text-sm">
+              <p style={{ textAlign: "center", fontSize: "14px" }}>
                 ConstructTrack Project Management System - {data.reportMonth} 5,{" "}
                 {data.reportYear}
               </p>

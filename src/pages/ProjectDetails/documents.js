@@ -51,6 +51,7 @@ const documents = (props) => {
         toast.error(err?.message || "An error occurred");
       });
   };
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -223,7 +224,6 @@ const documents = (props) => {
           ) : (
             <>
               <div className="w-full text-white min-h-[500px]">
-                {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-3">
@@ -270,6 +270,7 @@ const documents = (props) => {
                       </div>
 
                       <div className="md:col-span-3 flex gap-2 md:justify-start justify-end">
+                       
                         <button
                           className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-800 text-xs md:text-sm"
                           onClick={() => handleRoute(doc)}

@@ -109,20 +109,19 @@ function MonthlyProgressReport(props) {
       contractorPersonnel: projectDetails?.contractorInfo || {},
       clientPersonnel: projectDetails?.clientInfo || {},
       issuesConcern: allItems,
-      workplan:allPlanData
+      workplan: allPlanData,
     };
-    setData(base);
 
-    // if (editId && editData) {
-    //   console.log("editData", editData);
-
-    //   setData({
-    //     ...base,
-    //     ...editData,
-    //   });
-    // } else {
-    //   console.log("base", base);
-    // }
+    if (editId && editData) {
+      console.log("editData", editData);
+      setData({
+        ...base,
+        ...editData,
+      });
+    } else {
+      console.log("base", base);
+      setData(base);
+    }
   }, [
     projectDetails,
     allItems,
@@ -134,11 +133,56 @@ function MonthlyProgressReport(props) {
     editData,
   ]);
 
-  const reset = () => {
-    setCoverPhoto("");
-    setLeftLogo("");
-    setRightLogo("");
-    setTopLogo("");
+  const downloadPDF = async () => {
+    const input = contentRef.current;
+    if (!input) return;
+
+    try {
+      await new Promise((res) => setTimeout(res, 300));
+
+      const html2canvas = (await import("html2canvas")).default;
+      const jsPDF = (await import("jspdf")).default;
+
+      const canvas = await html2canvas(input, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+
+      const marginTop = 15; // ⭐ TOP MARGIN
+      const marginBottom = 15; // ⭐ BOTTOM MARGIN
+
+      const usableHeight = pdfHeight - marginTop - marginBottom;
+
+      const imgWidth = pdfWidth - 0;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = marginTop;
+
+      // ⭐ Page 1
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= usableHeight;
+
+      // ⭐ Next Pages
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = marginTop - (imgHeight - heightLeft);
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= usableHeight;
+      }
+
+      pdf.save("monthly-report.pdf");
+    } catch (error) {
+      console.error("PDF Error:", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -281,8 +325,6 @@ function MonthlyProgressReport(props) {
       });
   };
 
-  console.log(allItems);
-
   return (
     <div className="bg-black md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
       <div className="w-full bg-custom-green rounded-[16px] px-4 py-4 flex-wrap gap-4">
@@ -307,29 +349,23 @@ function MonthlyProgressReport(props) {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              className="px-4 py-2.5 cursor-pointer rounded-xl border border-gray-600 text-gray-300 hover:bg-gray-800 transition text-sm flex items-center gap-2"
-              onClick={reset}
-            >
-              <X size={16} />
-              Cancel
-            </button>
+            {!editId && (
+              <button
+                onClick={handleSubmit}
+                className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              >
+                <Save size={16} />
+                {"Save"} Document
+              </button>
+            )}
 
             <button
-              onClick={handleSubmit}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
-            >
-              <Save size={16} />
-              {editId ? "Update" : "Save"} Document
-            </button>
-
-            {/* <button
               onClick={downloadPDF}
               className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />
               Download Pdf
-            </button> */}
+            </button>
           </div>
         </div>
       </div>
@@ -348,6 +384,7 @@ function MonthlyProgressReport(props) {
               <input
                 type="file"
                 className="hidden"
+                disabled={editId}
                 accept="image/*"
                 onChange={(e) => handleUpload(e, setTopLogo)}
               />
@@ -374,6 +411,7 @@ function MonthlyProgressReport(props) {
               <input
                 type="file"
                 className="hidden"
+                disabled={editId}
                 accept="image/*"
                 onChange={(e) => handleUpload(e, setCoverPhoto)}
               />
@@ -400,6 +438,7 @@ function MonthlyProgressReport(props) {
               <input
                 type="file"
                 className="hidden"
+                disabled={editId}
                 accept="image/*"
                 onChange={(e) => handleUpload(e, setLeftLogo)}
               />
@@ -426,6 +465,7 @@ function MonthlyProgressReport(props) {
               <input
                 type="file"
                 className="hidden"
+                disabled={editId}
                 accept="image/*"
                 onChange={(e) => handleUpload(e, setRightLogo)}
               />
@@ -446,6 +486,7 @@ function MonthlyProgressReport(props) {
         data={data}
         Summary={Summary}
         setSummary={setSummary}
+        contentRef={contentRef}
       />
     </div>
   );
