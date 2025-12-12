@@ -30,7 +30,7 @@ export default function Login(props) {
       const res = await Api("post", "auth/login", { ...userDetail }, router);
       if (res?.status) {
         const user = res.data.user;
-        if (user.role === "Admin" || user.role === "Provider") {
+        if (user.role === "Admin" || user.role === "Organization" || user.role === "Organization" || user.role === "User" ) {
           localStorage.setItem("userDetail", JSON.stringify(user));
           localStorage.setItem("token", res.data?.token);
           setUser(user);

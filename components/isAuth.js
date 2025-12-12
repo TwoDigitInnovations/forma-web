@@ -6,7 +6,7 @@ const isAuth = (Component) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    const publicRoutes = ["/planpage", "/login"];
+    const publicRoutes = ["/planpage", "/login","Ragister"];
 
     let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
     const isPublic = publicRoutes.includes(currentPath);

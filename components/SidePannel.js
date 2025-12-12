@@ -25,20 +25,20 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/",
       title: "Dashboard",
       img: <LayoutDashboard className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["Admin", "Organization"],
     },
     {
       href: "/project",
       title: "Project",
       img: <Building className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["Organization"],
     },
 
     {
       href: "/teams",
       title: "Teams",
       img: <Users className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["Organization"],
     },
   
   ];
@@ -48,49 +48,43 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/ProjectDetails/overview",
       title: "Overview",
       img: <LayoutDashboard className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
-    // {
-    //   href: "/ProjectDetails/Boq",
-    //   title: "BOQs",
-    //   img: <ReceiptText className="text-3xl" />,
-    //   access: ["Admin", "Provider"],
-    // },
     {
       href: "/ProjectDetails/work-plan",
       title: "Work Plan",
       img: <NotebookPen className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
     {
       href: "/ProjectDetails/ProgressUpdate",
       title: "Progress",
       img: <LoaderCircle className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
      {
       href: "/ProjectDetails/Pre-construction",
       title: "Pre-construction",
       img: <BrickWall className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
     {
       href: "/ProjectDetails/teams",
       title: "Teams",
       img: <Users className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
     {
       href: "/ProjectDetails/documents",
       title: "Documents",
       img: <Dock className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
     {
       href: "/ProjectDetails/siteLogs",
       title: "Site Logs",
       img: <Settings className="text-3xl" />,
-      access: ["Admin", "Provider"],
+      access: ["User", "Organization"],
     },
    
 

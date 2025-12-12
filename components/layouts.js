@@ -14,11 +14,11 @@ const Layout = ({ children }) => {
 
   const isBeforeLoginPage =
     router.pathname.includes("/login") ||
-    router.pathname.includes("/PlanPage"); // <- These two pages show BeforeLoginNavbar + Footer
+    router.pathname.includes("/PlanPage") ||
+    router.pathname.includes("/Ragister"); // <- These two pages show BeforeLoginNavbar + Footer
 
   return (
     <div className="min-h-screen max-w-screen bg-white flex flex-col">
-
       {isBeforeLoginPage && <BeforeLoginNavbar />}
 
       {!isBeforeLoginPage && (

@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
     getUserDetail();
   }, []);
 
-  const publicRoutes = ["/planpage", "/login"];
+  const publicRoutes = ["/planpage", "/login", "Ragister"];
 
   const getUserDetail = () => {
     let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
