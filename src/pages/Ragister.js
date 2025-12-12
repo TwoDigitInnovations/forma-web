@@ -62,9 +62,9 @@ function Signup() {
         <div className="grid md:grid-cols-3 grid-cols-1 gap-8">
           <div className="col-span-2 bg-custom-black border border-green-500/20 md:p-6 p-4 rounded-3xl">
             <div className="flex justify-center mb-8">
-              <div className="bg-gray-800 p-2 rounded-xl flex gap-2">
+              <div className="bg-custom-green p-2 rounded-xl flex gap-2">
                 <button
-                  className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  className={`px-4 py-2 cursor-pointer rounded-lg text-sm font-medium ${
                     role === "User"
                       ? "bg-custom-yellow text-black"
                       : "text-custom-yellow"
@@ -75,7 +75,7 @@ function Signup() {
                 </button>
 
                 <button
-                  className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  className={`px-4 py-2 rounded-lg cursor-pointer text-sm font-medium ${
                     role === "Organization"
                       ? "bg-custom-yellow text-black"
                       : "text-custom-yellow"
@@ -214,12 +214,12 @@ function Signup() {
               </div>
             )}
 
-            <div className="border border-green-500/20 p-6 rounded-2xl mb-8">
+            {/* <div className="border border-green-500/20 p-6 rounded-2xl mb-8">
               <h2 className="text-custom-yellow text-lg font-bold mb-4">
                 Secure Payment
               </h2>
 
-              {/* Billing Toggle */}
+           
               <div className="flex gap-2 bg-gray-800 p-2 rounded-xl mb-5 w-fit">
                 <button
                   className={`px-4 py-2 rounded-lg text-sm font-medium cursor-pointer ${
@@ -243,14 +243,14 @@ function Signup() {
                   Annually
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <button
               onClick={submitSignup}
-              className="w-full bg-custom-yellow text-black py-3 rounded-xl font-semibold hover:scale-105 transition flex justify-center items-center gap-2"
+              className="w-full bg-custom-yellow cursor-pointer text-black py-3 rounded-xl font-semibold hover:scale-102 transition flex justify-center items-center gap-2"
             >
               {loading ? (
-                <div className="animate-spin h-5 w-5 border-black border-b-2 rounded-full"></div>
+                <div className="animate-spin h-5 w-5 cursor-pointer border-black border-b-2 rounded-full"></div>
               ) : (
                 <>
                   {role === "Organization"

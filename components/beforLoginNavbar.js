@@ -23,14 +23,14 @@ function BeforeLoginNavbar() {
         <div className="hidden sm:flex items-center gap-3">
           <button
             style={{ backgroundColor: "#e0f349" }}
-            className="px-5 py-2 rounded-lg text-black font-medium hover:opacity-90 transition-all"
+            className="px-5 py-2 rounded-lg text-black font-medium hover:opacity-90 transition-all cursor-pointer"
             onClick={() => router.push("/Ragister")}
           >
             Get Started
           </button>
 
           <button
-            className="px-5 py-2 text-white hover:text-gray-300 transition-all cursor-pointer"
+            className="px-5 py-2 text-white hover:text-gray-300 border border-custom-yellow  rounded-lg transition-all cursor-pointer"
             onClick={() => router.push("/login")}
           >
             Log In

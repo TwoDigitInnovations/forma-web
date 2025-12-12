@@ -33,7 +33,7 @@ function PricingPage() {
           </button>
         </div>
       </section>
-   
+
       <section className="max-w-7xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
           {/* Individual Plan */}
@@ -46,7 +46,10 @@ function PricingPage() {
               <span className="text-5xl font-bold">$0</span>
               <span className="text-gray-400 ml-2">/no charge</span>
             </div>
-            <button className="w-full py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6">
+            <button
+              className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
+              onClick={() => router.push("/Ragister")}
+            >
               Get Started
             </button>
             <ul className="space-y-3">
@@ -71,7 +74,7 @@ function PricingPage() {
             </ul>
           </div>
 
-          {/* Team Plan - Featured */}
+      
           <div className="bg-gradient-to-b from-yellow-500/20 to-gray-900 rounded-2xl p-8 border-2 border-yellow-400 relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span
@@ -91,7 +94,8 @@ function PricingPage() {
             </div>
             <button
               style={{ backgroundColor: "#e0f349" }}
-              className="w-full py-3 text-black font-medium rounded-lg hover:opacity-90 mb-6"
+              onClick={() => router.push("/Ragister")}
+              className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
             >
               Start Free Trial
             </button>
@@ -282,7 +286,6 @@ function PricingPage() {
         </div>
       </section>
 
-    
       <section className="max-w-4xl mx-auto px-4 py-20">
         <h2 className="text-4xl font-bold text-center mb-12">
           Frequently Asked Questions
