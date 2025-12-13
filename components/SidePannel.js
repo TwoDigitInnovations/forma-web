@@ -5,7 +5,30 @@ import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import { BadgePercent, BrickWall, Building, ChartNoAxesCombined, ChevronLeft, ClipboardList, CrossIcon, Dock, DockIcon, Handshake, LayoutDashboard, LoaderCircle, MoveLeft, NotebookPen, Puzzle, ReceiptIcon, ReceiptText, Settings, Shield, ShieldCheck, Users, X } from "lucide-react";
+import {
+  BadgePercent,
+  BrickWall,
+  Building,
+  ChartNoAxesCombined,
+  ChevronLeft,
+  ClipboardList,
+  CrossIcon,
+  Dock,
+  DockIcon,
+  Handshake,
+  LayoutDashboard,
+  LoaderCircle,
+  MoveLeft,
+  NotebookPen,
+  Puzzle,
+  ReceiptIcon,
+  ReceiptText,
+  Settings,
+  Shield,
+  ShieldCheck,
+  Users,
+  X,
+} from "lucide-react";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -25,13 +48,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/",
       title: "Dashboard",
       img: <LayoutDashboard className="text-3xl" />,
-      access: ["Admin", "Organization"],
+      access: ["Admin", "Organization", "User"],
     },
     {
       href: "/project",
       title: "Project",
       img: <Building className="text-3xl" />,
-      access: ["Organization"],
+      access: ["Organization", "User"],
     },
 
     {
@@ -40,7 +63,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Users className="text-3xl" />,
       access: ["Organization"],
     },
-  
   ];
 
   const menuItemsProject = [
@@ -62,7 +84,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <LoaderCircle className="text-3xl" />,
       access: ["User", "Organization"],
     },
-     {
+    {
       href: "/ProjectDetails/Pre-construction",
       title: "Pre-construction",
       img: <BrickWall className="text-3xl" />,
@@ -86,17 +108,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Settings className="text-3xl" />,
       access: ["User", "Organization"],
     },
-   
-
   ];
 
   const imageOnError = (event) => {
     // event.currentTarget.src = "/userprofile.png";
   };
 
-
   const isProjectDetailsRoute = router.pathname.includes("ProjectDetails");
-
 
   const currentMenuItems = isProjectDetailsRoute ? menuItemsProject : menuItems;
 
@@ -119,10 +137,11 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                   item?.access?.includes(user?.role) ? (
                     <li key={i} className="w-full">
                       <div
-                        className={`flex items-center justify-between mx-5 px-6 cursor-pointer group hover:bg-[#dff34940] m-1 ${router.pathname === item.href
-                          ? "bg-custom-green text-white rounded-[10px]"
-                          : "text-white"
-                          }`}
+                        className={`flex items-center justify-between mx-5 px-6 cursor-pointer group hover:bg-[#dff34940] m-1 ${
+                          router.pathname === item.href
+                            ? "bg-custom-green text-white rounded-[10px]"
+                            : "text-white"
+                        }`}
                         onClick={() =>
                           item.children
                             ? setOpenMenu(openMenu === i ? null : i)
@@ -130,7 +149,11 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                         }
                       >
                         <div className="py-3 font-semibold flex items-center gap-4">
-                          <span className="text-custom-yellow"> {item?.img}</span> {item?.title}
+                          <span className="text-custom-yellow">
+                            {" "}
+                            {item?.img}
+                          </span>{" "}
+                          {item?.title}
                         </div>
                         {item.children &&
                           (openMenu === i ? (
@@ -146,10 +169,11 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                             <Link
                               href={child.href}
                               key={j}
-                              className={`block py-3 px-10 m-1 font-semibold text-sm hover:bg-[#FF700099] rounded ${router.pathname === child.href
-                                ? "bg-custom-orange text-black font-semibold"
-                                : "text-gray-700"
-                                }`}
+                              className={`block py-3 px-10 m-1 font-semibold text-sm hover:bg-[#FF700099] rounded ${
+                                router.pathname === child.href
+                                  ? "bg-custom-orange text-black font-semibold"
+                                  : "text-gray-700"
+                              }`}
                             >
                               {child.title}
                             </Link>
@@ -161,15 +185,16 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                 )}
               </ul>
               {isProjectDetailsRoute && (
-                <div className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
+                <div
+                  className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
                   onClick={() => router.push("/project")}
                 >
                   <MoveLeft />
                   <button className="text-white  py-3 cursor-pointer">
-                    Back to Project</button>
+                    Back to Project
+                  </button>
                 </div>
               )}
-
             </div>
           </div>
         </div>
@@ -177,11 +202,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
       {/* ----------------- Mobile Sidebar ----------------- */}
       <div
-        className={`w-full absolute top-0 left-0 z-40 sm:hidden flex flex-col h-screen max-h-screen overflow-hidden bg-custom-black ${openTab ? "scale-x-100" : "scale-x-0"
-          } transition-all duration-300 origin-left`}
+        className={`w-full absolute top-0 left-0 z-40 sm:hidden flex flex-col h-screen max-h-screen overflow-hidden bg-custom-black ${
+          openTab ? "scale-x-100" : "scale-x-0"
+        } transition-all duration-300 origin-left`}
       >
         <div className="row-span-1 w-full text-black relative">
-          <X className="absolute text-white top-4 right-4 z-40 text-2xl"
+          <X
+            className="absolute text-white top-4 right-4 z-40 text-2xl"
             onClick={() => setOpenTab(!openTab)}
           />
           <div className="flex flex-col gap-3 w-full p-3">
@@ -280,10 +307,11 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                         <Link
                           href={child.href}
                           key={j}
-                          className={`block py-2 pl-14 text-sm hover:bg-[#FF700099] ${router.pathname === child.href
-                            ? "bg-custom-orange text-black"
-                            : "text-gray-700"
-                            }`}
+                          className={`block py-2 pl-14 text-sm hover:bg-[#FF700099] ${
+                            router.pathname === child.href
+                              ? "bg-custom-orange text-black"
+                              : "text-gray-700"
+                          }`}
                           onClick={() => setOpenTab(false)}
                         >
                           {child.title}
@@ -291,22 +319,23 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                       ))}
                     </ul>
                   )}
-
-
                 </li>
-            ) : null
+              ) : null
             )}
-            { isProjectDetailsRoute && (
-                <div className="absolute bottom-0 w-full mx-auto bg-custom-green flex gap-3 justify-start ps-10 items-center  cursor-pointer"
-                  onClick={() => {
-                    setOpenTab(!openTab)
-                    router.push("/project")}}
-                >
-                  <MoveLeft />
-                  <button className="text-white  py-3 cursor-pointer">
-                    Back to Project</button>
-                </div>
-              )}
+            {isProjectDetailsRoute && (
+              <div
+                className="absolute bottom-0 w-full mx-auto bg-custom-green flex gap-3 justify-start ps-10 items-center  cursor-pointer"
+                onClick={() => {
+                  setOpenTab(!openTab);
+                  router.push("/project");
+                }}
+              >
+                <MoveLeft />
+                <button className="text-white  py-3 cursor-pointer">
+                  Back to Project
+                </button>
+              </div>
+            )}
           </ul>
         </div>
       </div>

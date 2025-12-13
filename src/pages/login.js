@@ -34,7 +34,7 @@ export default function Login(props) {
           localStorage.setItem("userDetail", JSON.stringify(user));
           localStorage.setItem("token", res.data?.token);
           setUser(user);
-          setUserDetail({ email: "", password: "" });
+          // setUserDetail({ email: "", password: "" });
           toast.success(res.data.message);
           router.push("/");
         } else {
@@ -161,7 +161,7 @@ export default function Login(props) {
                   Signing In...
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 cursor-pointer">
                   Sign In <ArrowRight className="h-5 w-5" />
                 </div>
               )}
