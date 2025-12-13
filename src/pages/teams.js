@@ -162,55 +162,84 @@ const TeamMembers = (props) => {
           />
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6">
           {teamMembersData?.map((member) => (
             <div
-              key={member.id}
-              className="rounded-[12px] border border-gray-700 p-4 hover:border-gray-600 transition-colors"
-              style={{ backgroundColor: "#1E1E1E" }}
+              key={member._id}
+              className="group rounded-2xl border border-gray-700 bg-[#1B1B1B] p-5 
+                 hover:border-gray-500 hover:shadow-xl transition-all"
             >
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-10">{generateAvatar(member.name)}</div>
-
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-gray-400 text-sm">{member.email}</p>
+              {/* Header */}
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#2A2A2A]">
+                  {generateAvatar(member.name)}
                 </div>
 
-                <span
-                  className="px-3 py-1 rounded-full text-xs font-medium text-white"
-                  style={{ backgroundColor: "#5AC6AE80" }}
-                >
-                  {member.role === "TeamsMember" ? "Teams" : ""}
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white leading-tight">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm text-gray-400">{member.email}</p>
+                </div>
+
+                <span className="px-3 py-1 rounded-full text-xs font-medium text-[#5AC6AE] bg-[#5AC6AE1F]">
+                  Team Member
                 </span>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/* Assigned Projects */}
+              <div className="mb-5">
+                <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">
+                  Assigned Projects
+                </p>
+
+                {member.assignedProjects?.length > 0 ? (
+                  <div className="space-y-2">
+                    {member.assignedProjects.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between rounded-lg bg-[#262626] px-3 py-2"
+                      >
+                        <span className="text-sm text-white truncate">
+                          {item.projectId?.projectName || "Unnamed Project"}
+                        </span>
+
+                        <span className="text-xs px-2 py-1 rounded-full bg-[#333333] text-gray-300">
+                          {item.actionType === "both"
+                            ? "View & Edit"
+                            : item.actionType}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-500 italic">
+                    No project assigned
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-2 border-t border-gray-700">
                 <button
-                  className="flex items-center justify-center cursor-pointer gap-2 px-4 py-2 rounded-lg border border-gray-600 
-            hover:border-gray-500 transition-colors flex-1"
-                  style={{ backgroundColor: "#333333" }}
                   onClick={() => {
                     setEditData(member);
                     setOpen(true);
                   }}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+                     bg-[#2A2A2A] hover:bg-[#333333] transition"
                 >
                   <Edit size={16} />
                   <span className="text-sm">Edit</span>
                 </button>
 
                 <button
-                  className="flex cursor-pointer items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-600 
-            hover:border-gray-500 transition-colors flex-1"
-                  style={{ backgroundColor: "#333333" }}
                   onClick={() => {
                     setIsConfirmOpen(true);
                     setDeleteId(member._id);
                   }}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+                     bg-[#2A2A2A] hover:bg-red-500/10 text-red-400 transition"
                 >
                   <Trash2 size={16} />
                   <span className="text-sm">Delete</span>
@@ -220,7 +249,6 @@ const TeamMembers = (props) => {
           ))}
         </div>
 
-        {/* No Member Found */}
         {teamMembersData?.length === 0 && (
           <div
             className="flex flex-col rounded-3xl justify-center items-center 

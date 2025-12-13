@@ -30,7 +30,12 @@ export default function Login(props) {
       const res = await Api("post", "auth/login", { ...userDetail }, router);
       if (res?.status) {
         const user = res.data.user;
-        if (user.role === "Admin" || user.role === "Organization" || user.role === "Organization" || user.role === "User" ) {
+        if (
+          user.role === "Admin" ||
+          user.role === "Organization" ||
+          user.role === "TeamsMember" ||
+          user.role === "User"
+        ) {
           localStorage.setItem("userDetail", JSON.stringify(user));
           localStorage.setItem("token", res.data?.token);
           setUser(user);
@@ -53,7 +58,6 @@ export default function Login(props) {
 
   return (
     <div className="relative min-h-[750px] md:min-h-[620px] bg-black flex items-center justify-center px-4 py-10">
-      
       {/* Background Pattern */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div
@@ -69,7 +73,6 @@ export default function Login(props) {
       {/* Login Card */}
       <div className="relative w-full max-w-md z-20">
         <div className="bg-gray-900 border border-custom-green/30 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl transition-all duration-300">
-
           {/* Header */}
           <div className="text-center mb-6 md:mb-8">
             <h1 className="text-xl md:text-2xl font-bold text-custom-yellow">
@@ -82,7 +85,6 @@ export default function Login(props) {
 
           {/* Form Fields */}
           <div className="space-y-6">
-
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-custom-yellow">
@@ -145,7 +147,9 @@ export default function Login(props) {
                 </button>
               </div>
               {submitted && !userDetail.password && (
-                <p className="text-red-400 text-xs mt-1">Password is required</p>
+                <p className="text-red-400 text-xs mt-1">
+                  Password is required
+                </p>
               )}
             </div>
 

@@ -25,7 +25,7 @@ const Projects = (props) => {
   const [AllProjectData, setAllProjectData] = useState([]);
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
-
+  const isTeamsMember  = user?.role === "TeamsMember"
   const getStatusBadge = (status) => {
     const baseClasses = "px-3 py-1 rounded-full text-xs font-medium";
     switch (status) {
@@ -74,7 +74,7 @@ const Projects = (props) => {
             Projects
           </h1>
           <button
-            className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
             style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
             onClick={() => setIsOpen(true)}
           >
@@ -209,8 +209,9 @@ const Projects = (props) => {
             <p className="text-gray-300">
               Try creating a new Project or adjusting your filters.
             </p>
+         
             <button
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+              className="flex cursor-pointer items-center gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
               style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
               onClick={() => setIsOpen(true)}
             >

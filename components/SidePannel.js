@@ -48,13 +48,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/",
       title: "Dashboard",
       img: <LayoutDashboard className="text-3xl" />,
-      access: ["Admin", "Organization", "User"],
+      access: ["Admin", "Organization", "User", "TeamsMember"],
     },
     {
       href: "/project",
       title: "Project",
       img: <Building className="text-3xl" />,
-      access: ["Organization", "User"],
+      access: ["Organization", "User", "TeamsMember"],
     },
 
     {
@@ -70,25 +70,25 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/ProjectDetails/overview",
       title: "Overview",
       img: <LayoutDashboard className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
     {
       href: "/ProjectDetails/work-plan",
       title: "Work Plan",
       img: <NotebookPen className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
     {
       href: "/ProjectDetails/ProgressUpdate",
       title: "Progress",
       img: <LoaderCircle className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
     {
       href: "/ProjectDetails/Pre-construction",
       title: "Pre-construction",
       img: <BrickWall className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
     {
       href: "/ProjectDetails/teams",
@@ -100,13 +100,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/ProjectDetails/documents",
       title: "Documents",
       img: <Dock className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
     {
       href: "/ProjectDetails/siteLogs",
       title: "Site Logs",
       img: <Settings className="text-3xl" />,
-      access: ["User", "Organization"],
+      access: ["User", "Organization", "TeamsMember"],
     },
   ];
 

@@ -117,7 +117,7 @@ const AssignProject = ({ onclose, teamList, AllProjectData,getAllMembers }) => {
             <button
               type="button"
               onClick={onclose}
-              className="px-5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700"
+              className="px-5 py-2 rounded-xl bg-gray-800 cursor-pointer hover:bg-gray-700"
             >
               Cancel
             </button>
@@ -125,7 +125,7 @@ const AssignProject = ({ onclose, teamList, AllProjectData,getAllMembers }) => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-custom-yellow text-black rounded-xl hover:scale-105 transition"
+              className="px-6 py-2 bg-custom-yellow text-black cursor-pointer rounded-xl hover:scale-105 transition"
             >
               {loading ? "Assigning..." : "Assign Project"}
             </button>
