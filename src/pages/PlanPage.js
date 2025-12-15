@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Check, ChevronDown, Flame } from "lucide-react";
 import isAuth from "../../components/isAuth";
 import { useRouter } from "next/router";
-import BeforeLoginNavbar from "../../components/beforLoginNavbar";
-import Footer from "../../components/Footer";
 
 function PricingPage() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -14,7 +12,7 @@ function PricingPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <section className="max-w-7xl mx-auto px-4 py-20 text-center">
+      <section className="max-w-7xl mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
           Choose the perfect plan
           <br />
@@ -34,21 +32,21 @@ function PricingPage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 pb-20">
+      <section className="max-w-6xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
           {/* Individual Plan */}
           <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
             <h3 className="text-xl font-semibold mb-2">Individual</h3>
             <p className="text-gray-400 text-sm mb-6">
-              Perfect for solo creators
+              For freelancers and solo contractors
             </p>
             <div className="mb-6">
-              <span className="text-5xl font-bold">$0</span>
-              <span className="text-gray-400 ml-2">/no charge</span>
+              <span className="text-5xl font-bold">$29</span>
+              <span className="text-gray-400 ml-2">/mo</span>
             </div>
             <button
               className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
-              onClick={() => router.push("/Ragister")}
+              onClick={() => router.push("/Ragister?role=User")}
             >
               Get Started
             </button>
@@ -71,6 +69,11 @@ function PricingPage() {
                 <Check className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-gray-300">5 GB storage</span>
               </li>
+               <li className="flex items-start gap-3">
+                <Check className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-300"> No team collaboration</span>
+              </li>
+             
             </ul>
           </div>
 
@@ -89,12 +92,12 @@ function PricingPage() {
               For small teams & startups
             </p>
             <div className="mb-6">
-              <span className="text-5xl font-bold">$29</span>
-              <span className="text-gray-400 ml-2">/per month</span>
+              <span className="text-5xl font-bold">$99</span>
+              <span className="text-gray-400 ml-2">/user/per month</span>
             </div>
             <button
               style={{ backgroundColor: "#e0f349" }}
-              onClick={() => router.push("/Ragister")}
+              onClick={() => router.push("/Ragister?role=Organization")}
               className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
             >
               Start Free Trial
@@ -106,15 +109,15 @@ function PricingPage() {
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span className="text-sm">Unlimited projects</span>
+                <span className="text-sm">Team collaboration on projects</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span className="text-sm">Guest users & sharing</span>
+                <span className="text-sm">Shared project access</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span className="text-sm">50 GB storage per user</span>
+                <span className="text-sm">10 GB storage per user</span>
               </li>
               <li className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />

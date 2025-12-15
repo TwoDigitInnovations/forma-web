@@ -12,29 +12,40 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const [openTab, setOpenTab] = useState(false);
 
+  // pages without any navbar / footer / sidebar
+  const withOutNavbar = router.pathname.includes("/Ragister");
+
+  // before login pages (but NOT register)
   const isBeforeLoginPage =
-    router.pathname.includes("/login") ||
-    router.pathname.includes("/PlanPage") ||
-    router.pathname.includes("/Ragister"); // <- These two pages show BeforeLoginNavbar + Footer
+    !withOutNavbar &&
+    (router.pathname.includes("/login") ||
+      router.pathname.includes("/PlanPage"));
 
   return (
     <div className="min-h-screen max-w-screen bg-white flex flex-col">
-      {isBeforeLoginPage && <BeforeLoginNavbar />}
+      {/* ONLY CONTENT (No navbar, no footer, no sidebar) */}
+      {withOutNavbar && <main className="flex-1">{children}</main>}
 
-      {!isBeforeLoginPage && (
-        <div className="flex w-full">
+      {/* BEFORE LOGIN PAGES */}
+      {isBeforeLoginPage && (
+        <>
+          <BeforeLoginNavbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </>
+      )}
+
+      {/* AFTER LOGIN (Dashboard Layout) */}
+      {!withOutNavbar && !isBeforeLoginPage && (
+        <div className="flex w-full flex-1">
           <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
 
           <div className="w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]">
             <Navbar setOpenTab={setOpenTab} openTab={openTab} />
-            {children}
+            <main className="flex-1">{children}</main>
           </div>
         </div>
       )}
-
-      {isBeforeLoginPage && <main className="flex-1">{children}</main>}
-
-      {isBeforeLoginPage && <Footer />}
     </div>
   );
 };
