@@ -50,20 +50,20 @@ function MultiStepSignup({ role }) {
     if (currentStep < 2) {
       setCurrentStep(currentStep + 1);
     } else {
+      console.log(formData);
       if (
-        !formData.email ||
-        !formData.password ||
+        !formData?.email ||
+        !formData?.password ||
         !formData?.lastName ||
-        formData?.firstName
+        !formData?.firstName
       ) {
         toast.error("All fields are required");
         return;
       }
 
       try {
-        setLoading(true);
         const data = {
-          ...form,
+          ...formData,
           name: formData?.firstName + formData?.lastName,
           role,
         };
@@ -82,6 +82,7 @@ function MultiStepSignup({ role }) {
 
   const handlePayment = () => {
     console.log("Form submitted for Payment:");
+    toast.success("Free trial started Login now");
   };
 
   const stepConfig = {
@@ -269,10 +270,10 @@ function MultiStepSignup({ role }) {
                 <div className="bg-slate-900/60 rounded-xl p-6 border border-slate-700/50">
                   <div className="flex justify-between items-center mb-4 pb-4 border-b border-slate-700/50">
                     <span className="text-slate-300 text-lg">
-                      Contractor Solo Plan
+                      Small teams Plan
                     </span>
                     <span className="text-white text-xl font-bold">
-                      $29.00
+                      $99.00
                       <span className="text-slate-400 text-base font-normal">
                         /mo
                       </span>
@@ -285,10 +286,10 @@ function MultiStepSignup({ role }) {
                         Due today
                       </span>
                       <span className="text-slate-500 text-sm">
-                        14-day free trial, then $29/month. Cancel anytime.
+                        14-day free trial, then $99/month. Cancel anytime.
                       </span>
                     </div>
-                    <span className="text-yellow-500 text-3xl font-bold">
+                    <span className="text-custom-yellow text-3xl font-bold">
                       $0.00
                     </span>
                   </div>
@@ -300,10 +301,11 @@ function MultiStepSignup({ role }) {
                   </h3>
                   <div className="space-y-3">
                     {[
-                      "Unlimited Projects",
-                      "Basic Gantt Charts",
-                      "5GB Storage",
-                      "Email Support",
+                      "Everything in Individual",
+                      "Team collaboration on projects",
+                      "10GB Storage Per User",
+                      "Priority email support",
+                      "Shared project access",
                     ].map((feature, index) => (
                       <div
                         key={index}
@@ -323,14 +325,14 @@ function MultiStepSignup({ role }) {
                   </div>
                 </div>
 
-                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 flex items-start gap-3">
+                {/* <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4 flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Check className="w-3 h-3 text-emerald-500" />
                   </div>
                   <p className="text-emerald-300 text-sm leading-relaxed">
                     This is a demo checkout. No real payment will be processed.
                   </p>
-                </div>
+                </div> */}
               </div>
             )}
 

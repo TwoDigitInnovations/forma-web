@@ -20,7 +20,7 @@ function Signup() {
   const [showPass, setShowPass] = useState(true);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
+  const [isOpen, setIsOpen] = useState(true);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -85,8 +85,8 @@ function Signup() {
         >
           <ArrowLeft /> Back
         </button>
-        
-        {!open && (
+
+        {isOpen && (
           <div className="w-full mx-auto shadow-2xl flex justify-center items-center">
             <div className="md:min-w-xl min-w-[410px]">
               {role === "Organization" && <MultiStepSignup role={role} />}
@@ -297,7 +297,7 @@ function Signup() {
                 <div className="px-8 pb-8">
                   <button
                     // onClick={handleStartTrial}
-                    className="w-full bg-custom-yellow text-slate-900 font-bold text-lg py-4 rounded-xl transition-all duration-300 shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full bg-custom-yellow text-slate-900 font-bold text-lg py-4 rounded-xl transition-all duration-300 shadow-lg shadow-yellow-500/30 hover:shadow-yellow-500/50 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Start Free Trial
                   </button>
