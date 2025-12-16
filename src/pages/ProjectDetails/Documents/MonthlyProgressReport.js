@@ -156,8 +156,8 @@ function MonthlyProgressReport(props) {
       const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
       const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
 
-      const marginTop = 15; // ⭐ TOP MARGIN
-      const marginBottom = 15; // ⭐ BOTTOM MARGIN
+      const marginTop = 5; // ⭐ TOP MARGIN
+      const marginBottom = 5; // ⭐ BOTTOM MARGIN
 
       const usableHeight = pdfHeight - marginTop - marginBottom;
 

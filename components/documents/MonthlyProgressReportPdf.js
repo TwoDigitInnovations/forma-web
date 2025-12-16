@@ -116,16 +116,6 @@ const MonthlyProgressReportPdf = ({
                 {data.clientName}
               </h1>
 
-              <p
-                style={{
-                  fontSize: "14px",
-                  color: "#666",
-                  marginBottom: "10px",
-                }}
-              >
-                {data.projectTitle}
-              </p>
-
               <div
                 style={{
                   display: "inline-block",

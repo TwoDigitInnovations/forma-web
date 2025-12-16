@@ -14,6 +14,10 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
     actionItems: "",
     preparedBy: "",
     preparedDate: "",
+    clientName: "",
+    clientAddress: "",
+    LogoImage: "",
+    clientContact:"",
   });
 
   useEffect(() => {
@@ -34,6 +38,10 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
       actionItems: formData.actionItems || "Not specified",
       preparedBy: formData.preparedBy || "",
       preparedDate: formData.preparedDate || "December 4, 2025",
+      clientName: projectDetails?.clientInfo?.ClientName || "",
+      clientAddress: projectDetails?.clientInfo?.Address || "",
+      clientContact: projectDetails?.clientInfo?.phone || "",
+      LogoImage: projectDetails?.clientInfo?.ClientLogo || "",
     });
   }, [formData, projectDetails]);
 
@@ -55,16 +63,47 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
             >
               {/* Header */}
               <div style={{ textAlign: "center", marginBottom: "30px" }}>
-                <h1
-                  style={{
-                    fontSize: "32px",
-                    fontWeight: "bold",
-                    marginBottom: "30px",
-                    color: "#000",
-                  }}
-                >
-                  {data.clientName}
-                </h1>
+                <div style={{ marginBottom: "20px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      {data.LogoImage && (
+                        <img
+                          src={data.LogoImage}
+                          alt="Logo"
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontSize: "12px",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      <p style={{ margin: 0 }}>{data.clientName}</p>
+                      <p style={{ margin: 0 }}>{data.clientAddress}</p>
+                      <p style={{ margin: 0 }}>{data.clientContact}</p>
+                    </div>
+                  </div>
+                </div>
                 <div
                   style={{
                     borderTop: "3px solid #1e3a8a",

@@ -176,6 +176,7 @@ const ProgressUpdate = (props) => {
       props.loader(false);
       if (res?.status === true) {
         toast.success("Tracker updated successfully!");
+        getAllTracker(projectId)
       } else {
         toast.error(res?.message || "Failed to updated tracker");
       }

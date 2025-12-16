@@ -37,7 +37,13 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
       location: projectDetails?.location || "Mogadishu",
       employerName: projectDetails?.clientInfo?.ClientName || "BRA",
       contractAmount: projectDetails?.contractAmount || "5678000.00",
-      defects: formData?.OutstandingWorkandDefects || "None at the time of Taking Over",
+      defects:
+        formData?.OutstandingWorkandDefects ||
+        "None at the time of Taking Over",
+      clientContact: projectDetails?.clientInfo?.phone || "Client Contact",
+      clientName: projectDetails?.clientInfo?.ClientName || "",
+      clientAddress: projectDetails?.clientInfo?.Address || "",
+      LogoImage: projectDetails?.clientInfo?.ClientLogo || "",
     });
   }, [formData, projectDetails]);
 
@@ -67,24 +73,36 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                     marginBottom: "20px",
                   }}
                 >
-                  {data.LogoImage && (
-                    <img
-                      src={data.LogoImage}
-                      alt="Logo"
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                      }}
-                    />
-                  )}
                   <div
                     style={{
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      color: "#1e5a8e",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
                     }}
                   >
-                    {data.clientName}
+                    {data.LogoImage && (
+                      <img
+                        src={data.LogoImage}
+                        alt="Logo"
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          objectFit: "contain",
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      textAlign: "right",
+                      fontSize: "12px",
+                      lineHeight: "1.6",
+                    }}
+                  >
+                    <p style={{ margin: 0 }}>{data.clientName}</p>
+                    <p style={{ margin: 0 }}>{data.clientAddress}</p>
+                    <p style={{ margin: 0 }}>{data.clientContact}</p>
                   </div>
                 </div>
 
@@ -198,9 +216,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                     <div style={{ color: "#666", marginBottom: "3px" }}>
                       Employer:
                     </div>
-                    <div style={{ fontWeight: "500" }}>
-                      {data.employerName}
-                    </div>
+                    <div style={{ fontWeight: "500" }}>{data.employerName}</div>
                   </div>
 
                   <div>
