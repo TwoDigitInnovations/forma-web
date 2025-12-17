@@ -191,9 +191,7 @@ const ProgressUpdate = (props) => {
 
   const raw = selectedTracker?.WorkplanId?.workActivities || [];
   const saved = selectedTracker?.trackerActivityProgress || [];
-  console.log("Saved (Full):", saved);
 
-  // 🔥 Flatten all saved activities from all sections
   const allSavedActivities = saved.flatMap(sec => sec.activities || []);
 
   const sections = [];
@@ -218,19 +216,16 @@ const ProgressUpdate = (props) => {
     if (item.rowType === "activity") {
       if (!currentSection) return;
 
-      // 🔥 FIXED MATCHING
       const savedActivity = allSavedActivities.find(
         (s) => s.activityId?.toString() === item._id?.toString()
       );
 
-      // Debug logs
       console.log("==== MATCH CHECK ====");
       console.log("RAW:", item._id?.toString());
       console.log(
         "ALL SAVED IDS:",
         allSavedActivities.map((x) => x.activityId)
       );
-      console.log("MATCHED:", savedActivity);
 
       currentSection.activities.push({
         id: Number(`${currentSection.id}${activityCounter++}`),

@@ -29,8 +29,8 @@ function RoadLineTracker({ loader }) {
   const [singleRoadData, setSingleRoadData] = useState("");
   const [roadData, setRoadData] = useState("");
   const [layerId, setLayerId] = useState("");
+  const [completedKm, setCompleteKm] = useState(0);
 
-  
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
@@ -223,12 +223,30 @@ function RoadLineTracker({ loader }) {
                   >
                     {layer?.sides?.map((sideObj, index) => {
                       const totalKm = Number(road?.lengthKm || 0);
-                      const start = Number(sideObj.StartChainageKM || 0);
-                      const end = Number(sideObj.EndChainageKM || 0);
+                      const history = sideObj?.history || [];
 
-                      const completedKm = Math.max(0, end - start);
+                      // 🔹 Calculate completed KM from history
+                      const calculatedCompletedKm = history.reduce(
+                        (sum, item) => {
+                          const start = Number(item.start || 0);
+                          const end = Number(item.end || 0);
+
+                          return sum + Math.max(0, end - start);
+                        },
+                        0
+                      );
+
+                      const safeCompletedKm =
+                        totalKm > 0
+                          ? Math.min(calculatedCompletedKm, totalKm)
+                          : 0;
+
                       const percentage =
-                        totalKm > 0 ? (completedKm / totalKm) * 100 : 0;
+                        totalKm > 0
+                          ? Number(
+                              ((safeCompletedKm / totalKm) * 100).toFixed(2)
+                            )
+                          : 0;
 
                       return (
                         <div className="mt-3" key={index}>
@@ -254,7 +272,7 @@ function RoadLineTracker({ loader }) {
                             ></div>
 
                             <p className="text-[12px] absolute bottom-[2px] left-2 text-white">
-                              {start} KM
+                              {calculatedCompletedKm} KM
                             </p>
 
                             <p className="text-[12px] absolute bottom-[1px] right-2 text-white">
@@ -280,7 +298,7 @@ function RoadLineTracker({ loader }) {
                           </div>
 
                           <div className="text-right text-sm text-gray-300 mt-1">
-                            {completedKm.toFixed(2)} km completed
+                            {calculatedCompletedKm?.toFixed(2)} km completed
                           </div>
                         </div>
                       );

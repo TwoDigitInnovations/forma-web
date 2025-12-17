@@ -23,57 +23,70 @@ const EditLayesDetails = ({
   const [formData, setFormData] = useState({
     name: "",
     QualityStatus: "Approved",
-    carriageway: "LHS",
+    side: "Left",
     StartChainageKM: "",
     EndChainageKM: "",
     CompletionDate: "",
     Notes: "",
+    side: "",
   });
 
+  console.log("exit", existingData);
+
   useEffect(() => {
-    if (existingData) {
-      let startKm = "";
-      let endKm = "";
+    if (!existingData) return;
 
-      if (existingData.carriageway === "Left") {
-        const left = existingData.sides?.find((s) => s.side === "Left");
-        startKm = left?.StartChainageKM || "";
-        endKm = left?.EndChainageKM || "";
-      } else if (existingData.carriageway === "Right") {
-        const right = existingData.sides?.find((s) => s.side === "Right");
-        startKm = right?.StartChainageKM || "";
-        endKm = right?.EndChainageKM || "";
-      } else {
-        const single = existingData.sides?.find((s) => s.side === "Single");
-        startKm = single?.StartChainageKM || "";
-        endKm = single?.EndChainageKM || "";
+    let startKm = "";
+    let endKm = "";
+    let side = "Single";
+
+    const preferredSide = formData?.side || "Left";
+
+    if (roadData?.carriageway === "Double Carriageway") {
+      const matchedSide = existingData.sides?.find(
+        (s) => s.side === preferredSide
+      );
+
+      if (matchedSide) {
+        startKm = "";
+        endKm = "";
+        side = matchedSide.side;
       }
+    } else {
+      const single = existingData.sides?.find((s) => s.side === "Single");
 
-      setFormData({
-        name: existingData.name || "",
-        QualityStatus: existingData.QualityStatus || "Approved",
-        carriageway: existingData.carriageway || "Left",
-        StartChainageKM: startKm,
-        EndChainageKM: endKm,
-        CompletionDate: existingData.CompletionDate
-          ? existingData.CompletionDate.split("T")[0]
-          : "",
-        Notes: existingData.Notes || "",
-      });
+      if (single) {
+        startKm = "";
+        endKm = "";
+        side = "Single";
+      }
     }
-  }, [existingData]);
+
+    setFormData((prev) => ({
+      ...prev,
+      name: existingData.name || "",
+      QualityStatus: existingData.QualityStatus || "Approved",
+      side,
+      StartChainageKM: startKm,
+      EndChainageKM: endKm,
+      CompletionDate: existingData.CompletionDate
+        ? existingData.CompletionDate.split("T")[0]
+        : "",
+      Notes: existingData.notes || "",
+    }));
+  }, [existingData, roadData, formData?.side]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  console.log("Data:", formData);
-  
+  console.log("formaData", formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    loader(true);
+    // loader(true);
     let data;
-   
+
     if (roadData?.carriageway === "Single Carriageway") {
       data = { ...formData, carriageway: "" };
     } else {
@@ -81,6 +94,7 @@ const EditLayesDetails = ({
     }
 
     const layerId = existingData._id;
+    console.log(data);
 
     try {
       const res = await Api(
@@ -104,7 +118,6 @@ const EditLayesDetails = ({
       toast.error(err?.message || "Something went wrong");
     }
   };
-  console.log("roaddata 123", roadData);
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-4 overflow-y-auto">
@@ -149,7 +162,7 @@ const EditLayesDetails = ({
 
               <select
                 name="carriageway"
-                value={formData.carriageway}
+                value={formData.side}
                 onChange={handleChange}
                 className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border cursor-pointer"
               >
