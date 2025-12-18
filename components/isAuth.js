@@ -6,10 +6,11 @@ const isAuth = (Component) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    const publicRoutes = ["/planpage", "/login","Ragister"];
+    // ❗ PlanPage NOT public
+    const publicRoutes = ["/", "/login", "/ragister",""];
 
-    let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
-    const isPublic = publicRoutes.includes(currentPath);
+    const path = router.pathname.toLowerCase();
+    const isPublic = publicRoutes.includes(path);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -18,21 +19,23 @@ const isAuth = (Component) => {
       const userData = localStorage.getItem("userDetail");
 
       if (!token || !userData) {
-        if (!isPublic) router.replace("/PlanPage");
-        else setIsAuthorized(true);
+        if (!isPublic) {
+          router.replace("/");
+        } else {
+          setIsAuthorized(true);
+        }
         return;
       }
-
       try {
         const user = JSON.parse(userData);
-        if (!user || !user._id) {
-          router.replace("/PlanPage");
+        if (!user?._id) {
+          router.replace("/");
           return;
         }
 
         setIsAuthorized(true);
       } catch {
-        router.replace("/PlanPage");
+        router.replace("/");
       }
     }, [router.pathname]);
 
@@ -43,4 +46,3 @@ const isAuth = (Component) => {
 };
 
 export default isAuth;
-

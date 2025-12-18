@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from "next/router";
 import { useState } from "react";
 import SidePannel from "./SidePannel";
@@ -12,31 +9,32 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const [openTab, setOpenTab] = useState(false);
 
-  // pages without any navbar / footer / sidebar
-  const withOutNavbar = router.pathname.includes("/Ragister");
+  const path = router.pathname.toLowerCase();
 
-  // before login pages (but NOT register)
-  const isBeforeLoginPage =
-    !withOutNavbar &&
-    (router.pathname.includes("/login") ||
-      router.pathname.includes("/PlanPage"));
+  const publicLayoutRoutes = ["/", "/planpage", "/login", "/checkout"];
+  const withoutLayoutRoutes = ["/ragister"];
+  const isWithoutLayout = withoutLayoutRoutes.includes(path);
+  const isPublicLayout = publicLayoutRoutes.includes(path);
+
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   return (
-    <div className="min-h-screen max-w-screen bg-white flex flex-col">
-      {/* ONLY CONTENT (No navbar, no footer, no sidebar) */}
-      {withOutNavbar && <main className="flex-1">{children}</main>}
-
-      {/* BEFORE LOGIN PAGES */}
-      {isBeforeLoginPage && (
+    <div className="min-h-screen bg-white flex flex-col">
+      {isPublicLayout && (
         <>
           <BeforeLoginNavbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </>
       )}
+      {isWithoutLayout && (
+        <>
+          <main className="flex-1 min-h-screen">{children}</main>
+        </>
+      )}
 
-      {/* AFTER LOGIN (Dashboard Layout) */}
-      {!withOutNavbar && !isBeforeLoginPage && (
+      {!isPublicLayout && token && (
         <div className="flex w-full flex-1">
           <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
 

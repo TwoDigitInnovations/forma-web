@@ -61,7 +61,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <p className="text-2xl text-white font-bold md:hidden flex">Store Name/LOGO</p>
+            <p className="text-2xl text-white font-bold md:hidden flex">Forma</p>
           </div>
 
 

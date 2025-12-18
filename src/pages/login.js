@@ -41,7 +41,7 @@ export default function Login(props) {
           setUser(user);
           // setUserDetail({ email: "", password: "" });
           toast.success(res.data.message);
-          router.push("/");
+          router.push("/PlanPage");
         } else {
           toast.error(res.data.message || "You are not authorized");
         }
@@ -72,13 +72,13 @@ export default function Login(props) {
 
       {/* Login Card */}
       <div className="relative w-full max-w-md z-20">
-        <div className="bg-gray-900 border border-custom-green/30 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-2xl transition-all duration-300">
+        <div className="bg-gray-900 border rounded-3xl border-green-500/20  backdrop-blur-sm  p-6 md:p-8 shadow-2xl transition-all duration-300">
           {/* Header */}
           <div className="text-center mb-6 md:mb-8">
-            <h1 className="text-xl md:text-2xl font-bold text-custom-yellow">
+            <h1 className="text-xl md:text-2xl font-bold text-white">
               Welcome Back!
             </h1>
-            <p className="text-custom-yellow text-xs md:text-sm mt-1">
+            <p className="text-white text-xs md:text-sm mt-1">
               Sign in to access your dashboard
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function Login(props) {
             <button
               onClick={submit}
               disabled={loading}
-              className="w-full bg-custom-yellow text-black font-semibold py-3 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
+              className="w-full bg-custom-yellow text-black font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -172,10 +172,18 @@ export default function Login(props) {
             </button>
           </div>
 
-          {/* Footer */}
-          <p className="mt-8 text-center text-xs text-custom-green/70">
-            © 2025 Forma. All rights reserved.
+          <p className="text-white text-sm mt-4 text-center">
+            {" "}
+            Don't have an account?{" "}
+            <span
+              className="text-custom-yellow cursor-pointer"
+              onClick={() => router.push("/Ragister")}
+            >
+              {" "}
+              Ragister here
+            </span>
           </p>
+
         </div>
       </div>
 
