@@ -51,7 +51,7 @@ function BeforeLoginNavbar() {
           <span className="text-xl font-bold text-white">Forma</span>
         </div>
         {user._id ? (
-          <div className="relative">
+          <div className="relative hidden md:flex">
             {/* Profile button */}
             <div
               className="flex items-center gap-2 cursor-pointer text-white"
@@ -78,7 +78,7 @@ function BeforeLoginNavbar() {
             )}
           </div>
         ) : (
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <button
               style={{ backgroundColor: "#e0f349" }}
               className="px-5 py-2 rounded-lg text-black font-medium hover:opacity-90 transition-all cursor-pointer"
@@ -106,7 +106,13 @@ function BeforeLoginNavbar() {
       {menuOpen && (
         <div className="sm:hidden px-4 pb-4 flex flex-col gap-3 animate-fadeIn">
           {user._id ? (
-            <p>logOut</p>
+             <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
+                </button>
           ) : (
             <div>
               <button

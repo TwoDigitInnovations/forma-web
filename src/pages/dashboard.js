@@ -11,6 +11,10 @@ function Dashboard(props) {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
+  if (!user && !user._id) {
+    return router.push("/");
+  }
+
   const mockActivityData = [
     {
       title: "Foundation work completed ahead of schedule",
@@ -108,7 +112,6 @@ function Dashboard(props) {
     { name: "Project 6", progress: 100 },
     { name: "Project 7", progress: 75 },
   ];
-
 
   return (
     <section className=" bg-[#000000] md:p-6 p-3 text-white h-screen">

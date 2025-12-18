@@ -16,6 +16,12 @@ import { useRouter } from "next/router";
 function TaskTrussLanding() {
   const [openFaq, setOpenFaq] = useState(0);
   const router = useRouter();
+
+
+
+
+
+  
   const features = [
     {
       icon: <BarChart3 className="w-6 h-6" />,

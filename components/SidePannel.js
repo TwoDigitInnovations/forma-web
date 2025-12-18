@@ -45,7 +45,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
   const menuItems = [
     {
-      href: "/",
+      href: "/dashboard",
       title: "Dashboard",
       img: <LayoutDashboard className="text-3xl" />,
       access: ["Admin", "Organization", "User", "TeamsMember"],

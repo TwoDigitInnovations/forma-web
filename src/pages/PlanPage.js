@@ -1,13 +1,31 @@
-import React, { useContext, useState } from "react";
-import { Check, ChevronDown, Flame, Mail } from "lucide-react";
+import React, { useContext, useState ,useEffect} from "react";
+import { Check, Mail } from "lucide-react";
 import isAuth from "../../components/isAuth";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
+import { Api } from "@/services/service";
+import { toast } from "react-toastify";
 
 function PricingPage() {
-  const [openFaq, setOpenFaq] = useState(null);
+  const [allPlanData, setAllPlanData] = useState([]);
   const router = useRouter();
   const [user] = useContext(userContext);
+
+  useEffect(() => {
+    getAllPlan();
+  }, []);
+
+  const getAllPlan = async () => {
+    Api("get", `price-plan/getAllPlan`, "", router)
+      .then((res) => {
+        if (res?.status === true) {
+          setAllPlanData(res.data?.data || []);
+        }
+      })
+      .catch((err) => {
+        toast.error("Failed to load roads");
+      });
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -26,7 +44,7 @@ function PricingPage() {
 
       <section className="max-w-6xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
-          {/* Individual Plan */}
+          
           <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
             <h3 className="text-xl font-semibold mb-2">Contractor Solo</h3>
             <p className="text-gray-400 text-sm mb-6">

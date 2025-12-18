@@ -34,16 +34,15 @@ export default function App({ Component, pageProps }) {
   const publicRoutes = ["/planpage", "/login", "Ragister"];
 
   const getUserDetail = () => {
-    let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
-    const isPublic = publicRoutes.includes(currentPath);
+    // let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
+    // const isPublic = publicRoutes.includes(currentPath);
 
     const user = localStorage.getItem("userDetail");
 
     if (!user) {
-      if (!isPublic) {
-        router.push("/PlanPage");
-      }
+      router.push("/login");
     } else {
+      router.push("/PlanPage");
       setUser(JSON.parse(user));
     }
   };
