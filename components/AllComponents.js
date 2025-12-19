@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Edit, Trash } from "lucide-react";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
+import { CheckCircle } from "lucide-react";
 
 export const ConfirmModal = ({
   isOpen,
@@ -601,3 +602,38 @@ export const Certificates = ({
     </div>
   );
 };
+
+
+export const PlanSuccessPopup = ({ open, onDashboard }) => {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="w-[460px] rounded-2xl bg-custom-black p-8 text-center shadow-2xl animate-scaleIn">
+        
+        <div className="flex justify-center mb-4">
+          <CheckCircle className="h-16 w-16 text-custom-yellow" />
+        </div>
+
+        <h2 className="text-2xl font-semibold text-white">
+          Plan Purchased Successfully 🎉
+        </h2>
+
+        <p className="mt-2 text-sm text-gray-300">
+          Your subscription is now active.  
+          Enjoy all premium features.
+        </p>
+
+        {/* Action */}
+        <button
+          onClick={onDashboard}
+          className="mt-6 w-full rounded-lg bg-custom-yellow px-4 py-2.5 cursor-pointer text-sm font-medium text-black transition hover:bg-black/90"
+        >
+          My Dashboard
+        </button>
+      </div>
+    </div>
+  );
+};
+
+

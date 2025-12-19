@@ -28,8 +28,10 @@ export default function Login(props) {
       props.loader(true);
 
       const res = await Api("post", "auth/login", { ...userDetail }, router);
+
       if (res?.status) {
         const user = res.data.user;
+
         if (
           user.role === "Admin" ||
           user.role === "Organization" ||
@@ -39,9 +41,20 @@ export default function Login(props) {
           localStorage.setItem("userDetail", JSON.stringify(user));
           localStorage.setItem("token", res.data?.token);
           setUser(user);
-          // setUserDetail({ email: "", password: "" });
+
           toast.success(res.data.message);
-          router.push("/PlanPage");
+
+          const hasActiveSubscription =
+            user.subscription &&
+            user.subscription.status === "active" &&
+            user.subscription.planEndDate &&
+            new Date(user.subscription.planEndDate) > new Date();
+
+          if (hasActiveSubscription) {
+            router.push("/dashboard");
+          } else {
+            router.push("/PlanPage");
+          }
         } else {
           toast.error(res.data.message || "You are not authorized");
         }
@@ -183,7 +196,6 @@ export default function Login(props) {
               Ragister here
             </span>
           </p>
-
         </div>
       </div>
 

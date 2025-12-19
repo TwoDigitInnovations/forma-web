@@ -66,7 +66,7 @@ function BeforeLoginNavbar() {
 
             {/* Dropdown */}
             {profileOpen && (
-              <div className="absolute right-0 mt-3 w-48 bg-[#0f1629] border border-gray-800 rounded-xl shadow-lg z-50">
+              <div className="absolute left-0 top-8 mt-3 w-48 bg-[#0f1629] border border-gray-800 rounded-xl shadow-lg z-50">
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"

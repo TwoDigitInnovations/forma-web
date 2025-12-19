@@ -11,9 +11,24 @@ function Dashboard(props) {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
-  if (!user && !user._id) {
-    return router.push("/");
-  }
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userDetail"));
+
+    if (!user || !user._id) {
+      router.replace("/");
+      return;
+    }
+
+    if (
+      !user.subscription ||
+      user.subscription.status !== "active" ||
+      new Date(user.subscription.planEndDate) <= new Date()
+    ) {
+      router.push("/PlanPage");
+      return;
+    }
+
+  }, []);
 
   const mockActivityData = [
     {

@@ -31,18 +31,12 @@ export default function App({ Component, pageProps }) {
     getUserDetail();
   }, []);
 
-  const publicRoutes = ["/planpage", "/login", "Ragister"];
-
   const getUserDetail = () => {
-    // let currentPath = router.pathname.toLowerCase().replace(/\/$/, "");
-    // const isPublic = publicRoutes.includes(currentPath);
-
-    const user = localStorage.getItem("userDetail");
+  const user = localStorage.getItem("userDetail");
 
     if (!user) {
       router.push("/login");
     } else {
-      router.push("/PlanPage");
       setUser(JSON.parse(user));
     }
   };

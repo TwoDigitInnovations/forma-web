@@ -1,4 +1,4 @@
-import React, { useContext, useState ,useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Check, Mail } from "lucide-react";
 import isAuth from "../../components/isAuth";
 import { useRouter } from "next/router";
@@ -27,6 +27,25 @@ function PricingPage() {
       });
   };
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userDetail"));
+
+    if (!user || !user._id) {
+      router.replace("/");
+      return;
+    }
+
+    const hasActiveSubscription =
+      user.subscription &&
+      user.subscription.status === "active" &&
+      user.subscription.planEndDate &&
+      new Date(user.subscription.planEndDate) > new Date();
+
+    if (hasActiveSubscription) {
+      router.replace("/dashboard");
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <section className="max-w-6xl mx-auto px-4 pt-12 pb-8 text-center">
@@ -44,19 +63,25 @@ function PricingPage() {
 
       <section className="max-w-6xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
-          
           <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
-            <h3 className="text-xl font-semibold mb-2">Contractor Solo</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              Contractor {allPlanData[0]?.name}
+            </h3>
             <p className="text-gray-400 text-sm mb-6">
               For independent contractors
             </p>
             <div className="mb-6">
-              <span className="text-5xl font-bold">$29</span>
+              <span className="text-5xl font-bold">
+                {allPlanData[0]?.currency === "USD" ? "$" : ""}
+                {allPlanData[0]?.priceMonthly}
+              </span>
               <span className="text-gray-400 ml-2">/mo</span>
             </div>
             <button
               className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
-              onClick={() => router.push("/Checkout?role=User")}
+              onClick={() =>
+                router.push(`/Checkout?role=User&planId=${allPlanData[0]?._id}`)
+              }
             >
               Get Started
             </button>
@@ -98,15 +123,24 @@ function PricingPage() {
                 POPULAR PLAN
               </span>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Team</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              Construction {allPlanData[1]?.name}
+            </h3>
             <p className="text-gray-400 text-sm mb-6">For construction teams</p>
             <div className="mb-6">
-              <span className="text-5xl font-bold">$99</span>
+              <span className="text-5xl font-bold">
+                {allPlanData[1]?.currency === "USD" ? "$" : ""}
+                {allPlanData[1]?.priceMonthly}
+              </span>
               <span className="text-gray-400 ml-2">/user/per month</span>
             </div>
             <button
               style={{ backgroundColor: "#e0f349" }}
-              onClick={() => router.push("/Checkout?role=Organization")}
+              onClick={() =>
+                router.push(
+                  `/Checkout?role=Organization&planId=${allPlanData[1]?._id}`
+                )
+              }
               className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
             >
               Start Free Trial
