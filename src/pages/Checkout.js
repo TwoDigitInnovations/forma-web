@@ -32,11 +32,24 @@ function RoleBasedCheckout(props) {
       return;
     }
 
-    const hasActiveSubscription =
-      user.subscription &&
-      user.subscription.status === "active" &&
-      user.subscription.planEndDate &&
-      new Date(user.subscription.planEndDate) > new Date();
+    let hasActiveSubscription = false;
+
+    if (user.role === "TeamsMember" && user.OrganizationId) {
+      const org = user.OrganizationId;
+
+      hasActiveSubscription =
+        org.status === "active" &&
+        org.subscription &&
+        org.subscription.status === "active" &&
+        org.subscription.planEndDate &&
+        new Date(org.subscription.planEndDate) > new Date();
+    } else {
+      hasActiveSubscription =
+        user.subscription &&
+        user.subscription.status === "active" &&
+        user.subscription.planEndDate &&
+        new Date(user.subscription.planEndDate) > new Date();
+    }
 
     if (hasActiveSubscription) {
       router.replace("/dashboard");
@@ -123,11 +136,9 @@ function RoleBasedCheckout(props) {
 
       if (res?.status) {
         toast.success("Plan purchased successfully");
-        // const userDetail = JSON.parse(localStorage.getItem("userDetail"));
-        // userDetail.subscription =
-        //   res.data?.subscription || userDetail.subscription;
-        const userDetail = res.data
-        
+        const userDetail = res?.data?.user;
+        console.log(res.data);
+
         localStorage.setItem("userDetail", JSON.stringify(userDetail));
         setShowSuccess(true);
         props.loader(false);

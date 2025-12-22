@@ -19,15 +19,26 @@ function Dashboard(props) {
       return;
     }
 
-    if (
-      !user.subscription ||
-      user.subscription.status !== "active" ||
-      new Date(user.subscription.planEndDate) <= new Date()
-    ) {
+    let isSubscriptionInvalid = false;
+
+    if (user.role === "TeamsMember" && user.OrganizationId) {
+      const org = user.OrganizationId;
+
+      isSubscriptionInvalid =
+        !org.subscription ||
+        org.subscription.status !== "active" ||
+        new Date(org.subscription.planEndDate) <= new Date();
+    } else {
+      isSubscriptionInvalid =
+        !user.subscription ||
+        user.subscription.status !== "active" ||
+        new Date(user.subscription.planEndDate) <= new Date();
+    }
+
+    if (isSubscriptionInvalid) {
       router.push("/PlanPage");
       return;
     }
-
   }, []);
 
   const mockActivityData = [
@@ -301,7 +312,12 @@ function Dashboard(props) {
   );
 }
 
-export default isAuth(Dashboard);
+export default isAuth(Dashboard, [
+  "Organization",
+  "User",
+  "TeamsMember",
+  "Admin",
+]);
 
 const DarkStatsCard = ({ title, value, subtitle, icon }) => {
   return (

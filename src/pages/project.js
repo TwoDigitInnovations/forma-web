@@ -25,7 +25,7 @@ const Projects = (props) => {
   const [AllProjectData, setAllProjectData] = useState([]);
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
-  const isTeamsMember  = user?.role === "TeamsMember"
+  const isTeamsMember = user?.role === "TeamsMember";
   const getStatusBadge = (status) => {
     const baseClasses = "px-3 py-1 rounded-full text-xs font-medium";
     switch (status) {
@@ -41,9 +41,13 @@ const Projects = (props) => {
   };
 
   useEffect(() => {
-    getAllProject();
-  }, []);
+    const delayDebounce = setTimeout(() => {
+      getAllProject();
+    }, 500);
 
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
+  
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) setProjectdetails(JSON.parse(stored));
@@ -51,7 +55,12 @@ const Projects = (props) => {
 
   const getAllProject = async (e) => {
     props.loader(true);
-    Api("get", `project/getAllProjects?OrganizationId=${user._id}`, "", router)
+    Api(
+      "get",
+      `project/getAllProjects?OrganizationId=${user._id}&search=${searchTerm}`,
+      "",
+      router
+    )
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -209,7 +218,7 @@ const Projects = (props) => {
             <p className="text-gray-300">
               Try creating a new Project or adjusting your filters.
             </p>
-         
+
             <button
               className="flex cursor-pointer items-center gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
               style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
@@ -225,4 +234,4 @@ const Projects = (props) => {
   );
 };
 
-export default isAuth(Projects);
+export default isAuth(Projects, ["Organization", "User", "TeamsMember"]);

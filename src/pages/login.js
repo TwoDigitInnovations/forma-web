@@ -44,11 +44,25 @@ export default function Login(props) {
 
           toast.success(res.data.message);
 
-          const hasActiveSubscription =
-            user.subscription &&
-            user.subscription.status === "active" &&
-            user.subscription.planEndDate &&
-            new Date(user.subscription.planEndDate) > new Date();
+          let hasActiveSubscription = false;
+
+          if (user.role === "TeamsMember" && user.OrganizationId) {
+            const org = user.OrganizationId;
+
+            hasActiveSubscription =
+              org.status === "active" &&
+              org.subscription &&
+              org.subscription.status === "active" &&
+              org.subscription.planEndDate &&
+              new Date(org.subscription.planEndDate) > new Date();
+
+          } else {
+            hasActiveSubscription =
+              user.subscription &&
+              user.subscription.status === "active" &&
+              user.subscription.planEndDate &&
+              new Date(user.subscription.planEndDate) > new Date();
+          }
 
           if (hasActiveSubscription) {
             router.push("/dashboard");

@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { userContext } from "./_app";
 import { toast } from "react-toastify";
 import { ConfirmModal } from "../../components/AllComponents";
-import AssignProject from "../../components/AssignProject";
 
 const TeamMembers = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,8 +17,6 @@ const TeamMembers = (props) => {
   const [editData, setEditData] = useState({});
   const [deleteId, setDeleteId] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [AllProjectData, setAllProjectData] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   const generateAvatar = (name) => {
     const initials = name
@@ -48,30 +45,16 @@ const TeamMembers = (props) => {
   };
 
   useEffect(() => {
-    getAllMembers();
-    getAllProject();
-  }, []);
+    const delayDebounce = setTimeout(() => {
+      getAllMembers();
+    }, 500);
 
-  const getAllProject = async (e) => {
-    props.loader(true);
-    Api("get", `project/getAllProjects?OrganizationId=${user._id}`, "", router)
-      .then((res) => {
-        props.loader(false);
-        if (res?.status === true) {
-          setAllProjectData(res.data?.data);
-        } else {
-          toast.error(res?.message || "Failed to created status");
-        }
-      })
-      .catch((err) => {
-        props.loader(false);
-        toast.error(err?.message || "An error occurred");
-      });
-  };
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm]);
 
-  const getAllMembers = async (e) => {
+  const getAllMembers = async () => {
     props.loader(true);
-    Api("get", `auth/getAllTeamMembers`, "", router)
+    Api("get", `auth/getAllTeamMembers?search=${searchTerm}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -122,15 +105,6 @@ const TeamMembers = (props) => {
 
             <div className="flex gap-3 w-full md:w-auto">
               <button
-                onClick={() => setIsOpen(true)}
-                className="min-w-[180px] w-full bg-custom-yellow py-2.5 px-3 text-black 
-          rounded-[12px] flex items-center cursor-pointer justify-center gap-2 hover:bg-yellow-400"
-              >
-                <Plus size={18} />
-                Assign Project
-              </button>
-
-              <button
                 onClick={() => setOpen(true)}
                 className="min-w-[180px] w-full bg-custom-yellow py-2.5 px-3 text-black 
           rounded-[12px] flex cursor-pointer items-center justify-center gap-2 hover:bg-yellow-400"
@@ -154,7 +128,7 @@ const TeamMembers = (props) => {
           />
           <input
             type="text"
-            placeholder="Search team members"
+            placeholder="Search team by Email or Name"
             className="w-full pl-12 pr-4 py-2 rounded-[30px] border border-gray-600 focus:border-gray-500 focus:outline-none"
             style={{ backgroundColor: "#2a2a2a", color: "white" }}
             value={searchTerm}
@@ -187,39 +161,6 @@ const TeamMembers = (props) => {
                 </span>
               </div>
 
-              {/* Assigned Projects */}
-              <div className="mb-5">
-                <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">
-                  Assigned Projects
-                </p>
-
-                {member.assignedProjects?.length > 0 ? (
-                  <div className="space-y-2">
-                    {member.assignedProjects.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between rounded-lg bg-[#262626] px-3 py-2"
-                      >
-                        <span className="text-sm text-white truncate">
-                          {item.projectId?.projectName || "Unnamed Project"}
-                        </span>
-
-                        <span className="text-xs px-2 py-1 rounded-full bg-[#333333] text-gray-300">
-                          {item.actionType === "both"
-                            ? "View & Edit"
-                            : item.actionType}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-sm text-gray-500 italic">
-                    No project assigned
-                  </div>
-                )}
-              </div>
-
-              {/* Actions */}
               <div className="flex gap-3 pt-2 border-t border-gray-700">
                 <button
                   onClick={() => {
@@ -252,7 +193,7 @@ const TeamMembers = (props) => {
         {teamMembersData?.length === 0 && (
           <div
             className="flex flex-col rounded-3xl justify-center items-center 
-    min-h-[450px] text-center space-y-3 bg-custom-black mt-10 p-6"
+    md:h-[480px] h-[600px]  text-center space-y-3 bg-custom-black p-6"
           >
             <FileCode2 size={68} />
             <h3 className="text-xl font-medium text-white">No Member Found</h3>
@@ -283,17 +224,6 @@ const TeamMembers = (props) => {
         />
       )}
 
-      {isOpen && (
-        <AssignProject
-          onclose={() => {
-            setIsOpen(false);
-          }}
-          teamList={teamMembersData}
-          getAllMembers={getAllMembers}
-          AllProjectData={AllProjectData}
-        />
-      )}
-
       <ConfirmModal
         isOpen={isConfirmOpen}
         setIsOpen={setIsConfirmOpen}
@@ -307,4 +237,4 @@ const TeamMembers = (props) => {
   );
 };
 
-export default isAuth(TeamMembers);
+export default isAuth(TeamMembers, ["Organization"]);
