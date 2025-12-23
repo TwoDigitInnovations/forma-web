@@ -20,6 +20,7 @@ import {
   LoaderCircle,
   MoveLeft,
   NotebookPen,
+  NotepadTextDashed,
   Puzzle,
   ReceiptIcon,
   ReceiptText,
@@ -61,6 +62,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/teams",
       title: "Teams",
       img: <Users className="text-3xl" />,
+      access: ["Organization"],
+    },
+    {
+      href: "/billingPage",
+      title: "Billing",
+      img: <NotepadTextDashed className="text-3xl" />,
       access: ["Organization"],
     },
   ];

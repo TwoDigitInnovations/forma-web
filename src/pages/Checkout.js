@@ -137,9 +137,8 @@ function RoleBasedCheckout(props) {
       if (res?.status) {
         toast.success("Plan purchased successfully");
         const userDetail = res?.data?.user;
-        console.log(res.data);
-
         localStorage.setItem("userDetail", JSON.stringify(userDetail));
+        setUser(userDetail);
         setShowSuccess(true);
         props.loader(false);
       }
