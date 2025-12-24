@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "react-toastify";
-import { Edit, Trash } from "lucide-react";
+import {
+  CheckLine,
+  Copy,
+  Cross,
+  Edit,
+  MoveRight,
+  Trash,
+  X,
+} from "lucide-react";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { CheckCircle } from "lucide-react";
+import { userContext } from "@/pages/_app";
 
 export const ConfirmModal = ({
   isOpen,
@@ -510,7 +519,9 @@ export const Certificates = ({
                 <td className="p-3 flex gap-3 justify-center">
                   <button
                     className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                    onClick={() => setAdvanceAmount(summary.advancePayment || 0)}
+                    onClick={() =>
+                      setAdvanceAmount(summary.advancePayment || 0)
+                    }
                   >
                     <Edit />
                   </button>
@@ -593,7 +604,6 @@ export const Certificates = ({
                 <td className="p-3">${totalPaid + advanceAmount}</td>
                 <td className="p-3"></td>
                 <td className="p-3"></td>
-        
               </tr>
             </tbody>
           </table>
@@ -603,14 +613,12 @@ export const Certificates = ({
   );
 };
 
-
 export const PlanSuccessPopup = ({ open, onDashboard }) => {
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="w-[460px] rounded-2xl bg-custom-black p-8 text-center shadow-2xl animate-scaleIn">
-        
         <div className="flex justify-center mb-4">
           <CheckCircle className="h-16 w-16 text-custom-yellow" />
         </div>
@@ -620,8 +628,7 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
         </h2>
 
         <p className="mt-2 text-sm text-gray-300">
-          Your subscription is now active.  
-          Enjoy all premium features.
+          Your subscription is now active. Enjoy all premium features.
         </p>
 
         {/* Action */}
@@ -636,4 +643,160 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
   );
 };
 
+export const InviteMemberModal = ({ onClose, onSuccess,loader }) => {
+  const router = useRouter();
+  const [user] = useContext(userContext);
 
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    loader(true);
+
+    try {
+      const res = await Api(
+        "post",
+        "auth/createInviteLink",
+        {
+          email,
+          organizationId: user._id,
+        },
+        router
+      );
+      console.log(res);
+
+      loader(false);
+
+      if (res?.status) {
+        onSuccess(res.data?.inviteLink, email); // 🔥 pass link + email
+      } else {
+        toast.error(res?.message || "Failed to send invite");
+      }
+    } catch (err) {
+      loader(false);
+      toast.error(err?.message || "Something went wrong");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
+      <div className="w-full max-w-xl bg-custom-black text-white rounded-3xl p-6 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400"
+        >
+          ✕
+        </button>
+
+        <h2 className="text-xl font-semibold mb-1">Invite Team Member</h2>
+        <p className="text-sm text-gray-400 mb-4">
+          Send an invitation to join your organization
+        </p>
+
+        {/* Seats info */}
+        <div className="bg-[#1E293B] rounded-xl p-4 flex justify-between items-center mb-4">
+          <span>Team Seats</span>
+          <h3 className="text-xl font-semibold text-white">
+            {user?.subscription?.usedTeamsSize + 1 || "0"}{" "}
+            <span className="text-sm text-white">
+              of {user?.subscription?.teamSize}{" "}
+            </span>
+          </h3>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="text-sm text-gray-300">Email Address</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="colleague@company.com"
+              className="w-full mt-1 px-4 py-3 rounded-xl bg-[#1E293B] border border-gray-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-300">Role</label>
+            <select className="w-full mt-1 px-4 py-3 rounded-xl bg-[#1E293B] border border-gray-600">
+              <option>Member</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-6 py-2 cursor-pointer rounded-lg bg-gray-200 text-black"
+            >
+              Cancel
+            </button>
+            <button
+              disabled={loading}
+              type="submit"
+              className="px-6 py-2 cursor-pointer rounded-lg bg-custom-yellow text-black font-medium"
+            >
+              Send Invitation
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export const InviteSuccessModal = ({ link, email, onClose }) => {
+  const copyLink = () => {
+    navigator.clipboard.writeText(link);
+    toast.success("Link copied!");
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
+      <div className="w-full max-w-xl bg-[#0F172A] text-white rounded-3xl p-6 text-center relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 cursor-pointer right-4 text-gray-400"
+        >
+          <X />
+        </button>
+
+        <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-2xl">
+          <CheckLine />
+        </div>
+
+        <h2 className="text-xl font-semibold">Invitation Sent!</h2>
+        <p className="text-sm text-gray-400 mb-4">
+          Share this link with <span className="text-white">{email}</span>
+        </p>
+
+        <div className="bg-[#1E293B] rounded-xl p-3 flex items-center gap-2">
+          <input
+            readOnly
+            value={link}
+            className="flex-1 bg-transparent text-sm outline-none"
+          />
+          <button
+            onClick={copyLink}
+            className="p-2 bg-black/30 rounded-lg cursor-pointer"
+          >
+            <Copy />
+          </button>
+        </div>
+
+        <p className="text-xs text-gray-400 mt-3">
+          This link expires in 5 minutes. User must register with this email.
+        </p>
+
+        <button
+          onClick={onClose}
+          className="mt-6 w-full py-3 rounded-xl cursor-pointer bg-custom-yellow text-black font-medium"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  );
+};

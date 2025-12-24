@@ -6,11 +6,15 @@ const isAuth = (Component, allowedRoles = []) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    const publicRoutes = ["/", "/login", "/ragister"];
-
+    const publicRoutes = ["/", "/login", "/register", "/acceptInvite"];
     const path = router.pathname.toLowerCase();
-    const isPublic = publicRoutes.includes(path);
 
+    const isPublic = publicRoutes.some(
+      (route) => path === route || path.startsWith(route + "/")
+    );
+
+    console.log(isPublic);
+    
     useEffect(() => {
       if (typeof window === "undefined") return;
 

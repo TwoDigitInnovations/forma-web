@@ -127,7 +127,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
   return (
     <>
-      {/* ----------------- Desktop Sidebar ----------------- */}
+
       <div className="xl:w-[280px] fixed top-0 left-0 z-20 md:w-[250px] sm:w-[200px] hidden sm:grid grid-rows-5 overflow-hidden">
         <div>
           <div className="bg-custom-black py-5 overflow-y-scroll h-screen scrollbar-hide">
@@ -206,8 +206,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           </div>
         </div>
       </div>
-
-      {/* ----------------- Mobile Sidebar ----------------- */}
+      
       <div
         className={`w-full absolute top-0 left-0 z-40 sm:hidden flex flex-col h-screen max-h-screen overflow-hidden bg-custom-black ${
           openTab ? "scale-x-100" : "scale-x-0"

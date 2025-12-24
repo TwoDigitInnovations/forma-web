@@ -12,34 +12,37 @@ import {
   Sheet,
 } from "lucide-react";
 import isAuth from "../../components/isAuth";
-import CreateTeamMember from "../../components/Createteams";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
 import { toast } from "react-toastify";
-import { ConfirmModal } from "../../components/AllComponents";
+import {
+  ConfirmModal,
+  InviteMemberModal,
+  InviteSuccessModal,
+} from "../../components/AllComponents";
 
 const TeamMembers = (props) => {
-  const [searchTerm, setSearchTerm] = useState("");
+
   const [open, setOpen] = useState(false);
   const [teamMembersData, SetTeamMembersData] = useState([]);
   const router = useRouter();
-  const [user, setUser] = useContext(userContext);
+  const [user] = useContext(userContext);
   const [editData, setEditData] = useState({});
   const [deleteId, setDeleteId] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [inviteLink, setInviteLink] = useState("");
+  const [inviteEmail, setInviteEmail] = useState("");
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      getAllMembers();
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchTerm]);
+    getAllMembers();
+  }, []);
 
   const getAllMembers = async () => {
     props.loader(true);
-    Api("get", `auth/getAllTeamMembers?search=${searchTerm}`, "", router)
+    Api("get", `auth/getAllTeamMembers`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -89,7 +92,7 @@ const TeamMembers = (props) => {
 
             <div className="flex gap-3 w-full md:w-auto">
               <button
-                onClick={() => setOpen(true)}
+                onClick={() => setIsInviteOpen(true)}
                 className="min-w-[180px] w-full bg-custom-yellow py-2.5 px-3 text-black 
           rounded-[12px] flex cursor-pointer items-center justify-center gap-2 hover:bg-yellow-400"
               >
@@ -278,14 +281,24 @@ const TeamMembers = (props) => {
         </div>
       </div>
 
-      {open && (
-        <CreateTeamMember
-          editData={editData}
-          onclose={() => {
-            setOpen(false);
-            setEditData({});
+      {isInviteOpen && (
+        <InviteMemberModal
+          onClose={() => setIsInviteOpen(false)}
+          onSuccess={(link, email) => {
+            setInviteLink(link);
+            setInviteEmail(email);
+            setIsInviteOpen(false);
+            setIsSuccessOpen(true);
           }}
-          getAllMembers={getAllMembers}
+          loader={props.loader}
+        />
+      )}
+
+      {isSuccessOpen && (
+        <InviteSuccessModal
+          link={inviteLink}
+          email={inviteEmail}
+          onClose={() => setIsSuccessOpen(false)}
         />
       )}
 
