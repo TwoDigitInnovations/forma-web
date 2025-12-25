@@ -16,7 +16,8 @@ function RoleBasedCheckout(props) {
   const [planData, setPlanData] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [billingType, setBillingType] = useState("monthly");
-
+  const [price, setPrice] = useState("");
+  
   const [formData, setFormData] = useState({
     cardholderName: "",
     cardNumber: "",
@@ -62,6 +63,7 @@ function RoleBasedCheckout(props) {
     if (router.query.role) {
       setRole(router.query.role);
       setPlanId(router.query.planId);
+      setBillingType(router.query.billingType);
       getPlanDetails(router.query.planId);
     }
   }, [router.isReady, router.query.role]);
@@ -78,20 +80,33 @@ function RoleBasedCheckout(props) {
       });
   };
 
-  const calculateTotal = () => {
-    if (!planData || !role) return 0;
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (!planData || !role) {
+      setTotalPrice(0);
+      return;
+    }
+
+    const currentPrice =
+      billingType === "monthly" ? planData.priceMonthly : planData.priceYearly;
+
+    setPrice(currentPrice);
 
     switch (role) {
       case "User":
-        return planData.priceMonthly;
+        setTotalPrice(currentPrice);
+        break;
 
       case "Organization":
-        return planData.priceMonthly * seats;
+        setTotalPrice(currentPrice * seats);
+        break;
 
       default:
-        return 0;
+        setTotalPrice(0);
+        break;
     }
-  };
+  }, [planData, role, billingType, seats]);
 
   const handleSeatsChange = (change) => {
     const newSeats = seats + change;
@@ -122,7 +137,7 @@ function RoleBasedCheckout(props) {
 
       const payload = {
         planId: planId,
-        total: calculateTotal(),
+        total: totalPrice,
         billingType: billingType || "monthly",
         teamSize: role === "Organization" ? seats : 1,
         paymentMethod: "upi",
@@ -217,9 +232,9 @@ function RoleBasedCheckout(props) {
 
                 <div className="flex justify-between items-center mt-4 text-gray-400">
                   <span>
-                    ${planData?.priceMonthly}/user × {seats} users
+                    ${price}/user × {seats} users
                   </span>
-                  <span>${planData?.priceMonthly * seats}/mo</span>
+                  <span>${price * seats}/mo</span>
                 </div>
               </div>
             )}
@@ -227,7 +242,7 @@ function RoleBasedCheckout(props) {
             <div className="flex justify-between items-center mb-8 py-6 border-y border-gray-700">
               <span className="text-xl">Total</span>
               <span className="text-4xl font-bold text-custom-yellow">
-                ${calculateTotal()}
+                ${totalPrice}
                 <span className="text-lg text-gray-400">/month</span>
               </span>
             </div>
@@ -320,7 +335,7 @@ function RoleBasedCheckout(props) {
                 onClick={handlePayment}
                 className="w-full bg-custom-yellow text-black font-bold py-4 rounded-xl transition-all transform hover:scale-[1.02] shadow-lg cursor-pointer"
               >
-                Pay ${calculateTotal()}/month
+                Pay ${totalPrice}/month
               </button>
 
               <p className="text-sm text-gray-500 text-center">

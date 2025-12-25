@@ -50,7 +50,7 @@ function BeforeLoginNavbar() {
           <Flame className="w-6 h-6 text-custom-yellow" />
           <span className="text-xl font-bold text-white">Forma</span>
         </div>
-        {user._id ? (
+        {user?._id ? (
           <div className="relative hidden md:flex">
             {/* Profile button */}
             <div
@@ -105,7 +105,7 @@ function BeforeLoginNavbar() {
 
       {menuOpen && (
         <div className="sm:hidden px-4 pb-4 flex flex-col gap-3 animate-fadeIn">
-          {user._id ? (
+          {user?._id ? (
              <button
                   onClick={handleLogout}
                   className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"

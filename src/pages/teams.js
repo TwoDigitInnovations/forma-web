@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  Search,
-  Eye,
   Edit,
   Plus,
-  FileCode2,
+  CheckCircle,
+  XCircle,
   Trash2,
   Crown,
   CreditCard,
   User2,
   Sheet,
 } from "lucide-react";
+import Swal from "sweetalert2";
+
 import isAuth from "../../components/isAuth";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
@@ -23,7 +24,6 @@ import {
 } from "../../components/AllComponents";
 
 const TeamMembers = (props) => {
-
   const [open, setOpen] = useState(false);
   const [teamMembersData, SetTeamMembersData] = useState([]);
   const router = useRouter();
@@ -62,7 +62,7 @@ const TeamMembers = (props) => {
       const res = await Api(
         "delete",
         `auth/deleteTeamMember/${deleteId}`,
-        {},
+        { id: user._id },
         router
       );
 
@@ -75,6 +75,135 @@ const TeamMembers = (props) => {
     } catch (err) {
       toast.error(err?.message || "An error occurred");
     }
+  };
+
+  const handleUpdateUserStatus = async (userId, status) => {
+    const isSuspend = status === "suspend";
+
+    const result = await Swal.fire({
+      title: isSuspend ? "Suspend User?" : "Approve User?",
+      text: isSuspend
+        ? "This user will not be able to access the system."
+        : "This user will be able to access the system.",
+      icon: isSuspend ? "warning" : "success",
+      showCancelButton: true,
+      confirmButtonText: isSuspend ? "Yes, Suspend" : "Yes, Approve",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+      customClass: {
+        popup: "rounded-2xl",
+        confirmButton: isSuspend
+          ? "bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full"
+          : "bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full cursor-pointer",
+        cancelButton:
+          "bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full ml-3 mr-4 cursor-pointer",
+      },
+      buttonsStyling: false,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await Api(
+        "patch",
+        "auth/update-user-status",
+        { userId, status },
+        router
+      );
+
+      if (res?.status) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `User ${status} successfully`,
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: "rounded-xl",
+          },
+        });
+        getAllMembers();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: res?.message || "Failed to update user status",
+          customClass: {
+            popup: "rounded-xl",
+          },
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err?.message || "Something went wrong",
+        customClass: {
+          popup: "rounded-xl",
+        },
+      });
+    }
+  };
+
+  const StatusCell = ({ user, onStatusChange }) => {
+    return (
+      <div className="flex justify-center items-center">
+        
+        {user.status === "verified" && (
+          <div className="relative group cursor-pointer">
+            <XCircle
+              size={20}
+              className="text-red-500"
+              onClick={() => onStatusChange(user._id, "suspend")}
+            />
+            <span className="absolute -top-7 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-black text-white text-xs px-2 py-1 rounded">
+              Suspend
+            </span>
+          </div>
+        )}
+
+        
+        {user.status === "pending" && (
+          <div className="flex gap-4">
+            
+            <div className="relative group cursor-pointer">
+              <CheckCircle
+                size={20}
+                className="text-green-500"
+                onClick={() => onStatusChange(user._id, "verified")}
+              />
+              <span className="absolute -top-7 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-black text-white text-xs px-2 py-1 rounded">
+                Approve
+              </span>
+            </div>
+
+            <div className="relative group cursor-pointer">
+              <XCircle
+                size={20}
+                className="text-red-500"
+                onClick={() => onStatusChange(user._id, "suspend")}
+              />
+              <span className="absolute -top-7 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-black text-white text-xs px-2 py-1 rounded">
+                Suspend
+              </span>
+            </div>
+          </div>
+        )}
+
+        {user.status === "suspend" && (
+          <div className="relative group cursor-pointer">
+            <CheckCircle
+              size={20}
+              className="text-green-500"
+              onClick={() => onStatusChange(user._id, "verified")}
+            />
+            <span className="absolute -top-7 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-black text-white text-xs px-2 py-1 rounded">
+              Approve
+            </span>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -245,23 +374,14 @@ const TeamMembers = (props) => {
                     </td>
 
                     <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium text-green-400 bg-green-400/10">
-                        Active
-                      </span>
+                      <StatusCell
+                        user={member}
+                        onStatusChange={handleUpdateUserStatus}
+                      />
                     </td>
 
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-3">
-                        <button
-                          onClick={() => {
-                            setEditData(member);
-                            setOpen(true);
-                          }}
-                          className="p-3 rounded-lg cursor-pointer bg-[#1E293B] hover:bg-[#334155]"
-                        >
-                          <Edit size={20} />
-                        </button>
-
                         <button
                           onClick={() => {
                             setIsConfirmOpen(true);
@@ -298,7 +418,10 @@ const TeamMembers = (props) => {
         <InviteSuccessModal
           link={inviteLink}
           email={inviteEmail}
-          onClose={() => setIsSuccessOpen(false)}
+          onClose={() => {
+            getAllMembers();
+            setIsSuccessOpen(false);
+          }}
         />
       )}
 

@@ -10,6 +10,7 @@ function PricingPage() {
   const [allPlanData, setAllPlanData] = useState([]);
   const router = useRouter();
   const [user] = useContext(userContext);
+  const [billingType, setBillingType] = useState("monthly");
 
   useEffect(() => {
     getAllPlan();
@@ -67,10 +68,37 @@ function PricingPage() {
         <h1 className="text-5xl md:text-6xl font-bold mb-4">
           Activate Your Account
         </h1>
-        <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+        <p className="text-gray-400 text-lg mb-4 max-w-2xl mx-auto">
           Choose a subscription plan to start managing your construction
           projects, or wait for an organization invitation.
         </p>
+        <div className="max-w-[200px] mx-auto">
+          <div className="flex bg-gray-800 rounded-xl p-1 mb-6">
+            <button
+              onClick={() => setBillingType("monthly")}
+              className={`flex-1 cursor-pointer py-2 rounded-xl text-sm font-semibold transition-all
+              ${
+                billingType === "monthly"
+                  ? "bg-custom-yellow text-black"
+                  : "text-white "
+              }`}
+            >
+              Monthly
+            </button>
+
+            <button
+              onClick={() => setBillingType("annually")}
+              className={`flex-1 py-2 cursor-pointer rounded-lg text-sm font-semibold transition-all
+              ${
+                billingType === "yearly"
+                  ? "bg-custom-yellow text-black"
+                  : "text-white "
+              }`}
+            >
+              Yearly
+            </button>
+          </div>
+        </div>
       </section>
 
       <section className="max-w-6xl mx-auto px-4 pb-20">
@@ -85,14 +113,16 @@ function PricingPage() {
             <div className="mb-6">
               <span className="text-5xl font-bold">
                 {allPlanData[0]?.currency === "USD" ? "$" : ""}
-                {allPlanData[0]?.priceMonthly}
+                {billingType === "monthly"
+                  ? allPlanData[0]?.priceMonthly
+                  : allPlanData[0]?.priceYearly}
               </span>
               <span className="text-gray-400 ml-2">/mo</span>
             </div>
             <button
               className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
               onClick={() =>
-                router.push(`/Checkout?role=User&planId=${allPlanData[0]?._id}`)
+                router.push(`/Checkout?role=User&billingType=${billingType}&planId=${allPlanData[0]?._id}`)
               }
             >
               Get Started
@@ -142,15 +172,19 @@ function PricingPage() {
             <div className="mb-6">
               <span className="text-5xl font-bold">
                 {allPlanData[1]?.currency === "USD" ? "$" : ""}
-                {allPlanData[1]?.priceMonthly}
+                {billingType === "monthly"
+                  ? allPlanData[1]?.priceMonthly
+                  : allPlanData[1]?.priceYearly}
               </span>
-              <span className="text-gray-400 ml-2">/user/per month</span>
+              <span className="text-gray-400 ml-2">
+                /user/per {billingType === "monthly" ? "month" : "yearly"}
+              </span>
             </div>
             <button
               style={{ backgroundColor: "#e0f349" }}
               onClick={() =>
                 router.push(
-                  `/Checkout?role=Organization&planId=${allPlanData[1]?._id}`
+                  `/Checkout?role=Organization&billingType=${billingType}&planId=${allPlanData[1]?._id}`
                 )
               }
               className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
@@ -219,7 +253,6 @@ function PricingPage() {
           </div>
         </div>
         <div className="border-px border-gray-100 mt-8 max-w-2xl mx-auto bg-[#0b0f19] text-white rounded-2xl p-6 space-y-6 shadow-lg">
-          {/* Top Section */}
           <div className="flex items-start gap-4">
             <div className="bg-[#111827] p-3 rounded-xl">
               <Mail className="h-6 w-6 text-gray-300" />

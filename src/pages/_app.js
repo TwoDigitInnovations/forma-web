@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { Api } from "@/services/service";
 
 export const userContext = createContext();
 export const ProjectDetailsContext = createContext();
@@ -11,57 +12,58 @@ export const ProjectDetailsContext = createContext();
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({});
   const [projectDetails, setProjectdetails] = useState({});
-  const [open, setOpen] = useState(false); // loader state
-  const [toast, setToast] = useState({
-    type: "",
-    message: "",
-  });
+  const [open, setOpen] = useState(false);
+
   const router = useRouter();
 
-  useEffect(() => {
-    setToast(toast);
-    if (!!toast.message) {
-      setTimeout(() => {
-        setToast({ type: "", message: "" });
-      }, 5000);
-    }
-  }, [toast]);
+  const publicRoutes = ["/", "/login", "/register", "/acceptinvite"];
 
   useEffect(() => {
-    getUserDetail();
+    initAuth();
   }, []);
 
-  const getUserDetail = () => {
-  const user = localStorage.getItem("userDetail");
+  const initAuth = async () => {
+    const path = router.pathname.toLowerCase();
+    const isPublic = publicRoutes.includes(path);
 
-    if (!user) {
+    const token = localStorage.getItem("token");
+    const localUser = localStorage.getItem("userDetail");
+
+    if (!token && !isPublic) {
       router.push("/login");
-    } else {
-      setUser(JSON.parse(user));
+      return;
+    }
+
+    if (localUser) {
+      setUser(JSON.parse(localUser));
+    }
+
+    if (token) {
+      try {
+        const res = await Api("get", "auth/getUserDetails", "", router);
+        localStorage.setItem("userDetail", JSON.stringify(res.data));
+        setUser(res.data);
+      } catch {
+        localStorage.clear();
+        // router.push("/login");
+      }
     }
   };
 
   return (
-    <>
-      <userContext.Provider value={[user, setUser]}>
-        <ProjectDetailsContext.Provider
-          value={[projectDetails, setProjectdetails]}
-        >
-          <Loader open={open} />
-          <ToastContainer position="top-right" autoClose={3000} />
-          <Layout loader={setOpen} toaster={setToast}>
-            <Loader open={open} />
-            {user && (
-              <Component
-                {...pageProps}
-                loader={setOpen}
-                toaster={setToast}
-                user={user}
-              />
-            )}
-          </Layout>
-        </ProjectDetailsContext.Provider>
-      </userContext.Provider>
-    </>
+    <userContext.Provider value={[user, setUser]}>
+      <ProjectDetailsContext.Provider
+        value={[projectDetails, setProjectdetails]}
+      >
+        <Loader open={open} />
+        <ToastContainer position="top-right" autoClose={3000} />
+
+        <Layout loader={setOpen}>
+          {user !== null && (
+            <Component {...pageProps} loader={setOpen} user={user} />
+          )}
+        </Layout>
+      </ProjectDetailsContext.Provider>
+    </userContext.Provider>
   );
 }

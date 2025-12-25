@@ -6,34 +6,29 @@ const isAuth = (Component, allowedRoles = []) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    const publicRoutes = ["/", "/login", "/register", "/acceptInvite"];
+    const publicRoutes = ["/", "/login", "/register", "/acceptinvite"];
     const path = router.pathname.toLowerCase();
+    const isPublic = publicRoutes.includes(path);
 
-    const isPublic = publicRoutes.some(
-      (route) => path === route || path.startsWith(route + "/")
-    );
-
-    console.log(isPublic);
-    
     useEffect(() => {
       if (typeof window === "undefined") return;
+
+      // ✅ PUBLIC ROUTE → DIRECT ALLOW
+      if (isPublic) {
+        setIsAuthorized(true);
+        return;
+      }
 
       const token = localStorage.getItem("token");
       const userData = localStorage.getItem("userDetail");
 
       if (!token || !userData) {
-        if (!isPublic) router.replace("/");
-        else setIsAuthorized(true);
+        router.replace("/login");
         return;
       }
 
       try {
         const user = JSON.parse(userData);
-
-        if (!user?._id) {
-          router.replace("/");
-          return;
-        }
 
         if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
           router.replace("/");
@@ -42,11 +37,12 @@ const isAuth = (Component, allowedRoles = []) => {
 
         setIsAuthorized(true);
       } catch (err) {
-        router.replace("/");
+        router.replace("/login");
       }
-    }, [router.pathname]);
+    }, [path]);
 
-    if (isAuthorized === null && !isPublic) return null;
+    // ⏳ loading state only for protected pages
+    if (!isPublic && isAuthorized === null) return null;
 
     return <Component {...props} />;
   };
