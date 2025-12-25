@@ -147,7 +147,7 @@ const TeamMembers = (props) => {
 
   const StatusCell = ({ user, onStatusChange }) => {
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center max-w-[50px]">
         
         {user.status === "verified" && (
           <div className="relative group cursor-pointer">
@@ -164,7 +164,7 @@ const TeamMembers = (props) => {
 
         
         {user.status === "pending" && (
-          <div className="flex gap-4">
+          <div className="flex items-center justify-center gap-4">
             
             <div className="relative group cursor-pointer">
               <CheckCircle

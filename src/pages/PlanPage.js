@@ -90,7 +90,7 @@ function PricingPage() {
               onClick={() => setBillingType("annually")}
               className={`flex-1 py-2 cursor-pointer rounded-lg text-sm font-semibold transition-all
               ${
-                billingType === "yearly"
+                billingType === "annually"
                   ? "bg-custom-yellow text-black"
                   : "text-white "
               }`}

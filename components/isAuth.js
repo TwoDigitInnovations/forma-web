@@ -13,7 +13,6 @@ const isAuth = (Component, allowedRoles = []) => {
     useEffect(() => {
       if (typeof window === "undefined") return;
 
-      // ✅ PUBLIC ROUTE → DIRECT ALLOW
       if (isPublic) {
         setIsAuthorized(true);
         return;
@@ -41,7 +40,6 @@ const isAuth = (Component, allowedRoles = []) => {
       }
     }, [path]);
 
-    // ⏳ loading state only for protected pages
     if (!isPublic && isAuthorized === null) return null;
 
     return <Component {...props} />;

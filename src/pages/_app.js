@@ -45,6 +45,7 @@ export default function App({ Component, pageProps }) {
         setUser(res.data);
       } catch {
         localStorage.clear();
+        setUser({})
         // router.push("/login");
       }
     }
