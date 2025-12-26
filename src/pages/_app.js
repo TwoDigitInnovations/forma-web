@@ -40,12 +40,13 @@ export default function App({ Component, pageProps }) {
 
     if (token) {
       try {
-        const res = await Api("get", "auth/getUserDetails", "", router);
+        const res = await Api("get", "auth/profile", "", router);
         localStorage.setItem("userDetail", JSON.stringify(res.data));
         setUser(res.data);
-      } catch {
-        localStorage.clear();
-        setUser({})
+      } 
+      catch {
+        // localStorage.clear();
+        // setUser({})
         // router.push("/login");
       }
     }

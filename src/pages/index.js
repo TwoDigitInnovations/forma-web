@@ -28,6 +28,10 @@ function Home(props) {
       router.replace("/dashboard");
     }
   }, []);
+
+
+
+  
   return (
     <div>
       <TaskTrussLanding />

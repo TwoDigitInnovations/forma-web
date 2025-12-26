@@ -39,20 +39,29 @@ function PricingPage() {
     let hasActiveSubscription = false;
 
     if (user.role === "TeamsMember" && user.OrganizationId) {
-      const org = user.OrganizationId;
 
+      const org = user.OrganizationId;
       hasActiveSubscription =
         org.subscription &&
         org.subscription.status === "active" &&
         org.subscription.planEndDate &&
         new Date(org.subscription.planEndDate) > new Date();
+      console.log(
+        "ager teams meber huva toh id ke sath ",
+        hasActiveSubscription
+      );
     } else {
       hasActiveSubscription =
         user.subscription &&
         user.subscription.status === "active" &&
         user.subscription.planEndDate &&
         new Date(user.subscription.planEndDate) > new Date();
+      console.log(
+        "ager teams meber nh huva toh id ke sath nh hoga ",
+        hasActiveSubscription
+      );
     }
+    console.log("why", hasActiveSubscription);
 
     if (hasActiveSubscription) {
       router.replace("/dashboard");
@@ -122,7 +131,9 @@ function PricingPage() {
             <button
               className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
               onClick={() =>
-                router.push(`/Checkout?role=User&billingType=${billingType}&planId=${allPlanData[0]?._id}`)
+                router.push(
+                  `/Checkout?role=User&billingType=${billingType}&planId=${allPlanData[0]?._id}`
+                )
               }
             >
               Get Started

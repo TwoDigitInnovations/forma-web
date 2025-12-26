@@ -191,7 +191,7 @@ function AcceptInvite() {
                       type="email"
                       value={email}
                       disabled
-                      className="w-full bg-gray-900/30 text-gray-500 p-3 pl-11 rounded-xl border border-gray-700 cursor-not-allowed"
+                      className="w-full bg-gray-900/30 text-gray-200 p-3 pl-11 rounded-xl border border-gray-700 cursor-not-allowed"
                     />
                   </div>
                 </div>

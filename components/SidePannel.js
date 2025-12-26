@@ -68,7 +68,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       href: "/billingPage",
       title: "Billing",
       img: <NotepadTextDashed className="text-3xl" />,
-      access: ["Organization"],
+      access: ["Organization", "User"],
     },
   ];
 
@@ -127,7 +127,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
   return (
     <>
-
       <div className="xl:w-[280px] fixed top-0 left-0 z-20 md:w-[250px] sm:w-[200px] hidden sm:grid grid-rows-5 overflow-hidden">
         <div>
           <div className="bg-custom-black py-5 overflow-y-scroll h-screen scrollbar-hide">
@@ -135,7 +134,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
               className="bg-custom-black pt-3 pb-5 row-span-1 flex items-center justify-center cursor-pointer mx-5 rounded"
               onClick={() => router.push("/")}
             >
-              <p className="text-3xl text-custom-yellow font-bold"> LOGO</p>
+              <p className="text-3xl text-custom-yellow font-bold"> Forma</p>
             </div>
 
             <div className="relative flex flex-col justify-between row-span-4 w-full">
@@ -206,7 +205,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           </div>
         </div>
       </div>
-      
+
       <div
         className={`w-full absolute top-0 left-0 z-40 sm:hidden flex flex-col h-screen max-h-screen overflow-hidden bg-custom-black ${
           openTab ? "scale-x-100" : "scale-x-0"

@@ -143,11 +143,11 @@ function Dashboard(props) {
     <section className=" bg-[#000000] md:p-6 p-3 text-white h-screen">
       <div className="max-w-7xl mx-auto h-full space-y-6 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
         {/* Header */}
-        <div className="flex items-center justify-between md:mt-0 mt-4">
+        <div className="flex items-center justify-between md:mt-0 mt-2">
           <h1 className="text-3xl font-bold text-custom-yellow">Dashboard</h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
           <DarkStatsCard
             title="Active Projects"
             value="2"
