@@ -40,12 +40,10 @@ const MeetingDocumentation = (props) => {
 
   const [agendas, setAgendas] = useState([
     { title: "Review physical progress", order: 1 },
-    { title: "Budget alignment", order: 2 },
   ]);
 
   const [discussions, setDiscussions] = useState({
     reviewPhysicalProgress: "",
-    budgetAlignment: "",
   });
 
   const updateRegistry = (index, field, value) => {
@@ -181,10 +179,19 @@ const MeetingDocumentation = (props) => {
     ]);
   };
 
-  const updateActionItem = (index, field, value) => {
-    const updated = [...actionRegistry];
-    updated[index][field] = value;
-    setActionRegistry(updated);
+  const updateActionItem = (projectIndex, actionIndex, field, value) => {
+    setActionRegistry((prev) => {
+      const updated = [...prev];
+
+      updated[projectIndex] = {
+        ...updated[projectIndex],
+        actions: updated[projectIndex].actions.map((action, i) =>
+          i === actionIndex ? { ...action, [field]: value } : action
+        ),
+      };
+
+      return updated;
+    });
   };
 
   const removeActionItem = (index) => {
@@ -489,7 +496,6 @@ const MeetingDocumentation = (props) => {
                     </button>
                   </div>
 
-                  {/* Action Items Table */}
                   <div className="w-full overflow-x-auto">
                     <table className="min-w-full border-separate border-spacing-y-3">
                       <thead>
