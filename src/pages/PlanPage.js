@@ -39,32 +39,26 @@ function PricingPage() {
     let hasActiveSubscription = false;
 
     if (user.role === "TeamsMember" && user.OrganizationId) {
-
       const org = user.OrganizationId;
       hasActiveSubscription =
         org.subscription &&
         org.subscription.status === "active" &&
         org.subscription.planEndDate &&
         new Date(org.subscription.planEndDate) > new Date();
-      console.log(
-        "ager teams meber huva toh id ke sath ",
-        hasActiveSubscription
-      );
     } else {
       hasActiveSubscription =
         user.subscription &&
         user.subscription.status === "active" &&
         user.subscription.planEndDate &&
         new Date(user.subscription.planEndDate) > new Date();
-      console.log(
-        "ager teams meber nh huva toh id ke sath nh hoga ",
-        hasActiveSubscription
-      );
+      console.log("why", hasActiveSubscription);
     }
     console.log("why", hasActiveSubscription);
 
     if (hasActiveSubscription) {
-      router.replace("/dashboard");
+      console.log("why ander", hasActiveSubscription);
+
+      router.push("/dashboard");
     }
   }, []);
 

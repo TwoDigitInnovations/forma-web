@@ -30,6 +30,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { MdCreditCard } from "react-icons/md";
 
 const SidePannel = ({ setOpenTab, openTab }) => {
   const [user, setUser] = useContext(userContext);
@@ -65,9 +66,15 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       access: ["Organization"],
     },
     {
+      href: "/meetingmintues",
+      title: "Meeting Mintues",
+      img: <NotepadTextDashed className="text-3xl" />,
+      access: ["Organization", "User"],
+    },
+    {
       href: "/billingPage",
       title: "Billing",
-      img: <NotepadTextDashed className="text-3xl" />,
+      img: <MdCreditCard className="text-3xl" />,
       access: ["Organization", "User"],
     },
   ];
