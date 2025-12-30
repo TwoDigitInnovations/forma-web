@@ -224,8 +224,8 @@ const SidePannel = ({ setOpenTab, openTab }) => {
             onClick={() => setOpenTab(!openTab)}
           />
           <div className="flex flex-col gap-3 w-full p-3">
-            <div className="p-1 rounded overflow-hidden">
-              <p className="text-3xl text-white font-bold"> LOGO</p>
+            <div className="px-3 rounded overflow-hidden">
+              <p className="text-3xl text-white font-bold"> Forma</p>
             </div>
             <div className="flex ms-2 justify-between">
               <div className="flex">

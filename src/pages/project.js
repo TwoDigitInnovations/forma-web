@@ -8,6 +8,9 @@ import {
   MapPin,
   CalendarClock,
   FileCode2,
+  Trash2,
+  Edit2,
+  Eye,
 } from "lucide-react";
 import { useRouter } from "next/router";
 import CreateProject from "../../components/CreateProject";
@@ -16,16 +19,20 @@ import { toast } from "react-toastify";
 import { useContext } from "react";
 import { ProjectDetailsContext, userContext } from "./_app";
 import isAuth from "../../components/isAuth";
+import { ConfirmModal } from "../../components/AllComponents";
 
 const Projects = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState("All Projects");
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [AllProjectData, setAllProjectData] = useState([]);
+  const [editId, setEditId] = useState("");
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const isTeamsMember = user?.role === "TeamsMember";
+
   const getStatusBadge = (status) => {
     const baseClasses = "px-3 py-1 rounded-full text-xs font-medium";
     switch (status) {
@@ -47,7 +54,7 @@ const Projects = (props) => {
 
     return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
-  
+
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) setProjectdetails(JSON.parse(stored));
@@ -72,6 +79,26 @@ const Projects = (props) => {
       .catch((err) => {
         props.loader(false);
         toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  const handleDeleteConfirm = async () => {
+    const id = editId;
+    props.loader(true);
+    Api("delete", `project/deleteProject/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          toast.success(res?.data?.message || "Project deleted successfully");
+          getAllProject();
+          setEditId("");
+        } else {
+          toast.error(res?.data?.message || "Failed to deleted a project");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || "An error occurred");
       });
   };
 
@@ -147,46 +174,39 @@ const Projects = (props) => {
           {AllProjectData.map((project, key) => (
             <div
               key={key}
-              className="rounded-[16px] border border-gray-700 p-4 hover:border-gray-600 transition-colors hover:bg-[#dff34940] cursor-pointer bg-[#2a2a2a]"
-              // onClick
-              onClick={() => {
-                router.push(`/ProjectDetails/overview?id=${project._id}`);
-                setProjectdetails(project);
-                localStorage.setItem("projectDetails", JSON.stringify(project));
-              }}
+              className="rounded-[16px] border border-gray-700 p-4 bg-[#2a2a2a] hover:border-gray-600 transition-colors hover:bg-[#dff34940]"
             >
-              <div className="flex md:flex-row flex-col md:items-center md:justify-between justify-start">
-                {/* Project Info */}
-                <div className="flex flex-col">
-                  <div className="flex justify-between items-center gap-4 mb-2">
-                    <h3 className="text-lg font-semibold text-white">
-                      {project?.projectName}
-                    </h3>
-                    <span className={getStatusBadge(project?.status)}>
-                      {project?.status}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-start gap-2 text-sm text-white">
-                    <div className="flex  items-center gap-1">
-                      <MapPin size={20} />
-                      <span>{project?.location}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CalendarClock size={20} />
-                      <span>
-                        Last Updated:{" "}
-                        <span>
-                          {new Date(project?.updatedAt).toLocaleString()}
-                        </span>
+              <div className="flex flex-col gap-4">
+                {/* Top Section */}
+                <div className="flex flex-col md:flex-row md:justify-between gap-4">
+                  {/* Left Content */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h3 className="text-lg font-semibold text-white">
+                        {project?.projectName}
+                      </h3>
+                      <span className={getStatusBadge(project?.status)}>
+                        {project?.status}
                       </span>
                     </div>
-                  </div>
-                </div>
 
-                {/* Progress */}
-                <div className="flex items-center gap-4 min-w-48">
-                  <div className="flex-1">
+                    <div className="flex flex-col gap-2 text-sm text-white">
+                      <div className="flex items-center gap-1">
+                        <MapPin size={18} />
+                        <span>{project?.location}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <CalendarClock size={18} />
+                        <span>
+                          Last Updated:{" "}
+                          {new Date(project?.updatedAt).toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Progress Section */}
+                  <div className="w-full md:w-48">
                     <div className="w-full bg-gray-700 rounded-full h-2">
                       <div
                         className="h-2 rounded-full transition-all duration-300"
@@ -194,17 +214,51 @@ const Projects = (props) => {
                           width: `${project?.progress || 80}%`,
                           backgroundColor: "#e0f349",
                         }}
-                      ></div>
+                      />
+                    </div>
+                    <div className="text-right mt-1">
+                      <span className="text-lg font-bold text-[#e0f349]">
+                        {project?.progress || 80}%
+                      </span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span
-                      className="text-lg font-bold"
-                      style={{ color: "#e0f349" }}
-                    >
-                      {project?.progress || 80}%
-                    </span>
-                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
+                  <button
+                    className="w-full sm:w-auto p-2 rounded-lg bg-custom-yellow text-black flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      router.push(`/ProjectDetails/overview?id=${project._id}`);
+                      setProjectdetails(project);
+                      localStorage.setItem(
+                        "projectDetails",
+                        JSON.stringify(project)
+                      );
+                    }}
+                  >
+                    See Details <Eye size={16} />
+                  </button>
+
+                  <button
+                    className="w-full sm:w-auto p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      setEditId(project?._id);
+                      router.push("/ProjectDetails/EditProject");
+                    }}
+                  >
+                    Edit <Edit2 size={16} />
+                  </button>
+
+                  <button
+                    className="w-full sm:w-auto p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      setEditId(project._id);
+                      setIsConfirmOpen(true);
+                    }}
+                  >
+                    Delete <Trash2 size={16} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -230,6 +284,15 @@ const Projects = (props) => {
           </div>
         )}
       </div>
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        setIsOpen={setIsConfirmOpen}
+        title="Delete History"
+        message={`Are you sure you want to delete this Meeting mintues History"?`}
+        onConfirm={handleDeleteConfirm}
+        yesText="Yes, Delete"
+        noText="Cancel"
+      />
     </div>
   );
 };

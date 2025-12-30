@@ -297,7 +297,7 @@ const EditableTable = ({ activities, setActivities }) => {
         </tbody>
       </table>
 
-      <div className="flex justify-end mt-4 gap-3">
+      <div className="flex justify-end mt-4 gap-3 mr-4">
         <button
           onClick={() => handleAddRow("section")}
           className="px-4 py-2 bg-custom-yellow text-black rounded-lg"

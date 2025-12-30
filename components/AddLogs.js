@@ -25,12 +25,16 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
         notes: editData?.notes || "",
         workSummary: editData?.workSummary || "",
         issues: editData?.issues || "",
-        notes:editData?.notes | "",
+        notes: editData?.notes || "",
         date: editData?.date?.split("T")[0] || "",
       });
       setEditId(editData._id);
     }
   }, [editData]);
+
+    console.log(editData?.notes);
+  
+  console.log(formData?.notes);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +65,9 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
       loader(false);
 
       if (res?.status) {
-        toast.success(`Daily Log ${editId ? "updated" : "created"} successfully!`);
+        toast.success(
+          `Daily Log ${editId ? "updated" : "created"} successfully!`
+        );
         setIsOpen(false);
         refreshList(projectId);
       } else {
@@ -73,16 +79,16 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
     }
   };
 
+
+
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
       <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-3xl  h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll">
-        
         <h2 className="text-2xl font-bold text-gray-100 mb-4">
           {editId ? "Edit Daily Log" : "Add Daily Log"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          
           <InputField
             name="date"
             type="date"
@@ -120,7 +126,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
           <TextAreaField
             name="notes"
             label="Additional Notes"
-            value={formData.notes}
+            value={formData?.notes}
             onChange={handleChange}
             rows={4}
           />
@@ -129,7 +135,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 rounded-lg border cursor-pointer border-gray-400 text-gray-600 hover:bg-gray-100"
+              className="px-4 py-2 rounded-lg border cursor-pointer border-gray-400 text-gray-300 hover:bg-gray-100"
             >
               Cancel
             </button>

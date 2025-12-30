@@ -71,14 +71,14 @@ const Navbar = ({ setOpenTab, openTab }) => {
               <div
                 className="flex items-center space-x-3  px-4 py-2 rounded-lg transition-colors duration-200"
               >
-                <div className="Relative">
+                {/* <div className="Relative">
                   <input
                     className="ps-10 w-[20rem] bg-[#FFFFFF4A] border-black border text-white rounded-3xl px-4 py-2"
                     placeholder="Search"
                   />
                   <Search className='absolute top-6 left-8 text-gray-300' size={18} />
-                </div>
-                <p className="p-2 bg-custom-lightgold rounded-full"><Bell className="text-custom-yellow" /> </p>
+                </div> */}
+                {/* <p className="p-2 bg-custom-lightgold rounded-full"><Bell className="text-custom-yellow" /> </p> */}
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e0f349] flex-shrink-0 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >

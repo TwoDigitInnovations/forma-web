@@ -172,7 +172,7 @@ const AddActionPoints = ({
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2 focus:outline-orange-500"
+              className="w-full border rounded-lg p-2 text-white [&::-webkit-calendar-picker-indicator]:invert cursor-pointer"
             />
           </div>
 

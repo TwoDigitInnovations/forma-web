@@ -88,7 +88,7 @@ const EditActivity = (props) => {
     };
 
     return (
-        <div className="h-screen bg-black text-white md:p-6 p-4">
+        <div className="h-screen bg-black text-white md:p-6 p-3">
             <button
                 onClick={handleGoBack}
                 className="py-2 flex items-center underline text-sm cursor-pointer rounded-lg transition-colors pb-2 text-white hover:text-[#e0f349]"
@@ -96,7 +96,7 @@ const EditActivity = (props) => {
                 <ChevronLeft size={20} /> Go Back
             </button>
             <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-20   mx-auto">
-                <div className="bg-custom-green py-6 px-6 flex flex-col md:flex-row gap-4 items-center justify-between rounded-[16px]">
+                <div className="bg-custom-green py-6 md:px-6 p-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
                     <div>
                         <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
                             {projectDetails?.projectName}
@@ -111,7 +111,7 @@ const EditActivity = (props) => {
 
                     <button
                         onClick={() => handleSave(PlanId)}
-                        className="bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                        className="w-fit bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
                     >
                         <NotebookPen size={18} />
                         Save Changes

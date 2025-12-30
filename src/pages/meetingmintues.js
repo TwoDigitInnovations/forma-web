@@ -18,33 +18,49 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
 import moment from "moment";
+import { ConfirmModal } from "../../components/AllComponents";
 
 const MeetingDocumentation = (props) => {
   const [activeTab, setActiveTab] = useState("new");
   const [meetings, setMeetings] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [user] = useContext(userContext);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [AllProjectData, setAllProjectData] = useState([]);
+  const [editId, setEditId] = useState("");
+  const [editData, setEditData] = useState({});
   const router = useRouter();
 
-  const [meetingTitle, setMeetingTitle] = useState(
-    `Project Review Meeting - ${moment().format("DD MMM YYYY, hh:mm A")}`
-  );
+  const [meetingTitle, setMeetingTitle] = useState();
+  const [meetingDate, setMeetingDate] = useState();
+  const [membersPresent, setMembersPresent] = useState([]);
+  const [agendas, setAgendas] = useState([]);
+  const [discussions, setDiscussions] = useState({});
 
-  const [meetingDate, setMeetingDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [membersPresent, setMembersPresent] = useState([
-    { name: user?.name, designation: "Admin" },
-  ]);
+  useEffect(() => {
+    if (!editData || Object.keys(editData).length === 0) {
+      resetToDefaults();
+      return;
+    }
 
-  const [agendas, setAgendas] = useState([
-    { title: "Review physical progress", order: 1 },
-  ]);
+    setMembersPresent(editData.membersPresent ?? []);
+    setAgendas(editData.agendas ?? []);
+    setDiscussions(editData.discussions ?? {});
+    setMeetingDate(editData.meetingDate ?? "");
+    setMeetingTitle(editData.meetingTitle ?? "");
+  }, [editData]);
 
-  const [discussions, setDiscussions] = useState({
-    reviewPhysicalProgress: "",
-  });
+  const resetToDefaults = () => {
+    setMeetingTitle(
+      `Project Review Meeting - ${moment().format("DD MMM YYYY, hh:mm A")}`
+    );
+    setMeetingDate(new Date().toISOString().split("T")[0]);
+    setMembersPresent([{ name: user?.name, designation: "Admin" }]);
+    setAgendas([{ title: "Review physical progress", order: 1 }]);
+    setDiscussions({ reviewPhysicalProgress: "" });
+    setActionRegistry([]);
+  };
+
+  console.log(editData);
 
   const updateRegistry = (index, field, value) => {
     setActionRegistry((prev) =>
@@ -62,7 +78,7 @@ const MeetingDocumentation = (props) => {
 
   const [actionRegistry, setActionRegistry] = useState([
     {
-      projectName: "",
+      projectId: "",
       actions: [
         {
           actionItemDescription: "",
@@ -75,18 +91,24 @@ const MeetingDocumentation = (props) => {
   ]);
 
   const addNewActionItem = (registryIndex) => {
-    setActionRegistry((prev) => {
-      const updated = [...prev];
-
-      updated[registryIndex].actions.push({
-        actionItemDescription: "",
-        responsiblePerson: "",
-        deadline: "",
-        status: "pending",
-      });
-
-      return updated;
-    });
+    setActionRegistry((prev) =>
+      prev.map((registry, index) =>
+        index === registryIndex
+          ? {
+              ...registry,
+              actions: [
+                ...registry.actions,
+                {
+                  actionItemDescription: "",
+                  responsiblePerson: "",
+                  deadline: "",
+                  status: "pending",
+                },
+              ],
+            }
+          : registry
+      )
+    );
   };
 
   useEffect(() => {
@@ -115,8 +137,30 @@ const MeetingDocumentation = (props) => {
       });
   };
 
+  const handleDeleteConfirm = async () => {
+    const id = editId;
+    props.loader(true);
+    Api("delete", `meeting-minutes/deleteMeetingMinutes/${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          toast.success(
+            res?.data?.message || "Meeting minutes deleted successfully"
+          );
+          getAllMeetings();
+          setEditId("")
+        } else {
+          toast.error(res?.data?.message || "Failed to created status");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || "An error occurred");
+      });
+  };
+
   const getAllMeetings = async () => {
-    setLoading(true);
+    props.loader(true);
     try {
       const res = await Api(
         "get",
@@ -130,7 +174,7 @@ const MeetingDocumentation = (props) => {
     } catch (err) {
       console.error("Failed to load meetings");
     } finally {
-      setLoading(false);
+      props.loader(false);
     }
   };
 
@@ -166,7 +210,7 @@ const MeetingDocumentation = (props) => {
     setActionRegistry([
       ...actionRegistry,
       {
-        projectName: "",
+        projectId: "",
         actions: [
           {
             actionItemDescription: "",
@@ -194,11 +238,52 @@ const MeetingDocumentation = (props) => {
     });
   };
 
-  const removeActionItem = (index) => {
-    setActionRegistry(actionRegistry.filter((_, i) => i !== index));
+  const removeActionItem = (registryIndex, actionIndex) => {
+    setActionRegistry((prev) =>
+      prev.map((registry, rIndex) =>
+        rIndex === registryIndex
+          ? {
+              ...registry,
+              actions: registry.actions.filter(
+                (_, aIndex) => aIndex !== actionIndex
+              ),
+            }
+          : registry
+      )
+    );
   };
 
   const saveMeeting = async () => {
+    if (!meetingTitle || meetingTitle.trim() === "") {
+      toast.error("Meeting title is required");
+      return;
+    }
+
+    if (!meetingDate) {
+      toast.error("Meeting date is required");
+      return;
+    }
+
+    if (!Array.isArray(membersPresent) || membersPresent.length === 0) {
+      toast.error("Please add at least one member");
+      return;
+    }
+
+    if (!Array.isArray(agendas) || agendas.length === 0) {
+      toast.error("Please add at least one agenda");
+      return;
+    }
+
+    const hasEmptyAgenda = agendas.some(
+      (a) => !a.title || a.title.trim() === ""
+    );
+
+    if (hasEmptyAgenda) {
+      toast.error("Agenda title cannot be empty");
+      return;
+    }
+
+    // ✅ If all validations pass
     const meetingData = {
       meetingTitle,
       meetingDate,
@@ -208,21 +293,23 @@ const MeetingDocumentation = (props) => {
       projectActionRegistry: actionRegistry,
       status: "saved",
     };
-    console.log(meetingData);
+
+    const url = editId
+      ? `meeting-minutes/updateMeetingMinutes/${editId}`
+      : "meeting-minutes/createMeetingMinutes";
 
     try {
-      const res = await Api(
-        "post",
-        `meeting-minutes/createMeetingMinutes`,
-        meetingData,
-        router
-      );
+      const res = await Api("post", url, meetingData, router);
+
       if (res?.status === true) {
         toast.success("Meeting saved successfully!");
+        setActiveTab("history");
+        setEditData({});
+        setEditId("");
       }
     } catch (err) {
-      console.error("Failed to save meeting");
-      toast.error(err?.message || "save failed");
+      console.error("Failed to save meeting", err);
+      toast.error(err?.message || "Save failed");
     }
   };
 
@@ -232,8 +319,13 @@ const MeetingDocumentation = (props) => {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-400 mb-2">
-              <span className="text-custom-yellow">Forma</span> › OPERATIONS
-              CENTER
+              <span
+                className="text-custom-yellow cursor-pointer"
+                onClick={() => router.push("/dashboard")}
+              >
+                Forma
+              </span>{" "}
+              › OPERATIONS CENTER
             </div>
             <h1 className="text-3xl font-bold">Meeting Documentation</h1>
           </div>
@@ -242,7 +334,10 @@ const MeetingDocumentation = (props) => {
       <div className="border-b border-gray-800 md:px-6 px-4">
         <div className="flex gap-8">
           <button
-            onClick={() => setActiveTab("new")}
+            onClick={() => {
+              resetToDefaults();
+              setActiveTab("new");
+            }}
             className={`flex items-center gap-2 py-4 border-b-2 cursor-pointer transition-colors ${
               activeTab === "new"
                 ? "border-custom-yellow text-custom-yellow cursor-pointer"
@@ -250,10 +345,14 @@ const MeetingDocumentation = (props) => {
             }`}
           >
             <FileText size={18} />
-            New Meeting
+            {editId ? "Update" : "New"} Meeting
           </button>
           <button
-            onClick={() => setActiveTab("history")}
+            onClick={() => {
+              setEditData({});
+              setEditId("");
+              setActiveTab("history");
+            }}
             className={`flex items-center gap-2 py-4 border-b-2 cursor-pointer transition-colors ${
               activeTab === "history"
                 ? "border-custom-yellow text-custom-yellow"
@@ -289,7 +388,7 @@ const MeetingDocumentation = (props) => {
                   className="flex items-center gap-2 px-6 md:py-3 py-2 bg-custom-yellow text-black rounded-lg font-semibold transition-colors cursor-pointer"
                 >
                   <Save size={18} />
-                  Save & Sync
+                  {editId ? "Update & Sync" : "Save & Sync"}
                 </button>
               </div>
             </div>
@@ -464,11 +563,12 @@ const MeetingDocumentation = (props) => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <select
-                        value={registry.projectName}
+                        value={registry.projectId}
+                        required
                         onChange={(e) =>
                           updateRegistry(
                             registryIndex,
-                            "projectName",
+                            "projectId",
                             e.target.value
                           )
                         }
@@ -477,7 +577,7 @@ const MeetingDocumentation = (props) => {
                         <option value="">Select Project</option>
 
                         {AllProjectData?.map((project) => (
-                          <option key={project._id} value={project.projectName}>
+                          <option key={project._id} value={project._id}>
                             {project.projectName}
                           </option>
                         ))}
@@ -490,7 +590,7 @@ const MeetingDocumentation = (props) => {
 
                     <button
                       onClick={() => removeActionRegistry(registryIndex)}
-                      className="text-gray-400 hover:text-red-500 transition-colors"
+                      className="text-gray-400 cursor-pointer hover:text-red-500 transition-colors"
                     >
                       <Trash2 size={18} />
                     </button>
@@ -597,7 +697,7 @@ const MeetingDocumentation = (props) => {
                                 onClick={() =>
                                   removeActionItem(registryIndex, itemIndex)
                                 }
-                                className="text-gray-400 hover:text-red-500"
+                                className="text-gray-400 hover:text-red-500 cursor-pointer"
                               >
                                 <Trash2 size={16} />
                               </button>
@@ -610,7 +710,7 @@ const MeetingDocumentation = (props) => {
 
                   <button
                     onClick={() => addNewActionItem(registryIndex)}
-                    className="mt-4 flex items-center gap-2 px-4 py-2 text-gray-400 hover:bg-gray-800 rounded-lg transition-colors w-full justify-center border border-gray-800"
+                    className="mt-4 flex items-center gap-2 px-4 py-2 text-gray-400 hover:bg-gray-800 rounded-lg cursor-pointer transition-colors w-full justify-center border border-gray-800"
                   >
                     <Plus size={16} />
                     CREATE NEW ACTION POINT
@@ -620,9 +720,25 @@ const MeetingDocumentation = (props) => {
             </div>
           </div>
         ) : (
-          <MeetingHistory meetings={meetings} setActiveTab={setActiveTab} />
+          <MeetingHistory
+            meetings={meetings}
+            setActiveTab={setActiveTab}
+            setEditId={setEditId}
+            setIsConfirmOpen={setIsConfirmOpen}
+            setEditData={setEditData}
+          />
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        setIsOpen={setIsConfirmOpen}
+        title="Delete History"
+        message={`Are you sure you want to delete this Meeting mintues History"?`}
+        onConfirm={handleDeleteConfirm}
+        yesText="Yes, Delete"
+        noText="Cancel"
+      />
     </div>
   );
 };

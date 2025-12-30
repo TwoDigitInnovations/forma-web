@@ -37,7 +37,7 @@ function SiteLogs(props) {
     Api("get", `dailylogs/getAllLogs/${projectId}`)
       .then((res) => {
         if (res?.status === true) {
-          setAllItems(res?.data.data || []);
+          setAllItems(res?.data?.data || []);
           props.loader(false);
         }
       })
@@ -110,9 +110,9 @@ function SiteLogs(props) {
     <div className="h-screen bg-black text-white">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 md:px-8">
         {/* HEADER */}
-        <div className="bg-[#DFF34940] py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
+        <div className="bg-[#DFF34940] py-4 md:px-6 px-3 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between md:items-center">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-[14px] font-bold flex items-center gap-2">
+            <h1 className="text-2xl font-bold flex items-center gap-2">
               {projectDetails?.projectName}
               <span className="text-[11px] flex items-center gap-1">
                 <MapPin size={15} /> {projectDetails?.location}
@@ -125,7 +125,7 @@ function SiteLogs(props) {
               setEditItem(null);
               setIsOpen(true);
             }}
-            className="bg-custom-yellow py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-black hover:bg-yellow-400 cursor-pointer"
+            className="w-fit bg-custom-yellow py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-black hover:bg-yellow-400 cursor-pointer"
           >
             <Plus size={18} />
             {currentTab === "dailylogs" ? "Add Log" : "Add Action Point"}
@@ -151,7 +151,6 @@ function SiteLogs(props) {
             ))}
           </div>
 
-          {/* SECTION TITLE */}
           {currentTab === "dailylogs" ? (
             <div>
               <p className="text-lg font-medium">Daily Site Logs</p>
@@ -159,7 +158,7 @@ function SiteLogs(props) {
                 Record daily activities, weather, and site observations
               </p>
 
-              {/* Empty State */}
+
               {allItems.length === 0 ? (
                 <div className="flex flex-col justify-center items-center min-h-[450px] text-center">
                   <FileCode2 size={68} className="text-gray-500" />

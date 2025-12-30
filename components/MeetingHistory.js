@@ -1,7 +1,13 @@
-import { FileText, Users, Briefcase } from "lucide-react";
+import { FileText, Users, Briefcase, Edit2, Trash2 } from "lucide-react";
 import React from "react";
 
-function MeetingHistory({ meetings = [], setActiveTab }) {
+function MeetingHistory({
+  meetings = [],
+  setActiveTab,
+  setIsConfirmOpen,
+  setEditId,
+  setEditData
+}) {
   if (!meetings.length) {
     return (
       <div className="bg-custom-black rounded-lg border border-gray-800 flex items-center justify-center md:h-[500px] h-[650px]">
@@ -39,15 +45,54 @@ function MeetingHistory({ meetings = [], setActiveTab }) {
             {meeting.meetingTitle}
           </h3>
 
-          <div className="border-t border-gray-800 pt-4 flex gap-6 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <Users size={16} />
-              <span>{meeting.membersPresent?.length || 0} Attendees</span>
+          <div className="border-t border-gray-800 pt-4 mt-4 flex items-center justify-between text-sm">
+          
+            <div className="flex gap-6 text-gray-400">
+              <div className="flex items-center gap-2">
+                <Users size={16} className="text-custom-yellow" />
+                <span>
+                  <span className="text-white font-medium">
+                    {meeting.membersPresent?.length || 0}
+                  </span>{" "}
+                  Attendees
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Briefcase size={16} className="text-custom-yellow" />
+                <span>
+                  <span className="text-white font-medium">
+                    {meeting.projects?.length || 0}
+                  </span>{" "}
+                  Projects
+                </span>
+              </div>
             </div>
 
+            {/* Actions */}
             <div className="flex items-center gap-2">
-              <Briefcase size={16} />
-              <span>{meeting.projects?.length || 0} Projects</span>
+              <button
+                className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer"
+                title="Edit"
+                onClick={() => {
+                  setActiveTab("new");
+                  setEditId(meeting?._id);
+                  setEditData(meeting);
+                }}
+              >
+                <Edit2 size={16} />
+              </button>
+
+              <button
+                className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition cursor-pointer"
+                title="Delete"
+                onClick={() => {
+                  setEditId(meeting._id);
+                  setIsConfirmOpen(true);
+                }}
+              >
+                <Trash2 size={16} />
+              </button>
             </div>
           </div>
         </div>
