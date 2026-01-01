@@ -1,5 +1,5 @@
 import { userContext } from "@/pages/_app";
-import { Bell, User,Search } from "lucide-react";
+import { Bell, User,Search, User2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
@@ -104,9 +104,16 @@ const Navbar = ({ setOpenTab, openTab }) => {
                     <User size={16} className="text-black" />
                     <span>My Profile</span>
                   </button> */}
+                   <button
+                    onClick={()=> router.push("/MyProfile")}
+                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  >
+                    <User2 size={16} className="text-black" />
+                    <span>My Profile</span>
+                  </button>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                   >
                     <PiSignOutFill size={16} className="text-black" />
                     <span>Sign Out</span>

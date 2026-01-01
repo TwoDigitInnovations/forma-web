@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 
 function BeforeLoginNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user,setUser] = useContext(userContext);
+  const [user, setUser] = useContext(userContext);
   const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -26,7 +26,7 @@ function BeforeLoginNavbar() {
       confirmButtonColor: "#e0f349",
       customClass: {
         confirmButton: "px-12 rounded-xl",
-        confirmButtonText:"text-black font-medium",
+        confirmButtonText: "text-black font-medium",
         title: "text-[20px] text-black",
         actions: "swal2-actions-no-hover",
         popup: "rounded-[15px] shadow-lg",
@@ -58,10 +58,14 @@ function BeforeLoginNavbar() {
               onClick={() => setProfileOpen(!profileOpen)}
             >
               <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
-                <User2 size={18}/>
+                <User2 size={18} />
               </div>
               <span className="hidden sm:block">{user?.name}</span>
-             <ChevronUp className={`ml-1 h-4 w-4 transition-transform ${profileOpen ? 'transform rotate-180' : ''}`} />
+              <ChevronUp
+                className={`ml-1 h-4 w-4 transition-transform ${
+                  profileOpen ? "transform rotate-180" : ""
+                }`}
+              />
             </div>
 
             {/* Dropdown */}
@@ -73,6 +77,13 @@ function BeforeLoginNavbar() {
                 >
                   <LogOut className="w-5 h-5" />
                   Sign Out
+                </button>
+                <button
+                  onClick={() => router.push("/MyProfile")}
+                  className="flex items-center space-x-3 w-full text-left px-4 py-2.5 text-sm text-gray-200 cursor-pointer"
+                >
+                  <User2 size={20} className="text-white" />
+                  <span>My Profile</span>
                 </button>
               </div>
             )}
@@ -106,13 +117,22 @@ function BeforeLoginNavbar() {
       {menuOpen && (
         <div className="sm:hidden px-4 pb-4 flex flex-col gap-3 animate-fadeIn">
           {user?._id ? (
-             <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Sign Out
-                </button>
+            <>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
+              >
+                <LogOut className="w-5 h-5" />
+                Sign Out
+              </button>
+              <button
+                onClick={() => router.push("/MyProfile")}
+                className="flex items-center space-x-3 w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-100 cursor-pointer"
+              >
+                <User2 size={20} className="text-white" />
+                <span>My Profile</span>
+              </button>
+            </>
           ) : (
             <div>
               <button

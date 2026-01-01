@@ -27,6 +27,7 @@ import {
   Settings,
   Shield,
   ShieldCheck,
+  User2,
   Users,
   X,
 } from "lucide-react";
@@ -49,32 +50,32 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     {
       href: "/dashboard",
       title: "Dashboard",
-      img: <LayoutDashboard className="text-3xl" />,
+      img: <LayoutDashboard size={25} />,
       access: ["Admin", "Organization", "User", "TeamsMember"],
     },
     {
       href: "/project",
       title: "Project",
-      img: <Building className="text-3xl" />,
+      img: <Building size={25} />,
       access: ["Organization", "User", "TeamsMember"],
     },
 
     {
       href: "/teams",
       title: "Teams",
-      img: <Users className="text-3xl" />,
+      img: <Users size={25} />,
       access: ["Organization"],
     },
     {
       href: "/meetingmintues",
       title: "Meeting Mintues",
-      img: <NotepadTextDashed className="text-3xl" />,
+      img: <NotepadTextDashed size={25} />,
       access: ["Organization", "User"],
     },
     {
       href: "/billingPage",
       title: "Billing",
-      img: <MdCreditCard className="text-3xl" />,
+      img: <MdCreditCard size={25} />,
       access: ["Organization", "User"],
     },
   ];
@@ -243,36 +244,45 @@ const SidePannel = ({ setOpenTab, openTab }) => {
               </div>
               <div>
                 {user?._id ? (
-                  <div
-                    className="flex gap-2 mt-3 items-center cursor-pointer"
-                    onClick={() => {
-                      Swal.fire({
-                        text: "Are you sure you want to logout?",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        confirmButtonColor: "#e0f349",
-                        customClass: {
-                          confirmButton: "px-12 rounded-xl text-black",
-                          title: "text-[20px] text-black",
-                          actions: "swal2-actions-no-hover",
-                          popup: "rounded-[15px] shadow-custom-green",
-                        },
-                        buttonsStyling: true,
-                        reverseButtons: true,
-                        width: "320px",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          logOut();
-                        }
-                      });
-                    }}
-                  >
-                    <div className="text-white font-bold">Sign Out</div>
-                    <div className="rounded-full">
-                      <PiSignOutFill className="text-3xl text-white" />
+                  <>
+                    <div
+                      className="flex gap-2 mt-3 items-center cursor-pointer"
+                      onClick={() => {
+                        Swal.fire({
+                          text: "Are you sure you want to logout?",
+                          showCancelButton: true,
+                          confirmButtonText: "Yes",
+                          cancelButtonText: "No",
+                          confirmButtonColor: "#e0f349",
+                          customClass: {
+                            confirmButton: "px-12 rounded-xl text-black",
+                            title: "text-[20px] text-black",
+                            actions: "swal2-actions-no-hover",
+                            popup: "rounded-[15px] shadow-custom-green",
+                          },
+                          buttonsStyling: true,
+                          reverseButtons: true,
+                          width: "320px",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            logOut();
+                          }
+                        });
+                      }}
+                    >
+                      <div className="text-white font-bold">Sign Out</div>
+                      <div className="rounded-full">
+                        <PiSignOutFill className="text-3xl text-white" />
+                      </div>
                     </div>
-                  </div>
+                    <button
+                      onClick={() => router.push("/MyProfile")}
+                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <User2 size={16} className="text-black" />
+                      <span>My Profile</span>
+                    </button>
+                  </>
                 ) : (
                   <Link href="/login">
                     <div className="p-3 mt-3 items-center font-bold text-white">

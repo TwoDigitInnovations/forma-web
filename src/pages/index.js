@@ -31,7 +31,6 @@ function Home(props) {
 
 
 
-  
   return (
     <div>
       <TaskTrussLanding />

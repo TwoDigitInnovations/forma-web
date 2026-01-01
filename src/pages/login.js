@@ -55,7 +55,6 @@ export default function Login(props) {
               org.subscription.status === "active" &&
               org.subscription.planEndDate &&
               new Date(org.subscription.planEndDate) > new Date();
-
           } else {
             hasActiveSubscription =
               user.subscription &&
@@ -138,7 +137,6 @@ export default function Login(props) {
               )}
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-sm font-semibold text-custom-yellow">
                 Password
@@ -179,8 +177,15 @@ export default function Login(props) {
                 </p>
               )}
             </div>
-
-            {/* Submit Button */}
+            <div className="flex justify-end -mt-3 mb-3">
+              <span
+                className="text-custom-yellow cursor-pointer "
+                onClick={() => router.push("/Forgotpassword")}
+              >
+                {" "}
+                Forgot Password
+              </span>
+            </div>
             <button
               onClick={submit}
               disabled={loading}

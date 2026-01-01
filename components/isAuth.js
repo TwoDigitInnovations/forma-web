@@ -6,7 +6,13 @@ const isAuth = (Component, allowedRoles = []) => {
     const router = useRouter();
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    const publicRoutes = ["/", "/login", "/register", "/acceptinvite"];
+    const publicRoutes = [
+      "/",
+      "/login",
+      "/register",
+      "/acceptinvite",
+      "/Forgotpassword",
+    ];
     const path = router.pathname.toLowerCase();
     const isPublic = publicRoutes.includes(path);
 

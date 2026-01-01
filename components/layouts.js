@@ -21,7 +21,14 @@ const Layout = ({ children }) => {
 
   const path = router.pathname.toLowerCase();
 
-  const publicLayoutRoutes = ["/", "/planpage", "/login", "/checkout"];
+  const publicLayoutRoutes = [
+    "/",
+    "/planpage",
+    "/login",
+    "/checkout",
+    "/forgotpassword",
+    "/myprofile",
+  ];
   const withoutLayoutRoutes = ["/ragister", "/acceptinvite"];
 
   const isWithoutLayout = withoutLayoutRoutes.includes(path);
