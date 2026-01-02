@@ -161,7 +161,7 @@ const EditLayesDetails = ({
               <label className="text-sm mb-2">Carriageway Side</label>
 
               <select
-                name="carriageway"
+                name="side"
                 value={formData.side}
                 onChange={handleChange}
                 className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border cursor-pointer"

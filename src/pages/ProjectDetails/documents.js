@@ -142,7 +142,7 @@ const documents = (props) => {
     Api("delete", `documents/delete/${deleteId}`)
       .then((res) => {
         if (res?.status === true) {
-          toast.success("Actions points deleted");
+          toast.success("Documents deleted");
           getAllDocuments(projectId);
         } else {
           toast.error("Failed to delete item");

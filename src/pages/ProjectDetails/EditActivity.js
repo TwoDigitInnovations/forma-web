@@ -84,7 +84,7 @@ const EditActivity = (props) => {
     };
 
     const handleGoBack = () => {
-        router.push("/ProjectDetails/work-plan")
+        router.back()
     };
 
     return (

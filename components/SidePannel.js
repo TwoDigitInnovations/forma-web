@@ -245,6 +245,13 @@ const SidePannel = ({ setOpenTab, openTab }) => {
               <div>
                 {user?._id ? (
                   <>
+                  <button
+                      onClick={() => router.push("/MyProfile")}
+                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <User2 size={16} className="text-black" />
+                      <span>My Profile</span>
+                    </button>
                     <div
                       className="flex gap-2 mt-3 items-center cursor-pointer"
                       onClick={() => {
@@ -275,13 +282,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                         <PiSignOutFill className="text-3xl text-white" />
                       </div>
                     </div>
-                    <button
-                      onClick={() => router.push("/MyProfile")}
-                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    >
-                      <User2 size={16} className="text-black" />
-                      <span>My Profile</span>
-                    </button>
+                    
                   </>
                 ) : (
                   <Link href="/login">

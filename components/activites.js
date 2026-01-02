@@ -40,22 +40,30 @@ const WorkplanProgress = ({ activities, setActivities }) => {
         activities: sec.activities.map((act) => {
           if (act.id !== actId) return act;
 
-          const updated = { ...act, [field]: value };
+          let updated = { ...act };
+
+          let numericValue = Number(value);
+
+          // 🔒 Block negative values globally
+          if (!isNaN(numericValue) && numericValue < 0) {
+            numericValue = 0;
+          }
+
+          updated[field] = isNaN(numericValue) ? value : numericValue;
 
           const boq = Number(updated.qtyInBOQ || 0);
           const rate = Number(updated.Rate || 0);
-          const doneQty = Number(updated.qtyDone || 0);
+          let doneQty = Number(updated.qtyDone || 0);
 
-          // 🔹 Auto-calc Amount (qtyInBOQ × rate)
-          if (field === "qtyInBOQ" || field === "Rate") {
-            updated.Amount = boq * rate;
-            updated.amountDone = doneQty * rate; // Also update done amount
+          // 🔐 qtyDone ≤ qtyInBOQ
+          if (field === "qtyDone" && doneQty > boq) {
+            doneQty = boq;
+            updated.qtyDone = boq;
           }
 
-          // 🔹 Auto-calc amountDone (qtyDone × rate)
-          if (field === "qtyDone") {
-            updated.amountDone = doneQty * rate;
-          }
+          // 💰 Amount calculations
+          updated.Amount = boq * rate;
+          updated.amountDone = doneQty * rate;
 
           return updated;
         }),

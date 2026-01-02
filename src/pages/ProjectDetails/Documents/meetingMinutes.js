@@ -126,7 +126,12 @@ function MeetingMinutes(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    props.loader(true);
+  
+
+    if (!formData?.meetingDate || !formData?.meetingTime || !formData?.venue) {
+      return toast.error("please fill all the details")
+    }
+  props.loader(true);
     let data;
     try {
       let url = "";
@@ -153,7 +158,7 @@ function MeetingMinutes(props) {
       props.loader(false);
       if (res?.status) {
         toast.success(editId ? "Documents updated!" : "Documents created!");
-        router.push(`/ProjectDetails/Documents`);
+        router.push(`/ProjectDetails/documents`);
       } else {
         toast.error(res?.message || "Something went wrong");
       }
@@ -189,7 +194,7 @@ function MeetingMinutes(props) {
   };
 
   console.log(formData);
-  
+
   return (
     <div className="bg-black  md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
       <div className="w-full bg-custom-green rounded-[16px] px-4 py-4 flex-wrap gap-4">

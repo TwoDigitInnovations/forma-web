@@ -116,7 +116,14 @@ function InstructionLetter(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (
+      !formData?.LetterNo ||
+      !formData?.LetterContent ||
+      !formData?.LetterDate ||
+      !formData?.subject
+    ) {
+      return toast.error("Please fill all the details");
+    }
     props.loader(true);
 
     try {
@@ -148,7 +155,7 @@ function InstructionLetter(props) {
 
       if (res?.status) {
         toast.success(editId ? "Documents updated!" : "Documents created!");
-        router.push(`/ProjectDetails/Documents`);
+        router.push(`/ProjectDetails/documents`);
       } else {
         toast.error(res?.message || "Something went wrong");
       }

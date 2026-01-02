@@ -129,6 +129,7 @@ export const Certificates = ({
   summary,
 }) => {
   const [advanceAmount, setAdvanceAmount] = useState("");
+  const [showAdvanceAmount, setShowAdvanceAmount] = useState("");
   const [certId, setCertId] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -146,11 +147,11 @@ export const Certificates = ({
     status: "Submitted",
   });
 
-  // useEffect(() => {
-  //   if (summary) {
-  //     setAdvanceAmount(summary.advancePayment || 0);
-  //   }
-  // }, [summary]);
+  useEffect(() => {
+    if (summary) {
+      setShowAdvanceAmount(summary.advancePayment || 0);
+    }
+  }, [summary]);
 
   const handleAddCertificate = async () => {
     if (!cert.certNo || !cert.amount || !cert.date) {
@@ -457,7 +458,10 @@ export const Certificates = ({
           type="date"
           value={cert.date}
           onChange={(e) => setCert({ ...cert, date: e.target.value })}
-          className="border p-2 rounded-md cursor-pointer"
+          className="border p-2 rounded-md text-white bg-custom-black
+             [&::-webkit-calendar-picker-indicator]:invert
+             [&::-webkit-calendar-picker-indicator]:brightness-0
+             [&::-webkit-calendar-picker-indicator]:cursor-pointer"
         />
 
         <button
@@ -507,7 +511,7 @@ export const Certificates = ({
 
                 <td className="p-3">{"-"}</td>
 
-                <td className="p-3 ">{advanceAmount || "-"}</td>
+                <td className="p-3 ">{showAdvanceAmount || "-"}</td>
 
                 <td className="p-3 ">
                   <p className="border p-2 rounded cursor-pointer text-white w-26">
@@ -643,7 +647,7 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
   );
 };
 
-export const InviteMemberModal = ({ onClose, onSuccess,loader }) => {
+export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
   const router = useRouter();
   const [user] = useContext(userContext);
 

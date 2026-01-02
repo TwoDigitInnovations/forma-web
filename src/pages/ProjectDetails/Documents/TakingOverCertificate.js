@@ -116,6 +116,14 @@ function TakingOverCertificate(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !formData?.CertificateDate ||
+      !formData?.CertificateNumber ||
+      !formData?.OutstandingWorkandDefects ||
+      !formData?.TakingOverDate
+    ) {
+      return toast.error("please fill all the details");
+    }
     props.loader(true);
 
     try {
@@ -146,10 +154,13 @@ function TakingOverCertificate(props) {
       props.loader(false);
 
       if (res?.status) {
-        toast.success(editId ? "Documents updated!" : "Documents created!");
-        router.push(`/ProjectDetails/Documents`);
+        toast.success(res?.data?.message);
+
+        setTimeout(() => {
+          router.replace("/ProjectDetails/documents");
+        }, 300);
       } else {
-        toast.error(res?.message || "Something went wrong");
+        toast.error(res?.data?.message || "Something went wrong");
       }
     } catch (err) {
       props.loader(false);
@@ -157,7 +168,6 @@ function TakingOverCertificate(props) {
     }
   };
 
-  // Fetch document details for edit mode
   const getDetails = async (editId) => {
     props.loader(true);
 

@@ -118,6 +118,14 @@ function InstructionLetter(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !formData?.OrderNo ||
+      !formData?.OrderDate ||
+      !formData?.CommencementDate ||
+      !formData?.PlannedCompletionDate
+    ) {
+      return toast.error("Please fill all the details");
+    }
     props.loader(true);
 
     try {
@@ -149,7 +157,7 @@ function InstructionLetter(props) {
 
       if (res?.status) {
         toast.success(editId ? "Documents updated!" : "Documents created!");
-        router.push(`/ProjectDetails/Documents`);
+        router.push(`/ProjectDetails/documents`);
       } else {
         toast.error(res?.message || "Something went wrong");
       }
@@ -159,7 +167,6 @@ function InstructionLetter(props) {
     }
   };
 
-  // Fetch document details for edit mode
   const getDetails = async (editId) => {
     props.loader(true);
 
@@ -261,6 +268,7 @@ function InstructionLetter(props) {
             value={formData.CommencementDate}
             onChange={handleInputChange}
             type="Date"
+            className=""
           />
 
           <InputField

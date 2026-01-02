@@ -63,7 +63,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                 padding: "40px 50px",
               }}
             >
-              {/* Header with Logo and Title */}
+
               <div style={{ marginBottom: "30px" }}>
                 <div
                   style={{
