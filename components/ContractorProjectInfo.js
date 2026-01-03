@@ -7,10 +7,14 @@ import Compressor from "compressorjs";
 import { ApiFormData } from "@/services/service";
 import { useRouter } from "next/router";
 
-function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
+function ContractorProjectInfo({
+  contractorDetails,
+  setContractorDetails,
+  loader,
+}) {
   const fileInputRef = useRef(null);
   const [currentTab, setCurrentTab] = useState("contractorDetails");
-   const router = useRouter();
+  const router = useRouter();
   const [newMember, setNewMember] = useState({
     name: "",
     qualification: "",
@@ -24,7 +28,6 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
     condition: "Good",
   });
 
-  // 🟡 Handle main contractor info
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setContractorDetails((prev) => ({
@@ -36,6 +39,7 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
   const handleFileChange = (event, i) => {
     const file = event.target.files[0];
     if (!file) return;
+
     const fileSizeInMb = file.size / (1024 * 1024);
     if (fileSizeInMb > 1) {
       toast.error("Too large file Please upload a smaller image");
@@ -46,7 +50,7 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
         success: (compressedResult) => {
           const data = new FormData();
           data.append("file", compressedResult);
-
+          loader(true);
           ApiFormData("post", "user/fileUpload", data, router).then(
             (res) => {
               const fileURL = res.data.fileUrl;
@@ -57,10 +61,13 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
                   contractorLogo: fileURL,
                 }));
                 toast.success("file uploaded");
+                loader(false);
               }
             },
             (err) => {
               console.log(err);
+              loader(false);
+              toast.error(res?.data?.message || res?.message);
             }
           );
         },
@@ -211,6 +218,33 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
 
       {currentTab === "personal" && (
         <div>
+          {/* Add Member Form */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 mt-8">
+            <InputField
+              name="name"
+              value={newMember.name}
+              onChange={handleMemberChange}
+              placeholder="Full Name"
+            />
+            <InputField
+              name="qualification"
+              value={newMember.qualification}
+              onChange={handleMemberChange}
+              placeholder="e.g., B.Eng Civil"
+            />
+            <InputField
+              name="designation"
+              value={newMember.designation}
+              onChange={handleMemberChange}
+              placeholder="e.g., Site Engineer"
+            />
+            <button
+              onClick={handleAddMember}
+              className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
+            >
+              <Plus size={18} /> Add Personnel
+            </button>
+          </div>
           {/* Team Members Table */}
           <div className="mt-8 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
             <div className="overflow-x-auto">
@@ -270,40 +304,45 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
               </table>
             </div>
           </div>
-
-          {/* Add Member Form */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 mt-8">
-            <InputField
-              name="name"
-              value={newMember.name}
-              onChange={handleMemberChange}
-              placeholder="Full Name"
-            />
-            <InputField
-              name="qualification"
-              value={newMember.qualification}
-              onChange={handleMemberChange}
-              placeholder="e.g., B.Eng Civil"
-            />
-            <InputField
-              name="designation"
-              value={newMember.designation}
-              onChange={handleMemberChange}
-              placeholder="e.g., Site Engineer"
-            />
-            <button
-              onClick={handleAddMember}
-              className="flex justify-center items-center gap-2 rounded-lg text-white bg-gray-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
-            >
-              <Plus size={18} /> Add Personnel
-            </button>
-          </div>
         </div>
       )}
 
       {currentTab === "equipment" && (
         <div>
-          {/* Equipment Table */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 mt-8">
+            <InputField
+              name="name"
+              value={equipment.name}
+              onChange={handleEquipmentChange}
+              placeholder="e.g., Excavator"
+            />
+            <InputField
+              name="type"
+              value={equipment.type}
+              onChange={handleEquipmentChange}
+              placeholder="e.g., Heavy machinery"
+            />
+            <InputField
+              name="quantity"
+              type="number"
+              value={equipment.quantity}
+              onChange={handleEquipmentChange}
+              placeholder="1"
+            />
+            <SelectField
+              name="condition"
+              value={equipment.condition}
+              onChange={handleEquipmentChange}
+              options={["Excellent", "Good", "Fair", "Poor"]}
+            />
+            <button
+              onClick={handleAddEquipment}
+              className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
+            >
+              <Plus size={18} /> Add Equipment
+            </button>
+          </div>
+
           <div className="mt-8 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-gray-200 border-collapse">
@@ -367,41 +406,6 @@ function ContractorProjectInfo({ contractorDetails, setContractorDetails }) {
                 </tbody>
               </table>
             </div>
-          </div>
-
-          {/* Add Equipment Form */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6 mt-8">
-            <InputField
-              name="name"
-              value={equipment.name}
-              onChange={handleEquipmentChange}
-              placeholder="e.g., Excavator"
-            />
-            <InputField
-              name="type"
-              value={equipment.type}
-              onChange={handleEquipmentChange}
-              placeholder="e.g., Heavy machinery"
-            />
-            <InputField
-              name="quantity"
-              type="number"
-              value={equipment.quantity}
-              onChange={handleEquipmentChange}
-              placeholder="1"
-            />
-            <SelectField
-              name="condition"
-              value={equipment.condition}
-              onChange={handleEquipmentChange}
-              options={["Excellent", "Good", "Fair", "Poor"]}
-            />
-            <button
-              onClick={handleAddEquipment}
-              className="flex justify-center items-center gap-2 rounded-lg text-white bg-gray-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
-            >
-              <Plus size={18} /> Add Equipment
-            </button>
           </div>
         </div>
       )}

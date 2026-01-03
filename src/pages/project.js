@@ -243,6 +243,11 @@ const Projects = (props) => {
                   <button
                     className="w-full sm:w-auto p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white flex items-center justify-center gap-2 cursor-pointer"
                     onClick={() => {
+                      setProjectdetails(project);
+                      localStorage.setItem(
+                        "projectDetails",
+                        JSON.stringify(project)
+                      );
                       setEditId(project?._id);
                       router.push("/ProjectDetails/EditProject");
                     }}

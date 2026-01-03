@@ -1,11 +1,11 @@
 import axios from "axios";
 
-// const ConstantsUrl = "http://localhost:3004/";
-const ConstantsUrl = "https://api.plansera.com/";
+const ConstantsUrl = "http://localhost:3004/";
+// const ConstantsUrl = "https://api.plansera.com/";
 
 function handleAuthError(err, router) {
   if (typeof window !== "undefined") {
-    console.warn("Auth error:", err?.response?.data?.message || err.message);
+  
     localStorage.removeItem("token");
     localStorage.removeItem("userDetail");
     router.push("/login");
@@ -32,8 +32,6 @@ function Api(method, url, data, router) {
         if (err.response) {
           const status = err.response.status;
           const msg = err.response.data?.message || "";
-
-          // check for expired/invalid token
           if (
             status === 401 ||
             msg.toLowerCase().includes("expired") ||

@@ -130,13 +130,13 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 text-sm rounded-lg bg-gray-700 hover:bg-gray-600"
+              className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-gray-700 hover:bg-gray-600"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm rounded-lg bg-custom-yellow text-black hover:bg-yellow-400"
+              className="px-4 py-2.5 text-sm rounded-lg bg-custom-yellow text-black hover:bg-yellow-400 cursor-pointer"
             >
               Create Project
             </button>

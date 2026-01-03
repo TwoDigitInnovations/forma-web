@@ -194,7 +194,7 @@ function PricingPage() {
               }
               className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
             >
-              Start Free Trial
+              Buy Now
             </button>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">

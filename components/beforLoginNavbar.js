@@ -72,18 +72,18 @@ function BeforeLoginNavbar() {
             {profileOpen && (
               <div className="absolute left-0 top-8 mt-3 w-48 bg-[#0f1629] border border-gray-800 rounded-xl shadow-lg z-50">
                 <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
-                >
-                  <LogOut className="w-5 h-5" />
-                  Sign Out
-                </button>
-                <button
                   onClick={() => router.push("/MyProfile")}
                   className="flex items-center space-x-3 w-full text-left px-4 py-2.5 text-sm text-gray-200 cursor-pointer"
                 >
                   <User2 size={20} className="text-white" />
                   <span>My Profile</span>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
                 </button>
               </div>
             )}

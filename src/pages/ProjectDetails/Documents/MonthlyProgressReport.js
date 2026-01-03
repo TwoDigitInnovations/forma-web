@@ -136,7 +136,7 @@ function MonthlyProgressReport(props) {
   const downloadPDF = async () => {
     const input = contentRef.current;
     if (!input) return;
-
+    props.loader(true);
     try {
       await new Promise((res) => setTimeout(res, 300));
 
@@ -180,7 +180,9 @@ function MonthlyProgressReport(props) {
       }
 
       pdf.save("monthly-report.pdf");
+      props.loader(false);
     } catch (error) {
+      props.loader(false);
       console.error("PDF Error:", error);
     }
   };
@@ -281,7 +283,8 @@ function MonthlyProgressReport(props) {
           },
           (err) => {
             console.log(err);
-            toast.error("Upload failed");
+            props.loader(false);
+            toast.error(err?.message || "Upload failed");
           }
         );
       },
@@ -361,6 +364,7 @@ function MonthlyProgressReport(props) {
 
             <button
               onClick={downloadPDF}
+              disabled={props.loader}
               className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />

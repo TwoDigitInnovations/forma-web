@@ -274,22 +274,7 @@ const EditProject = (props) => {
             </div>
           </div>
 
-          <div className="flex flex-wrap  items-center gap-2">
-            <span className="text-sm text-gray-400">Quick Status:</span>
-            {['Planning', 'In Progress', 'On Hold', 'Completed'].map((status) => (
-              <button
-                key={status}
-                onClick={() => handleStatusUpdate(status)}
-                disabled={loading || formData.status === status}
-                className={`px-3 py-1 text-xs rounded-full transition-colors ${formData.status === status
-                  ? 'bg-custom-yellow text-black'
-                  : 'bg-[#5F5F5F] text-gray-300 hover:bg-gray-600'
-                  } disabled:cursor-not-allowed`}
-              >
-                {status}
-              </button>
-            ))}
-          </div>
+       
         </div>
 
         <button
@@ -447,6 +432,7 @@ const EditProject = (props) => {
               <ClientProjectInfo
                 clientDetails={clientDetails}
                 setClientDetails={setClientDetails}
+                loader={props.loader}
               />
             )}
 
@@ -454,6 +440,7 @@ const EditProject = (props) => {
               <ContractorProjectInfo
                 contractorDetails={contractorDetails}
                 setContractorDetails={setContractorDetails}
+                loader={props.loader}
               />
             )}
 
