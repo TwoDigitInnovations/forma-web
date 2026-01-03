@@ -292,8 +292,8 @@ const Projects = (props) => {
       <ConfirmModal
         isOpen={isConfirmOpen}
         setIsOpen={setIsConfirmOpen}
-        title="Delete History"
-        message={`Are you sure you want to delete this Meeting mintues History"?`}
+        title="Delete Project"
+        message={`Are you sure you want to delete this Project"?`}
         onConfirm={handleDeleteConfirm}
         yesText="Yes, Delete"
         noText="Cancel"

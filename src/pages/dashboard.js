@@ -1,15 +1,42 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Building, Handshake, CircleCheck, Pickaxe } from "lucide-react";
-
+import {
+  Building,
+  Handshake,
+  CircleCheck,
+  Pickaxe,
+  FolderPlus,
+  DollarSign,
+  Dock,
+  PiggyBank,
+  Clock,
+  MessageSquare,
+  StickyNote,
+  SquareCheckBig,
+} from "lucide-react";
+import { Api } from "@/services/service";
 import isAuth from "../../components/isAuth";
 import { userContext } from "./_app";
+import Listproject from "../../components/Listproject";
+import { toast } from "react-toastify";
+import CreateProject from "../../components/CreateProject";
+import {
+  ActionPoints,
+  AllGrievances,
+  AllIncident,
+  ProjectBehind,
+} from "../../components/AllComponents";
 
 function Dashboard(props) {
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
+  const [isOpen, setIsOpen] = useState(false);
+  const [allProjectData, setAllProjectData] = useState([]);
+  const [dashboardData, setDashboardData] = useState({});
+  const [incidentOpen, setIncidentOpen] = useState(false);
+  const [actionOpen, setActionOpen] = useState(false);
+  const [projectBehind, setProjectBehind] = useState(false);
+  const [grievancesOpen, setGrievancesOpen] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userDetail"));
@@ -41,272 +68,200 @@ function Dashboard(props) {
     }
   }, []);
 
-  const mockActivityData = [
-    {
-      title: "Foundation work completed ahead of schedule",
-      status: "3 days ago",
-      type: "completed",
-    },
-    {
-      title: "Plumbing installation completed for floors 1-5",
-      status: "5 days ago",
-      type: "completed",
-    },
-    {
-      title: "Electrical work completed for floors 1-3",
-      status: "1 week ago",
-      type: "completed",
-    },
-    {
-      title: "Structural assessment completed",
-      status: "2 weeks ago",
-      type: "Pending",
-    },
-    {
-      title: "Structural assessment completed",
-      status: "2 weeks ago",
-      type: "completed",
-    },
-    {
-      title: "Structural assessment completed",
-      status: "2 weeks ago",
-      type: "completed",
-    },
-  ];
+  useEffect(() => {
+    getAllProject();
+  }, []);
 
-  const mockUpcomingTasks = [
-    {
-      name: "Structural Assessment",
-      progress: 70,
-      priority: "Critical",
-      color: "#22c55e",
-    },
-    {
-      name: "Balcony Installation",
-      progress: 45,
-      priority: "High",
-      color: "#eab308",
-    },
-    {
-      name: "Electrical Wiring",
-      progress: 60,
-      priority: "Medium",
-      color: "#22c55e",
-    },
-    {
-      name: "Roofing Work",
-      progress: 30,
-      priority: "Due Soon",
-      color: "#eab308",
-    },
-    { name: "Painting", progress: 20, priority: "Due Soon", color: "#eab308" },
-    {
-      name: "Electrical Wiring Phase 2",
-      progress: 5,
-      priority: "On Track",
-      color: "#22c55e",
-    },
-  ];
-
-  const mockTeamData = [
-    {
-      name: "John Martinez",
-      role: "Project Manager",
-      tasksCompleted: 12,
-      color: "#22c55e",
-    },
-    {
-      name: "Sarah Chen",
-      role: "Site Supervisor",
-      tasksCompleted: 9,
-      color: "#22c55e",
-    },
-    {
-      name: "Mike Johnson",
-      role: "Lead Architect",
-      tasksCompleted: 6,
-      color: "#22c55e",
-    },
-  ];
-
-  const mockRecentProjects = [
-    { name: "Project 1", progress: 80 },
-    { name: "Project 2", progress: 65 },
-    { name: "Project 3", progress: 100 },
-    { name: "Project 4", progress: 45 },
-    { name: "Project 5", progress: 90 },
-    { name: "Project 6", progress: 100 },
-    { name: "Project 7", progress: 75 },
-  ];
+  const getAllProject = async () => {
+    props?.loader(true);
+    Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)
+      .then((res) => {
+        props?.loader(false);
+        if (res?.status === true) {
+          setAllProjectData(res?.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch projects");
+        }
+      })
+      .catch((err) => {
+        props?.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   return (
     <section className=" bg-[#000000] md:p-6 p-3 text-white h-screen">
-      <div className="max-w-7xl mx-auto h-full space-y-6 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
-        {/* Header */}
-        <div className="flex items-center justify-between md:mt-0 mt-2">
-          <h1 className="text-3xl font-bold text-custom-yellow">Dashboard</h1>
+      <div className="max-w-7xl mx-auto h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
+        <div className="bg-custom-black md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
+          <div>
+            <h1 className="text-3xl font-bold text-custom-yellow">Dashboard</h1>
+            <p className="md:text-[16px] text-[14px] text-white ">
+              Key financial and project metrics overview.
+            </p>
+          </div>
+
+          <button
+            className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+            style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+            onClick={() => setIsOpen(true)}
+          >
+            <FolderPlus size={28} />
+            New Project
+          </button>
+
+          {isOpen && (
+            <CreateProject
+              setIsOpen={setIsOpen}
+              loader={props?.loader}
+              getAllProject={getAllProject}
+            />
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-2">
           <DarkStatsCard
-            title="Active Projects"
-            value="2"
-            subtitle="+10% from last month"
-            icon={<Building size={55} />}
-            accentColor="#22c55e"
+            title="Total Contracts"
+            value={dashboardData?.TotalContract || "100.00"}
+            subtitle="Sum of all contract amounts"
+            icon={<DollarSign size={35} />}
           />
           <DarkStatsCard
-            title="Team Members"
-            value="6"
-            subtitle="+8% from last month"
-            icon={<Handshake size={55} />}
-            accentColor="#22c55e"
+            title="IPCs Paid"
+            value={dashboardData?.TotalContract || "100.00"}
+            subtitle="Total payment certificates"
+            icon={<Dock size={35} />}
           />
           <DarkStatsCard
-            title="Completion Rate"
-            value="20%"
-            subtitle="+3% of engagement"
-            icon={<CircleCheck size={55} />}
-            accentColor="#22c55e"
+            title="Balance"
+            value={dashboardData?.TotalContract || "100.00"}
+            subtitle="Contracts - IPCs paid"
+            icon={<PiggyBank size={35} />}
           />
-          <div className="row-span-2 bg-custom-black rounded-xl p-4 border border-gray-700">
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="text-custom-yellow font-semibold">
-                Recent Projects
-              </h3>
-              <button className="text-custom-yellow text-sm hover:text-yellow-300">
-                View All
-              </button>
-            </div>
-            <div className="space-y-3">
-              {mockRecentProjects.map((project, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-300">{project.name}</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-16 bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full"
-                        style={{ width: `${project.progress}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-xs text-gray-400 w-10">
-                      {project.progress}%
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-8 md:col-span-2 bg-custom-black rounded-xl p-6 border border-gray-700">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold">Recent Activity</h3>
-              <button className="text-custom-yellow text-sm hover:text-yellow-300">
-                View All
-              </button>
-            </div>
-            <div className="space-y-4">
-              {mockActivityData.map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <Pickaxe className="text-custom-yellow mt-1" />
-                  <div className="flex w-full justify-between items-center">
-                    <p className="text-gray-300 text-sm">{activity.title}</p>
-                    <p className="text-green-500 text-xs bg-green-500/20 px-2 py-1 rounded">
-                      {activity.status}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        </div>
 
-          <div className=" mt-8 bg-custom-black rounded-xl p-6 border border-gray-700">
-            <h3 className="text-xl font-semibold mb-4">Revenue</h3>
-            <div className="flex items-center justify-center h-48">
-              <div className="relative w-32 h-32">
-                <div className="absolute inset-0 rounded-full border-8 border-gray-700"></div>
-                <div className="absolute inset-0 rounded-full border-8 border-transparent border-t-yellow-400 transform rotate-45"></div>
-                <div className="absolute inset-4 bg-gray-900 rounded-full flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-custom-yellow">
-                      65%
-                    </div>
-                  </div>
-                </div>
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 md:gap-6 gap-4">
+          <div
+            className="bg-custom-black  rounded-2xl md:px-4 px-3 md:py-6 py-3 border border-gray-700 transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            onClick={() => setProjectBehind(true)}
+          >
+            <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
+              <div className="bg-custom-green p-2 rounded-2xl">
+                <Clock />
+              </div>
+              <div>
+                <p className="text-white text-md font-medium  tracking-wide">
+                  Projects Behind
+                </p>
+                <p className="text-2xl font-bold text-custom-yellow">2</p>
+                <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
+                  Click to view Details
+                </p>
               </div>
             </div>
-            <div className="text-center mt-4">
-              <p className="text-gray-400 text-sm">Achieved Revenue: $245.7M</p>
+          </div>
+          <div
+            className="bg-custom-black  rounded-2xl px-4 py-6 border border-gray-700  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            onClick={() => setIncidentOpen(true)}
+          >
+            <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
+              <div className="bg-custom-green p-2 rounded-2xl">
+                <StickyNote />
+              </div>
+              <div>
+                <p className="text-white text-md font-medium  tracking-wide">
+                  Incidents
+                </p>
+                <p className="text-2xl font-bold text-custom-yellow">0</p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Severe: 0
+                </p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Serious: 0
+                </p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Indicative: 0
+                </p>
+              </div>
             </div>
           </div>
+          <div
+            className="bg-custom-black  rounded-2xl px-4 py-6 border border-gray-700  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            onClick={() => setGrievancesOpen(true)}
+          >
+            <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
+              <div className="bg-custom-green p-2 rounded-2xl">
+                <MessageSquare />
+              </div>
+              <div>
+                <p className="text-white text-md font-medium  tracking-wide">
+                  Grievances
+                </p>
+                <p className="text-2xl font-bold text-custom-yellow">0</p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Registered: 0
+                </p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Investigating: 0
+                </p>
+                <p className="text-gray-200 text-[12px] font-medium ">
+                  Escalated: 0
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            className="bg-custom-black  rounded-2xl px-4 py-6 border-2 border-gray-700  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            onClick={() => setActionOpen(true)}
+          >
+            <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
+              <div className="bg-custom-green p-2 rounded-2xl">
+                <SquareCheckBig />
+              </div>
+              <div>
+                <p className="text-white text-md font-medium  tracking-wide">
+                  Action points
+                </p>
+                <p className="text-2xl font-bold text-custom-yellow">0</p>
+                <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
+                  Open Task to complete
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {incidentOpen && (
+            <AllIncident
+              onclose={() => setIncidentOpen(false)}
+              loader={props.loader}
+            />
+          )}
+          {projectBehind && (
+            <ProjectBehind
+              onclose={() => setProjectBehind(false)}
+              loader={props.loader}
+            />
+          )}
+
+          {grievancesOpen && (
+            <AllGrievances
+              onclose={() => setGrievancesOpen(false)}
+              loader={props.loader}
+            />
+          )}
+
+          {actionOpen && (
+            <ActionPoints
+              onclose={() => setActionOpen(false)}
+              loader={props.loader}
+            />
+          )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-custom-black rounded-xl p-6 border border-gray-700">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold">Upcoming Tasks</h3>
-              <button className="text-custom-yellow text-sm hover:text-yellow-300">
-                View All
-              </button>
-            </div>
-            <div className="grid grid-cols-1 gap-2">
-              {mockUpcomingTasks.map((task, index) => (
-                <div key={index} className="space-y-1.5 flex justify-between">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-medium">{task.name}</span>
-                    {/* <span className="text-xs text-gray-400">{task.progress}%</span> */}
-                  </div>
-                  <div className="w-[180px] flex flex-col justify-start bg-gray-700 rounded-full h-2">
-                    <div
-                      className="h-2 rounded-full"
-                      style={{
-                        width: `${task.progress}%`,
-                        backgroundColor: task.color,
-                      }}
-                    ></div>
-                  </div>
-                  <span
-                    className="text-xs px-2 py-1 rounded text-white"
-                    style={{
-                      backgroundColor: task.color + "40",
-                      color: task.color,
-                    }}
-                  >
-                    {task.priority}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-custom-black rounded-xl p-6 border border-gray-700">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold">Team Performance</h3>
-              <button className="text-custom-yellow text-sm hover:text-yellow-300">
-                View All
-              </button>
-            </div>
-            <div className="space-y-4">
-              {mockTeamData.map((member, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <img
-                    src="./man.jpg"
-                    className="h-12 w-12 object-cover rounded-full"
-                  />
-                  <div className="flex-1">
-                    <p className="font-semibold text-sm">{member.name}</p>
-                    <p className="text-gray-400 text-xs">{member.role}</p>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="font-semibold text-sm">
-                      {member.tasksCompleted}
-                    </p>
-                    <p className="text-gray-400 text-xs">Tasks Completed</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <Listproject
+          allProjectData={allProjectData}
+          loader={props.loader}
+          getAllProject={getAllProject}
+        />
       </div>
     </section>
   );
@@ -321,24 +276,20 @@ export default isAuth(Dashboard, [
 
 const DarkStatsCard = ({ title, value, subtitle, icon }) => {
   return (
-    <div className="flex flex-col w-full relative gap-10">
-      <div className="bg-custom-black  rounded-2xl p-4 border border-gray-700 hover:border-gray-600 transition-colors mb-3 z-10">
-        <div className="flex items-start justify-between p-2 rounded-lg">
-          <div>{icon}</div>
+    <div className="flex flex-col w-full relative ">
+      <div className="bg-custom-black space-y-2 rounded-2xl px-4 py-6 border border-gray-700 hover:border-gray-600 transition-colors mb-3 z-10">
+        <div className="flex items-start justify-start gap-3 rounded-lg">
+          <div className="bg-custom-green p-2 rounded-2xl">{icon}</div>
           <div>
-            <p className="text-gray-400 text-sm font-medium uppercase tracking-wide">
+            <p className="text-white text-md font-medium  tracking-wide">
               {title}
             </p>
-            <p className="text-3xl font-bold text-white mt-1 text-right">
-              {value}
+            <p className="text-2xl font-bold text-custom-yellow">${value}</p>
+            <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
+              {subtitle}
             </p>
           </div>
         </div>
-      </div>
-      <div className=" w-full bg-custom-yellow flex justify-center items-center rounded-2xl p-2 border border-gray-700 z-10 hover:border-gray-600 transition-colors mb-3 absolute top-22 md:top-24 right-1/2 translate-x-1/2">
-        <p className="w-[180px] md:text-[12px] text-[14px] text-center mt-1 bg-[#5F5F5F] p-1 rounded-2xl">
-          {subtitle}
-        </p>
       </div>
     </div>
   );

@@ -244,7 +244,7 @@ function AcceptInvite() {
                 <button
                   onClick={submitSignup}
                   disabled={loading}
-                  className="w-full bg-custom-yellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-custom-yellow/20"
+                  className="w-full bg-custom-yellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
                 >
                   {loading ? (
                     <>
@@ -263,7 +263,7 @@ function AcceptInvite() {
                   Already have an account?{" "}
                   <button
                     onClick={() => router.push("login")}
-                    className="text-custom-yellow hover:underline font-medium"
+                    className="text-custom-yellow hover:underline font-medium cursor-pointer"
                   >
                     Sign in
                   </button>

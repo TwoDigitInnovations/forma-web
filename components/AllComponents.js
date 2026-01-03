@@ -3,10 +3,13 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "react-toastify";
 import {
   CheckLine,
+  Clock,
   Copy,
   Cross,
   Edit,
+  MessageSquare,
   MoveRight,
+  StickyNote,
   Trash,
   X,
 } from "lucide-react";
@@ -800,6 +803,123 @@ export const InviteSuccessModal = ({ link, email, onClose }) => {
         >
           Done
         </button>
+      </div>
+    </div>
+  );
+};
+
+export const AllIncident = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-5 py-4">
+          <div className="flex items-center gap-2">
+            <StickyNote className="h-5 w-5 text-custom-yellow" />
+            <p className="text-lg font-semibold text-white">Open Incidents</p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No open incidents</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ProjectBehind = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-5 py-4">
+          <div className="flex items-center gap-2">
+            <Clock className="h-5 w-5 text-custom-yellow" />
+            <p className="text-lg font-semibold text-white">
+              Projects Behind Schedule
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const AllGrievances = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-5 py-4">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-custom-yellow" />
+            <p className="text-lg font-semibold text-white">Open grievances</p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No open grievances</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ActionPoints = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-5 py-4">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-custom-yellow" />
+            <p className="text-lg font-semibold text-white">
+              Open Action Points by Project
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">
+            No Open Action Points In Any Project
+          </p>
+        </div>
       </div>
     </div>
   );

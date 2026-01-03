@@ -37,8 +37,13 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
     "Other",
   ];
   const handleSubmit = async (e) => {
-    loader(true);
     e.preventDefault();
+    if (!formData.projectType?.trim()) {
+      return toast.error("Please select Project Type");
+    }
+
+    loader(true);
+
     const data = {
       ...formData,
       userId: user._id,
@@ -124,6 +129,7 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
             value={formData.contractAmount}
             onChange={handleChange}
             className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            required
           />
 
           <div className="flex justify-end gap-3 mt-4">
