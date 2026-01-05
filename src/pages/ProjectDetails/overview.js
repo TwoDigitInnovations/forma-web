@@ -199,7 +199,7 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-3 gap-2 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-3 gap-2 mb-3">
           <Card
             title="Contractor"
             Open={() => setOpen(true)}
@@ -255,7 +255,8 @@ const ProjectDetailsPage = (props) => {
               </div>
             </div>
           </div>
-
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-3 gap-2 mb-3">
           <SecondCard
             title="Contract Amount"
             value={projectDetails?.contractAmount}
@@ -264,17 +265,22 @@ const ProjectDetailsPage = (props) => {
 
           <SecondCard
             title="Amount Spent"
-            value={"2859696.00"}
+            value={projectDetails?.paidAmount}
             subtitle="From payment certificates"
           />
           <SecondCard
             title="Balance"
-            value={"74895.5"}
+            value={projectDetails?.contractAmount - projectDetails?.paidAmount}
             subtitle="Remaining funds"
+          />
+          <SecondCard
+            title="Advance Payment"
+            value={projectDetails?.advancePayment}
+            subtitle="All Advance Payment"
           />
         </div>
 
-        <div className="bg-custom-black border border-white/10 rounded-2xl p-6 text-white">
+        <div className="bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
           <div className="mb-6">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               ↗ Progress Overview
@@ -284,11 +290,16 @@ const ProjectDetailsPage = (props) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <div className="md:col-span-2 space-y-6">
-              <div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+            <div className="md:col-span-2 space-y-4 group relative:">
+              <div
+                className="group-hover:cursor-pointer"
+                onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
+              >
                 <div className="flex justify-between mb-2 text-sm">
-                  <span>Physical Progress</span>
+                  <span className="group-hover:text-[#e0f349]">
+                    Physical Progress
+                  </span>
                   <span>{physical}%</span>
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
@@ -297,6 +308,12 @@ const ProjectDetailsPage = (props) => {
                     style={{ width: `${physical}%` }}
                   />
                 </div>
+                <p
+                  className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                text-gray-200 text-[13px] font-medium tracking-wide"
+                >
+                  Click for details
+                </p>
               </div>
 
               <div>
@@ -314,7 +331,10 @@ const ProjectDetailsPage = (props) => {
             </div>
 
             <div className="flex justify-center">
-              <div className="relative w-28 h-28">
+              <div
+                className="group relative w-28 h-28 cursor-pointer transition-transform duration-300 hover:scale-105"
+                onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
+              >
                 <svg className="w-full h-full rotate-[-90deg]">
                   <circle
                     cx="56"
@@ -340,9 +360,17 @@ const ProjectDetailsPage = (props) => {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-xl font-bold">{financial}%</span>
+                  <span className="text-xl font-bold group-hover:text-[#e0f349] transition-hover duration-200">
+                    {financial}%
+                  </span>
                   <span className="text-xs text-gray-400">Financial</span>
                 </div>
+                <p
+                  className="text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                text-gray-200 text-[13px] font-medium tracking-wide"
+                >
+                  Click for IPCs
+                </p>
               </div>
             </div>
           </div>
@@ -420,7 +448,7 @@ const ProjectDetailsPage = (props) => {
                 <div className="flex justify-between">
                   <span className="text-white">Contract Amount</span>
                   <span className="text-white">
-                    $ {projectDetails?.clientInfo?.contactAmount}
+                    ${projectDetails?.contractAmount}
                   </span>
                 </div>
                 <div className="flex justify-between">

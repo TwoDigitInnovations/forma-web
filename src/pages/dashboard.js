@@ -253,6 +253,7 @@ function Dashboard(props) {
             <ActionPoints
               onclose={() => setActionOpen(false)}
               loader={props.loader}
+              projects={allProjectData}
             />
           )}
         </div>

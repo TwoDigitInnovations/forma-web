@@ -23,6 +23,7 @@ import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { CheckCircle } from "lucide-react";
 import { userContext } from "@/pages/_app";
+import moment from "moment";
 
 export const ConfirmModal = ({
   isOpen,
@@ -900,16 +901,40 @@ export const AllGrievances = ({ onclose, loader }) => {
   );
 };
 
-export const ActionPoints = ({ onclose, loader }) => {
+export const ActionPoints = ({ onclose, loader, projects }) => {
+  const [projectId, setProjectID] = useState("All");
+  const [AllActionPoints, setAllActionPoints] = useState([]);
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   getActionPoints();
+  // }, []);
+
+  const getActionPoints = async (e) => {
+    loader(true);
+    Api("get", `project/getAllActionPoints?projectId=${projectId}`, "", router)
+      .then((res) => {
+        loader(false);
+        if (res?.status === true) {
+          setAllActionPoints(res.data?.data);
+        } else {
+          toast.error(res?.message || "Failed to created status");
+        }
+      })
+      .catch((err) => {
+        loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b px-5 py-4">
+      <div className="w-full max-w-4xl rounded-2xl bg-custom-black shadow-xl">
+        <div className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-custom-yellow" />
             <p className="text-lg font-semibold text-white">
-              Open Action Points by Project
+              Open Action Points
             </p>
           </div>
 
@@ -921,10 +946,70 @@ export const ActionPoints = ({ onclose, loader }) => {
           </button>
         </div>
 
-        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">
-            No Open Action Points In Any Project
-          </p>
+        <div className="flex items-center gap-3 px-4">
+          <label className="text-sm text-gray-400">Filter by project:</label>
+
+          <select
+            value={projectId}
+            onChange={(e) => setProjectID(e.target.value)}
+            className="bg-black text-white border border-gray-700 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-custom-yellow w-[150px]"
+          >
+            <option value="all">All Projects</option>
+
+            {projects.map((project) => (
+              <option key={project._id} value={project._id}>
+                {project.projectName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mt-4 overflow-x-auto rounded-xl border border-gray-800 bg-black">
+          <table className="min-w-full border-collapse text-sm text-gray-300">
+            <thead>
+              <tr className="border-b border-gray-800 text-left text-gray-400">
+                <th className="px-4 py-3 w-10">#</th>
+                <th className="px-4 py-3">Project</th>
+                <th className="px-4 py-3">Description</th>
+                <th className="px-4 py-3">Assigned To</th>
+                <th className="px-4 py-3">Priority</th>
+                <th className="px-4 py-3">Due Date</th>
+                <th className="px-4 py-3">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {AllActionPoints.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="px-4 py-6 text-center text-gray-500 min-h-[220px] flex-col items-center justify-center"
+                  >
+                    No Open Action Points In Any Project
+                  </td>
+                </tr>
+              ) : (
+                AllActionPoints.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="bg-custom-black border-b border-gray-800 hover:bg-gray-900 transition"
+                  >
+                    <td className="px-4 py-3 text-white">{index + 1}</td>
+                    <td className="px-4 py-3">{item.project}</td>
+                    <td className="px-4 py-3 text-white">{item.description}</td>
+                    <td className="px-4 py-3">{item.assignedTo || "-"}</td>
+                    <td className="px-4 py-3">
+                      <PriorityBadge value={item.priority} />
+                    </td>
+                    <td className="px-4 py-3">{item.dueDate || "-"}</td>
+                    <td className="px-4 py-3">
+                      <StatusBadge value={item.status} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -1076,20 +1161,38 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
   const {
     projectName,
     projectType,
-    projectNumber,
+    projectNo,
     status,
-    duration,
     defectsLiability,
-    client,
     startDate,
     endDate,
     location,
-    scope,
-    summary,
+    ProjectScope,
+
+    ExcuetiveSummary,
     description,
   } = projectInfo;
 
-  const hasNarrative = scope || summary || description;
+  const formattedStartDate = startDate
+    ? moment(startDate).format("DD MMM YYYY")
+    : "-";
+
+  const formattedEndDate = endDate
+    ? moment(endDate).format("DD MMM YYYY")
+    : "-";
+
+  let duration = "-";
+
+  if (startDate && endDate) {
+    const start = moment(startDate);
+    const end = moment(endDate);
+
+    const days = end.diff(start, "days");
+
+    duration = days >= 0 ? `${days} Days` : "-";
+  }
+  const hasNarrative = ProjectScope || ExcuetiveSummary || description;
+
   const Info1 = ({ label, value }) => (
     <div>
       <p className="mb-1 text-gray-400">{label}</p>
@@ -1097,12 +1200,26 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
     </div>
   );
 
-  const Narrative = ({ title, value }) => (
-    <div>
-      <p className="mb-1 text-gray-400">{title}</p>
-      <p>{value}</p>
-    </div>
-  );
+  const Narrative = ({ title, value }) => {
+    const isHTML =
+      typeof value === "string" && /<\/?[a-z][\s\S]*>/i.test(value); // simple HTML detection
+
+    return (
+      <div>
+        <p className="mb-1 text-gray-400">{title}</p>
+
+        {isHTML ? (
+          <div
+            className="text-gray-200 prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: value }}
+          />
+        ) : (
+          <p className="text-gray-200">{value || "Not specified"}</p>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
       <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-gray-800 bg-custom-black p-6">
@@ -1132,10 +1249,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-sm">
             <Info1 label="Project Type" value={projectType} />
-            <Info1
-              label="Project Number"
-              // value={projectNo || "Not assigned"}
-            />
+            <Info1 label="Project Number" value={projectNo || "Not assigned"} />
             <div>
               <p className="text-gray-400 mb-1">Status</p>
               <span className="inline-flex rounded-full bg-green-500 px-3 py-1 text-xs font-semibold text-black">
@@ -1148,7 +1262,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
               label="Defects Liability"
               value={defectsLiability || "Not set"}
             />
-            <Info1 label="Client" value={client} />
+            <Info1 label="Client" value={projectInfo?.clientInfo?.ClientName} />
           </div>
         </section>
 
@@ -1159,8 +1273,8 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
           </h4>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-sm">
-            <Info1 label="Start Date" value={startDate} />
-            <Info1 label="End Date" value={endDate} />
+            <Info1 label="Start Date" value={formattedStartDate} />
+            <Info1 label="End Date" value={formattedEndDate} />
             <Info1 label="Duration" value={duration} />
           </div>
         </section>
@@ -1179,8 +1293,10 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
         {/* Narrative Section */}
         {hasNarrative ? (
           <section className="space-y-4 text-sm text-gray-300">
-            {scope && <Narrative title="Scope" value={scope} />}
-            {summary && <Narrative title="Summary" value={summary} />}
+            {ProjectScope && <Narrative title="Scope" value={ProjectScope} />}
+            {ExcuetiveSummary && (
+              <Narrative title="Summary" value={ExcuetiveSummary} />
+            )}
             {description && (
               <Narrative title="Description" value={description} />
             )}
@@ -1306,7 +1422,7 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
           emptyMessage="No personnel records"
           emptyHint="Add personnel in Edit Project"
           data={teamMembers}
-          columns={["Name", "Role","Designation"]}
+          columns={["Name", "Role", "Designation"]}
           icon={<Users size={16} />}
         />
 
@@ -1315,7 +1431,7 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
           emptyMessage="No equipment records"
           emptyHint="Add equipment in Edit Project"
           data={equipment}
-          columns={["Equipment Name", "Type","Quantity","Condition"]}
+          columns={["Equipment Name", "Type", "Quantity", "Condition"]}
           icon={<Layers size={16} />}
         />
       </div>
