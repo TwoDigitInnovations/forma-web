@@ -3,16 +3,22 @@ import { motion, AnimatePresence } from "motion/react";
 import { toast } from "react-toastify";
 import {
   CheckLine,
+  CircleAlert,
   Clock,
+  Clock1,
   Copy,
   Cross,
   Edit,
   MessageSquare,
-  MoveRight,
   StickyNote,
   Trash,
+  TriangleAlert,
+  Users,
   X,
 } from "lucide-react";
+import { FileText, Calendar, MapPin, ClipboardList } from "lucide-react";
+import { User, Mail, Phone, Layers } from "lucide-react";
+
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { CheckCircle } from "lucide-react";
@@ -920,6 +926,398 @@ export const ActionPoints = ({ onclose, loader }) => {
             No Open Action Points In Any Project
           </p>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const Milestones = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="flex items-center gap-2">
+              <Clock1 className="h-5 w-5 text-custom-yellow" />
+              <p className="text-lg font-semibold text-white">Milestones</p>
+            </div>
+            <p className="text-sm text-white">
+              {" "}
+              Upcoming and overdue milestones for this project
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No milestones to display</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const OpenIncient = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="flex items-center gap-2">
+              <TriangleAlert className="h-5 w-5 text-custom-yellow" />
+              <p className="text-lg font-semibold text-white">Open incidents</p>
+            </div>
+            <p className="text-sm text-white">
+              {" "}
+              World Bank ESF compliance incident reports
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No open incidents</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ProjectGrievances = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-custom-yellow" />
+              <p className="text-lg font-semibold text-white">
+                Open grievances
+              </p>
+            </div>
+            <p className="text-sm text-white">
+              Click on a grievance to view full details
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">No open grievances</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ProjectActionPoints = ({ onclose, loader }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex flex-col gap-2 items-start">
+            <div className="flex items-center gap-2">
+              <CircleAlert className="h-5 w-5 text-custom-yellow" />
+              <p className="text-lg font-semibold text-white">
+                Open Action Points by Project
+              </p>
+            </div>
+            <p className="text-sm text-white">
+              Action items that have passed their deadline
+            </p>
+          </div>
+
+          <button
+            onClick={onclose}
+            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
+          <p className="text-sm text-gray-500">
+            No Open Action Points In Any Project
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ProjectInformation = ({ projectInfo, onClose }) => {
+  if (!projectInfo) return null;
+
+  const {
+    projectName,
+    projectType,
+    projectNumber,
+    status,
+    duration,
+    defectsLiability,
+    client,
+    startDate,
+    endDate,
+    location,
+    scope,
+    summary,
+    description,
+  } = projectInfo;
+
+  const hasNarrative = scope || summary || description;
+  const Info1 = ({ label, value }) => (
+    <div>
+      <p className="mb-1 text-gray-400">{label}</p>
+      <p className="text-gray-200">{value}</p>
+    </div>
+  );
+
+  const Narrative = ({ title, value }) => (
+    <div>
+      <p className="mb-1 text-gray-400">{title}</p>
+      <p>{value}</p>
+    </div>
+  );
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+      <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-gray-800 bg-custom-black p-6">
+        {/* Header */}
+        <div className="mb-6 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-lg font-semibold text-white">
+              <ClipboardList size={20} />
+              Project Information
+            </div>
+            <p className="mt-1 text-sm text-gray-400">{projectName}</p>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-full border cursor-pointer border-gray-700 p-1 text-gray-400 hover:text-white"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Basic Details */}
+        <section className="mb-8">
+          <h4 className="mb-4 text-sm font-semibold text-white">
+            Basic Details
+          </h4>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-sm">
+            <Info1 label="Project Type" value={projectType} />
+            <Info1
+              label="Project Number"
+              // value={projectNo || "Not assigned"}
+            />
+            <div>
+              <p className="text-gray-400 mb-1">Status</p>
+              <span className="inline-flex rounded-full bg-green-500 px-3 py-1 text-xs font-semibold text-black">
+                {status}
+              </span>
+            </div>
+
+            <Info1 label="Duration" value={duration} />
+            <Info1
+              label="Defects Liability"
+              value={defectsLiability || "Not set"}
+            />
+            <Info1 label="Client" value={client} />
+          </div>
+        </section>
+
+        {/* Timeline */}
+        <section className="mb-8">
+          <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+            <Calendar size={16} /> Timeline
+          </h4>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 text-sm">
+            <Info1 label="Start Date" value={startDate} />
+            <Info1 label="End Date" value={endDate} />
+            <Info1 label="Duration" value={duration} />
+          </div>
+        </section>
+
+        {/* Location */}
+        <section className="mb-8">
+          <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-white">
+            <MapPin size={16} /> Location
+          </h4>
+          <p className="text-sm text-gray-300">{location}</p>
+        </section>
+
+        {/* Divider */}
+        <div className="my-8 border-t border-gray-800" />
+
+        {/* Narrative Section */}
+        {hasNarrative ? (
+          <section className="space-y-4 text-sm text-gray-300">
+            {scope && <Narrative title="Scope" value={scope} />}
+            {summary && <Narrative title="Summary" value={summary} />}
+            {description && (
+              <Narrative title="Description" value={description} />
+            )}
+          </section>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="mb-3 rounded-full border border-gray-700 p-3">
+              <FileText className="h-5 w-5 text-gray-400" />
+            </div>
+            <p className="text-sm font-medium text-gray-300">
+              No additional narrative details
+            </p>
+            <p className="mt-1 text-xs text-gray-500">
+              Add scope, summary, or description in Edit Project
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const ContractorDetails = ({ projectInfo, onClose }) => {
+  const {
+    contractorName,
+    Email,
+    phone,
+    contactPerson,
+    teamMembers = [],
+    equipment = [],
+  } = projectInfo?.contractorInfo || {};
+
+  const Info = ({ label, value, icon }) => (
+    <div>
+      <p className="text-gray-400 text-xs mb-1">{label}</p>
+      <p className="text-sm flex items-center gap-2 text-gray-200">
+        {icon}
+        {value || "Not specified"}
+      </p>
+    </div>
+  );
+
+  const Section = ({ title, data, columns, emptyMessage, emptyHint, icon }) => (
+    <div className="mb-6">
+      <h3 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+        {icon} {title}
+      </h3>
+
+      {data.length === 0 ? (
+        <div className="border border-gray-800 rounded-xl p-6 text-center text-gray-400 bg-black/40">
+          <div className="mb-2 flex justify-center">
+            <User size={26} />
+          </div>
+          <p className="font-medium">{emptyMessage}</p>
+          <p className="text-xs mt-1">{emptyHint}</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto rounded-lg border border-gray-800">
+          <table className="w-full text-sm">
+            <thead className="bg-custom-green text-gray-400">
+              <tr>
+                {columns.map((col) => (
+                  <th key={col} className="px-4 py-3 text-left">
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, idx) => (
+                <tr
+                  key={idx}
+                  className="border-t border-gray-800 hover:bg-gray-900"
+                >
+                  {Object.values(item)
+                    .slice(0, columns.length)
+                    .map((val, i) => (
+                      <td key={i} className="px-4 py-2 text-gray-300">
+                        {val || "-"}
+                      </td>
+                    ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+      <div className="w-full max-w-3xl bg-custom-black rounded-2xl shadow-xl border border-gray-800 max-h-[90vh] overflow-y-auto p-6">
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h2 className="text-lg font-semibold flex items-center gap-2 text-white">
+              Contractor Details
+            </h2>
+            <p className="text-sm text-gray-400">
+              Contractor information overview
+            </p>
+          </div>
+          <button onClick={onClose}>
+            <X className="text-gray-400 hover:text-white cursor-pointer" />
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
+            <User size={16} /> Contact Information
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Info label="Company Name" value={contractorName} />
+            <Info label="Contact Person" value={contactPerson} />
+            <Info label="Email" value={Email} icon={<Mail size={14} />} />
+            <Info label="Phone" value={phone} icon={<Phone size={14} />} />
+          </div>
+        </div>
+
+        <Section
+          title={`Personnel (${teamMembers.length})`}
+          emptyMessage="No personnel records"
+          emptyHint="Add personnel in Edit Project"
+          data={teamMembers}
+          columns={["Name", "Role","Designation"]}
+          icon={<Users size={16} />}
+        />
+
+        <Section
+          title={`Equipment (${equipment.length})`}
+          emptyMessage="No equipment records"
+          emptyHint="Add equipment in Edit Project"
+          data={equipment}
+          columns={["Equipment Name", "Type","Quantity","Condition"]}
+          icon={<Layers size={16} />}
+        />
       </div>
     </div>
   );

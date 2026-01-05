@@ -62,12 +62,12 @@ export default function Listproject({ loader, allProjectData,getAllProject }) {
             <thead>
               <tr className="text-gray-400 border-b-[1px] border-gray-600 ">
                 <th className="py-3 text-left min-w-[80px]">Project</th>
-                <th className="py-3 text-left min-w-[80px]">Status</th>
+                <th className="py-3 text-left min-w-[100px]">Status</th>
                 <th className="py-3 text-left min-w-[80px]">Financial</th>
                 <th className="py-3 text-left min-w-[80px]">Time</th>
                 <th className="py-3 text-left min-w-[80px]">Physical</th>
-                <th className="py-3 text-left ">Due Date</th>
-                <th className="py-3 text-left min-w-[80px]">Grievances</th>
+                <th className="py-3 text-left min-w-[80px]">Due Date</th>
+                <th className="py-3 text-left min-w-[100px]">Grievances</th>
                 <th className="py-3 text-left min-w-[80px]">Action</th>
               </tr>
             </thead>
