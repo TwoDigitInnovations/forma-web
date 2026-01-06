@@ -299,7 +299,6 @@ const WorkPlan = (props) => {
                 </button>
               </div>
 
-            
               <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#141414]">
                 {/* Plan Name */}
                 <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800">
