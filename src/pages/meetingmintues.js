@@ -54,7 +54,9 @@ const MeetingDocumentation = (props) => {
       `Project Review Meeting - ${moment().format("DD MMM YYYY, hh:mm A")}`
     );
     setMeetingDate(new Date().toISOString().split("T")[0]);
-    setMembersPresent([{ name: user?.name, designation: "Admin" }]);
+    setMembersPresent([
+      { name: user?.name, designation: "Admin", Organization: "" },
+    ]);
     setAgendas([{ title: "Review physical progress", order: 1 }]);
     setDiscussions({ reviewPhysicalProgress: "" });
     setActionRegistry([]);
@@ -148,7 +150,7 @@ const MeetingDocumentation = (props) => {
             res?.data?.message || "Meeting minutes deleted successfully"
           );
           getAllMeetings();
-          setEditId("")
+          setEditId("");
         } else {
           toast.error(res?.data?.message || "Failed to created status");
         }
@@ -393,7 +395,6 @@ const MeetingDocumentation = (props) => {
               </div>
             </div>
 
-            {/* Members Present */}
             <div className="bg-custom-black rounded-lg p-3 md:p-6 border border-gray-800">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2 text-gray-400 text-sm font-semibold">
@@ -412,8 +413,9 @@ const MeetingDocumentation = (props) => {
               <div className="space-y-3">
                 <div className="grid grid-cols-12 gap-4 text-xs text-gray-500 uppercase font-semibold px-4">
                   <div className="col-span-1">#</div>
-                  <div className="col-span-5">Name</div>
-                  <div className="col-span-5">Designation / Role</div>
+                  <div className="col-span-3">Name</div>
+                  <div className="col-span-4">Designation / Role</div>
+                  <div className="col-span-3">Organization</div>
                   <div className="col-span-1"></div>
                 </div>
 
@@ -423,7 +425,7 @@ const MeetingDocumentation = (props) => {
                     className="grid grid-cols-12 gap-4 items-center bg-custom-green rounded-lg md:p-4 p-2.5"
                   >
                     <div className="col-span-1 text-gray-400">{index + 1}</div>
-                    <div className="col-span-5">
+                    <div className="col-span-3">
                       <input
                         type="text"
                         value={member.name}
@@ -434,7 +436,7 @@ const MeetingDocumentation = (props) => {
                         placeholder="Enter name"
                       />
                     </div>
-                    <div className="col-span-5">
+                    <div className="col-span-4">
                       <input
                         type="text"
                         value={member.designation}
@@ -443,6 +445,17 @@ const MeetingDocumentation = (props) => {
                         }
                         className="w-full bg-transparent border-none outline-none text-gray-400"
                         placeholder="Enter role"
+                      />
+                    </div>
+                    <div className="col-span-3">
+                      <input
+                        type="text"
+                        value={member.Organization}
+                        onChange={(e) =>
+                          updateMember(index, "Organization", e.target.value)
+                        }
+                        className="w-full bg-transparent border-none outline-none text-gray-400"
+                        placeholder="Enter Organization"
                       />
                     </div>
                     <div className="col-span-1">
