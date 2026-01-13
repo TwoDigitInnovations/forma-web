@@ -42,25 +42,21 @@ const WorkplanProgress = ({ activities, setActivities }) => {
 
           let updated = { ...act };
 
-          // ✅ allow empty (0 delete ho sake)
           if (value === "") {
             updated[field] = "";
             return updated;
           }
 
-          // ❌ block + and -
           if (value === "+" || value === "-") {
             return act;
           }
 
           let numericValue = Number(value);
 
-          // ❌ block non-numeric
           if (isNaN(numericValue)) {
             return act;
           }
 
-          // ❌ no negative
           if (numericValue < 0) {
             numericValue = 0;
           }

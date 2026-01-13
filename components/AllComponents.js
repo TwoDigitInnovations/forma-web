@@ -360,19 +360,19 @@ export const Certificates = ({
   let totalInProcess = 0;
   let totalPaid = 0;
 
-  useEffect(() => {
-    certificates?.forEach((certificate) => {
-      const amt = Number(certificate.amount || 0);
+  certificates?.forEach((certificate) => {
+    const amt = Number(certificate.amount || 0);
 
-      if (certificate.status === "Submitted") {
-        totalSubmitted += amt;
-      } else if (certificate.status === "In-Process") {
-        totalInProcess += amt;
-      } else if (certificate.status === "Paid") {
-        totalPaid = totalPaid + amt;
-      }
-    });
-  }, [certificates]);
+    if (certificate.status === "Submitted") {
+      totalSubmitted += amt;
+    } else if (certificate.status === "In-Process") {
+      totalInProcess += amt;
+    } else if (certificate.status === "Paid") {
+      totalPaid = totalPaid + amt;
+    }
+  });
+
+  console.log(totalPaid);
 
   return (
     <div className="mt-10 bg-transparent py-4 rounded-xl shadow">
@@ -509,9 +509,7 @@ export const Certificates = ({
               <th className="p-3 text-left whitespace-nowrap">
                 Payment Status
               </th>
-              <th className="p-3 text-left whitespace-nowrap ">
-                Actions
-              </th>
+              <th className="p-3 text-left whitespace-nowrap ">Actions</th>
             </tr>
           </thead>
 

@@ -62,8 +62,6 @@ const MeetingDocumentation = (props) => {
     setActionRegistry([]);
   };
 
-  console.log(editData);
-
   const updateRegistry = (index, field, value) => {
     setActionRegistry((prev) =>
       prev.map((registry, i) =>
@@ -305,9 +303,9 @@ const MeetingDocumentation = (props) => {
 
       if (res?.status === true) {
         toast.success("Meeting saved successfully!");
-        setActiveTab("history");
-        setEditData({});
-        setEditId("");
+        // setActiveTab("history");
+        // setEditData({});
+        // setEditId("");
       }
     } catch (err) {
       console.error("Failed to save meeting", err);
@@ -545,7 +543,7 @@ const MeetingDocumentation = (props) => {
                           [Object.keys(discussions)[index]]: e.target.value,
                         })
                       }
-                      className="w-full h-32 bg-gray-800 rounded-lg p-4 text-gray-300 border border-gray-700 focus:border-yellow-500 outline-none resize-none"
+                      className="w-full h-32 bg-gray-800 rounded-lg p-4 text-gray-300 border border-gray-700 outline-none resize-none"
                       placeholder={`Summary of what was discussed regarding "${agenda.title}"...`}
                     />
                   </div>
