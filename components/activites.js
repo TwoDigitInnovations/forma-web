@@ -42,26 +42,40 @@ const WorkplanProgress = ({ activities, setActivities }) => {
 
           let updated = { ...act };
 
+          // ✅ allow empty (0 delete ho sake)
+          if (value === "") {
+            updated[field] = "";
+            return updated;
+          }
+
+          // ❌ block + and -
+          if (value === "+" || value === "-") {
+            return act;
+          }
+
           let numericValue = Number(value);
 
-          // 🔒 Block negative values globally
-          if (!isNaN(numericValue) && numericValue < 0) {
+          // ❌ block non-numeric
+          if (isNaN(numericValue)) {
+            return act;
+          }
+
+          // ❌ no negative
+          if (numericValue < 0) {
             numericValue = 0;
           }
 
-          updated[field] = isNaN(numericValue) ? value : numericValue;
+          updated[field] = numericValue;
 
           const boq = Number(updated.qtyInBOQ || 0);
           const rate = Number(updated.Rate || 0);
           let doneQty = Number(updated.qtyDone || 0);
 
-          // 🔐 qtyDone ≤ qtyInBOQ
           if (field === "qtyDone" && doneQty > boq) {
             doneQty = boq;
             updated.qtyDone = boq;
           }
 
-          // 💰 Amount calculations
           updated.Amount = boq * rate;
           updated.amountDone = doneQty * rate;
 

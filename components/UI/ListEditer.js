@@ -13,7 +13,7 @@ export default function RichTextEditor({
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  // 🚀 FIX: When "value" changes (edit mode), update editor content
+  
   useEffect(() => {
     if (value !== undefined && value !== null) {
       setContent(value);

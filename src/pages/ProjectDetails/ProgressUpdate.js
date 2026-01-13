@@ -28,7 +28,7 @@ const ProgressUpdate = (props) => {
   const [selectedTracker, setSelectedTracker] = useState(null);
   const [activities, setActivities] = useState("");
   const [certificates, setCertificates] = useState([]);
-  
+
   const [summary, setSummary] = useState({
     contractAmount: 0,
     amountPaid: 0,
@@ -129,6 +129,11 @@ const ProgressUpdate = (props) => {
     const selected = allTrackerData.find((t) => t._id === e.target.value);
     setSelectedTracker(selected || null);
   };
+  useEffect(() => {
+    if (allTrackerData?.length > 0 && !selectedTracker) {
+      setSelectedTracker(allTrackerData[0]);
+    }
+  }, [allTrackerData]);
 
   const handleDeleteClick = () => {
     if (!selectedTracker?._id) {
@@ -176,7 +181,7 @@ const ProgressUpdate = (props) => {
       props.loader(false);
       if (res?.status === true) {
         toast.success("Tracker updated successfully!");
-        getAllTracker(projectId)
+        getAllTracker(projectId);
       } else {
         toast.error(res?.message || "Failed to updated tracker");
       }
@@ -186,63 +191,63 @@ const ProgressUpdate = (props) => {
     }
   };
 
- useEffect(() => {
-  if (!selectedTracker) return;
+  useEffect(() => {
+    if (!selectedTracker) return;
 
-  const raw = selectedTracker?.WorkplanId?.workActivities || [];
-  const saved = selectedTracker?.trackerActivityProgress || [];
+    const raw = selectedTracker?.WorkplanId?.workActivities || [];
+    const saved = selectedTracker?.trackerActivityProgress || [];
 
-  const allSavedActivities = saved.flatMap(sec => sec.activities || []);
+    const allSavedActivities = saved.flatMap((sec) => sec.activities || []);
 
-  const sections = [];
-  let currentSection = null;
-  let sectionCounter = 1;
-  let activityCounter = 1;
+    const sections = [];
+    let currentSection = null;
+    let sectionCounter = 1;
+    let activityCounter = 1;
 
-  raw.forEach((item) => {
-    if (item.rowType === "section") {
-      currentSection = {
-        id: sectionCounter++,
-        sectionId: item._id,
-        rowType: "section",
-        name: item.description,
-        activities: [],
-      };
+    raw.forEach((item) => {
+      if (item.rowType === "section") {
+        currentSection = {
+          id: sectionCounter++,
+          sectionId: item._id,
+          rowType: "section",
+          name: item.description,
+          activities: [],
+        };
 
-      sections.push(currentSection);
-      activityCounter = 1;
-    }
+        sections.push(currentSection);
+        activityCounter = 1;
+      }
 
-    if (item.rowType === "activity") {
-      if (!currentSection) return;
+      if (item.rowType === "activity") {
+        if (!currentSection) return;
 
-      const savedActivity = allSavedActivities.find(
-        (s) => s.activityId?.toString() === item._id?.toString()
-      );
+        const savedActivity = allSavedActivities.find(
+          (s) => s.activityId?.toString() === item._id?.toString()
+        );
 
-      console.log("==== MATCH CHECK ====");
-      console.log("RAW:", item._id?.toString());
-      console.log(
-        "ALL SAVED IDS:",
-        allSavedActivities.map((x) => x.activityId)
-      );
+        console.log("==== MATCH CHECK ====");
+        console.log("RAW:", item._id?.toString());
+        console.log(
+          "ALL SAVED IDS:",
+          allSavedActivities.map((x) => x.activityId)
+        );
 
-      currentSection.activities.push({
-        id: Number(`${currentSection.id}${activityCounter++}`),
-        activityId: item._id,
-        name: item.description,
-        rowType: "activity",
-        qtyInBOQ: savedActivity?.qtyInBOQ || "0.00",
-        qtyDone: savedActivity?.qtyDone || "0.00",
-        Rate: savedActivity?.Rate || "0.00",
-        Amount: savedActivity?.Amount || "0.00",
-        amountDone: savedActivity?.amountDone || "0.00",
-      });
-    }
-  });
+        currentSection.activities.push({
+          id: Number(`${currentSection.id}${activityCounter++}`),
+          activityId: item._id,
+          name: item.description,
+          rowType: "activity",
+          qtyInBOQ: savedActivity?.qtyInBOQ || "0.00",
+          qtyDone: savedActivity?.qtyDone || "0.00",
+          Rate: savedActivity?.Rate || "0.00",
+          Amount: savedActivity?.Amount || "0.00",
+          amountDone: savedActivity?.amountDone || "0.00",
+        });
+      }
+    });
 
-  setActivities(sections);
-}, [selectedTracker]);
+    setActivities(sections);
+  }, [selectedTracker]);
 
   console.log("all", activities);
 
@@ -338,7 +343,7 @@ const ProgressUpdate = (props) => {
                         name="tracker"
                         value={selectedTracker?._id || ""}
                         onChange={handleTrackerSelect}
-                        className="w-full text-[14px] cursor-pointer px-2 py-2 bg-[#5F5F5F] rounded-lg border border-gray-600 focus:outline-none focus:border-green-400 "
+                        className="w-full text-[14px] cursor-pointer px-2 py-2 bg-[#5F5F5F] rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
                       >
                         <option value="">Select a Tracker to view</option>
                         {allTrackerData.map((opt) => (

@@ -181,7 +181,7 @@ const MeetingDocumentation = (props) => {
   };
 
   const addMember = () => {
-    setMembersPresent([...membersPresent, { name: "", designation: "" }]);
+    setMembersPresent([...membersPresent, { name: "", designation: "", Organization:"" }]);
   };
 
   const updateMember = (index, field, value) => {
@@ -554,7 +554,7 @@ const MeetingDocumentation = (props) => {
             </div>
 
             <div className="bg-custom-black rounded-lg p-3 md:p-6 border border-gray-800">
-              <div className="flex md:flex-row flex-col gap-4  items-start md:items-center justify-between mb-6">
+              <div className="flex md:flex-row flex-col gap-4 items-start md:items-center justify-between mb-6">
                 <div className="flex items-center gap-2 text-gray-400 text-sm font-semibold">
                   <Briefcase size={18} />
                   PROJECT ACTION REGISTRY

@@ -6,27 +6,15 @@ import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import {
-  BadgePercent,
   BrickWall,
   Building,
-  ChartNoAxesCombined,
-  ChevronLeft,
-  ClipboardList,
-  CrossIcon,
   Dock,
-  DockIcon,
-  Handshake,
   LayoutDashboard,
   LoaderCircle,
   MoveLeft,
   NotebookPen,
   NotepadTextDashed,
-  Puzzle,
-  ReceiptIcon,
-  ReceiptText,
   Settings,
-  Shield,
-  ShieldCheck,
   User2,
   Users,
   X,
@@ -137,7 +125,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     <>
       <div className="xl:w-[280px] fixed top-0 left-0 z-20 md:w-[250px] sm:w-[200px] hidden sm:grid grid-rows-5 overflow-hidden">
         <div>
-          <div className="bg-custom-black py-5 overflow-y-scroll h-screen scrollbar-hide">
+          <div className="bg-custom-black py-5 pb-20 overflow-y-scroll h-screen scrollbar-hide">
             <div
               className="bg-custom-black pt-3 pb-5 row-span-1 flex items-center justify-center cursor-pointer mx-5 rounded"
               onClick={() => router.push("/")}
@@ -200,7 +188,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
               </ul>
               {isProjectDetailsRoute && (
                 <div
-                  className="absolute -bottom-60 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
+                  className="absolute -bottom-40 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
                   onClick={() => router.push("/project")}
                 >
                   <MoveLeft />

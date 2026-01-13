@@ -138,7 +138,7 @@ export const Certificates = ({
   loader,
   summary,
 }) => {
-  const [advanceAmount, setAdvanceAmount] = useState("");
+  const [advanceAmount, setAdvanceAmount] = useState(0);
   const [showAdvanceAmount, setShowAdvanceAmount] = useState("");
   const [certId, setCertId] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -360,17 +360,19 @@ export const Certificates = ({
   let totalInProcess = 0;
   let totalPaid = 0;
 
-  certificates?.forEach((certificate) => {
-    const amt = Number(certificate.amount || 0);
+  useEffect(() => {
+    certificates?.forEach((certificate) => {
+      const amt = Number(certificate.amount || 0);
 
-    if (certificate.status === "Submitted") {
-      totalSubmitted += amt;
-    } else if (certificate.status === "In-Process") {
-      totalInProcess += amt;
-    } else if (certificate.status === "Paid") {
-      totalPaid += amt;
-    }
-  });
+      if (certificate.status === "Submitted") {
+        totalSubmitted += amt;
+      } else if (certificate.status === "In-Process") {
+        totalInProcess += amt;
+      } else if (certificate.status === "Paid") {
+        totalPaid = totalPaid + amt;
+      }
+    });
+  }, [certificates]);
 
   return (
     <div className="mt-10 bg-transparent py-4 rounded-xl shadow">
@@ -485,144 +487,142 @@ export const Certificates = ({
       </div>
 
       <h2 className="text-xl font-bold mt-8">Certificates</h2>
-      {certificates.length === 0 ? (
+      {/* {certificates.length === 0 ? (
         <p className="min-h-[200px] flex justify-center items-center text-white">
           No Certificate Added
         </p>
-      ) : (
-        <div className="w-full mt-4 overflow-x-auto rounded-t-xl border">
-          <table className="w-full text-sm">
-            <thead className="bg-custom-yellow text-black sticky top-0">
-              <tr>
-                <th className="p-3 text-left whitespace-nowrap">
-                  Certificate No.
-                </th>
-                <th className="p-3 text-left whitespace-nowrap">
-                  Submitted Amount
-                </th>
-                <th className="p-3 text-left whitespace-nowrap">
-                  In Process Amount
-                </th>
-                <th className="p-3 text-left whitespace-nowrap">Amount Paid</th>
-                <th className="p-3 text-left whitespace-nowrap">
-                  Payment Status
-                </th>
-                <th className="p-3 text-left whitespace-nowrap text-center">
-                  Actions
-                </th>
-              </tr>
-            </thead>
+      ) : ( */}
+      <div className="w-full mt-4 overflow-x-auto rounded-t-xl border">
+        <table className="w-full text-sm">
+          <thead className="bg-custom-yellow text-black sticky top-0">
+            <tr>
+              <th className="p-3 text-left whitespace-nowrap">
+                Certificate No.
+              </th>
+              <th className="p-3 text-left whitespace-nowrap">
+                Submitted Amount
+              </th>
+              <th className="p-3 text-left whitespace-nowrap">
+                In Process Amount
+              </th>
+              <th className="p-3 text-left whitespace-nowrap">Amount Paid</th>
+              <th className="p-3 text-left whitespace-nowrap">
+                Payment Status
+              </th>
+              <th className="p-3 text-left whitespace-nowrap ">
+                Actions
+              </th>
+            </tr>
+          </thead>
 
-            <tbody>
-              <tr className="border-b transition">
-                <td className="p-3">{"Advance Payment"}</td>
+          <tbody>
+            <tr className="border-b transition">
+              <td className="p-3">{"Advance Payment"}</td>
 
-                <td className="p-3">{"-"}</td>
+              <td className="p-3">{"-"}</td>
 
-                <td className="p-3">{"-"}</td>
+              <td className="p-3">{"-"}</td>
 
-                <td className="p-3 ">{showAdvanceAmount || "-"}</td>
+              <td className="p-3 ">${showAdvanceAmount || "-"}</td>
+
+              <td className="p-3 ">
+                <p className="border p-2 rounded cursor-pointer text-white w-26">
+                  {" "}
+                  {"Paid"}
+                </p>
+              </td>
+
+              <td className="p-3 flex gap-3 justify-center">
+                <button
+                  className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                  onClick={() => setAdvanceAmount(summary.advancePayment || 0)}
+                >
+                  <Edit />
+                </button>
+              </td>
+            </tr>
+
+            {certificates?.map((item) => (
+              <tr key={item._id} className="border-b transition">
+                <td className="p-3">{item.certificateNo}</td>
+
+                <td className="p-3">
+                  {item.status === "Submitted"
+                    ? `$${item.amount.toLocaleString()}`
+                    : "-"}
+                </td>
+
+                <td className="p-3">
+                  {item.status === "In-Process"
+                    ? `$${item.amount.toLocaleString()}`
+                    : "-"}
+                </td>
 
                 <td className="p-3 ">
-                  <p className="border p-2 rounded cursor-pointer text-white w-26">
-                    {" "}
-                    {"Paid"}
-                  </p>
+                  {item.status === "Paid"
+                    ? `$${item.amount.toLocaleString()}`
+                    : "-"}
+                </td>
+
+                <td className="p-3">
+                  <select
+                    value={item.status}
+                    disabled={item.status === "Paid"}
+                    className={`border p-2 rounded cursor-pointer text-white ${
+                      item.status === "Paid"
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                    onChange={(e) => {
+                      setPendingId(item._id);
+                      setPendingStatus(e.target.value);
+                      setPendingAmount(item.amount);
+                      setIsOpen(true);
+                    }}
+                  >
+                    <option value="Submitted" className="text-black">
+                      Submitted
+                    </option>
+                    <option value="In-Process" className="text-black">
+                      In-Process
+                    </option>
+                    <option value="Paid" className="text-black">
+                      Paid
+                    </option>
+                  </select>
                 </td>
 
                 <td className="p-3 flex gap-3 justify-center">
+                  {item.status !== "Paid" && (
+                    <button
+                      className="text-red-600 hover:text-red-800 cursor-pointer text-xl"
+                      onClick={() => onDeleteClick(item._id)}
+                    >
+                      <Trash />
+                    </button>
+                  )}
+
                   <button
                     className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                    onClick={() =>
-                      setAdvanceAmount(summary.advancePayment || 0)
-                    }
+                    onClick={() => onEditData(item._id)}
                   >
                     <Edit />
                   </button>
                 </td>
               </tr>
-
-              {certificates?.map((item) => (
-                <tr key={item._id} className="border-b transition">
-                  <td className="p-3">{item.certificateNo}</td>
-
-                  <td className="p-3">
-                    {item.status === "Submitted"
-                      ? `$${item.amount.toLocaleString()}`
-                      : "-"}
-                  </td>
-
-                  <td className="p-3">
-                    {item.status === "In-Process"
-                      ? `$${item.amount.toLocaleString()}`
-                      : "-"}
-                  </td>
-
-                  <td className="p-3 ">
-                    {item.status === "Paid"
-                      ? `$${item.amount.toLocaleString()}`
-                      : "-"}
-                  </td>
-
-                  <td className="p-3">
-                    <select
-                      value={item.status}
-                      disabled={item.status === "Paid"}
-                      className={`border p-2 rounded cursor-pointer text-white ${
-                        item.status === "Paid"
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                      onChange={(e) => {
-                        setPendingId(item._id);
-                        setPendingStatus(e.target.value);
-                        setPendingAmount(item.amount);
-                        setIsOpen(true);
-                      }}
-                    >
-                      <option value="Submitted" className="text-black">
-                        Submitted
-                      </option>
-                      <option value="In-Process" className="text-black">
-                        In-Process
-                      </option>
-                      <option value="Paid" className="text-black">
-                        Paid
-                      </option>
-                    </select>
-                  </td>
-
-                  <td className="p-3 flex gap-3 justify-center">
-                    {item.status !== "Paid" && (
-                      <button
-                        className="text-red-600 hover:text-red-800 cursor-pointer text-xl"
-                        onClick={() => onDeleteClick(item._id)}
-                      >
-                        <Trash />
-                      </button>
-                    )}
-
-                    <button
-                      className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                      onClick={() => onEditData(item._id)}
-                    >
-                      <Edit />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              <tr className=" font-semibold">
-                <td className="p-3 text-left">Total:</td>
-                <td className="p-3">${totalSubmitted}</td>
-                <td className="p-3">${totalInProcess}</td>
-                <td className="p-3">${totalPaid + advanceAmount}</td>
-                <td className="p-3"></td>
-                <td className="p-3"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+            ))}
+            <tr className=" font-semibold">
+              <td className="p-3 text-left">Total:</td>
+              <td className="p-3">${totalSubmitted}</td>
+              <td className="p-3">${totalInProcess}</td>
+              <td className="p-3">${totalPaid + showAdvanceAmount}</td>
+              <td className="p-3"></td>
+              <td className="p-3"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {/* )} */}
     </div>
   );
 };
