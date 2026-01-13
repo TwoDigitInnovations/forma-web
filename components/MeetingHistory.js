@@ -6,7 +6,7 @@ function MeetingHistory({
   setActiveTab,
   setIsConfirmOpen,
   setEditId,
-  setEditData
+  setEditData,
 }) {
   if (!meetings.length) {
     return (
@@ -46,7 +46,6 @@ function MeetingHistory({
           </h3>
 
           <div className="border-t border-gray-800 pt-4 mt-4 flex items-center justify-between text-sm">
-          
             <div className="flex gap-6 text-gray-400">
               <div className="flex items-center gap-2">
                 <Users size={16} className="text-custom-yellow" />
@@ -68,7 +67,7 @@ function MeetingHistory({
                 </span>
               </div>
             </div>
-
+            <p> </p>
             {/* Actions */}
             <div className="flex items-center gap-2">
               <button

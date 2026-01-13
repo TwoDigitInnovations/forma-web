@@ -32,57 +32,61 @@ const WorkplanProgress = ({ activities, setActivities }) => {
   }, [activities]);
 
   const handleChange = (sectionId, actId, field, value) => {
-    const cloned = data.map((sec) => {
-      if (sec.id !== sectionId) return sec;
+  const cloned = data.map((sec) => {
+    if (sec.id !== sectionId) return sec;
 
-      return {
-        ...sec,
-        activities: sec.activities.map((act) => {
-          if (act.id !== actId) return act;
+    return {
+      ...sec,
+      activities: sec.activities.map((act) => {
+        if (act.id !== actId) return act;
 
-          let updated = { ...act };
+        let updated = { ...act };
 
-          if (value === "") {
-            updated[field] = "";
-            return updated;
-          }
-
-          if (value === "+" || value === "-") {
-            return act;
-          }
-
-          let numericValue = Number(value);
-
-          if (isNaN(numericValue)) {
-            return act;
-          }
-
-          if (numericValue < 0) {
-            numericValue = 0;
-          }
-
-          updated[field] = numericValue;
-
-          const boq = Number(updated.qtyInBOQ || 0);
-          const rate = Number(updated.Rate || 0);
-          let doneQty = Number(updated.qtyDone || 0);
-
-          if (field === "qtyDone" && doneQty > boq) {
-            doneQty = boq;
-            updated.qtyDone = boq;
-          }
-
-          updated.Amount = boq * rate;
-          updated.amountDone = doneQty * rate;
-
+        if (value === "") {
+          updated[field] = "";
           return updated;
-        }),
-      };
-    });
+        }
 
-    setData(cloned);
-    setActivities(cloned);
-  };
+        if (value === "+" || value === "-") {
+          return act;
+        }
+
+        let numericValue = Number(value);
+
+        if (isNaN(numericValue)) {
+          return act;
+        }
+
+        if (numericValue < 0) {
+          numericValue = 0;
+        }
+
+        // ✅ LIMIT TO 2 DECIMAL PLACES (MAIN FIX)
+        numericValue = Math.floor(numericValue * 100) / 100;
+
+        updated[field] = numericValue;
+
+        const boq = Number(updated.qtyInBOQ || 0);
+        const rate = Number(updated.Rate || 0);
+        let doneQty = Number(updated.qtyDone || 0);
+
+        if (field === "qtyDone" && doneQty > boq) {
+          doneQty = boq;
+          updated.qtyDone = boq;
+        }
+
+        updated.Amount = Math.floor(boq * rate * 100) / 100;
+        updated.amountDone = Math.floor(doneQty * rate * 100) / 100;
+
+        return updated;
+      }),
+    };
+  });
+
+  setData(cloned);
+  setActivities(cloned);
+};
+
 
   const overall = getOverallProgress(data);
 
