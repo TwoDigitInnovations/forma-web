@@ -181,7 +181,14 @@ export const Certificates = ({
         },
         router
       );
-
+      if (cert?.status === "Paid") {
+        await Api(
+          "post",
+          `project/update-payment-paid/${projectId}`,
+          { paidAmount: Number(cert?.amount) },
+          router
+        );
+      }
       loader(false);
 
       if (res?.status) {
@@ -514,31 +521,36 @@ export const Certificates = ({
           </thead>
 
           <tbody>
-            <tr className="border-b transition">
-              <td className="p-3">{"Advance Payment"}</td>
+            {advanceAmount ||
+              (showAdvanceAmount && (
+                <tr className="border-b transition">
+                  <td className="p-3">{"Advance Payment"}</td>
 
-              <td className="p-3">{"-"}</td>
+                  <td className="p-3">{"-"}</td>
 
-              <td className="p-3">{"-"}</td>
+                  <td className="p-3">{"-"}</td>
 
-              <td className="p-3 ">${showAdvanceAmount || "-"}</td>
+                  <td className="p-3 ">${showAdvanceAmount || "-"}</td>
 
-              <td className="p-3 ">
-                <p className="border p-2 rounded cursor-pointer text-white w-26">
-                  {" "}
-                  {"Paid"}
-                </p>
-              </td>
+                  <td className="p-3 ">
+                    <p className="border p-2 rounded cursor-pointer text-white w-26">
+                      {" "}
+                      {"Paid"}
+                    </p>
+                  </td>
 
-              <td className="p-3 flex gap-3 justify-center">
-                <button
-                  className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                  onClick={() => setAdvanceAmount(summary.advancePayment || 0)}
-                >
-                  <Edit />
-                </button>
-              </td>
-            </tr>
+                  <td className="p-3 flex gap-3 justify-center">
+                    <button
+                      className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                      onClick={() =>
+                        setAdvanceAmount(summary.advancePayment || 0)
+                      }
+                    >
+                      <Edit />
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
             {certificates?.map((item) => (
               <tr key={item._id} className="border-b transition">
