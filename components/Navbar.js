@@ -50,7 +50,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
   };
 
   return (
-    <nav className="w-full bg-custom-black z-20 sticky top-0 max-w-screen shadow-sm ">
+    <nav className="w-full bg-custom-black z-0 sticky top-0 max-w-screen shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between md:h-20 h-16">
           {/* Logo */}

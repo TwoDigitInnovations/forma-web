@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
+import { MoreVertical } from "lucide-react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import {
   BrickWall,
@@ -121,36 +122,34 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
   const currentMenuItems = isProjectDetailsRoute ? menuItemsProject : menuItems;
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <>
       <div
-        className="
-    fixed top-0 left-0 z-20 h-screen
+        className={`
+    fixed top-0 left-0 z-20
     bg-custom-black
-    w-[70px] hover:w-[260px]
     transition-all duration-300 ease-in-out
-    overflow-hidden
     hidden sm:flex flex-col
-    group
-  "
+    ${isSidebarOpen ? "w-[260px] h-screen":"h-10"}
+  `}
       >
         
-        <div
-          className="flex items-center justify-center py-6 cursor-pointer"
-          onClick={() => router.push("/")}
-        >
-          <p className="text-2xl text-custom-yellow font-bold whitespace-nowrap">
-            <span className="hidden group-hover:inline">Forma</span>
-            <span className="group-hover:hidden">F</span>
-          </p>
+        <div className="flex items-center justify-start ps-6 py-5">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="text-custom-yellow text-2xl cursor-pointer"
+          >
+            {isSidebarOpen ? <X /> : <MoreVertical />}
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto scrollbar-hide">
-          <ul className="flex flex-col gap-1">
+          <ul className="flex flex-col gap-1 mt-2">
             {currentMenuItems.map((item, i) =>
               item?.access?.includes(user?.role) ? (
                 <li key={i}>
-                  
                   <div
                     className={`flex items-center gap-4 mx-3 px-3 py-3 cursor-pointer rounded-md
                 hover:bg-[#dff34940]
@@ -166,31 +165,21 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                         : router.push(item.href)
                     }
                   >
-                    
-                    <span className="text-custom-yellow text-xl min-w-[24px] flex justify-center">
-                      {item.img}
-                    </span>
+                    {isSidebarOpen && (
+                      <span className="text-custom-yellow text-xl min-w-[24px] flex justify-center">
+                        {item.img}
+                      </span>
+                    )}
 
-                    <span
-                      className="
-                  whitespace-nowrap
-                  opacity-0 w-0
-                  group-hover:opacity-100 group-hover:w-auto
-                  transition-all duration-300
-                "
-                    >
-                      {item.title}
-                    </span>
+                    {isSidebarOpen && (
+                      <span className="whitespace-nowrap font-medium">
+                        {item.title}
+                      </span>
+                    )}
 
-                    {item.children && (
-                      <span
-                        className="
-                    ml-auto
-                    opacity-0
-                    group-hover:opacity-100
-                    transition-all
-                  "
-                      >
+                    {/* ARROW */}
+                    {item.children && isSidebarOpen && (
+                      <span className="ml-auto">
                         {openMenu === i ? (
                           <IoIosArrowDown />
                         ) : (
@@ -200,15 +189,9 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     )}
                   </div>
 
-
-                  {item.children && openMenu === i && (
-                    <ul
-                      className="
-                  ml-12
-                  hidden group-hover:block
-                  transition-all
-                "
-                    >
+                  {/* CHILD */}
+                  {item.children && openMenu === i && isSidebarOpen && (
+                    <ul className="ml-12">
                       {item.children.map((child, j) => (
                         <li key={j}>
                           <Link
@@ -234,23 +217,14 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           </ul>
         </div>
 
-        {isProjectDetailsRoute && (
+        {/* BOTTOM BUTTON */}
+        {isProjectDetailsRoute && isSidebarOpen && (
           <div
-            className="
-        m-3 mt-auto
-        bg-custom-green
-        flex items-center gap-3
-        justify-center
-        rounded-lg
-        cursor-pointer
-        py-3
-      "
+            className="m-3 mt-auto bg-custom-green flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3"
             onClick={() => router.push("/project")}
           >
             <MoveLeft className="text-white" />
-            <span className="text-white hidden group-hover:inline">
-              Back to Project
-            </span>
+            <span className="text-white font-medium">Back to Project</span>
           </div>
         )}
       </div>
@@ -264,7 +238,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     ${openTab ? "translate-x-0" : "-translate-x-full"}
   `}
       >
-
         <div className="relative border-b border-white/20">
           <X
             className="absolute top-4 right-4 text-white text-2xl cursor-pointer"
@@ -274,7 +247,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           <div className="p-4 space-y-4">
             <p className="text-3xl font-bold text-custom-yellow">Forma</p>
 
-            
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden border border-white">
@@ -334,13 +306,11 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           </div>
         </div>
 
-        
         <div className="flex-1 overflow-y-auto">
           <ul className="divide-y divide-white/10">
             {currentMenuItems.map((item, i) =>
               item?.access?.includes(user?.role) ? (
                 <li key={i}>
-                  
                   <div
                     className="flex items-center justify-between px-5 py-4 text-white cursor-pointer active:bg-white/10"
                     onClick={() =>
@@ -364,7 +334,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                       ))}
                   </div>
 
-                  
                   {item.children && mobileOpenMenu === i && (
                     <ul className="bg-white/95">
                       {item.children.map((child, j) => (

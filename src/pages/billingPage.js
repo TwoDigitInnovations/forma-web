@@ -171,7 +171,7 @@ function BillingSubscription(props) {
 
   return (
     <div className="min-h-screen bg-black text-white md:p-6 p-3">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <button
           className="flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors cursor-pointer"
           onClick={() => router.push("/dashboard")}

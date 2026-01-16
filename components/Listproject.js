@@ -69,7 +69,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                 <th className="py-3 text-left min-w-[80px]">Time</th>
                 <th className="py-3 text-left min-w-[80px]">Physical</th>
                 <th className="py-3 text-left min-w-[80px]">Due Date</th>
-                <th className="py-3 text-left min-w-[100px]">Grievances</th>
+
                 <th className="py-3 text-left min-w-[80px]">Action</th>
               </tr>
             </thead>
@@ -101,9 +101,10 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                   <td className="text-gray-400">0%</td>
                   <td className="text-gray-400">0%</td>
                   <td className="text-gray-400">
-                    {item.dueDate || "Sep 06, 2026"}
+                    {item?.deadline
+                      ? moment(item.deadline).format("YYYY-MM-DD")
+                      : "--"}
                   </td>
-                  <td className="text-gray-400">0</td>
 
                   <td>
                     <div className="relative overflow-visible">
@@ -115,7 +116,6 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                         }
                         className="p-2 rounded-full hover:bg-gray-200 cursor-pointer transition"
                       >
-                        
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5 text-gray-600"
