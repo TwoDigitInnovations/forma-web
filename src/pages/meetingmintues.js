@@ -811,21 +811,33 @@ const MeetingDocumentation = (props) => {
                             </td>
 
                             <td className="px-4 py-3">
-                              <input
-                                type="text"
-                                value={item.actionItemDescription}
-                                onChange={(e) =>
-                                  updateActionItem(
-                                    registryIndex,
-                                    itemIndex,
-                                    "actionItemDescription",
-                                    e.target.value
-                                  )
-                                }
-                                className="w-full bg-transparent outline-none text-white"
-                                placeholder="Describe action item"
-                              />
-                            </td>
+  <textarea
+    rows={1}
+    value={item.actionItemDescription}
+    onChange={(e) => {
+      e.target.style.height = "auto";
+      e.target.style.height = `${e.target.scrollHeight}px`;
+
+      updateActionItem(
+        registryIndex,
+        itemIndex,
+        "actionItemDescription",
+        e.target.value
+      );
+    }}
+    className="
+      w-full
+      bg-transparent
+      outline-none
+      resize-none
+      overflow-hidden
+      text-white
+      leading-relaxed
+    "
+    placeholder="Describe action item"
+  />
+</td>
+
 
                             <td className="px-4 py-3">
                               <input
@@ -904,14 +916,14 @@ const MeetingDocumentation = (props) => {
                             </td>
 
                             <td className="px-4 py-3">
-                              <button
+                              {/* <button
                                 onClick={() =>
                                   removeActionItem(registryIndex, itemIndex)
                                 }
                                 className="text-gray-400 hover:text-red-500 cursor-pointer"
                               >
                                 <Trash2 size={16} />
-                              </button>
+                              </button> */}
                             </td>
                           </tr>
                         ))}

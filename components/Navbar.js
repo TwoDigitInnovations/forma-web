@@ -54,14 +54,14 @@ const Navbar = ({ setOpenTab, openTab }) => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between md:h-20 h-16">
           {/* Logo */}
-          <div className=" flex items-center">
+          <div className="flex items-center">
             {/* <img 
               className="h-10 w-auto object-contain" 
               src="/logo.png" 
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <p className="text-2xl text-white font-bold md:hidden flex">Forma</p>
+            <p className="text-2xl text-white font-bold">Forma</p>
           </div>
 
 

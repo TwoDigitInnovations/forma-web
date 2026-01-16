@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
   const isPublicLayout = publicLayoutRoutes.includes(path);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-black flex flex-col">
       {isPublicLayout && (
         <>
           <BeforeLoginNavbar />
@@ -49,12 +49,14 @@ const Layout = ({ children }) => {
       )}
 
       {!isPublicLayout && token && (
-        <div className="flex w-full flex-1">
+        <div className="flex w-full flex-1 ">
           <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
 
-          <div className="w-full xl:pl-[280px] md:pl-[250px] sm:pl-[200px]">
+          <div className="w-full">
             <Navbar setOpenTab={setOpenTab} openTab={openTab} />
-            <main className="flex-1">{children}</main>
+            <div className="mx-auto md:max-w-8xl sm:max-w-7xl pl-[40px] ">
+              <main className="flex-1">{children}</main>
+            </div>
           </div>
         </div>
       )}

@@ -123,102 +123,161 @@ const SidePannel = ({ setOpenTab, openTab }) => {
 
   return (
     <>
-      <div className="xl:w-[280px] fixed top-0 left-0 z-20 md:w-[250px] sm:w-[200px] hidden sm:grid grid-rows-5 overflow-hidden">
-        <div>
-          <div className="bg-custom-black py-5 pb-20 overflow-y-scroll h-screen scrollbar-hide">
-            <div
-              className="bg-custom-black pt-3 pb-5 row-span-1 flex items-center justify-center cursor-pointer mx-5 rounded"
-              onClick={() => router.push("/")}
-            >
-              <p className="text-3xl text-custom-yellow font-bold"> Forma</p>
-            </div>
-
-            <div className="relative flex flex-col justify-between row-span-4 w-full">
-              <ul className=" w-full flex flex-col text-left">
-                {currentMenuItems.map((item, i) =>
-                  item?.access?.includes(user?.role) ? (
-                    <li key={i} className="w-full">
-                      <div
-                        className={`flex items-center justify-between mx-5 px-6 cursor-pointer group hover:bg-[#dff34940] m-1 ${
-                          router.pathname === item.href
-                            ? "bg-custom-green text-white rounded-[10px]"
-                            : "text-white"
-                        }`}
-                        onClick={() =>
-                          item.children
-                            ? setOpenMenu(openMenu === i ? null : i)
-                            : router.push(item.href)
-                        }
-                      >
-                        <div className="py-3 font-semibold flex items-center gap-4">
-                          <span className="text-custom-yellow">
-                            {" "}
-                            {item?.img}
-                          </span>{" "}
-                          {item?.title}
-                        </div>
-                        {item.children &&
-                          (openMenu === i ? (
-                            <IoIosArrowDown className="text-xl" />
-                          ) : (
-                            <IoIosArrowForward className="text-xl" />
-                          ))}
-                      </div>
-
-                      {item.children && openMenu === i && (
-                        <ul className="mx-4  rounded-lg">
-                          {item.children.map((child, j) => (
-                            <Link
-                              href={child.href}
-                              key={j}
-                              className={`block py-3 px-10 m-1 font-semibold text-sm hover:bg-[#FF700099] rounded ${
-                                router.pathname === child.href
-                                  ? "bg-custom-orange text-black font-semibold"
-                                  : "text-gray-700"
-                              }`}
-                            >
-                              {child.title}
-                            </Link>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ) : null
-                )}
-              </ul>
-              {isProjectDetailsRoute && (
-                <div
-                  className="absolute -bottom-40 left-5 w-[240px] mx-auto bg-custom-green flex gap-3 justify-center items-center rounded-[10px] cursor-pointer"
-                  onClick={() => router.push("/project")}
-                >
-                  <MoveLeft />
-                  <button className="text-white  py-3 cursor-pointer">
-                    Back to Project
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+      <div
+        className="
+    fixed top-0 left-0 z-20 h-screen
+    bg-custom-black
+    w-[70px] hover:w-[260px]
+    transition-all duration-300 ease-in-out
+    overflow-hidden
+    hidden sm:flex flex-col
+    group
+  "
+      >
+        
+        <div
+          className="flex items-center justify-center py-6 cursor-pointer"
+          onClick={() => router.push("/")}
+        >
+          <p className="text-2xl text-custom-yellow font-bold whitespace-nowrap">
+            <span className="hidden group-hover:inline">Forma</span>
+            <span className="group-hover:hidden">F</span>
+          </p>
         </div>
+
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          <ul className="flex flex-col gap-1">
+            {currentMenuItems.map((item, i) =>
+              item?.access?.includes(user?.role) ? (
+                <li key={i}>
+                  
+                  <div
+                    className={`flex items-center gap-4 mx-3 px-3 py-3 cursor-pointer rounded-md
+                hover:bg-[#dff34940]
+                ${
+                  router.pathname === item.href
+                    ? "bg-custom-green text-white"
+                    : "text-white"
+                }
+              `}
+                    onClick={() =>
+                      item.children
+                        ? setOpenMenu(openMenu === i ? null : i)
+                        : router.push(item.href)
+                    }
+                  >
+                    
+                    <span className="text-custom-yellow text-xl min-w-[24px] flex justify-center">
+                      {item.img}
+                    </span>
+
+                    <span
+                      className="
+                  whitespace-nowrap
+                  opacity-0 w-0
+                  group-hover:opacity-100 group-hover:w-auto
+                  transition-all duration-300
+                "
+                    >
+                      {item.title}
+                    </span>
+
+                    {item.children && (
+                      <span
+                        className="
+                    ml-auto
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-all
+                  "
+                      >
+                        {openMenu === i ? (
+                          <IoIosArrowDown />
+                        ) : (
+                          <IoIosArrowForward />
+                        )}
+                      </span>
+                    )}
+                  </div>
+
+
+                  {item.children && openMenu === i && (
+                    <ul
+                      className="
+                  ml-12
+                  hidden group-hover:block
+                  transition-all
+                "
+                    >
+                      {item.children.map((child, j) => (
+                        <li key={j}>
+                          <Link
+                            href={child.href}
+                            className={`block py-2 px-4 my-1 rounded text-sm
+                        hover:bg-custom-orange
+                        ${
+                          router.pathname === child.href
+                            ? "bg-custom-orange text-black font-semibold"
+                            : "text-gray-300"
+                        }
+                      `}
+                          >
+                            {child.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
+
+        {isProjectDetailsRoute && (
+          <div
+            className="
+        m-3 mt-auto
+        bg-custom-green
+        flex items-center gap-3
+        justify-center
+        rounded-lg
+        cursor-pointer
+        py-3
+      "
+            onClick={() => router.push("/project")}
+          >
+            <MoveLeft className="text-white" />
+            <span className="text-white hidden group-hover:inline">
+              Back to Project
+            </span>
+          </div>
+        )}
       </div>
 
       <div
-        className={`w-full absolute top-0 left-0 z-40 sm:hidden flex flex-col h-screen max-h-screen overflow-hidden bg-custom-black ${
-          openTab ? "scale-x-100" : "scale-x-0"
-        } transition-all duration-300 origin-left`}
+        className={`
+    fixed top-0 left-0 z-40 sm:hidden
+    h-screen w-full
+    bg-custom-black
+    transform transition-transform duration-300 ease-in-out
+    ${openTab ? "translate-x-0" : "-translate-x-full"}
+  `}
       >
-        <div className="row-span-1 w-full text-black relative">
+
+        <div className="relative border-b border-white/20">
           <X
-            className="absolute text-white top-4 right-4 z-40 text-2xl"
-            onClick={() => setOpenTab(!openTab)}
+            className="absolute top-4 right-4 text-white text-2xl cursor-pointer"
+            onClick={() => setOpenTab(false)}
           />
-          <div className="flex flex-col gap-3 w-full p-3">
-            <div className="px-3 rounded overflow-hidden">
-              <p className="text-3xl text-white font-bold"> Forma</p>
-            </div>
-            <div className="flex ms-2 justify-between">
-              <div className="flex">
-                <div className="w-12 h-12 rounded-full overflow-hidden border-white border">
+
+          <div className="p-4 space-y-4">
+            <p className="text-3xl font-bold text-custom-yellow">Forma</p>
+
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-white">
                   <img
                     src="/office-man.png"
                     alt="Profile"
@@ -226,73 +285,64 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     onError={imageOnError}
                   />
                 </div>
-                <p className="mt-3 ms-3 text-lg text-white font-bold">
-                  {user?.name}
-                </p>
+                <p className="text-white font-semibold">{user?.name}</p>
               </div>
-              <div>
-                {user?._id ? (
-                  <>
-                    <button
-                      onClick={() => router.push("/MyProfile")}
-                      className="flex gap-2 mt-3 items-center cursor-pointer"
-                    >
-                      <User2 size={24} className="text-white" />
-                      <span className="text-white font-bold">My Profile</span>
-                    </button>
-                    <div
-                      className="flex gap-2 mt-3 items-center cursor-pointer"
-                      onClick={() => {
-                        Swal.fire({
-                          text: "Are you sure you want to logout?",
-                          showCancelButton: true,
-                          confirmButtonText: "Yes",
-                          cancelButtonText: "No",
-                          confirmButtonColor: "#e0f349",
-                          customClass: {
-                            confirmButton: "px-12 rounded-xl text-black",
-                            title: "text-[20px] text-black",
-                            actions: "swal2-actions-no-hover",
-                            popup: "rounded-[15px] shadow-custom-green",
-                          },
-                          buttonsStyling: true,
-                          reverseButtons: true,
-                          width: "320px",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            logOut();
-                          }
-                        });
-                      }}
-                    >
-                      <div className="rounded-full">
-                        <PiSignOutFill className="text-3xl text-white" />
-                      </div>
-                      <div className="text-white font-bold">Sign Out</div>
-                    </div>
-                  </>
-                ) : (
-                  <Link href="/login">
-                    <div className="p-3 mt-3 items-center font-bold text-white">
-                      LogIn
-                    </div>
-                  </Link>
-                )}
-              </div>
+
+              {user?._id ? (
+                <div className="flex flex-col items-end gap-2">
+                  <button
+                    onClick={() => {
+                      setOpenTab(false);
+                      router.push("/MyProfile");
+                    }}
+                    className="flex items-center gap-2 text-white font-semibold"
+                  >
+                    <User2 size={20} />
+                    My Profile
+                  </button>
+
+                  <button
+                    className="flex items-center gap-2 text-white font-semibold"
+                    onClick={() => {
+                      Swal.fire({
+                        text: "Are you sure you want to logout?",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        confirmButtonColor: "#e0f349",
+                        customClass: {
+                          confirmButton: "px-10 rounded-xl text-black",
+                          popup: "rounded-xl shadow-custom-green",
+                        },
+                        reverseButtons: true,
+                        width: "320px",
+                      }).then((result) => {
+                        if (result.isConfirmed) logOut();
+                      });
+                    }}
+                  >
+                    <PiSignOutFill size={22} />
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <Link href="/login" onClick={() => setOpenTab(false)}>
+                  <p className="text-white font-bold">Login</p>
+                </Link>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-start row-span-2 h-full w-full">
-          <ul className="w-full h-full flex flex-col text-left justify-start items-center border-t-1 border-white ">
+        
+        <div className="flex-1 overflow-y-auto">
+          <ul className="divide-y divide-white/10">
             {currentMenuItems.map((item, i) =>
               item?.access?.includes(user?.role) ? (
-                <li
-                  key={i}
-                  className="relative w-full text-white border-b-1 border-white"
-                >
+                <li key={i}>
+                  
                   <div
-                    className="flex justify-between items-center w-full px-6 py-3 cursor-pointer hover:bg-gray-100"
+                    className="flex items-center justify-between px-5 py-4 text-white cursor-pointer active:bg-white/10"
                     onClick={() =>
                       item.children
                         ? setMobileOpenMenu(mobileOpenMenu === i ? null : i)
@@ -300,54 +350,63 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     }
                   >
                     <div className="flex items-center gap-4 font-semibold">
-                      <span className="text-custom-yellow">{item?.img} </span>
-                      {item?.title}
+                      <span className="text-custom-yellow text-lg">
+                        {item.img}
+                      </span>
+                      {item.title}
                     </div>
+
                     {item.children &&
                       (mobileOpenMenu === i ? (
-                        <IoIosArrowDown className="text-xl" />
+                        <IoIosArrowDown />
                       ) : (
-                        <IoIosArrowForward className="text-xl" />
+                        <IoIosArrowForward />
                       ))}
                   </div>
 
+                  
                   {item.children && mobileOpenMenu === i && (
-                    <ul className="bg-[#f9f9f9]">
+                    <ul className="bg-white/95">
                       {item.children.map((child, j) => (
-                        <Link
-                          href={child.href}
-                          key={j}
-                          className={`block py-2 pl-14 text-sm hover:bg-[#FF700099] ${
-                            router.pathname === child.href
-                              ? "bg-custom-orange text-black"
-                              : "text-gray-700"
-                          }`}
-                          onClick={() => setOpenTab(false)}
-                        >
-                          {child.title}
-                        </Link>
+                        <li key={j}>
+                          <Link
+                            href={child.href}
+                            onClick={() => setOpenTab(false)}
+                            className={`
+                        block py-3 pl-14 text-sm font-medium
+                        ${
+                          router.pathname === child.href
+                            ? "bg-custom-orange text-black"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }
+                      `}
+                          >
+                            {child.title}
+                          </Link>
+                        </li>
                       ))}
                     </ul>
                   )}
                 </li>
               ) : null
             )}
-            {isProjectDetailsRoute && (
-              <div
-                className="absolute bottom-0 w-full mx-auto bg-custom-green flex gap-3 justify-start ps-10 items-center  cursor-pointer"
-                onClick={() => {
-                  setOpenTab(!openTab);
-                  router.push("/project");
-                }}
-              >
-                <MoveLeft />
-                <button className="text-white  py-3 cursor-pointer">
-                  Back to Project
-                </button>
-              </div>
-            )}
           </ul>
         </div>
+
+        {isProjectDetailsRoute && (
+          <div
+            className="border-t border-white/20 p-4 bg-custom-black"
+            onClick={() => {
+              setOpenTab(false);
+              router.push("/project");
+            }}
+          >
+            <div className="flex items-center gap-3 text-white font-semibold cursor-pointer">
+              <MoveLeft />
+              Back to Project
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

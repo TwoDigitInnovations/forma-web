@@ -100,7 +100,7 @@ function Dashboard(props) {
         toast.error(err?.message || "An error occurred");
       });
   };
-  
+
   const getAllProject = async () => {
     props?.loader(true);
     Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)
@@ -120,7 +120,7 @@ function Dashboard(props) {
 
   return (
     <section className=" bg-[#000000] md:p-6 p-3 text-white h-screen">
-      <div className="max-w-7xl mx-auto h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
+      <div className="h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
         <div className="bg-custom-black md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
           <div>
             <h1 className="text-3xl font-bold text-custom-yellow">Dashboard</h1>
