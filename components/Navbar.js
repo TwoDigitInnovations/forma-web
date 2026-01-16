@@ -61,7 +61,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <div className="p-2 rounded-2xl bg-custom-yellow text-black"> <Briefcase size={30}/></div>
+            <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
             <div className="flex items-start flex-col">  
             <p className="text-2xl text-white font-bold">Forma</p>
             <p className="text-md text-white fontmedium">Professional Construction Management</p>

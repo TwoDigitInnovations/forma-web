@@ -20,7 +20,12 @@ import { userContext } from "./_app";
 import moment from "moment";
 import { ConfirmModal } from "../../components/AllComponents";
 import dynamic from "next/dynamic";
-import project from "./project";
+import Editor, {
+  BtnBold,
+  BtnBulletList,
+  BtnNumberedList,
+  Toolbar,
+} from "react-simple-wysiwyg";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -120,8 +125,7 @@ const MeetingDocumentation = (props) => {
           setActionRegistry([
             {
               projectId: id,
-              actions: mappedActions
-          
+              actions: mappedActions,
             },
           ]);
         } else {
@@ -684,7 +688,7 @@ const MeetingDocumentation = (props) => {
                     <div className="text-sm font-semibold mb-3">
                       {index + 1}. {agenda.title.toUpperCase()}
                     </div>
-                    <div className="text-black">
+                    <div className="text-white">
                       <JoditEditor
                         value={discussions[index] || ""}
                         config={{
@@ -699,6 +703,31 @@ const MeetingDocumentation = (props) => {
                           }));
                         }}
                       />
+
+                      {/* <div className="editor-wrapper">
+                        {!discussions[index] && (
+                          <span className="editor-placeholder">
+                            Summary of what was discussed regarding "
+                            {agenda.title}"...
+                          </span>
+                        )}
+
+                        <Editor
+                          value={discussions[index] || ""}
+                          onChange={(e) => {
+                            setDiscussions((prev) => ({
+                              ...prev,
+                              [index]: e.target.value,
+                            }));
+                          }}
+                        >
+                          <Toolbar>
+                            <BtnBold />
+                            <BtnBulletList />
+                            <BtnNumberedList />
+                          </Toolbar>
+                        </Editor>
+                      </div> */}
                     </div>
                   </div>
                 ))}

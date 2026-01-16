@@ -96,4 +96,17 @@ body {
   animation: fadeIn 0.15s ease-out;
 }
 
+.editor-wrapper {
+  position: relative;
+}
+
+.editor-placeholder {
+  position: absolute;
+  top: 42px;
+  left: 12px;
+  color: #9ca3af;
+  pointer-events: none;
+  font-size: 14px;
+}
+
 
