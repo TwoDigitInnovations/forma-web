@@ -7,7 +7,6 @@ import {
   Clock,
   Clock1,
   Copy,
-  Cross,
   Edit,
   MessageSquare,
   StickyNote,
@@ -15,9 +14,15 @@ import {
   TriangleAlert,
   Users,
   X,
+  User,
+  Mail,
+  Phone,
+  Layers,
+  FileText,
+  Calendar,
+  MapPin,
+  ClipboardList,
 } from "lucide-react";
-import { FileText, Calendar, MapPin, ClipboardList } from "lucide-react";
-import { User, Mail, Phone, Layers } from "lucide-react";
 
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
@@ -911,31 +916,14 @@ export const AllGrievances = ({ onclose, loader }) => {
   );
 };
 
-export const ActionPoints = ({ onclose, loader, projects }) => {
-  const [projectId, setProjectID] = useState("All");
-  const [AllActionPoints, setAllActionPoints] = useState([]);
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   getActionPoints();
-  // }, []);
-
-  const getActionPoints = async (e) => {
-    loader(true);
-    Api("get", `project/getAllActionPoints?projectId=${projectId}`, "", router)
-      .then((res) => {
-        loader(false);
-        if (res?.status === true) {
-          setAllActionPoints(res.data?.data);
-        } else {
-          toast.error(res?.message || "Failed to created status");
-        }
-      })
-      .catch((err) => {
-        loader(false);
-        toast.error(err?.message || "An error occurred");
-      });
-  };
+export const ActionPoints = ({
+  onclose,
+  projectId,
+  setProjectID,
+  projects,
+  AllActionPoints,
+}) => {
+  console.log(AllActionPoints);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
@@ -962,7 +950,7 @@ export const ActionPoints = ({ onclose, loader, projects }) => {
           <select
             value={projectId}
             onChange={(e) => setProjectID(e.target.value)}
-            className="bg-black text-white border border-gray-700 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-custom-yellow w-[150px]"
+            className="bg-black text-white border border-gray-700 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-custom-yellow w-[200px]"
           >
             <option value="all">All Projects</option>
 
@@ -974,17 +962,17 @@ export const ActionPoints = ({ onclose, loader, projects }) => {
           </select>
         </div>
 
-        <div className="mt-4 overflow-x-auto rounded-xl border border-gray-800 bg-black">
-          <table className="min-w-full border-collapse text-sm text-gray-300">
+        <div className="mt-4 overflow-x-auto md:h-[500px] h-[600px] rounded-xl border border-gray-800 bg-black">
+          <table className="min-w-full border-collapse text-sm text-gray-300 ">
             <thead>
               <tr className="border-b border-gray-800 text-left text-gray-400">
                 <th className="px-4 py-3 w-10">#</th>
                 <th className="px-4 py-3">Project</th>
                 <th className="px-4 py-3">Description</th>
                 <th className="px-4 py-3">Assigned To</th>
-                <th className="px-4 py-3">Priority</th>
+                <th className="px-4 py-3 w-28">Priority</th>
                 <th className="px-4 py-3">Due Date</th>
-                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 w-30">Status</th>
               </tr>
             </thead>
 
@@ -1005,15 +993,31 @@ export const ActionPoints = ({ onclose, loader, projects }) => {
                     className="bg-custom-black border-b border-gray-800 hover:bg-gray-900 transition"
                   >
                     <td className="px-4 py-3 text-white">{index + 1}</td>
-                    <td className="px-4 py-3">{item.project}</td>
-                    <td className="px-4 py-3 text-white">{item.description}</td>
-                    <td className="px-4 py-3">{item.assignedTo || "-"}</td>
                     <td className="px-4 py-3">
-                      <PriorityBadge value={item.priority} />
+                      {item?.projectId?.projectName}
                     </td>
-                    <td className="px-4 py-3">{item.dueDate || "-"}</td>
+                    <td className="px-4 py-3 text-white">
+                      {item?.description}
+                    </td>
+                    <td className="px-4 py-3">{item?.assignedTo || "-"}</td>
+
                     <td className="px-4 py-3">
-                      <StatusBadge value={item.status} />
+                      <p className="text-blue-400  border-2 border-blue-400 rounded-full px-1 py-1 text-center">
+                        {" "}
+                        {item?.priority}{" "}
+                      </p>{" "}
+                    </td>
+                    <td className="px-4 py-3">
+                      {item?.dueDate
+                        ? moment(item.dueDate).format("DD-MM-YYYY")
+                        : "-"}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <p className="text-blue-400 border-2 border-blue-400 rounded-full px-1 py-1 text-center">
+                        {" "}
+                        {item?.status}{" "}
+                      </p>{" "}
                     </td>
                   </tr>
                 ))

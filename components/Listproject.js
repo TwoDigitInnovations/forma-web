@@ -6,11 +6,13 @@ import { Api } from "@/services/service"; // apna path check kar lena
 import { ProjectDetailsContext, userContext } from "@/pages/_app";
 import { ConfirmModal } from "./AllComponents";
 
-export default function Listproject({ loader, allProjectData,getAllProject }) {
+export default function Listproject({ loader, allProjectData, getAllProject }) {
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [openMenu, setOpenMenu] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
+
   const [editId, setEditId] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -103,32 +105,59 @@ export default function Listproject({ loader, allProjectData,getAllProject }) {
                   </td>
                   <td className="text-gray-400">0</td>
 
-                  <td className="">
-                    <div className="flex justify-start items-center gap-4">
+                  <td>
+                    <div className="relative overflow-visible">
                       <button
-                        className="px-4 py-2 rounded-md cursor-pointer bg-custom-yellow text-black "
-                        onClick={() => {
-                          router.push(
-                            `/ProjectDetails/overview?id=${item._id}`
-                          );
-                          setProjectdetails(item);
-                          localStorage.setItem(
-                            "projectDetails",
-                            JSON.stringify(item)
-                          );
-                        }}
+                        onClick={() =>
+                          setOpenMenuId(
+                            openMenuId === item._id ? null : item._id
+                          )
+                        }
+                        className="p-2 rounded-full hover:bg-gray-200 cursor-pointer transition"
                       >
-                        View
+                        
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-600"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                       </button>
-                      <button
-                        onClick={() => {
-                          setEditId(item._id);
-                          setIsConfirmOpen(true);
-                        }}
-                        className=" px-4 py-2 cursor-pointer text-black bg-red-500 rounded-md"
-                      >
-                        Delete
-                      </button>
+
+                      {/* Dropdown */}
+                      {openMenuId === item._id && (
+                        <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-100">
+                          <button
+                            onClick={() => {
+                              router.push(
+                                `/ProjectDetails/overview?id=${item._id}`
+                              );
+                              setProjectdetails(item);
+                              localStorage.setItem(
+                                "projectDetails",
+                                JSON.stringify(item)
+                              );
+                              setOpenMenuId(null);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100"
+                          >
+                            View
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setEditId(item._id);
+                              setIsConfirmOpen(true);
+                              setOpenMenuId(null);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </td>
                 </tr>

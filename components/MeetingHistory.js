@@ -61,7 +61,7 @@ function MeetingHistory({
                 <Briefcase size={16} className="text-custom-yellow" />
                 <span>
                   <span className="text-white font-medium">
-                    {meeting.projects?.length || 0}
+                    {meeting?.projectActionRegistry?.length || 0}
                   </span>{" "}
                   Projects
                 </span>

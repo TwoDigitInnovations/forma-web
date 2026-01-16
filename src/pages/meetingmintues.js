@@ -19,6 +19,9 @@ import { useRouter } from "next/router";
 import { userContext } from "./_app";
 import moment from "moment";
 import { ConfirmModal } from "../../components/AllComponents";
+import dynamic from "next/dynamic";
+
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const MeetingDocumentation = (props) => {
   const [activeTab, setActiveTab] = useState("new");
@@ -41,12 +44,23 @@ const MeetingDocumentation = (props) => {
       resetToDefaults();
       return;
     }
+    if (editData) {
+      setAgendas(editData.agendas ?? []);
+
+      const mappedDiscussions = {};
+
+      (editData.agendas ?? []).forEach((agenda, index) => {
+        mappedDiscussions[index] =
+          editData.meetingDiscussions?.[agenda.order] ?? "";
+      });
+
+      setDiscussions(mappedDiscussions);
+    }
 
     setMembersPresent(editData.membersPresent ?? []);
-    setAgendas(editData.agendas ?? []);
-    setDiscussions(editData.discussions ?? {});
     setMeetingDate(editData.meetingDate ?? "");
     setMeetingTitle(editData.meetingTitle ?? "");
+    setActionRegistry(editData?.projectActionRegistry || []);
   }, [editData]);
 
   const resetToDefaults = () => {
@@ -58,8 +72,88 @@ const MeetingDocumentation = (props) => {
       { name: user?.name, designation: "Admin", Organization: "" },
     ]);
     setAgendas([{ title: "Review physical progress", order: 1 }]);
-    setDiscussions({ reviewPhysicalProgress: "" });
-    setActionRegistry([]);
+
+    setDiscussions({
+      0: "", // index-based key
+    });
+
+    setActionRegistry([
+      {
+        projectId: "",
+        actions: [
+          {
+            actionItemDescription: "",
+            responsiblePerson: "",
+            deadline: "",
+            status: "Open",
+          },
+        ],
+      },
+    ]);
+    
+  };
+
+  const editorConfig = {
+    height: 300,
+    toolbarAdaptive: false,
+    toolbarSticky: true,
+    toolbarButtonSize: "middle",
+    readonly: false,
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
+    enableDragAndDropFileToEditor: true,
+    allowPasteImages: true,
+    useNativeTooltip: false,
+    spellcheck: true,
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "|",
+      "fontsize",
+      "font",
+      "paragraph",
+      "brush",
+      "|",
+      "left",
+      "center",
+      "right",
+      "justify",
+      "|",
+      "ul",
+      "ol",
+      "indent",
+      "outdent",
+      "|",
+      "link",
+      "image",
+      "video",
+      "table",
+      "hr",
+      "emoji",
+      "|",
+      "undo",
+      "redo",
+      "|",
+      "cut",
+      "copy",
+      "paste",
+      "|",
+      "brush",
+      "background",
+      "|",
+      "source",
+      "fullsize",
+    ],
+    uploader: {
+      insertImageAsBase64URI: true,
+    },
+    clipboard: {
+      matchVisual: false,
+    },
+    removeButtons: ["about"],
   };
 
   const updateRegistry = (index, field, value) => {
@@ -179,7 +273,10 @@ const MeetingDocumentation = (props) => {
   };
 
   const addMember = () => {
-    setMembersPresent([...membersPresent, { name: "", designation: "", Organization:"" }]);
+    setMembersPresent([
+      ...membersPresent,
+      { name: "", designation: "", Organization: "" },
+    ]);
   };
 
   const updateMember = (index, field, value) => {
@@ -216,7 +313,7 @@ const MeetingDocumentation = (props) => {
             actionItemDescription: "",
             responsiblePerson: "",
             deadline: "",
-            status: "pending",
+            status: "Open",
           },
         ],
       },
@@ -282,14 +379,18 @@ const MeetingDocumentation = (props) => {
       toast.error("Agenda title cannot be empty");
       return;
     }
+    const meetingDiscussionsPayload = {};
 
-   
+    agendas.forEach((agenda, index) => {
+      meetingDiscussionsPayload[agenda.order] = discussions[index] || "";
+    });
+
     const meetingData = {
       meetingTitle,
       meetingDate,
       membersPresent,
       agendas,
-      meetingDiscussions: discussions,
+      meetingDiscussions: meetingDiscussionsPayload, // ✅ FIXED
       projectActionRegistry: actionRegistry,
       status: "saved",
     };
@@ -303,9 +404,9 @@ const MeetingDocumentation = (props) => {
 
       if (res?.status === true) {
         toast.success("Meeting saved successfully!");
-        // setActiveTab("history");
-        // setEditData({});
-        // setEditId("");
+        setActiveTab("history");
+        setEditData({});
+        setEditId("");
       }
     } catch (err) {
       console.error("Failed to save meeting", err);
@@ -535,17 +636,22 @@ const MeetingDocumentation = (props) => {
                     <div className="text-sm font-semibold mb-3">
                       {index + 1}. {agenda.title.toUpperCase()}
                     </div>
-                    <textarea
-                      value={discussions[Object.keys(discussions)[index]] || ""}
-                      onChange={(e) =>
-                        setDiscussions({
-                          ...discussions,
-                          [Object.keys(discussions)[index]]: e.target.value,
-                        })
-                      }
-                      className="w-full h-32 bg-gray-800 rounded-lg p-4 text-gray-300 border border-gray-700 outline-none resize-none"
-                      placeholder={`Summary of what was discussed regarding "${agenda.title}"...`}
-                    />
+                    <div className="text-black">
+                      <JoditEditor
+                        value={discussions[index] || ""}
+                        config={{
+                          ...editorConfig,
+                          placeholder: `Summary of what was discussed regarding "${agenda.title}"...`,
+                        }}
+                        tabIndex={1}
+                        onBlur={(newContent) => {
+                          setDiscussions((prev) => ({
+                            ...prev,
+                            [index]: newContent,
+                          }));
+                        }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -620,6 +726,7 @@ const MeetingDocumentation = (props) => {
                           </th>
                           <th className="px-4 py-2 text-left">Deadline</th>
                           <th className="px-4 py-2 text-left">Status</th>
+                          <th className="px-4 py-2 text-left">Priority</th>
                           <th className="px-4 py-2 text-left w-10"></th>
                         </tr>
                       </thead>
@@ -697,9 +804,27 @@ const MeetingDocumentation = (props) => {
                                 }
                                 className="w-full bg-transparent outline-none text-gray-400"
                               >
-                                <option value="pending">Pending</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="completed">Completed</option>
+                                <option value="Open">Open</option>
+                                <option value="In-Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                              </select>
+                            </td>
+                            <td className="px-4 py-3">
+                              <select
+                                value={item.priority}
+                                onChange={(e) =>
+                                  updateActionItem(
+                                    registryIndex,
+                                    itemIndex,
+                                    "priority",
+                                    e.target.value
+                                  )
+                                }
+                                className="w-full bg-transparent outline-none text-gray-400"
+                              >
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
                               </select>
                             </td>
 

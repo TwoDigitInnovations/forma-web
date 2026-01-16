@@ -72,6 +72,34 @@ function Dashboard(props) {
     getAllProject();
   }, []);
 
+  const [AllActionPoints, setAllActionPoints] = useState([]);
+  const [projectId,setProjectID] = useState("all");
+
+  useEffect(() => {
+    getActionPoints();
+  }, [projectId]);
+
+  const getActionPoints = async (e) => {
+    props?.loader(true);
+    Api(
+      "get",
+      `action-Point/getAllActionPoints?projectId=${projectId}`,
+      "",
+      router
+    )
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllActionPoints(res.data?.data);
+        } else {
+          toast.error(res?.message || "Failed to created status");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
   const getAllProject = async () => {
     props?.loader(true);
     Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)
@@ -211,7 +239,10 @@ function Dashboard(props) {
           </div>
           <div
             className="bg-custom-black  rounded-2xl px-4 py-6 border-2 border-gray-700  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
-            onClick={() => setActionOpen(true)}
+            onClick={() => {
+              // getActionPoints();
+              setActionOpen(true);
+            }}
           >
             <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
               <div className="bg-custom-green p-2 rounded-2xl">
@@ -221,7 +252,7 @@ function Dashboard(props) {
                 <p className="text-white text-md font-medium  tracking-wide">
                   Action points
                 </p>
-                <p className="text-2xl font-bold text-custom-yellow">0</p>
+                <p className="text-2xl font-bold text-custom-yellow">{AllActionPoints.length}</p>
                 <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
                   Open Task to complete
                 </p>
@@ -252,8 +283,10 @@ function Dashboard(props) {
           {actionOpen && (
             <ActionPoints
               onclose={() => setActionOpen(false)}
-              loader={props.loader}
               projects={allProjectData}
+              projectId={projectId}
+              setProjectID={setProjectID}
+              AllActionPoints={AllActionPoints}
             />
           )}
         </div>
