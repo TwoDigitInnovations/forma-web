@@ -100,6 +100,7 @@ function Dashboard(props) {
         toast.error(err?.message || "An error occurred");
       });
   };
+  
   const getAllProject = async () => {
     props?.loader(true);
     Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)

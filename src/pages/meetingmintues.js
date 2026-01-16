@@ -20,6 +20,7 @@ import { userContext } from "./_app";
 import moment from "moment";
 import { ConfirmModal } from "../../components/AllComponents";
 import dynamic from "next/dynamic";
+import project from "./project";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -32,12 +33,22 @@ const MeetingDocumentation = (props) => {
   const [editId, setEditId] = useState("");
   const [editData, setEditData] = useState({});
   const router = useRouter();
+  const [AllActionPoints, setAllActionPoints] = useState([]);
+  const [projectId, setProjectID] = useState(null);
 
   const [meetingTitle, setMeetingTitle] = useState();
   const [meetingDate, setMeetingDate] = useState();
   const [membersPresent, setMembersPresent] = useState([]);
   const [agendas, setAgendas] = useState([]);
   const [discussions, setDiscussions] = useState({});
+
+  // useEffect(() => {
+  //   if (AllProjectData) {
+  //     setProjectID(AllProjectData[0]?._id);
+  //   }
+  // }, []);
+
+  console.log(AllProjectData[0]?._id);
 
   useEffect(() => {
     if (!editData || Object.keys(editData).length === 0) {
@@ -76,22 +87,63 @@ const MeetingDocumentation = (props) => {
     setDiscussions({
       0: "", // index-based key
     });
-
-    setActionRegistry([
-      {
-        projectId: "",
-        actions: [
-          {
-            actionItemDescription: "",
-            responsiblePerson: "",
-            deadline: "",
-            status: "Open",
-          },
-        ],
-      },
-    ]);
-    
   };
+
+  useEffect(() => {
+    if (projectId) {
+      getActionPoints(projectId);
+    }
+  }, [projectId]);
+
+  const getActionPoints = async (id) => {
+    props?.loader(true);
+
+    Api("get", `action-Point/getAllActionPoints?projectId=${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+
+        if (res?.status === true) {
+          const filteredData = (res.data?.data || []).filter(
+            (item) => item.status !== "Completed"
+          );
+
+          setAllActionPoints(filteredData);
+
+          const mappedActions = filteredData.map((item) => ({
+            actionItemDescription: item.description || "",
+            responsiblePerson: item.assignedTo || "",
+            deadline: item.dueDate || "",
+            status: item.status || "Open",
+            priority: item.priority || "medium",
+          }));
+
+          setActionRegistry([
+            {
+              projectId: id,
+              actions: mappedActions.length
+                ? mappedActions
+                : [
+                    {
+                      actionItemDescription: "",
+                      responsiblePerson: "",
+                      deadline: "",
+                      status: "Open",
+                      priority: "medium",
+                    },
+                  ],
+            },
+          ]);
+        } else {
+          toast.error(res?.message || "Failed to fetch action points");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  console.log(AllActionPoints);
 
   const editorConfig = {
     height: 300,
@@ -210,6 +262,7 @@ const MeetingDocumentation = (props) => {
       getAllMeetings();
     }
   }, [activeTab]);
+
   useEffect(() => {
     getAllProject();
   }, []);
@@ -220,7 +273,23 @@ const MeetingDocumentation = (props) => {
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
-          setAllProjectData(res.data?.data);
+          const data = res.data?.data;
+          setAllProjectData(data);
+          setProjectID(data[0]?._id);
+          getActionPoints(data[0]?._id);
+          setActionRegistry([
+            {
+              projectId: data[0]?._id,
+              actions: [
+                {
+                  actionItemDescription: "",
+                  responsiblePerson: "",
+                  deadline: "",
+                  status: "Open",
+                },
+              ],
+            },
+          ]);
         } else {
           toast.error(res?.message || "Failed to created status");
         }
@@ -437,6 +506,7 @@ const MeetingDocumentation = (props) => {
           <button
             onClick={() => {
               resetToDefaults();
+              getAllProject();
               setActiveTab("new");
             }}
             className={`flex items-center gap-2 py-4 border-b-2 cursor-pointer transition-colors ${
@@ -682,13 +752,12 @@ const MeetingDocumentation = (props) => {
                       <select
                         value={registry.projectId}
                         required
-                        onChange={(e) =>
-                          updateRegistry(
-                            registryIndex,
-                            "projectId",
-                            e.target.value
-                          )
-                        }
+                        onChange={(e) => {
+                          const projectId = e.target.value;
+
+                          updateRegistry(registryIndex, "projectId", projectId);
+                          setProjectID(projectId);
+                        }}
                         className="bg-gray-800 text-custom-yellow px-4 py-2 rounded-lg border border-gray-700 outline-none"
                       >
                         <option value="">Select Project</option>
@@ -778,7 +847,13 @@ const MeetingDocumentation = (props) => {
                             <td className="px-4 py-3">
                               <input
                                 type="date"
-                                value={item.deadline}
+                                value={
+                                  item.deadline
+                                    ? new Date(item.deadline)
+                                        .toISOString()
+                                        .split("T")[0]
+                                    : ""
+                                }
                                 onChange={(e) =>
                                   updateActionItem(
                                     registryIndex,
