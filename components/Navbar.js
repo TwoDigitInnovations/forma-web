@@ -70,19 +70,12 @@ const Navbar = ({ setOpenTab, openTab }) => {
 
 
           {user?._id && (
-          <div className="hidden md:flex items-center justify-end space-x-4 flex-1">
+          <div className="hidden md:flex items-center justify-end flex-1">
             <div className="relative">
               <div
-                className="flex items-center space-x-3  px-4 py-2 rounded-lg transition-colors duration-200"
+                className="flex items-center space-x-3  py-2 rounded-lg transition-colors duration-200"
               >
-                {/* <div className="Relative">
-                  <input
-                    className="ps-10 w-[20rem] bg-[#FFFFFF4A] border-black border text-white rounded-3xl px-4 py-2"
-                    placeholder="Search"
-                  />
-                  <Search className='absolute top-6 left-8 text-gray-300' size={18} />
-                </div> */}
-                {/* <p className="p-2 bg-custom-lightgold rounded-full"><Bell className="text-custom-yellow" /> </p> */}
+                
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e0f349] flex-shrink-0 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
@@ -101,13 +94,6 @@ const Navbar = ({ setOpenTab, openTab }) => {
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10 border border-gray-100">
-                  {/* <button
-                    onClick={() => router.push("/myProfile")}
-                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    <User size={16} className="text-black" />
-                    <span>My Profile</span>
-                  </button> */}
                    <button
                     onClick={()=> router.push("/MyProfile")}
                     className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
