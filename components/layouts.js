@@ -54,7 +54,7 @@ const Layout = ({ children }) => {
 
           <div className="w-full">
             <Navbar setOpenTab={setOpenTab} openTab={openTab} />
-            <div className="mx-auto md:max-w-8xl sm:max-w-7xl pl-[40px] ">
+            <div className="mx-auto max-w-8xl md:px-10 md:pl-20 ">
               <main className="flex-1">{children}</main>
             </div>
           </div>

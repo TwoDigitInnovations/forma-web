@@ -113,24 +113,15 @@ const MeetingDocumentation = (props) => {
             actionItemDescription: item.description || "",
             responsiblePerson: item.assignedTo || "",
             deadline: item.dueDate || "",
-            status: item.status || "Open",
-            priority: item.priority || "medium",
+            status: item.status || "",
+            priority: item.priority || "",
           }));
 
           setActionRegistry([
             {
               projectId: id,
-              actions: mappedActions.length
-                ? mappedActions
-                : [
-                    {
-                      actionItemDescription: "",
-                      responsiblePerson: "",
-                      deadline: "",
-                      status: "Open",
-                      priority: "medium",
-                    },
-                  ],
+              actions: mappedActions
+          
             },
           ]);
         } else {
@@ -277,19 +268,6 @@ const MeetingDocumentation = (props) => {
           setAllProjectData(data);
           setProjectID(data[0]?._id);
           getActionPoints(data[0]?._id);
-          setActionRegistry([
-            {
-              projectId: data[0]?._id,
-              actions: [
-                {
-                  actionItemDescription: "",
-                  responsiblePerson: "",
-                  deadline: "",
-                  status: "Open",
-                },
-              ],
-            },
-          ]);
         } else {
           toast.error(res?.message || "Failed to created status");
         }
@@ -811,21 +789,21 @@ const MeetingDocumentation = (props) => {
                             </td>
 
                             <td className="px-4 py-3">
-  <textarea
-    rows={1}
-    value={item.actionItemDescription}
-    onChange={(e) => {
-      e.target.style.height = "auto";
-      e.target.style.height = `${e.target.scrollHeight}px`;
+                              <textarea
+                                rows={1}
+                                value={item.actionItemDescription}
+                                onChange={(e) => {
+                                  e.target.style.height = "auto";
+                                  e.target.style.height = `${e.target.scrollHeight}px`;
 
-      updateActionItem(
-        registryIndex,
-        itemIndex,
-        "actionItemDescription",
-        e.target.value
-      );
-    }}
-    className="
+                                  updateActionItem(
+                                    registryIndex,
+                                    itemIndex,
+                                    "actionItemDescription",
+                                    e.target.value
+                                  );
+                                }}
+                                className="
       w-full
       bg-transparent
       outline-none
@@ -834,10 +812,9 @@ const MeetingDocumentation = (props) => {
       text-white
       leading-relaxed
     "
-    placeholder="Describe action item"
-  />
-</td>
-
+                                placeholder="Describe action item"
+                              />
+                            </td>
 
                             <td className="px-4 py-3">
                               <input

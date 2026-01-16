@@ -1,5 +1,5 @@
 import { userContext } from "@/pages/_app";
-import { Bell, User,Search, User2 } from "lucide-react";
+import { Bell, User,Search, User2, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
@@ -54,14 +54,18 @@ const Navbar = ({ setOpenTab, openTab }) => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between md:h-20 h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             {/* <img 
               className="h-10 w-auto object-contain" 
               src="/logo.png" 
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
+            <div className="p-2 rounded-2xl bg-custom-yellow text-black"> <Briefcase size={30}/></div>
+            <div className="flex items-start flex-col">  
             <p className="text-2xl text-white font-bold">Forma</p>
+            <p className="text-md text-white fontmedium">Professional Construction Management</p>
+            </div>
           </div>
 
 
