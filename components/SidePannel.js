@@ -131,7 +131,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     fixed top-0 left-0 z-20
     bg-custom-black
     transition-all duration-300 ease-in-out
-    hidden sm:flex flex-col
+    hidden sm:flex flex-col overflow-y-scroll scrollbar-hide overflow-scroll 
     ${isSidebarOpen ? "w-[260px] h-screen" : "h-10"}
   `}
       >
@@ -216,18 +216,21 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                 </li>
               ) : null,
             )}
+
+            {isProjectDetailsRoute && isSidebarOpen && (
+              <div
+                className="m-3  bg-custom-green flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3 "
+                onClick={() => {
+                  router.push("/project");
+                  setIsSidebarOpen(false);
+                }}
+              >
+                <MoveLeft className="text-white" />
+                <span className="text-white font-medium">Back to Project</span>
+              </div>
+            )}
           </ul>
         </div>
-
-        {isProjectDetailsRoute && isSidebarOpen && (
-          <div
-            className="m-3 mt-auto bg-custom-green flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3"
-            onClick={() => router.push("/project")}
-          >
-            <MoveLeft className="text-white" />
-            <span className="text-white font-medium">Back to Project</span>
-          </div>
-        )}
       </div>
 
       <div
