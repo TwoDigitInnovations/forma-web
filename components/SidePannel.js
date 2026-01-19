@@ -217,7 +217,6 @@ const SidePannel = ({ setOpenTab, openTab }) => {
           </ul>
         </div>
 
-        {/* BOTTOM BUTTON */}
         {isProjectDetailsRoute && isSidebarOpen && (
           <div
             className="m-3 mt-auto bg-custom-green flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3"

@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { MapPin, FileCode2, Plus, Edit2, Trash, Calendar1, CircleDot } from "lucide-react";
+import {
+  MapPin,
+  FileCode2,
+  Plus,
+  Edit2,
+  Trash,
+  Calendar1,
+  CircleDot,
+  MoreVertical,
+} from "lucide-react";
 import { ProjectDetailsContext } from "../_app";
 import { Api } from "@/services/service";
 import { useRouter } from "next/router";
@@ -99,6 +108,24 @@ function SiteLogs(props) {
       });
   };
 
+  const updateStatus = (id, status) => {
+    props.loader(true);
+    const data = { status };
+    Api("put", `action-Point/updateStatus/${id}`, data, router)
+      .then((res) => {
+        if (res?.status === true) {
+          toast.success("update status successfully");
+          getAllActionPoints();
+        } else {
+          toast.error("Failed to update status");
+        }
+        props.loader(false);
+      })
+      .catch(() => {
+        props.loader(false);
+        toast.error("Error update status");
+      });
+  };
   useEffect(() => {
     if (!projectId) return;
 
@@ -158,7 +185,6 @@ function SiteLogs(props) {
                 Record daily activities, weather, and site observations
               </p>
 
-
               {allItems.length === 0 ? (
                 <div className="flex flex-col justify-center items-center min-h-[450px] text-center">
                   <FileCode2 size={68} className="text-gray-500" />
@@ -196,11 +222,11 @@ function SiteLogs(props) {
 
                       {/* Issues + Buttons */}
                       <div className="flex justify-between items-center mt-2 text-gray-400 text-sm">
-                        <div className="flex gap-3 justify-between items-center"> 
-                          <CircleDot size={18} className="text-red-400"/>
-                        <p className="italic text-red-100">
-                          {item.issues || ""}
-                        </p>
+                        <div className="flex gap-3 justify-between items-center">
+                          <CircleDot size={18} className="text-red-400" />
+                          <p className="italic text-red-100">
+                            {item.issues || ""}
+                          </p>
                         </div>
 
                         <div className="flex gap-4">
@@ -231,14 +257,12 @@ function SiteLogs(props) {
               )}
             </div>
           ) : (
-            /* ACTION POINTS */
             <div>
               <p className="text-lg font-medium">Action Points</p>
               <p className="text-md text-gray-300 font-medium">
                 Track follow-up tasks and action items
               </p>
 
-              {/* Empty State */}
               {allItems.length === 0 ? (
                 <div className="flex flex-col justify-center items-center min-h-[450px] text-center">
                   <FileCode2 size={68} className="text-gray-500" />
@@ -250,76 +274,117 @@ function SiteLogs(props) {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4 mt-4">
-                  {allItems.map((item, i) => (
-                    <div
-                      key={i}
-                      className="bg-[#1a1a1a] rounded-xl p-5 border border-gray-800 hover:border-custom-yellow transition-all duration-300 shadow-md"
-                    >
-                      {/* Priority + Status */}
-                      <div className="flex justify-start gap-3 items-center">
-                        <Calendar1 size={18} />
-                        <p
-                          className={`text-md font-semibold ${
-                            item.priority === "High"
-                              ? "text-red-400"
-                              : item.priority === "Medium"
-                              ? "text-yellow-400"
-                              : "text-green-400"
-                          }`}
+                <div className="mt-4 overflow-x-auto">
+                  <table className="w-full border-collapse rounded-xl overflow-hidden">
+                    <thead className="bg-[#111] border-b border-gray-800">
+                      <tr className="text-left text-gray-400 text-sm">
+                        <th className="px-4 py-3">REF ID</th>
+                        <th className="px-4 py-3">TASK DESCRIPTION</th>
+                        <th className="px-4 py-3">PRIORITY</th>
+                        <th className="px-4 py-3">DUE DATE</th>
+                        <th className="px-4 py-3">STATUS</th>
+                        <th className="px-4 py-3 text-right">ACTION</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {allItems.map((item, i) => (
+                        <tr
+                          key={i}
+                          className="bg-[#1a1a1a] border-b border-gray-800 hover:bg-[#202020] transition"
                         >
-                          {item.priority}
-                        </p>
+                          <td className="px-4 py-4 text-gray-300 text-sm">
+                            AP-{i + 1}
+                          </td>
 
-                        <p
-                          className={`text-md font-semibold ${
-                            item.status === "Pending"
-                              ? "text-orange-400"
-                              : "text-green-400"
-                          }`}
-                        >
-                          {item.status}
-                        </p>
-                      </div>
+                          <td className="px-4 py-4 text-gray-200 text-sm">
+                            {item.description}
+                          </td>
 
-                      {/* Description */}
-                      <p className="mt-1 text-gray-300 text-sm leading-6">
-                        {item.description}
-                      </p>
+                          <td className="px-4 py-4">
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium
+                              ${
+                                item.priority === "High"
+                                  ? "bg-red-500/10 text-red-400"
+                                  : item.priority === "Medium"
+                                    ? "bg-yellow-500/10 text-yellow-400"
+                                    : "bg-green-500/10 text-green-400"
+                              }`}
+                            >
+                              {item.priority}
+                            </span>
+                          </td>
 
-                      {/* Footer */}
-                      <div className="flex justify-between items-center mt-2 text-gray-400 text-sm">
-                        <p>
-                          <span className="font-medium text-gray-300">
-                            Due:
-                          </span>{" "}
-                          {item.dueDate ? item.dueDate.split("T")[0] : "--"}
-                        </p>
+                          <td className="px-4 py-4 text-gray-400 text-sm">
+                            {item.dueDate ? item.dueDate.split("T")[0] : "--"}
+                          </td>
 
-                        <div className="flex gap-4">
-                          <button
-                            onClick={() => {
-                              setIsOpen(true);
-                              setEditItem(item);
-                            }}
-                            className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
-                          >
-                            <Edit2 size={18} /> Edit
-                          </button>
+                          <td className="px-4 py-4">
+                            <select
+                              value={item.status}
+                              onChange={(e) =>
+                                updateStatus(item._id, e.target.value)
+                              }
+                              className={`px-3 py-1 rounded-full text-xs font-medium
+                                      border outline-none cursor-pointer
+                                      ${
+                                        item.status === "Open"
+                                          ? "bg-blue-500/10 text-blue-500 border-blue-500/30"
+                                          : item.status === "In-Progress"
+                                            ? "bg-orange-500/10 text-orange-400 border-orange-500/30"
+                                            : "bg-green-500/10 text-green-400 border-green-500/30"
+                                      }
+                                    `}
+                            >
+                              <option value="Open">Open</option>
+                              <option value="In-Progress">In-Progress</option>
+                              <option value="Completed">Completed</option>
+                            </select>
+                          </td>
 
-                          <button
-                            onClick={() => {
-                              setOpen(true);
-                              setDeleteId(item._id);
-                            }}
-                            className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
-                          >
-                            <Trash size={18} /> Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                          <td className="px-4 py-4 text-right relative">
+                            <div className="relative group inline-block">
+                              <button className="text-gray-400 hover:text-white cursor-pointer">
+                                <MoreVertical size={18} />
+                              </button>
+
+                              <div
+                                className="
+                              absolute right-0 mt-2 w-32
+                              bg-[#111] border border-gray-800
+                              rounded-lg shadow-lg
+                              opacity-0 group-hover:opacity-100
+                              invisible group-hover:visible
+                              transition-all
+                              z-50"
+                              >
+                                <button
+                                  onClick={() => {
+                                    setIsOpen(true);
+                                    setEditItem(item);
+                                  }}
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-300 hover:bg-[#1f1f1f] cursor-pointer"
+                                >
+                                  <Edit2 size={14} /> Edit
+                                </button>
+
+                                <button
+                                  onClick={() => {
+                                    setOpen(true);
+                                    setDeleteId(item._id);
+                                  }}
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-[#1f1f1f] cursor-pointer"
+                                >
+                                  <Trash size={14} /> Delete
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>

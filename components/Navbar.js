@@ -52,7 +52,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
   return (
     <nav className="w-full bg-custom-black z-0 sticky top-0 max-w-screen shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between md:h-20 h-16">
+        <div className="flex items-center justify-between md:h-20 h-18">
           {/* Logo */}
           <div className="flex items-center gap-4">
             {/* <img 
@@ -64,7 +64,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
             <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
             <div className="flex items-start flex-col">  
             <p className="text-2xl text-white font-bold">Forma</p>
-            <p className="text-md text-white fontmedium">Professional Construction Management</p>
+            <p className="text-md text-white font-medium ">Construction Management</p>
             </div>
           </div>
 

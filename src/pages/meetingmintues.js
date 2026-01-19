@@ -225,7 +225,7 @@ const MeetingDocumentation = (props) => {
           actionItemDescription: "",
           responsiblePerson: "",
           deadline: "",
-          status: "pending",
+          status: "Open",
         },
       ],
     },
@@ -243,7 +243,7 @@ const MeetingDocumentation = (props) => {
                   actionItemDescription: "",
                   responsiblePerson: "",
                   deadline: "",
-                  status: "pending",
+                  status: "Open",
                 },
               ],
             }

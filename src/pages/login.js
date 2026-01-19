@@ -64,7 +64,9 @@ export default function Login(props) {
           }
 
           if (hasActiveSubscription) {
+          
             router.push("/dashboard");
+
           } else {
             router.push("/PlanPage");
           }

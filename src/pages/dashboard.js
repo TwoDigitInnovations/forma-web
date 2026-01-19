@@ -39,6 +39,7 @@ function Dashboard(props) {
   const [grievancesOpen, setGrievancesOpen] = useState(false);
 
   useEffect(() => {
+      // router.reload();
     const user = JSON.parse(localStorage.getItem("userDetail"));
 
     if (!user || !user._id) {
