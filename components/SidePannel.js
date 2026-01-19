@@ -132,10 +132,9 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     bg-custom-black
     transition-all duration-300 ease-in-out
     hidden sm:flex flex-col
-    ${isSidebarOpen ? "w-[260px] h-screen":"h-10"}
+    ${isSidebarOpen ? "w-[260px] h-screen" : "h-10"}
   `}
       >
-        
         <div className="flex items-center justify-start ps-6 py-5">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -159,11 +158,14 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     : "text-white"
                 }
               `}
-                    onClick={() =>
-                      item.children
-                        ? setOpenMenu(openMenu === i ? null : i)
-                        : router.push(item.href)
-                    }
+                    onClick={() => {
+                      if (item.children) {
+                        setOpenMenu(openMenu === i ? null : i);
+                      } else {
+                        router.push(item.href);
+                        setIsSidebarOpen(false);
+                      }
+                    }}
                   >
                     {isSidebarOpen && (
                       <span className="text-custom-yellow text-xl min-w-[24px] flex justify-center">
@@ -212,7 +214,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     </ul>
                   )}
                 </li>
-              ) : null
+              ) : null,
             )}
           </ul>
         </div>
@@ -356,7 +358,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
                     </ul>
                   )}
                 </li>
-              ) : null
+              ) : null,
             )}
           </ul>
         </div>
