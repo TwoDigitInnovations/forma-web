@@ -203,7 +203,7 @@ function Dashboard(props) {
                   Projects Behind
                 </p>
                 <p className="text-2xl font-bold text-custom-yellow">
-                  {AllBehiendProject?.totalBehindProjects}
+                  {AllBehiendProject?.totalBehindProjects || 0}
                 </p>
                 <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
                   Click to view Details
