@@ -274,8 +274,8 @@ function SiteLogs(props) {
                   </p>
                 </div>
               ) : (
-                <div className="mt-4 overflow-x-auto">
-                  <table className="w-full border-collapse rounded-xl overflow-hidden">
+                <div className="mt-4 overflow-x-auto min-h-[400px]">
+                  <table className="w-full border-collapse rounded-xl ">
                     <thead className="bg-[#111] border-b border-gray-800">
                       <tr className="text-left text-gray-400 text-sm">
                         <th className="px-4 py-3">REF ID</th>
