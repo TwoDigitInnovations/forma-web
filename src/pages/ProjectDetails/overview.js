@@ -64,7 +64,7 @@ const ProjectDetailsPage = (props) => {
           setProjectdetails(res.data?.data);
           localStorage.setItem(
             "projectDetails",
-            JSON.stringify(res.data?.data)
+            JSON.stringify(res.data?.data),
           );
         }
       })
@@ -92,7 +92,7 @@ const ProjectDetailsPage = (props) => {
     return isNaN(date)
       ? "Invalid Date"
       : `${String(date.getDate()).padStart(2, "0")}/${String(
-          date.getMonth() + 1
+          date.getMonth() + 1,
         ).padStart(2, "0")}/${date.getFullYear()}`;
   };
 
@@ -243,7 +243,7 @@ const ProjectDetailsPage = (props) => {
                   Pre-Commencement
                 </p>
                 <p className="text-xl font-bold text-custom-yellow">
-                  1 Pending
+                  See Pending
                 </p>
 
                 <p
@@ -265,17 +265,21 @@ const ProjectDetailsPage = (props) => {
 
           <SecondCard
             title="Amount Spent"
-            value={projectDetails?.paidAmount}
+            value={projectDetails?.paidAmount || 0}
             subtitle="From payment certificates"
           />
           <SecondCard
             title="Balance"
-            value={projectDetails?.contractAmount - projectDetails?.paidAmount}
+            value={
+              (Number(projectDetails?.contractAmount) || 0) -
+              (Number(projectDetails?.paidAmount) || 0)
+            }
             subtitle="Remaining funds"
           />
+
           <SecondCard
             title="Advance Payment"
-            value={projectDetails?.advancePayment}
+            value={projectDetails?.advancePayment || 0}
             subtitle="All Advance Payment"
           />
         </div>
@@ -457,7 +461,7 @@ const ProjectDetailsPage = (props) => {
                     {" "}
                     {getTotalDuration(
                       projectDetails?.startDate,
-                      projectDetails?.endDate
+                      projectDetails?.endDate,
                     )}{" "}
                     Days
                   </span>

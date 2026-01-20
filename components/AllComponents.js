@@ -879,7 +879,7 @@ export const ProjectBehind = ({ onclose, loader }) => {
           </button>
         </div>
 
-        {/* Body */}
+        
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
           <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
         </div>

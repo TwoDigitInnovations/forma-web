@@ -21,7 +21,6 @@ const EditProject = (props) => {
     projectType: 'Road',
     status: 'Planning',
     contractAmount: '',
-    projectBudget: '',
     startDate: '',
     endDate: '',
     LiabilityPeriod: "",
@@ -111,7 +110,6 @@ const EditProject = (props) => {
             projectType: project?.projectType || '',
             status: project?.status || 'Planning',
             contractAmount: project?.contractAmount || '',
-            projectBudget: project?.projectBudget || '',
             startDate: project?.startDate || '',
             endDate: project?.endDate || '',
             projectNo: project?.projectNo || "",
@@ -191,7 +189,6 @@ const EditProject = (props) => {
     if (!formData.description) newErrors.description = 'Description is required';
     if (!formData.location) newErrors.location = 'Location is required';
     if (!formData.contractAmount) newErrors.contractAmount = 'Contract amount is required';
-    if (!formData.projectBudget) newErrors.projectBudget = 'Project budget is required';
     if (!formData.startDate) newErrors.startDate = 'Start date is required';
     if (!formData.endDate) newErrors.endDate = 'End date is required';
 
@@ -262,7 +259,7 @@ const EditProject = (props) => {
 
   return (
     <div className="h-full bg-black text-white ">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-8  mx-auto ">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-0  mx-auto ">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between ">
           <div className="flex items-center gap-4">
             <div>
@@ -375,16 +372,6 @@ const EditProject = (props) => {
                   onChange={handleInputChange}
                   placeholder="100000"
                   error={errors.contractAmount}
-                />
-
-                <InputField
-                  label="Project Budget ($)"
-                  type="number"
-                  name="projectBudget"
-                  value={formData.projectBudget}
-                  onChange={handleInputChange}
-                  placeholder="120000"
-                  error={errors.projectBudget}
                 />
 
                 <InputField

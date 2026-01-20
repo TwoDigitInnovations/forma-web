@@ -39,7 +39,7 @@ function Dashboard(props) {
   const [grievancesOpen, setGrievancesOpen] = useState(false);
 
   useEffect(() => {
-      // router.reload();
+    // router.reload();
     const user = JSON.parse(localStorage.getItem("userDetail"));
 
     if (!user || !user._id) {
@@ -74,10 +74,12 @@ function Dashboard(props) {
   }, []);
 
   const [AllActionPoints, setAllActionPoints] = useState([]);
-  const [projectId,setProjectID] = useState("all");
+  const [AllBehiendProject, setAllBehiendProject] = useState([]);
+  const [projectId, setProjectID] = useState("all");
 
   useEffect(() => {
     getActionPoints();
+    getAllBehindProjects();
   }, [projectId]);
 
   const getActionPoints = async (e) => {
@@ -86,7 +88,7 @@ function Dashboard(props) {
       "get",
       `action-Point/getAllActionPoints?projectId=${projectId}`,
       "",
-      router
+      router,
     )
       .then((res) => {
         props.loader(false);
@@ -94,6 +96,22 @@ function Dashboard(props) {
           setAllActionPoints(res.data?.data);
         } else {
           toast.error(res?.message || "Failed to created status");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+  const getAllBehindProjects = async (e) => {
+    props?.loader(true);
+    Api("get", `project/getAllBehindProjects`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllBehiendProject(res.data?.data);
+        } else {
+          toast.error(res?.message || "Failed");
         }
       })
       .catch((err) => {
@@ -118,6 +136,8 @@ function Dashboard(props) {
         toast.error(err?.message || "An error occurred");
       });
   };
+
+  console.log(AllBehiendProject);
 
   return (
     <section className=" bg-[#000000] md:py-4 py-4 p-3 text-white h-screen">
@@ -182,7 +202,9 @@ function Dashboard(props) {
                 <p className="text-white text-md font-medium  tracking-wide">
                   Projects Behind
                 </p>
-                <p className="text-2xl font-bold text-custom-yellow">2</p>
+                <p className="text-2xl font-bold text-custom-yellow">
+                  {AllBehiendProject?.totalBehindProjects}
+                </p>
                 <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
                   Click to view Details
                 </p>
@@ -254,7 +276,9 @@ function Dashboard(props) {
                 <p className="text-white text-md font-medium  tracking-wide">
                   Action points
                 </p>
-                <p className="text-2xl font-bold text-custom-yellow">{AllActionPoints.length}</p>
+                <p className="text-2xl font-bold text-custom-yellow">
+                  {AllActionPoints.length}
+                </p>
                 <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
                   Open Task to complete
                 </p>
@@ -272,6 +296,7 @@ function Dashboard(props) {
             <ProjectBehind
               onclose={() => setProjectBehind(false)}
               loader={props.loader}
+              AllBehiendProject={AllBehiendProject}
             />
           )}
 

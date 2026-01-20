@@ -103,7 +103,7 @@ const Projects = (props) => {
   };
 
   return (
-    <div className="h-screen p-3 md:p-6 bg-black text-white">
+    <div className="h-screen p-3 md:px-0 bg-black text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>

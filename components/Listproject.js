@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Api } from "@/services/service"; // apna path check kar lena
 import { ProjectDetailsContext, userContext } from "@/pages/_app";
 import { ConfirmModal } from "./AllComponents";
+import moment from "moment";
 
 export default function Listproject({ loader, allProjectData, getAllProject }) {
   const router = useRouter();
@@ -101,8 +102,8 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                   <td className="text-gray-400">0%</td>
                   <td className="text-gray-400">0%</td>
                   <td className="text-gray-400">
-                    {item?.deadline
-                      ? moment(item.deadline).format("YYYY-MM-DD")
+                    {item?.endDate
+                      ? moment(item.endDate).format("YYYY-MM-DD")
                       : "--"}
                   </td>
 
