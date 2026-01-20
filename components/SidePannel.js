@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 import { userContext } from "@/pages/_app";
 import { PiSignOutFill } from "react-icons/pi";
 import Swal from "sweetalert2";
-import { MoreVertical } from "lucide-react";
+import { Menu, MoreVertical } from "lucide-react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import {
   BrickWall,
@@ -140,7 +140,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="text-custom-yellow text-2xl cursor-pointer"
           >
-            {isSidebarOpen ? <X /> : <MoreVertical />}
+            {isSidebarOpen ? <X /> : <Menu />}
           </button>
         </div>
 

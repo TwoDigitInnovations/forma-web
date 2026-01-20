@@ -688,7 +688,7 @@ const MeetingDocumentation = (props) => {
                     <div className="text-sm font-semibold mb-3">
                       {index + 1}. {agenda.title.toUpperCase()}
                     </div>
-                    <div className="text-white">
+                    <div className="text-black">
                       <JoditEditor
                         value={discussions[index] || ""}
                         config={{
@@ -922,14 +922,14 @@ const MeetingDocumentation = (props) => {
                             </td>
 
                             <td className="px-4 py-3">
-                              {/* <button
+                              <button
                                 onClick={() =>
                                   removeActionItem(registryIndex, itemIndex)
                                 }
                                 className="text-gray-400 hover:text-red-500 cursor-pointer"
                               >
                                 <Trash2 size={16} />
-                              </button> */}
+                              </button>
                             </td>
                           </tr>
                         ))}
