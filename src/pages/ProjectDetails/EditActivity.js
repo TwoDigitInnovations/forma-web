@@ -73,7 +73,7 @@ const EditActivity = (props) => {
             if (res?.status) {
                 toast.success("Work Plan updated successfully");
                 getPlanById(PlanId);
-                router.push("/ProjectDetails/work-plan");
+                // router.push("/ProjectDetails/work-plan");
             } else {
                 toast.error(res?.message || "Failed to save");
             }

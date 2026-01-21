@@ -26,7 +26,7 @@ const CreateTracker = ({ allPlanData = [], setIsOpen, loader, getAllTracker, pro
         loader(true);
         const data = {
             ...formData,
-            projectId, // link to project
+            ProjectId:projectId, // link to project
         };
         try {
             const res = await Api("post", "tracker/create", data, router);

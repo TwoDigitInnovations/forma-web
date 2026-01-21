@@ -28,7 +28,7 @@ const ProgressUpdate = (props) => {
   const [selectedTracker, setSelectedTracker] = useState(null);
   const [activities, setActivities] = useState("");
   const [certificates, setCertificates] = useState([]);
-
+  const [progress,setProgress]=useState(0);
   const [summary, setSummary] = useState({
     contractAmount: 0,
     amountPaid: 0,
@@ -109,7 +109,7 @@ const ProgressUpdate = (props) => {
 
   const getAllTracker = async (id) => {
     props.loader(true);
-    let url = `tracker/getAll?projectId=${id}`;
+    let url = `tracker/getAll?ProjectId=${id}`;
     Api("get", url, "", router)
       .then((res) => {
         props.loader(false);
@@ -170,6 +170,8 @@ const ProgressUpdate = (props) => {
     props.loader(true);
     const data = {
       trackerActivityProgress: activities,
+      progress: progress || 0,
+      projectId: projectId,
     };
     try {
       const res = await Api(
@@ -250,6 +252,7 @@ const ProgressUpdate = (props) => {
   }, [selectedTracker]);
 
   console.log("all", activities);
+  console.log("progress", progress);
 
   return (
     <div className="h-screen bg-black text-white">
@@ -376,6 +379,8 @@ const ProgressUpdate = (props) => {
                 {selectedTracker && (
                   <WorkplanProgress
                     activities={activities}
+                    setProgress={setProgress}
+                    progress={progress}
                     setActivities={setActivities}
                   />
                 )}

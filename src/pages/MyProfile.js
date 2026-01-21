@@ -154,7 +154,7 @@ function MyProfile(props) {
         ></div>
       </div>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -215,7 +215,7 @@ function MyProfile(props) {
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-custom-green" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
                   <input
                     type="text"
                     value={userDetail.name}
@@ -226,7 +226,7 @@ function MyProfile(props) {
                     className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
-                        : "opacity-70 cursor-not-allowed"
+                        : " cursor-not-allowed"
                     }`}
                   />
                 </div>
@@ -238,7 +238,7 @@ function MyProfile(props) {
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-custom-green" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
                   <input
                     type="email"
                     value={userDetail.email}
@@ -249,7 +249,7 @@ function MyProfile(props) {
                     className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
-                        : "opacity-70 cursor-not-allowed"
+                        : " cursor-not-allowed"
                     }`}
                   />
                 </div>
@@ -261,7 +261,7 @@ function MyProfile(props) {
                   Phone Number
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-custom-green" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
                   <input
                     type="tel"
                     value={userDetail.phone}
@@ -272,7 +272,7 @@ function MyProfile(props) {
                     className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
-                        : "opacity-70 cursor-not-allowed"
+                        : " cursor-not-allowed"
                     }`}
                   />
                 </div>
@@ -284,12 +284,12 @@ function MyProfile(props) {
                   Account Role
                 </label>
                 <div className="relative">
-                  <Shield className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-custom-green" />
+                  <Shield className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
                   <input
                     type="text"
                     value={user?.role || "N/A"}
                     disabled
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 opacity-70 cursor-not-allowed"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 cursor-not-allowed"
                   />
                 </div>
               </div>

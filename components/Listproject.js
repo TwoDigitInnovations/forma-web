@@ -39,6 +39,24 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
       });
   };
 
+  const calculatefinancialProgress = (paidAmount, contractAmount) => {
+    if (contractAmount > 0) {
+      return Number(((paidAmount || 0) / contractAmount || 0) * 100).toFixed(2);
+    }
+    return 0;
+  };
+
+  const calculateTimeProgress = (startDate, endDate) => {
+    const currentDate = moment();
+    const start = moment(startDate);
+    const end = moment(endDate);
+    if (!startDate || !endDate || currentDate.isBefore(start)) return 0;
+    if (currentDate.isAfter(end)) return 100;
+    const totalDuration = end.diff(start);
+    const elapsedDuration = currentDate.diff(start);
+    return ((elapsedDuration / totalDuration) * 100).toFixed(2);
+  };
+
   return (
     <div className="bg-custom-black min-h-[400px] rounded-2xl border border-[#1f1f1f] p-6 text-white">
       <div className="flex justify-between items-center mb-4">
@@ -85,7 +103,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                       setProjectdetails(item);
                       localStorage.setItem(
                         "projectDetails",
-                        JSON.stringify(item)
+                        JSON.stringify(item),
                       );
                     }}
                   >
@@ -98,9 +116,15 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                     </span>
                   </td>
 
-                  <td className="text-gray-400">0%</td>
-                  <td className="text-gray-400">0%</td>
-                  <td className="text-gray-400">0%</td>
+                  <td className="text-gray-400">
+                    {calculatefinancialProgress(
+                      item?.paidAmount,
+                      item?.contractAmount,
+                    )}
+                    %
+                  </td>
+                  <td className="text-gray-400">{calculateTimeProgress(item?.startDate, item?.endDate)}%</td>
+                  <td className="text-gray-400">{item?.actualProgress || 0}%</td>
                   <td className="text-gray-400">
                     {item?.endDate
                       ? moment(item.endDate).format("YYYY-MM-DD")
@@ -112,7 +136,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                       <button
                         onClick={() =>
                           setOpenMenuId(
-                            openMenuId === item._id ? null : item._id
+                            openMenuId === item._id ? null : item._id,
                           )
                         }
                         className="p-2 rounded-full hover:bg-gray-200 cursor-pointer transition"
@@ -133,12 +157,12 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                           <button
                             onClick={() => {
                               router.push(
-                                `/ProjectDetails/overview?id=${item._id}`
+                                `/ProjectDetails/overview?id=${item._id}`,
                               );
                               setProjectdetails(item);
                               localStorage.setItem(
                                 "projectDetails",
-                                JSON.stringify(item)
+                                JSON.stringify(item),
                               );
                               setOpenMenuId(null);
                             }}

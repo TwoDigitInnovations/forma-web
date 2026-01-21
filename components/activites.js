@@ -24,7 +24,7 @@ const getOverallProgress = (sections) => {
   return ((totalQty / totalBoq) * 100).toFixed(2);
 };
 
-const WorkplanProgress = ({ activities, setActivities }) => {
+const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) => {
   if (!activities) return;
   const [data, setData] = useState(activities || []);
   useEffect(() => {
@@ -32,63 +32,67 @@ const WorkplanProgress = ({ activities, setActivities }) => {
   }, [activities]);
 
   const handleChange = (sectionId, actId, field, value) => {
-  const cloned = data.map((sec) => {
-    if (sec.id !== sectionId) return sec;
+    const cloned = data.map((sec) => {
+      if (sec.id !== sectionId) return sec;
 
-    return {
-      ...sec,
-      activities: sec.activities.map((act) => {
-        if (act.id !== actId) return act;
+      return {
+        ...sec,
+        activities: sec.activities.map((act) => {
+          if (act.id !== actId) return act;
 
-        let updated = { ...act };
+          let updated = { ...act };
 
-        if (value === "") {
-          updated[field] = "";
+          if (value === "") {
+            updated[field] = "";
+            return updated;
+          }
+
+          if (value === "+" || value === "-") {
+            return act;
+          }
+
+          let numericValue = Number(value);
+
+          if (isNaN(numericValue)) {
+            return act;
+          }
+
+          if (numericValue < 0) {
+            numericValue = 0;
+          }
+
+          // ✅ LIMIT TO 2 DECIMAL PLACES (MAIN FIX)
+          numericValue = Math.floor(numericValue * 100) / 100;
+
+          updated[field] = numericValue;
+
+          const boq = Number(updated.qtyInBOQ || 0);
+          const rate = Number(updated.Rate || 0);
+          let doneQty = Number(updated.qtyDone || 0);
+
+          if (field === "qtyDone" && doneQty > boq) {
+            doneQty = boq;
+            updated.qtyDone = boq;
+          }
+
+          updated.Amount = Math.floor(boq * rate * 100) / 100;
+          updated.amountDone = Math.floor(doneQty * rate * 100) / 100;
+
           return updated;
-        }
+        }),
+      };
+    });
 
-        if (value === "+" || value === "-") {
-          return act;
-        }
+    setData(cloned);
+    setActivities(cloned);
+  };
 
-        let numericValue = Number(value);
+  useEffect(() => {
+    if (!data || data.length === 0) return;
 
-        if (isNaN(numericValue)) {
-          return act;
-        }
-
-        if (numericValue < 0) {
-          numericValue = 0;
-        }
-
-        // ✅ LIMIT TO 2 DECIMAL PLACES (MAIN FIX)
-        numericValue = Math.floor(numericValue * 100) / 100;
-
-        updated[field] = numericValue;
-
-        const boq = Number(updated.qtyInBOQ || 0);
-        const rate = Number(updated.Rate || 0);
-        let doneQty = Number(updated.qtyDone || 0);
-
-        if (field === "qtyDone" && doneQty > boq) {
-          doneQty = boq;
-          updated.qtyDone = boq;
-        }
-
-        updated.Amount = Math.floor(boq * rate * 100) / 100;
-        updated.amountDone = Math.floor(doneQty * rate * 100) / 100;
-
-        return updated;
-      }),
-    };
-  });
-
-  setData(cloned);
-  setActivities(cloned);
-};
-
-
-  const overall = getOverallProgress(data);
+    const overall = getOverallProgress(data);
+    setProgress(overall);
+  }, [data]); // 🔥 data change hote hi recalc
 
   return (
     <div className="py-4">
@@ -101,14 +105,14 @@ const WorkplanProgress = ({ activities, setActivities }) => {
         <div className="flex justify-between items-center mb-2">
           <h1 className="text-xl font-bold">Overall Progress</h1>
           <span className="text-xl font-extrabold text-custom-yellow">
-            {overall}%
+            {progress}%
           </span>
         </div>
 
         <div className="w-full h-3 bg-gray-300 rounded-full overflow-hidden">
           <div
             className="h-full bg-custom-yellow"
-            style={{ width: `${overall}%` }}
+            style={{ width: `${progress}%` }}
           />
         </div>
       </motion.div>
@@ -165,7 +169,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                               section.id,
                               act.id,
                               "qtyInBOQ",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -182,7 +186,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                               section.id,
                               act.id,
                               "Rate",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -199,7 +203,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                               section.id,
                               act.id,
                               "Amount",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -215,7 +219,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                               section.id,
                               act.id,
                               "qtyDone",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -232,7 +236,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                               section.id,
                               act.id,
                               "amountDone",
-                              e.target.value
+                              e.target.value,
                             )
                           }
                         />
@@ -264,7 +268,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                             section.id,
                             act.id,
                             "qtyInBOQ",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                       />
@@ -278,7 +282,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                             section.id,
                             act.id,
                             "Rate",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                       />
@@ -293,7 +297,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                             section.id,
                             act.id,
                             "Amount",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                       />
@@ -307,7 +311,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                             section.id,
                             act.id,
                             "qtyDone",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                       />
@@ -322,7 +326,7 @@ const WorkplanProgress = ({ activities, setActivities }) => {
                             section.id,
                             act.id,
                             "amountDone",
-                            e.target.value
+                            e.target.value,
                           )
                         }
                       />

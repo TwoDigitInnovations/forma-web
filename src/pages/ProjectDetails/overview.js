@@ -107,9 +107,12 @@ const ProjectDetailsPage = (props) => {
     return diffDays;
   }
 
-  const physical = 0;
+  const physical = projectDetails?.actualProgress || 0;
   const time = 33;
-  const financial = 0;
+   const financial =
+      projectDetails?.contractAmount > 0
+        ? Number(((projectDetails?.paidAmount / projectDetails?.contractAmount) * 100).toFixed(2))
+        : 0;
 
   const Card = ({ title, value, icon, Open }) => {
     return (
@@ -308,7 +311,7 @@ const ProjectDetailsPage = (props) => {
                 </div>
                 <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gray-400 rounded-full transition-all"
+                    className="h-full bg-custom-yellow rounded-full transition-all"
                     style={{ width: `${physical}%` }}
                   />
                 </div>
@@ -352,7 +355,7 @@ const ProjectDetailsPage = (props) => {
                     cx="56"
                     cy="56"
                     r="50"
-                    stroke="#ffffff"
+                    stroke="#e0f349"
                     strokeWidth="8"
                     fill="none"
                     strokeDasharray={2 * Math.PI * 50}
