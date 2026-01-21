@@ -23,6 +23,7 @@ import {
   ProjectGrievances,
   ProjectInformation,
 } from "../../../components/AllComponents";
+import moment from "moment";
 
 const ProjectDetailsPage = (props) => {
   const router = useRouter();
@@ -108,11 +109,30 @@ const ProjectDetailsPage = (props) => {
   }
 
   const physical = projectDetails?.actualProgress || 0;
-  const time = 33;
-   const financial =
-      projectDetails?.contractAmount > 0
-        ? Number(((projectDetails?.paidAmount / projectDetails?.contractAmount) * 100).toFixed(2))
-        : 0;
+
+  const financial =
+    projectDetails?.contractAmount > 0
+      ? Number(
+          (
+            (projectDetails?.paidAmount / projectDetails?.contractAmount) *
+            100
+          ).toFixed(2),
+        )
+      : 0;
+
+  const calculateTimeProgress = (startDate, endDate) => {
+    const currentDate = moment();
+    const start = moment(startDate);
+    const end = moment(endDate);
+    if (!startDate || !endDate || currentDate.isBefore(start)) return 0;
+    if (currentDate.isAfter(end)) return 100;
+    const totalDuration = end.diff(start);
+    const elapsedDuration = currentDate.diff(start);
+    return ((elapsedDuration / totalDuration) * 100).toFixed(2);
+  };
+
+  const time = calculateTimeProgress(projectDetails?.startDate, projectDetails?.endDate);
+
 
   const Card = ({ title, value, icon, Open }) => {
     return (
