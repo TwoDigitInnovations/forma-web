@@ -18,12 +18,20 @@ import dynamic from "next/dynamic";
 import moment from "moment";
 import { userContext } from "@/pages/_app";
 
-function meetingmintues({setOpen, getAllMeetings,editData, setEditData, close ,editId, setEditId}) {
+function meetingmintues({
+  setOpen,
+  getAllMeetings,
+  editData,
+  setEditData,
+  close,
+  editId,
+  setEditId,
+}) {
   const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
   const [user] = useContext(userContext);
   const [AllProjectData, setAllProjectData] = useState([]);
- 
+
   const [actionRegistry, setActionRegistry] = useState([
     {
       projectId: "",
@@ -138,66 +146,30 @@ function meetingmintues({setOpen, getAllMeetings,editData, setEditData, close ,e
   };
 
   const editorConfig = {
-    height: 300,
-    toolbarAdaptive: false,
-    toolbarSticky: true,
-    toolbarButtonSize: "middle",
+    height: 250,
     readonly: false,
-    askBeforePasteHTML: false,
-    askBeforePasteFromWord: false,
-    defaultActionOnPaste: "insert_clear_html",
-    enableDragAndDropFileToEditor: true,
-    allowPasteImages: true,
-    useNativeTooltip: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
     spellcheck: true,
-    buttons: [
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "|",
-      "fontsize",
-      "font",
-      "paragraph",
-      "brush",
-      "|",
-      "left",
-      "center",
-      "right",
-      "justify",
-      "|",
-      "ul",
-      "ol",
-      "indent",
-      "outdent",
-      "|",
-      "link",
+
+    buttons: ["bold", "ul", "ol"],
+
+    removeButtons: [
+      "source",
       "image",
       "video",
       "table",
-      "hr",
-      "emoji",
-      "|",
-      "undo",
-      "redo",
-      "|",
-      "cut",
-      "copy",
-      "paste",
-      "|",
+      "link",
       "brush",
-      "background",
-      "|",
-      "source",
+      "font",
+      "fontsize",
+      "paragraph",
       "fullsize",
     ],
-    uploader: {
-      insertImageAsBase64URI: true,
-    },
-    clipboard: {
-      matchVisual: false,
-    },
-    removeButtons: ["about"],
+
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
   };
 
   const updateRegistry = (index, field, value) => {
@@ -365,11 +337,15 @@ function meetingmintues({setOpen, getAllMeetings,editData, setEditData, close ,e
       const res = await Api("post", url, meetingData, router);
 
       if (res?.status === true) {
-        toast.success(editId ? "Meeting Updated successfully":"Meeting saved successfully!");
+        toast.success(
+          editId
+            ? "Meeting Updated successfully"
+            : "Meeting saved successfully!",
+        );
         setEditData({});
         setEditId("");
         getAllMeetings();
-        setOpen(false)
+        setOpen(false);
       }
     } catch (err) {
       console.error("Failed to save meeting", err);
@@ -575,7 +551,7 @@ function meetingmintues({setOpen, getAllMeetings,editData, setEditData, close ,e
                   <div className="text-sm font-semibold mb-3">
                     {index + 1}. {agenda.title.toUpperCase()}
                   </div>
-                  <div className="text-black">
+                  <div className="text-black bg-cusom-black">
                     <JoditEditor
                       value={discussions[index] || ""}
                       config={{
@@ -591,30 +567,7 @@ function meetingmintues({setOpen, getAllMeetings,editData, setEditData, close ,e
                       }}
                     />
 
-                    {/* <div className="editor-wrapper">
-                        {!discussions[index] && (
-                          <span className="editor-placeholder">
-                            Summary of what was discussed regarding "
-                            {agenda.title}"...
-                          </span>
-                        )}
-
-                        <Editor
-                          value={discussions[index] || ""}
-                          onChange={(e) => {
-                            setDiscussions((prev) => ({
-                              ...prev,
-                              [index]: e.target.value,
-                            }));
-                          }}
-                        >
-                          <Toolbar>
-                            <BtnBold />
-                            <BtnBulletList />
-                            <BtnNumberedList />
-                          </Toolbar>
-                        </Editor>
-                      </div> */}
+                 
                   </div>
                 </div>
               ))}
