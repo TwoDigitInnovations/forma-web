@@ -74,6 +74,7 @@ function Dashboard(props) {
   }, []);
 
   const [AllActionPoints, setAllActionPoints] = useState([]);
+  const [AllActionPointsLength, setAllActionPointsLength] = useState([]);
   const [AllBehiendProject, setAllBehiendProject] = useState([]);
   const [projectId, setProjectID] = useState("all");
 
@@ -93,7 +94,14 @@ function Dashboard(props) {
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
-          setAllActionPoints(res.data?.data);
+          const data = res.data?.data;
+          setAllActionPoints(data);
+
+          const filtered = data.filter(
+            (item) => item.status === "Open" || item.status === "In-Progress",
+          );
+
+          setAllActionPointsLength(filtered.length);
         } else {
           toast.error(res?.message || "Failed to created status");
         }
@@ -264,7 +272,7 @@ function Dashboard(props) {
           <div
             className="bg-custom-black  rounded-2xl px-4 py-6 border-2 border-gray-700  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
             onClick={() => {
-              // getActionPoints();
+              getActionPoints();
               setActionOpen(true);
             }}
           >
@@ -277,7 +285,7 @@ function Dashboard(props) {
                   Action points
                 </p>
                 <p className="text-2xl font-bold text-custom-yellow">
-                  {AllActionPoints.length}
+                  {AllActionPointsLength}
                 </p>
                 <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
                   Open Task to complete
@@ -309,7 +317,10 @@ function Dashboard(props) {
 
           {actionOpen && (
             <ActionPoints
-              onclose={() => setActionOpen(false)}
+              onclose={() => {
+                setProjectID("all");
+                getActionPoints();
+                setActionOpen(false)}}
               projects={allProjectData}
               projectId={projectId}
               setProjectID={setProjectID}

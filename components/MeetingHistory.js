@@ -7,6 +7,7 @@ function MeetingHistory({
   setIsConfirmOpen,
   setEditId,
   setEditData,
+  setOpen,
 }) {
   if (!meetings.length) {
     return (
@@ -30,7 +31,7 @@ function MeetingHistory({
       {meetings.map((meeting) => (
         <div
           key={meeting._id}
-          className="bg-custom-black rounded-xl border border-gray-800 p-3 md:p-5 hover:border-custom-blue transition "
+          className="bg-custom-black rounded-xl border border-gray-800 p-3 md:p-4 hover:border-custom-blue transition "
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs text-custom-black bg-custom-yellow px-3 py-1 rounded-full">
@@ -74,9 +75,9 @@ function MeetingHistory({
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer"
                 title="Edit"
                 onClick={() => {
-                  setActiveTab("new");
                   setEditId(meeting?._id);
                   setEditData(meeting);
+                  setOpen(true)
                 }}
               >
                 <Edit2 size={16} />

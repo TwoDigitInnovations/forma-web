@@ -12,7 +12,7 @@ const InputField = ({
   return (
     <div className="md:col-span-1 col-span-2">
       {label && (
-        <label className="block text-sm font-medium mb-2">{label}</label>
+        <label className="block text-sm font-medium mb-2 text-white">{label}</label>
       )}
 
       <input
