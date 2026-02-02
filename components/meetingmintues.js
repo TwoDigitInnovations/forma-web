@@ -404,7 +404,7 @@ function meetingmintues({
                 className="flex items-center gap-2 px-6 md:py-3 py-2 bg-custom-yellow text-black rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 <X size={18} />
-                Cancal
+                Cancel
               </button>
             </div>
           </div>

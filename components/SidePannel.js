@@ -90,7 +90,7 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     },
     {
       href: "/ProjectDetails/Pre-construction",
-      title: "Pre-construction",
+      title: "Documents Checklist",
       img: <BrickWall className="text-3xl" />,
       access: ["User", "Organization", "TeamsMember"],
     },
