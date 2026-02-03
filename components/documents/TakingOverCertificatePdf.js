@@ -281,6 +281,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                 </h2>
 
                 <div
+                 className="rich-html"
                   style={{
                     border: "1px solid #ddd",
                     borderRadius: "5px",
@@ -289,9 +290,10 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                     fontSize: "13px",
                     minHeight: "60px",
                   }}
-                >
-                  {data.defects}
-                </div>
+                  dangerouslySetInnerHTML={{
+                    __html: data?.defects || "",
+                  }}
+                />
 
                 <p
                   style={{

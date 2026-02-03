@@ -15,7 +15,7 @@ export default function RichTextEditor({
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    if (value !== undefined && value !== null) {
+    if (value != null && value !== content) {
       setContent(value);
     }
   }, [value]);
@@ -58,12 +58,10 @@ export default function RichTextEditor({
           config={{ ...editorConfig, placeholder }}
           tabIndex={1}
           onChange={(newContent) => {
-            // Sirf local state update
-            setContent(newContent);
+            setContent(newContent); // local only
           }}
           onBlur={(newContent) => {
-            // Parent ko tab update karo jab user likhna khatam kare
-            onChange?.(newContent);
+            onChange?.(newContent); // parent update
           }}
         />
       </div>

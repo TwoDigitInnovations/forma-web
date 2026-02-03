@@ -7,9 +7,13 @@ import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import { ProjectDetailsContext } from "@/pages/_app";
 import TakingOverCertificatePdf from "../../../../components/documents/TakingOverCertificatePdf";
+import dynamic from "next/dynamic";
 
 function TakingOverCertificate(props) {
   const router = useRouter();
+
+  const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+
   const [projectId, setProjectId] = useState("");
   const [editId, setEditId] = useState("");
   const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
@@ -91,7 +95,32 @@ function TakingOverCertificate(props) {
       getDetails(id);
     }
   }, [router.isReady, router.query.editId]);
+  const editorConfig = {
+    height: 250,
+    readonly: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
+    spellcheck: true,
 
+    buttons: ["bold", "ul", "ol"],
+
+    removeButtons: [
+      "source",
+      "image",
+      "video",
+      "table",
+      "link",
+      "brush",
+      "font",
+      "fontsize",
+      "paragraph",
+      "fullsize",
+    ],
+
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
+  };
   const [formData, setFormData] = useState({
     CertificateNumber: "",
     CertificateDate: "",
@@ -277,17 +306,27 @@ function TakingOverCertificate(props) {
         </div>
 
         <div className="md:mt-6 mt-3">
-          <ListEditer
-            label="Outstanding Work and Defects"
-            value={formData.OutstandingWorkandDefects}
-            onChange={(newContent) => {
-              setFormData((prev) => ({
-                ...prev,
-                OutstandingWorkandDefects: newContent,
-              }));
-            }}
-            placeholder="List any outstanding work or defects..."
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">
+              Outstanding Work and Defects
+            </p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.OutstandingWorkandDefects}
+                config={{
+                  ...editorConfig,
+                  placeholder: `List any outstanding work or defects...`,
+                }}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    OutstandingWorkandDefects: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
