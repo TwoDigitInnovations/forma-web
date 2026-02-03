@@ -9,78 +9,42 @@ export default function RichTextEditor({
   label = "Executive Summary",
   value,
   onChange,
+  placeholder,
 }) {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  
   useEffect(() => {
     if (value !== undefined && value !== null) {
       setContent(value);
     }
-  }, [value]); // <-- CRITICAL FIX!
+  }, [value]);
 
   const editorConfig = {
-    height: 300,
-    toolbarAdaptive: false,
-    toolbarSticky: true,
-    toolbarButtonSize: "middle",
+    height: 250,
     readonly: false,
-    askBeforePasteHTML: false,
-    askBeforePasteFromWord: false,
-    defaultActionOnPaste: "insert_clear_html",
-    enableDragAndDropFileToEditor: true,
-    allowPasteImages: true,
-    useNativeTooltip: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
     spellcheck: true,
-    buttons: [
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "|",
-      "fontsize",
-      "font",
-      "paragraph",
-      "brush",
-      "|",
-      "left",
-      "center",
-      "right",
-      "justify",
-      "|",
-      "ul",
-      "ol",
-      "indent",
-      "outdent",
-      "|",
-      "link",
+
+    buttons: ["bold", "ul", "ol"],
+
+    removeButtons: [
+      "source",
       "image",
       "video",
       "table",
-      "hr",
-      "emoji",
-      "|",
-      "undo",
-      "redo",
-      "|",
-      "cut",
-      "copy",
-      "paste",
-      "|",
+      "link",
       "brush",
-      "background",
-      "|",
-      "source",
+      "font",
+      "fontsize",
+      "paragraph",
       "fullsize",
     ],
-    uploader: {
-      insertImageAsBase64URI: true,
-    },
-    clipboard: {
-      matchVisual: false,
-    },
-    removeButtons: ["about"],
+
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
   };
 
   return (
@@ -91,10 +55,14 @@ export default function RichTextEditor({
         <JoditEditor
           ref={editor}
           value={content}
-          config={editorConfig}
+          config={{ ...editorConfig, placeholder }}
           tabIndex={1}
-          onBlur={(newContent) => {
+          onChange={(newContent) => {
+            // Sirf local state update
             setContent(newContent);
+          }}
+          onBlur={(newContent) => {
+            // Parent ko tab update karo jab user likhna khatam kare
             onChange?.(newContent);
           }}
         />

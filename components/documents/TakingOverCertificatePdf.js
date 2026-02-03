@@ -18,7 +18,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
   });
 
   useEffect(() => {
-    if (!formData || !projectDetails) return;
+    if (!projectDetails) return;
 
     setData({
       clientName: projectDetails?.clientInfo?.ClientName || "BRA",
@@ -27,25 +27,23 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
         "proposed construction of daynille road (Copy)",
       projectNo: projectDetails?.projectNo || "",
       LogoImage: formData?.LogoImage || "",
-      contractorName:
-        projectDetails?.contractorInfo?.contractorName || "Contractor Name",
-      contractorContact:
-        projectDetails?.contractorInfo?.phone || "Contractor Contact",
-      certificateNo: formData?.certificateNo || "TOC-undefined-2025",
-      dateOfIssue: formData?.dateOfIssue || "December 4, 2025",
-      takingOverDate: formData?.takingOverDate || "December 4, 2025",
-      location: projectDetails?.location || "Mogadishu",
-      employerName: projectDetails?.clientInfo?.ClientName || "BRA",
-      contractAmount: projectDetails?.contractAmount || "5678000.00",
-      defects:
-        formData?.OutstandingWorkandDefects ||
-        "None at the time of Taking Over",
-      clientContact: projectDetails?.clientInfo?.phone || "Client Contact",
+      contractorName: projectDetails?.contractorInfo?.contractorName || "",
+      contractorContact: projectDetails?.contractorInfo?.phone || "",
+      certificateNo: formData?.CertificateNumber || "",
+      dateOfIssue: formData?.CertificateDate || "",
+      takingOverDate: formData?.TakingOverDate || "",
+      location: projectDetails?.location || "",
+      employerName: projectDetails?.clientInfo?.ClientName || "",
+      contractAmount: projectDetails?.contractAmount || "",
+      defects: formData?.OutstandingWorkandDefects || "",
+      clientContact: projectDetails?.clientInfo?.phone || "",
       clientName: projectDetails?.clientInfo?.ClientName || "",
       clientAddress: projectDetails?.clientInfo?.Address || "",
       LogoImage: projectDetails?.clientInfo?.ClientLogo || "",
     });
   }, [formData, projectDetails]);
+
+  console.log(formData);
 
   return (
     <div className="min-h-screen bg-black mt-8 rounded-2xl p-6">
@@ -63,7 +61,6 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                 padding: "40px 50px",
               }}
             >
-
               <div style={{ marginBottom: "30px" }}>
                 <div
                   style={{
@@ -137,7 +134,6 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                 </div>
               </div>
 
-              {/* Two Column Info Section */}
               <div
                 style={{
                   display: "grid",
@@ -153,7 +149,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                       Date of Issue:
                     </div>
                     <div style={{ fontWeight: "500", color: "#1e5a8e" }}>
-                      {data.dateOfIssue}
+                      {data?.dateOfIssue}
                     </div>
                   </div>
                 </div>
@@ -164,7 +160,7 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                       Taking Over Date:
                     </div>
                     <div style={{ fontWeight: "500", color: "#1e5a8e" }}>
-                      {data.takingOverDate}
+                      {data?.takingOverDate}
                     </div>
                   </div>
                 </div>
@@ -257,17 +253,17 @@ const TakingOverCertificatePdf = ({ formData, contentRef, projectDetails }) => {
                     marginBottom: "15px",
                   }}
                 >
-                  In accordance with Sub-Clause 10.1 of the Conditions of
-                  Contract, I hereby certify that the Works described as "
-                  <em>{data.projectTitle}</em>" - were substantially completed
-                  in accordance with the Contract on{" "}
+                  I hereby certify that the Works described above were
+                  substantially completed in accordance with the Contract on the{" "}
                   <strong>{data.takingOverDate}</strong>.
                 </p>
 
                 <p style={{ fontSize: "13px", lineHeight: "1.7" }}>
-                  The Works are now taken over by the Employer, and the Defects
-                  Notification Period commences from the above date in
-                  accordance with Sub-Clause 11.1 of the Contract.
+                  The Works are now officially taken over by the Employer, who
+                  assumes responsibility for the care and custody of the site.
+                  The Defects Notification Period is now in effect, during which
+                  time the Contractor is required to complete any remaining
+                  minor works and rectify any identified defects.
                 </p>
               </div>
 

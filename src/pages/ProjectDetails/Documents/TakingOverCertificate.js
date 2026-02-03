@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, X, Save, Download } from "lucide-react";
 import { useRouter } from "next/router";
 import InputField from "../../../../components/UI/InputField";
-import TextAreaField from "../../../../components/UI/TextAreaField";
+import ListEditer from "../../../../components/UI/ListEditer";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import { ProjectDetailsContext } from "@/pages/_app";
@@ -277,18 +277,20 @@ function TakingOverCertificate(props) {
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
+          <ListEditer
             label="Outstanding Work and Defects"
-            name="OutstandingWorkandDefects"
             value={formData.OutstandingWorkandDefects}
-            onChange={handleInputChange}
-            placeholder="List any Outstanding work of defects..."
-            rows="5"
+            onChange={(newContent) => {
+              setFormData((prev) => ({
+                ...prev,
+                OutstandingWorkandDefects: newContent,
+              }));
+            }}
+            placeholder="List any outstanding work or defects..."
           />
         </div>
       </div>
 
-      {/* PDF Preview */}
       <div>
         <TakingOverCertificatePdf
           formData={formData}

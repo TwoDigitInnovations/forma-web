@@ -199,7 +199,7 @@ function PreConstruction(props) {
         {/* HEADER */}
         <div className="bg-[#DFF34940] py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-2xl">Pre-Commencement Checklist</p>
+            <p className="text-2xl">Documents Checklist</p>
 
             <h1 className="text-[14px] font-bold flex items-center gap-2">
               {projectDetails?.projectName}
@@ -246,7 +246,7 @@ function PreConstruction(props) {
             Track required documents and approvals before project commencement{" "}
           </p>
           {allCheckListItem.length === 0 ? (
-            <div className="flex flex-col justify-center items-center min-h-[300px] text-center">
+            <div className="flex flex-col justify-center items-center min-h-[400px] text-center">
               <FileCode2 size={68} />
               <h3 className="text-xl font-medium mt-2">
                 No Checklist Items Found
@@ -260,7 +260,6 @@ function PreConstruction(props) {
         </div>
       </div>
 
-      {/* ADD / EDIT FORM */}
       {isOpen && (
         <AddChecklistForm
           setIsOpen={setIsOpen}

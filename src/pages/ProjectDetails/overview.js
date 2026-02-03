@@ -110,14 +110,12 @@ const ProjectDetailsPage = (props) => {
 
   const physical = projectDetails?.actualProgress || 0;
 
+  const contractAmount = Number(projectDetails?.contractAmount) || 0;
+  const paidAmount = Number(projectDetails?.paidAmount) || 0;
+
   const financial =
-    projectDetails?.contractAmount > 0
-      ? Number(
-          (
-            (projectDetails?.paidAmount / projectDetails?.contractAmount) *
-            100
-          ).toFixed(2),
-        )
+    contractAmount > 0
+      ? Number(((paidAmount / contractAmount) * 100).toFixed(2))
       : 0;
 
   const calculateTimeProgress = (startDate, endDate) => {
@@ -131,8 +129,10 @@ const ProjectDetailsPage = (props) => {
     return ((elapsedDuration / totalDuration) * 100).toFixed(2);
   };
 
-  const time = calculateTimeProgress(projectDetails?.startDate, projectDetails?.endDate);
-
+  const time = calculateTimeProgress(
+    projectDetails?.startDate,
+    projectDetails?.endDate,
+  );
 
   const Card = ({ title, value, icon, Open }) => {
     return (
@@ -263,7 +263,7 @@ const ProjectDetailsPage = (props) => {
               </div>
               <div>
                 <p className="text-white text-md font-medium  tracking-wide">
-                  Pre-Commencement
+                  Documents Checklist
                 </p>
                 <p className="text-xl font-bold text-custom-yellow">
                   See Pending

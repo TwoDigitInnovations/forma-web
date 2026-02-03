@@ -38,20 +38,23 @@ function Dashboard(props) {
   const [projectBehind, setProjectBehind] = useState(false);
   const [grievancesOpen, setGrievancesOpen] = useState(false);
 
-  useEffect(() => {
-    // router.reload();
-    const user = JSON.parse(localStorage.getItem("userDetail"));
+  const [checking, setChecking] = useState(true);
 
-    if (!user || !user._id) {
+  useEffect(() => {
+    const userStr = localStorage.getItem("userDetail");
+
+    if (!userStr) {
+      setChecking(false);
       router.replace("/");
       return;
     }
+
+    const user = JSON.parse(userStr);
 
     let isSubscriptionInvalid = false;
 
     if (user.role === "TeamsMember" && user.OrganizationId) {
       const org = user.OrganizationId;
-
       isSubscriptionInvalid =
         !org.subscription ||
         org.subscription.status !== "active" ||
@@ -65,9 +68,14 @@ function Dashboard(props) {
 
     if (isSubscriptionInvalid) {
       router.push("/PlanPage");
-      return;
     }
+
+    setChecking(false);
   }, []);
+
+  // if (checking) {
+  //   return <div className="text-white">Loading dashboard...</div>;
+  // }
 
   useEffect(() => {
     getAllProject();
@@ -320,7 +328,8 @@ function Dashboard(props) {
               onclose={() => {
                 setProjectID("all");
                 getActionPoints();
-                setActionOpen(false)}}
+                setActionOpen(false);
+              }}
               projects={allProjectData}
               projectId={projectId}
               setProjectID={setProjectID}
