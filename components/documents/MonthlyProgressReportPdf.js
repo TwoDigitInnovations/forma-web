@@ -7,32 +7,50 @@ const MonthlyProgressReportPdf = ({
   setSummary,
   contentRef,
 }) => {
+  const safeNumber = (value) => {
+    const num = Number(value);
+    return isNaN(num) || num < 0 ? 0 : num;
+  };
+
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
   useEffect(() => {
     if (!data) return;
 
-    const advance = Number(data?.advancePayment) || 0;
-    const contract = Number(data?.contractAmount) || 0;
-    const paid = Number(data?.paidAmount) || 0;
+    const advance = safeNumber(data?.advancePayment);
+    const contract = safeNumber(data?.contractAmount);
+    const paid = safeNumber(data?.paidAmount);
 
-    const progressAmount = advance + paid;
+    const progressAmount = paid;
 
-    const progress =
-      contract > 0 ? ((progressAmount / contract) * 100).toFixed(2) : 0;
+    const rawProgress = contract > 0 ? (progressAmount / contract) * 100 : 0;
+    console.log(progressAmount, contract);
 
-    const remainingPayment = contract - progressAmount;
+    console.log(rawProgress);
+
+    const progress = clamp(Number(rawProgress.toFixed(2)), 0, 100);
+
+    const remainingPayment = Math.max(contract - progressAmount, 0);
+
     let totalSubmitted = 0;
     let totalInProcess = 0;
     let totalPaid = 0;
 
-    data.certificates?.forEach((certificate) => {
-      const amt = Number(certificate.amount || 0);
+    data?.certificates?.forEach((certificate) => {
+      const amt = safeNumber(certificate?.amount);
 
-      if (certificate.status === "Submitted") {
-        totalSubmitted += amt;
-      } else if (certificate.status === "In-Process") {
-        totalInProcess += amt;
-      } else if (certificate.status === "Paid") {
-        totalPaid += amt;
+      switch (certificate?.status) {
+        case "Submitted":
+          totalSubmitted += amt;
+          break;
+        case "In-Process":
+          totalInProcess += amt;
+          break;
+        case "Paid":
+          totalPaid += amt;
+          break;
+        default:
+          break;
       }
     });
 
@@ -40,8 +58,8 @@ const MonthlyProgressReportPdf = ({
       advancePayment: advance,
       contractAmount: contract,
       paidAmount: paid,
-      progress,
-      remainingPayment,
+      progress, // always 0–100
+      remainingPayment, // never negative
       totalSubmitted,
       totalInProcess,
       totalPaid,
@@ -110,7 +128,7 @@ const MonthlyProgressReportPdf = ({
                 style={{
                   fontSize: "22px",
                   fontWeight: "bold",
-                  marginBottom: "6px",
+                  marginBottom: "8px",
                 }}
               >
                 {data.clientName}
@@ -119,8 +137,8 @@ const MonthlyProgressReportPdf = ({
               <div
                 style={{
                   display: "inline-block",
-                  background: "#FCD34D",
-                  padding: "8px 20px",
+                  // background: "#FCD34D",
+                  padding: "8px 0px",
                   borderRadius: "6px",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -134,7 +152,7 @@ const MonthlyProgressReportPdf = ({
               <div
                 style={{
                   display: "inline-block",
-                  background: "linear-gradient(to right, #2563EB, #3B82F6)",
+                  // background: "#2563EB",
                   padding: "16px 28px",
                   borderRadius: "10px",
                   boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
@@ -143,7 +161,7 @@ const MonthlyProgressReportPdf = ({
                 <h2
                   style={{
                     fontSize: "22px",
-                    color: "white",
+                    color: "black",
                     fontWeight: "bold",
                     letterSpacing: "1px",
                     margin: 0,
@@ -169,7 +187,7 @@ const MonthlyProgressReportPdf = ({
 
             <div style={{ textAlign: "center", margin: "30px 0" }}>
               <p style={{ fontSize: "18px", fontWeight: 600 }}>
-                {data.reportMonth} 5, {data.reportYear}
+                {data.reportMonth}, {data.reportYear}
               </p>
             </div>
 
@@ -199,7 +217,6 @@ const MonthlyProgressReportPdf = ({
               )}
             </div>
 
-            {/* TABLE OF CONTENTS */}
             <div style={{ marginTop: "56px" }}>
               <h3
                 style={{
@@ -312,7 +329,7 @@ const MonthlyProgressReportPdf = ({
               {/* TABLE */}
               <table
                 style={{
-                  width: "100%",
+                  width: "1000px",
                   borderCollapse: "collapse",
                   fontSize: "14px",
                   marginTop: "20px",
@@ -391,7 +408,6 @@ const MonthlyProgressReportPdf = ({
               </table>
             </div>
 
-          
             <div style={{ marginTop: "32px" }}>
               <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
                 3. SCOPE OF WORK
@@ -416,7 +432,6 @@ const MonthlyProgressReportPdf = ({
               )}
             </div>
 
-        
             <div style={{ marginTop: "32px" }}>
               <h2
                 style={{
@@ -439,7 +454,7 @@ const MonthlyProgressReportPdf = ({
                 4.1 Overall Progress
               </p>
 
-              <div style={{ width: "100%", marginBottom: "24px" }}>
+              <div style={{ width: "1000px", marginBottom: "24px" }}>
                 <div
                   style={{
                     display: "grid",
@@ -447,12 +462,14 @@ const MonthlyProgressReportPdf = ({
                     gap: "40px",
                   }}
                 >
-                  {/* Completion Status */}
                   <div>
                     <p style={{ fontSize: "13px", color: "#777" }}>
                       Completion Status
                     </p>
-                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>4%</p>
+
+                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>
+                      {data?.actualProgress ?? 0}%
+                    </p>
 
                     <div
                       style={{
@@ -461,16 +478,18 @@ const MonthlyProgressReportPdf = ({
                         height: "12px",
                         borderRadius: "10px",
                         marginTop: "8px",
+                        overflow: "hidden",
                       }}
                     >
                       <div
                         style={{
                           height: "12px",
-                          width: "10%",
+                          width: `${Math.min(data?.actualProgress || 0, 100)}%`,
                           background: "#fbbf24",
                           borderRadius: "10px",
+                          transition: "width 0.3s ease",
                         }}
-                      ></div>
+                      />
                     </div>
                   </div>
 
@@ -552,7 +571,6 @@ const MonthlyProgressReportPdf = ({
               </p>
 
               <div style={{ width: "100%" }}>
-                
                 <div
                   style={{
                     display: "grid",
@@ -588,7 +606,7 @@ const MonthlyProgressReportPdf = ({
                         color: "red",
                       }}
                     >
-                      -${Summary.remainingPayment}
+                      ${Summary.remainingPayment}
                     </p>
                   </div>
 
@@ -617,8 +635,11 @@ const MonthlyProgressReportPdf = ({
                   style={{
                     width: "100%",
                     borderCollapse: "separate",
-                    borderSpacing: "0 8px",
+                    borderSpacing: "0",
                     fontSize: "14px",
+                    border: "1px solid #d1d5db", // gray-300
+                    borderRadius: "8px",
+                    overflow: "hidden",
                   }}
                 >
                   <thead>
@@ -627,35 +648,64 @@ const MonthlyProgressReportPdf = ({
                         color: "#666",
                         fontSize: "13px",
                         textAlign: "left",
+                        background: "#f9fafb",
                       }}
                     >
-                      <th style={{ padding: "8px" }}>#</th>
-                      <th style={{ padding: "8px" }}>Certificate No.</th>
-                      <th style={{ padding: "8px" }}>Date Certified</th>
-                      <th style={{ padding: "8px" }}>Submitted Amount</th>
-                      <th style={{ padding: "8px" }}>In Process Amount</th>
-                      <th style={{ padding: "8px" }}>Amount Paid</th>
-                      <th style={{ padding: "8px" }}>Payment Status</th>
+                      {[
+                        "#",
+                        "Certificate No.",
+                        "Date Certified",
+                        "Submitted Amount",
+                        "In Process Amount",
+                        "Amount Paid",
+                        "Payment Status",
+                      ].map((h, i) => (
+                        <th
+                          key={i}
+                          style={{
+                            padding: "10px 8px",
+                            borderBottom: "1px solid #d1d5db",
+                          }}
+                        >
+                          {h}
+                        </th>
+                      ))}
                     </tr>
                   </thead>
 
                   <tbody>
                     {/* Advance Row */}
                     <tr style={{ background: "#ffffff" }}>
-                      <td style={{ padding: "8px" }}>1.</td>
-                      <td style={{ padding: "8px" }}>Advance Payment</td>
-                      <td style={{ padding: "8px" }}>-</td>
-                      <td style={{ padding: "8px" }}>-</td>
-                      <td style={{ padding: "8px" }}>-</td>
-                      <td style={{ padding: "8px" }}>
-                        ${Summary.advancePayment}
-                      </td>
-                      <td style={{ padding: "8px" }}>
+                      {[
+                        "1.",
+                        "Advance Payment",
+                        "-",
+                        "-",
+                        "-",
+                        `$${Summary.advancePayment}`,
+                      ].map((cell, i) => (
+                        <td
+                          key={i}
+                          style={{
+                            padding: "8px",
+                            borderBottom: "1px solid #e5e7eb", // gray-200
+                          }}
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                      <td
+                        style={{
+                          padding: "8px",
+                          borderBottom: "1px solid #e5e7eb",
+                        }}
+                      >
                         <span
                           style={{
-                            padding: "4px 10px",
-                            background: "#1f2937",
-                            color: "white",
+                            // padding: "4px 10px",
+                            // background: "#1f2937",
+                            color: "black",
+                            fontWeight:"600",
                             fontSize: "12px",
                             borderRadius: "50px",
                           }}
@@ -665,38 +715,51 @@ const MonthlyProgressReportPdf = ({
                       </td>
                     </tr>
 
-                    {/* dynamic rows */}
+                    {/* Dynamic rows */}
                     {data.certificates?.map((certificate, key) => {
                       let submittedAmount = "-";
                       let inProcessAmount = "-";
                       let paidAmount = "-";
 
-                      if (certificate.status === "Submitted") {
+                      if (certificate.status === "Submitted")
                         submittedAmount = `$${certificate.amount}`;
-                      } else if (certificate.status === "In-Process") {
+                      else if (certificate.status === "In-Process")
                         inProcessAmount = `$${certificate.amount}`;
-                      } else if (certificate.status === "Paid") {
+                      else if (certificate.status === "Paid")
                         paidAmount = `$${certificate.amount}`;
-                      }
 
                       return (
                         <tr key={key} style={{ background: "#ffffff" }}>
-                          <td style={{ padding: "8px" }}>{key + 1}.</td>
-                          <td style={{ padding: "8px" }}>
-                            {certificate.certificateNo}
-                          </td>
-                          <td style={{ padding: "8px" }}>
-                            {moment(certificate.date).format("DD-MM-YYYY")}
-                          </td>
-                          <td style={{ padding: "8px" }}>{submittedAmount}</td>
-                          <td style={{ padding: "8px" }}>{inProcessAmount}</td>
-                          <td style={{ padding: "8px" }}>{paidAmount}</td>
-                          <td style={{ padding: "8px" }}>
+                          {[
+                            `${key + 1}.`,
+                            certificate.certificateNo,
+                            moment(certificate.date).format("DD-MM-YYYY"),
+                            submittedAmount,
+                            inProcessAmount,
+                            paidAmount,
+                          ].map((cell, i) => (
+                            <td
+                              key={i}
+                              style={{
+                                padding: "8px",
+                                borderBottom: "1px solid #e5e7eb",
+                              }}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                          <td
+                            style={{
+                              padding: "8px",
+                              borderBottom: "1px solid #e5e7eb",
+                            }}
+                          >
                             <span
                               style={{
-                                padding: "4px 10px",
-                                background: "#e5e7eb",
+                                // padding: "4px 10px",
+                                // background: "#e5e7eb",
                                 color: "#555",
+                                fontWeight:"600",
                                 fontSize: "12px",
                                 borderRadius: "50px",
                               }}
@@ -708,14 +771,17 @@ const MonthlyProgressReportPdf = ({
                       );
                     })}
 
-                    {/* TOTAL ROW */}
-                    <tr style={{ background: "#f3f4f6", fontWeight: "bold" }}>
+                    <tr
+                      style={{
+                        background: "#f3f4f6",
+                        fontWeight: "bold",
+                      }}
+                    >
                       <td style={{ padding: "8px" }}></td>
                       <td style={{ padding: "8px" }}></td>
                       <td style={{ padding: "8px", textAlign: "right" }}>
                         Total:
                       </td>
-
                       <td style={{ padding: "8px" }}>
                         ${Summary?.totalSubmitted}
                       </td>
@@ -732,7 +798,6 @@ const MonthlyProgressReportPdf = ({
               </div>
             </div>
 
-          
             <div style={{ marginTop: "32px" }}>
               <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
                 5. WORK PLAN
@@ -791,7 +856,7 @@ const MonthlyProgressReportPdf = ({
                               <td style={{ padding: "8px" }}>
                                 {item.startDate
                                   ? moment(item.startDate).format(
-                                      "MMMM DD, YYYY"
+                                      "MMMM DD, YYYY",
                                     )
                                   : "-"}
                               </td>
@@ -941,7 +1006,7 @@ const MonthlyProgressReportPdf = ({
                           >
                             {item}
                           </th>
-                        )
+                        ),
                       )}
                     </tr>
                   </thead>
@@ -1140,7 +1205,7 @@ const MonthlyProgressReportPdf = ({
               </div>
 
               <p style={{ textAlign: "center", fontSize: "16px" }}>
-                5 {data.reportMonth} {data.reportYear}
+                {data.reportMonth} {data.reportYear}
               </p>
 
               <p
@@ -1155,7 +1220,7 @@ const MonthlyProgressReportPdf = ({
               </p>
 
               <p style={{ textAlign: "center", fontSize: "14px" }}>
-                ConstructTrack Project Management System - {data.reportMonth} 5,{" "}
+                ConstructTrack Project Management System - {data.reportMonth} ,{" "}
                 {data.reportYear}
               </p>
             </div>

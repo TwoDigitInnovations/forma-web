@@ -23,6 +23,7 @@ function MonthlyProgressReport(props) {
   const [data, setData] = useState({});
   const [Summary, setSummary] = useState({});
   const [allPlanData, setAllPlanData] = useState([]);
+  const now = new Date();
 
   const generateDocumentName = (type) => {
     const formattedType = type
@@ -88,28 +89,31 @@ function MonthlyProgressReport(props) {
       ProjectScope: projectDetails?.ProjectScope || "",
       ProjectSummary: projectDetails?.description || "",
       ExcuetiveSummary: projectDetails?.ExcuetiveSummary || "",
-      projectTitle:
-        projectDetails?.projectName || "proposed construction of daynille road",
+      projectTitle: projectDetails?.projectName || "",
       projectNo: projectDetails?.projectNo || "",
       LogoImage: topLogo || "",
       contractorName:
         projectDetails?.contractorInfo?.contractorName || "Contractor Name",
-      contractorContact:
-        projectDetails?.contractorInfo?.phone || "Contractor Contact",
-      certificateNo: projectDetails?.certificateNo || "TOC-undefined-2025",
-      location: projectDetails?.location || "Mogadishu",
-      employerName: projectDetails?.clientInfo?.ClientName || "BRA",
+      contractorContact: projectDetails?.contractorInfo?.phone || "",
+      certificateNo: projectDetails?.certificateNo || "",
+      location: projectDetails?.location || "",
+      employerName: projectDetails?.clientInfo?.ClientName || "",
       contractAmount: projectDetails?.contractAmount || "0.00",
       advancePayment: projectDetails?.advancePayment || "0.00",
       paidAmount: projectDetails?.paidAmount || "0.00",
       certificates: projectDetails?.certificates || [],
-      reportMonth: "DECEMBER",
-      reportYear: "2025",
+      reportMonth: now.toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+      }),
+      reportYear: now.getFullYear().toString(),
       contractorEquipment: projectDetails?.contractorInfo?.equipment || [],
       contractorPersonnel: projectDetails?.contractorInfo || {},
       clientPersonnel: projectDetails?.clientInfo || {},
       issuesConcern: allItems,
       workplan: allPlanData,
+
+      actualProgress: projectDetails?.actualProgress,
     };
 
     if (editId && editData) {
@@ -285,7 +289,7 @@ function MonthlyProgressReport(props) {
             console.log(err);
             props.loader(false);
             toast.error(err?.message || "Upload failed");
-          }
+          },
         );
       },
     });
@@ -364,7 +368,7 @@ function MonthlyProgressReport(props) {
 
             <button
               onClick={downloadPDF}
-              disabled={props.loader}
+              // disabled={props.loader}
               className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />
