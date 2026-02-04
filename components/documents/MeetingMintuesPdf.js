@@ -17,7 +17,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
     clientName: "",
     clientAddress: "",
     LogoImage: "",
-    clientContact:"",
+    clientContact: "",
   });
 
   useEffect(() => {
@@ -223,6 +223,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 </p>
 
                 <div
+                  className="rich-html"
                   style={{ fontSize: "14px", color: "#374151" }}
                   dangerouslySetInnerHTML={{ __html: data.attendees }}
                 ></div>
@@ -241,6 +242,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                   Agenda
                 </p>
                 <div
+                  className="rich-html"
                   style={{ fontSize: "14px", color: "#374151" }}
                   dangerouslySetInnerHTML={{ __html: data.agenda }}
                 ></div>
@@ -259,6 +261,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                   Discussions & Decisions
                 </p>
                 <div
+                  className="rich-html"
                   style={{ fontSize: "14px", color: "#374151" }}
                   dangerouslySetInnerHTML={{ __html: data.discussions }}
                 ></div>
@@ -278,6 +281,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 </p>
 
                 <div
+                  className="rich-html"
                   style={{ fontSize: "14px", color: "#374151" }}
                   dangerouslySetInnerHTML={{ __html: data.actionItems }}
                 ></div>

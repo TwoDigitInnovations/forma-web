@@ -61,7 +61,7 @@ export default function RichTextEditor({
             setContent(newContent); // local only
           }}
           onBlur={(newContent) => {
-            onChange?.(newContent); // parent update
+            onChange?.(newContent); // ✅ update only once
           }}
         />
       </div>

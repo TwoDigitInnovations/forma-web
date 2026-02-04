@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, X, Save, Download } from "lucide-react";
 import { useRouter } from "next/router";
 import InputField from "../../../../components/UI/InputField";
-import TextAreaField from "../../../../components/UI/TextAreaField";
-import RichTextEditor from "../../../../components/UI/ListEditer";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import MeetingMinutesPdf from "../../../../components/documents/MeetingMintuesPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
+import dynamic from "next/dynamic";
 
 function MeetingMinutes(props) {
   const router = useRouter();
@@ -60,7 +59,33 @@ function MeetingMinutes(props) {
       setIsGenerating(false);
     }
   };
+  const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+  const editorConfig = {
+    height: 250,
+    readonly: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
+    spellcheck: true,
 
+    buttons: ["bold", "ul", "ol"],
+
+    removeButtons: [
+      "source",
+      "image",
+      "video",
+      "table",
+      "link",
+      "brush",
+      "font",
+      "fontsize",
+      "paragraph",
+      "fullsize",
+    ],
+
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
+  };
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
@@ -126,12 +151,10 @@ function MeetingMinutes(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  
-
     if (!formData?.meetingDate || !formData?.meetingTime || !formData?.venue) {
-      return toast.error("please fill all the details")
+      return toast.error("please fill all the details");
     }
-  props.loader(true);
+    props.loader(true);
     let data;
     try {
       let url = "";
@@ -275,47 +298,81 @@ function MeetingMinutes(props) {
         </div>
 
         <div className="md:mt-6 mt-3">
-          <RichTextEditor
-            label="Attendees"
-            name="attendees"
-            value={formData.attendees}
-            onChange={(content) => {
-              setFormData({ ...formData, attendees: content });
-            }}
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">Attendees</p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.attendees}
+                config={editorConfig}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    attendees: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="md:mt-6 mt-3">
-          <RichTextEditor
-            label="Agenda"
-            name="agenda"
-            value={formData.agenda}
-            onChange={(content) => {
-              setFormData({ ...formData, agenda: content });
-            }}
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">Agenda</p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.agenda}
+                config={editorConfig}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    agenda: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="md:mt-6 mt-3">
-          <RichTextEditor
-            label="Discussions & Decisions"
-            name="discussions"
-            value={formData.discussions}
-            onChange={(content) => {
-              setFormData({ ...formData, discussions: content });
-            }}
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">
+              Discussions & Decisions
+            </p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.discussions}
+                config={editorConfig}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    discussions: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="md:mt-6 mt-3">
-          <RichTextEditor
-            label="Action Items"
-            name="actionItems"
-            value={formData.actionItems}
-            onChange={(content) => {
-              setFormData({ ...formData, actionItems: content });
-            }}
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">Action Items</p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.actionItems}
+                config={editorConfig}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    actionItems: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="md:mt-6 mt-3">

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import InstructionLetterPdf from "../../../../components/documents/InstructionLetterPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
+import dynamic from "next/dynamic";
 
 function InstructionLetter(props) {
   const router = useRouter();
@@ -15,8 +16,35 @@ function InstructionLetter(props) {
   const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const contentRef = useRef(null);
+  const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-  // 🚀 Generate Auto Document Name
+  const editorConfig = {
+    height: 250,
+    readonly: false,
+    toolbarAdaptive: false,
+    toolbarSticky: false,
+    spellcheck: true,
+
+    buttons: ["bold", "ul", "ol"],
+
+    removeButtons: [
+      "source",
+      "image",
+      "video",
+      "table",
+      "link",
+      "brush",
+      "font",
+      "fontsize",
+      "paragraph",
+      "fullsize",
+    ],
+
+    askBeforePasteHTML: false,
+    askBeforePasteFromWord: false,
+    defaultActionOnPaste: "insert_clear_html",
+  };
+
   const generateDocumentName = (type) => {
     const formattedType = type
       .split("-")
@@ -275,14 +303,25 @@ function InstructionLetter(props) {
         </div>
 
         <div className="md:mt-6 mt-3">
-          <TextAreaField
-            label="Letter Content"
-            name="LetterContent"
-            value={formData.LetterContent}
-            onChange={handleInputChange}
-            placeholder="Enter Your Content Letter"
-            rows="8"
-          />
+          <div className="flex flex-col gap-2 mb-4">
+            <p className="text-gray-200 text-sm font-medium">Letter Content</p>
+            <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
+              <JoditEditor
+                value={formData.LetterContent}
+                config={{
+                  ...editorConfig,
+                  placeholder: `Enter Your Content Letter`,
+                }}
+                tabIndex={1}
+                onBlur={(html) => {
+                  setFormData((prev) => ({
+                    ...prev,
+                    LetterContent: html,
+                  }));
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 

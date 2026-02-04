@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, X, Save, Download } from "lucide-react";
 import { useRouter } from "next/router";
 import InputField from "../../../../components/UI/InputField";
-import ListEditer from "../../../../components/UI/ListEditer";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import { ProjectDetailsContext } from "@/pages/_app";

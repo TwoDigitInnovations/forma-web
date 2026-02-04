@@ -12,8 +12,8 @@ const InstructionLetterPdf = ({ formData, contentRef, projectDetails }) => {
     LogoImage: "",
     contractorName: "",
     clientContact: "",
-    clientAddress:"",
-    clientName:""
+    clientAddress: "",
+    clientName: "",
   });
 
   useEffect(() => {
@@ -174,9 +174,14 @@ const InstructionLetterPdf = ({ formData, contentRef, projectDetails }) => {
                   Dear {data.contractorName},
                 </p>
 
-                <p style={{ fontSize: "13px", marginBottom: "15px" }}>
-                  {data.LetterContent || "[Enter your letter content here]"}
-                </p>
+                <div
+                  className="rich-html"
+                  style={{ fontSize: "13px", marginBottom: "15px" }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      data.LetterContent || "[Enter your letter content here]",
+                  }}
+                />
 
                 <p style={{ fontSize: "13px" }}>Sincerely,</p>
               </div>
