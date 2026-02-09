@@ -35,11 +35,13 @@ const ProjectDetailsPage = (props) => {
   const [grievancesOpen, setGrievancesOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {
       const parsed = JSON.parse(stored);
+      getStacts(parsed._id);
       if (parsed._id === router.query.id) {
         setProjectdetails(parsed);
         setProjectData(parsed);
@@ -54,6 +56,7 @@ const ProjectDetailsPage = (props) => {
       getProjectbyId(id);
     }
   }, [router.isReady, router.query.id, projectDetails]);
+
 
   const getProjectbyId = async (id) => {
     props.loader(true);
@@ -75,6 +78,23 @@ const ProjectDetailsPage = (props) => {
       });
   };
 
+  const getStacts = async (id) => {
+    props?.loader(true);
+    Api("get", `checklist/getStacts?projectId=${id}`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setData(res.data?.count);
+        } else {
+          toast.error(res?.message || "Failed");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
   function formatTodayDate(d) {
     const date = new Date(d);
     if (isNaN(date)) return "Invalid Date";
@@ -87,15 +107,6 @@ const ProjectDetailsPage = (props) => {
 
     return `${day}${suffix(day)} ${month}, ${year}`;
   }
-
-  const formatSimpleDate = (d) => {
-    const date = new Date(d);
-    return isNaN(date)
-      ? "Invalid Date"
-      : `${String(date.getDate()).padStart(2, "0")}/${String(
-          date.getMonth() + 1,
-        ).padStart(2, "0")}/${date.getFullYear()}`;
-  };
 
   function getTotalDuration(start, end) {
     if (!start || !end) return 0;
@@ -266,6 +277,9 @@ const ProjectDetailsPage = (props) => {
                   Documents Checklist
                 </p>
                 <p className="text-xl font-bold text-custom-yellow">
+                  {data || 0}
+                </p>
+                <p className="text-xl font-bold text-custom-yellow">
                   See Pending
                 </p>
 
@@ -403,14 +417,14 @@ const ProjectDetailsPage = (props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
-          <ActionCard
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          {/* <ActionCard
             title="Milestones"
             subtitle="Upcoming and overdue"
             icon={<Clock1 size={20} className="text-custom-yellow" />}
             text="No milestones due soon"
             open={() => setMilestones(true)}
-          />
+          /> */}
           <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
@@ -418,20 +432,20 @@ const ProjectDetailsPage = (props) => {
             text="No overdue action points"
             open={() => setActionOpen(true)}
           />
-          <ActionCard
+          {/* <ActionCard
             title="Open incidents"
             subtitle="World Bank ESF compliance"
             icon={<TriangleAlert size={20} className="text-custom-yellow" />}
             text="No open incidents"
             open={() => setOpenIncient(true)}
-          />
-          <ActionCard
+          /> */}
+          {/* <ActionCard
             title="No Open grievances"
             subtitle="Community complaints (GRM)"
             icon={<MessageSquare size={20} className="text-custom-yellow" />}
             text="No open grievances"
             open={() => setGrievancesOpen(true)}
-          />
+          /> */}
 
           {milestones && (
             <Milestones

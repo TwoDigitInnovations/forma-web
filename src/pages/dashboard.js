@@ -88,6 +88,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     getActionPoints();
+    getDashboardData();
     getAllBehindProjects();
   }, [projectId]);
 
@@ -119,6 +120,7 @@ function Dashboard(props) {
         toast.error(err?.message || "An error occurred");
       });
   };
+
   const getAllBehindProjects = async (e) => {
     props?.loader(true);
     Api("get", `project/getAllBehindProjects`, "", router)
@@ -126,6 +128,23 @@ function Dashboard(props) {
         props.loader(false);
         if (res?.status === true) {
           setAllBehiendProject(res.data?.data);
+        } else {
+          toast.error(res?.message || "Failed");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  const getDashboardData = async (e) => {
+    props?.loader(true);
+    Api("get", `user/dashboardData`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setDashboardData(res.data?.data);
         } else {
           toast.error(res?.message || "Failed");
         }
@@ -187,19 +206,19 @@ function Dashboard(props) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-2">
           <DarkStatsCard
             title="Total Contracts"
-            value={dashboardData?.TotalContract || "100.00"}
+            value={dashboardData?.TotalContracts || "100.00"}
             subtitle="Sum of all contract amounts"
             icon={<DollarSign size={35} />}
           />
           <DarkStatsCard
             title="IPCs Paid"
-            value={dashboardData?.TotalContract || "100.00"}
+            value={dashboardData?.TotalPaid || "100.00"}
             subtitle="Total payment certificates"
             icon={<Dock size={35} />}
           />
           <DarkStatsCard
             title="Balance"
-            value={dashboardData?.TotalContract || "100.00"}
+            value={dashboardData?.TotalBalance || "100.00"}
             subtitle="Contracts - IPCs paid"
             icon={<PiggyBank size={35} />}
           />

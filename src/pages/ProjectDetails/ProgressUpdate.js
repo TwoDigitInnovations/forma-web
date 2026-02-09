@@ -279,7 +279,6 @@ const ProgressUpdate = (props) => {
           <div className="flex overflow-x-auto scrollbar-hide overflow-scroll justify-between items-center gap-6">
             {[
               "progresstracking",
-              "milestones",
               "financial",
               ...(projectData.projectType === "Road"
                 ? ["roadLineTracker"]

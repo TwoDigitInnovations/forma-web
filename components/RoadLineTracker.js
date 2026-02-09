@@ -97,7 +97,7 @@ function RoadLineTracker({ loader }) {
 
   return (
     <div className="md:mt-0 mt-2">
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center mb-1">
           <p>Planned Progress </p>
           <p className="text-custom-yellow font-semibold">{"45"}%</p>
@@ -120,7 +120,7 @@ function RoadLineTracker({ loader }) {
             style={{ width: `${45}%` }}
           ></div>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-White flex items-center justify-center gap-2">
