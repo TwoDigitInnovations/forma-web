@@ -7,6 +7,8 @@ import { ProjectDetailsContext } from "@/pages/_app";
 import MonthlyProgressReportPdf from "../../../../components/documents/MonthlyProgressReportPdf";
 import Compressor from "compressorjs";
 import { ApiFormData } from "@/services/service";
+import { useReactToPrint } from "react-to-print";
+
 
 function MonthlyProgressReport(props) {
   const router = useRouter();
@@ -24,6 +26,41 @@ function MonthlyProgressReport(props) {
   const [Summary, setSummary] = useState({});
   const [allPlanData, setAllPlanData] = useState([]);
   const now = new Date();
+
+  const downloadPDF = useReactToPrint({
+    // content: () => contentRef.current,
+    contentRef,
+    documentTitle: "Monthly Report",
+    copyStyles: true,
+    // print: true,
+    bodyClass: "bg-black",
+    pageStyle: `@media print {
+      .d_none{
+          display: none !important;
+        }
+        .grid{
+          display: flex !important;
+        }
+        .d_flex{
+          display: flex !important;
+        }
+        .j_between{
+          justify-content: space-between !important;
+        }
+        .black:{
+          color: black !important;
+        }
+        .f_bold{
+          font-weight: 700 !important;
+        }
+        .breaker {page-break-after: always;}
+        .flexWraper{
+          inline-size: 300px !important; 
+        }
+       
+    }`,
+  });
+
 
   const generateDocumentName = (type) => {
     const formattedType = type
@@ -137,59 +174,59 @@ function MonthlyProgressReport(props) {
     editData,
   ]);
 
-  const downloadPDF = async () => {
-    const input = contentRef.current;
-    if (!input) return;
-    props.loader(true);
-    try {
-      await new Promise((res) => setTimeout(res, 300));
+  // const downloadPDF = async () => {
+  //   const input = contentRef.current;
+  //   if (!input) return;
+  //   props.loader(true);
+  //   try {
+  //     await new Promise((res) => setTimeout(res, 300));
 
-      const html2canvas = (await import("html2canvas")).default;
-      const jsPDF = (await import("jspdf")).default;
+  //     const html2canvas = (await import("html2canvas")).default;
+  //     const jsPDF = (await import("jspdf")).default;
 
-      const canvas = await html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
+  //     const canvas = await html2canvas(input, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //     });
 
-      const imgData = canvas.toDataURL("image/png");
+  //     const imgData = canvas.toDataURL("image/png");
 
-      const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdf = new jsPDF("p", "mm", "a4");
 
-      const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
-      const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+  //     const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+  //     const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
 
-      const marginTop = 5; // ⭐ TOP MARGIN
-      const marginBottom = 5; // ⭐ BOTTOM MARGIN
+  //     const marginTop = 5; // ⭐ TOP MARGIN
+  //     const marginBottom = 5; // ⭐ BOTTOM MARGIN
 
-      const usableHeight = pdfHeight - marginTop - marginBottom;
+  //     const usableHeight = pdfHeight - marginTop - marginBottom;
 
-      const imgWidth = pdfWidth - 0;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     const imgWidth = pdfWidth - 0;
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      let heightLeft = imgHeight;
-      let position = marginTop;
+  //     let heightLeft = imgHeight;
+  //     let position = marginTop;
 
-      // ⭐ Page 1
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= usableHeight;
+  //     // ⭐ Page 1
+  //     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  //     heightLeft -= usableHeight;
 
-      // ⭐ Next Pages
-      while (heightLeft > 0) {
-        pdf.addPage();
-        position = marginTop - (imgHeight - heightLeft);
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= usableHeight;
-      }
+  //     // ⭐ Next Pages
+  //     while (heightLeft > 0) {
+  //       pdf.addPage();
+  //       position = marginTop - (imgHeight - heightLeft);
+  //       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  //       heightLeft -= usableHeight;
+  //     }
 
-      pdf.save("monthly-report.pdf");
-      props.loader(false);
-    } catch (error) {
-      props.loader(false);
-      console.error("PDF Error:", error);
-    }
-  };
+  //     pdf.save("monthly-report.pdf");
+  //     props.loader(false);
+  //   } catch (error) {
+  //     props.loader(false);
+  //     console.error("PDF Error:", error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
