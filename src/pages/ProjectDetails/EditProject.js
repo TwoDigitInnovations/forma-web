@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Upload, X, Edit, ChevronLeft } from 'lucide-react';
-import { Api } from '@/services/service';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
-import { useContext } from 'react';
-import { ProjectDetailsContext, userContext } from "../_app"
-import InputField from '../../../components/UI/InputField';
-import SelectField from '../../../components/UI/SelectField';
-import ClientProjectInfo from '../../../components/ClientProjectInfo';
-import ContractorProjectInfo from '../../../components/ContractorProjectInfo';
-import IntroductionInfo from '../../../components/IntroductionInfo';
-import moment from 'moment';
+import React, { useState, useEffect } from "react";
+import { Upload, X, Edit, ChevronLeft } from "lucide-react";
+import { Api } from "@/services/service";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { ProjectDetailsContext, userContext } from "../_app";
+import InputField from "../../../components/UI/InputField";
+import SelectField from "../../../components/UI/SelectField";
+import ClientProjectInfo from "../../../components/ClientProjectInfo";
+import ContractorProjectInfo from "../../../components/ContractorProjectInfo";
+import IntroductionInfo from "../../../components/IntroductionInfo";
+import moment from "moment";
 
 const EditProject = (props) => {
   const [formData, setFormData] = useState({
-    projectName: '',
+    projectName: "",
     projectNo: "",
-    description: '',
-    location: '',
-    projectType: 'Road',
-    status: 'Planning',
-    contractAmount: '',
-    startDate: '',
-    endDate: '',
+    description: "",
+    location: "",
+    projectType: "Road",
+    status: "Planning",
+    contractAmount: "",
+    startDate: "",
+    endDate: "",
     LiabilityPeriod: "",
     Duration: "",
     ProjectScope: "",
@@ -36,7 +36,7 @@ const EditProject = (props) => {
     contactPerson: "",
     Address: "",
     ClientLogo: "",
-    teamMembers: []
+    teamMembers: [],
   });
   const [contractorDetails, setContractorDetails] = useState({
     contractorName: "",
@@ -45,26 +45,26 @@ const EditProject = (props) => {
     contactPerson: "",
     contractorLogo: "",
     teamMembers: [],
-    equipment: []
+    equipment: [],
   });
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showCancelBox, setShowCancelBox] = useState(false);
   const [errors, setErrors] = useState({});
-  const [currentTab, setCurrentTab] = useState("basicInfo")
+  const [currentTab, setCurrentTab] = useState("basicInfo");
   const [projectId, setProjectId] = useState(null);
-  const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext)
+  const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [user] = useContext(userContext);
 
   useEffect(() => {
-    const stored = localStorage.getItem("projectDetails")
+    const stored = localStorage.getItem("projectDetails");
     if (stored) {
-      const project = JSON.parse(stored)
-      setProjectId(project._id)
-      getProjectbyId(project._id)
+      const project = JSON.parse(stored);
+      setProjectId(project._id);
+      getProjectbyId(project._id);
     }
-  }, [])
+  }, []);
 
   function dateFormet(date) {
     if (!date) return "";
@@ -85,7 +85,7 @@ const EditProject = (props) => {
       const durationMonths = moment(formData.endDate).diff(
         moment(formData.startDate),
         "months",
-        true
+        true,
       );
       setFormData((prev) => ({
         ...prev,
@@ -94,24 +94,23 @@ const EditProject = (props) => {
     }
   }, [formData.endDate]);
 
-
   const getProjectbyId = async (id) => {
     props.loader(true);
     Api("get", `project/getProjectById/${id}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
-          const project = res.data?.data
-          setProjectdetails(project)
+          const project = res.data?.data;
+          setProjectdetails(project);
           setFormData({
-            projectName: project?.projectName || '',
-            description: project?.description || '',
-            location: project?.location || '',
-            projectType: project?.projectType || '',
-            status: project?.status || 'Planning',
-            contractAmount: project?.contractAmount || '',
-            startDate: project?.startDate || '',
-            endDate: project?.endDate || '',
+            projectName: project?.projectName || "",
+            description: project?.description || "",
+            location: project?.location || "",
+            projectType: project?.projectType || "",
+            status: project?.status || "Planning",
+            contractAmount: project?.contractAmount || "",
+            startDate: project?.startDate || "",
+            endDate: project?.endDate || "",
             projectNo: project?.projectNo || "",
             Duration: project?.Duration || "",
             LiabilityPeriod: project?.LiabilityPeriod || "",
@@ -119,7 +118,7 @@ const EditProject = (props) => {
             ProjectScope: project?.ProjectScope || "",
             ExcuetiveSummary: project?.ExcuetiveSummary || "",
           });
-          const contracter = project?.contractorInfo
+          const contracter = project?.contractorInfo;
           setContractorDetails({
             contractorName: contracter?.contractorName,
             Email: contracter?.Email,
@@ -127,9 +126,9 @@ const EditProject = (props) => {
             contactPerson: contracter?.contactPerson,
             contractorLogo: contracter?.contractorLogo,
             teamMembers: contracter?.teamMembers,
-            equipment: contracter?.equipment
-          })
-          const clients = project?.clientInfo
+            equipment: contracter?.equipment,
+          });
+          const clients = project?.clientInfo;
           setClientDetails({
             ClientName: clients?.ClientName,
             Email: clients?.Email,
@@ -137,8 +136,8 @@ const EditProject = (props) => {
             contactPerson: clients?.contactPerson,
             Address: clients?.Address,
             ClientLogo: clients?.ClientLogo,
-            teamMembers: clients?.teamMembers
-          })
+            teamMembers: clients?.teamMembers,
+          });
 
           localStorage.setItem("projectDetails", JSON.stringify(project));
         }
@@ -152,51 +151,54 @@ const EditProject = (props) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prev) => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value
-        }
+          [child]: value,
+        },
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
 
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
 
   const handleStatusUpdate = (status) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      status: status
+      status: status,
     }));
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.projectName) newErrors.projectName = 'Project name is required';
-    if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.location) newErrors.location = 'Location is required';
-    if (!formData.contractAmount) newErrors.contractAmount = 'Contract amount is required';
-    if (!formData.startDate) newErrors.startDate = 'Start date is required';
-    if (!formData.endDate) newErrors.endDate = 'End date is required';
+    if (!formData.projectName)
+      newErrors.projectName = "Project name is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
+    if (!formData.location) newErrors.location = "Location is required";
+    if (!formData.contractAmount)
+      newErrors.contractAmount = "Contract amount is required";
+    if (!formData.startDate) newErrors.startDate = "Start date is required";
+    if (!formData.endDate) newErrors.endDate = "End date is required";
 
     if (formData.startDate && formData.endDate) {
       const startDate = new Date(formData.startDate);
       const endDate = new Date(formData.endDate);
       if (startDate >= endDate) {
-        newErrors.endDate = 'End date must be after start date';
+        newErrors.endDate = "End date must be after start date";
       }
     }
 
@@ -237,7 +239,10 @@ const EditProject = (props) => {
           const updatedProject = res?.data?.data;
 
           if (updatedProject) {
-            localStorage.setItem("projectDetails", JSON.stringify(updatedProject));
+            localStorage.setItem(
+              "projectDetails",
+              JSON.stringify(updatedProject),
+            );
           }
 
           router.push(`/ProjectDetails/overview`);
@@ -267,11 +272,11 @@ const EditProject = (props) => {
                 <Edit size={24} />
                 Edit Project Information
               </h1>
-              <p className="text-gray-400 mt-1">Update project details, contract information, and details</p>
+              <p className="text-gray-400 mt-1">
+                Update project details, contract information, and details
+              </p>
             </div>
           </div>
-
-       
         </div>
 
         <button
@@ -282,25 +287,26 @@ const EditProject = (props) => {
         </button>
 
         <div onSubmit={handleSubmit} className="space-y-8 ">
-
           <div className="bg-custom-black rounded-[38px] md:px-6 px-3 pt-4 pb-6 min-h-[600px]">
-            <div className="flex justify-between items-center gap-6 ">
-              {["basicInfo", "client", "contractor", "introduction"].map((tab) => (
-                <p
-                  key={tab}
-                  // type="submit"
-                  onClick={() => setCurrentTab(tab)}
-                  className={`relative cursor-pointer flex-1 text-center py-2 text-lg font-semibold transition-all duration-300
-        ${currentTab === tab
-                      ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#e0f349]"
-                      : "text-gray-400 hover:text-[#e0f349]"
-                    }`}
-                >
-                  {tab === "basicInfo"
-                    ? "Basic Info"
-                    : tab.charAt(0).toUpperCase() + tab.slice(1)}
-                </p>
-              ))}
+            <div className="flex gap-4 overflow-x-auto no-scrollbar whitespace-nowrap">
+              {["basicInfo", "client", "contractor", "introduction"].map(
+                (tab) => (
+                  <p
+                    key={tab}
+                    onClick={() => setCurrentTab(tab)}
+                    className={`relative cursor-pointer flex-shrink-0 px-4 py-2 text-md md:text-lg font-semibold transition-all duration-300
+        ${
+          currentTab === tab
+            ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#e0f349]"
+            : "text-gray-400 hover:text-[#e0f349]"
+        }`}
+                  >
+                    {tab === "basicInfo"
+                      ? "Basic Info"
+                      : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </p>
+                ),
+              )}
             </div>
 
             {currentTab === "basicInfo" && (
@@ -324,18 +330,23 @@ const EditProject = (props) => {
                 />
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-2">Project Description</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Project Description
+                  </label>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
                     placeholder="Enter your project description"
                     rows="4"
-                    className={`w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border ${errors.description ? "border-red-500" : "border-gray-600"
-                      } focus:outline-none focus:border-green-400`}
+                    className={`w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border ${
+                      errors.description ? "border-red-500" : "border-gray-600"
+                    } focus:outline-none focus:border-green-400`}
                   />
                   {errors.description && (
-                    <p className="text-red-400 text-sm mt-1">{errors.description}</p>
+                    <p className="text-red-400 text-sm mt-1">
+                      {errors.description}
+                    </p>
                   )}
                 </div>
 
@@ -353,7 +364,13 @@ const EditProject = (props) => {
                   name="projectType"
                   value={formData.projectType}
                   onChange={handleInputChange}
-                  options={["Road", "Bridge", "Building", "Infrastructure", "Other"]}
+                  options={[
+                    "Road",
+                    "Bridge",
+                    "Building",
+                    "Infrastructure",
+                    "Other",
+                  ]}
                 />
 
                 <SelectField
@@ -361,7 +378,13 @@ const EditProject = (props) => {
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  options={["Planning", "In Progress", "On Hold", "Completed", "Cancelled",]}
+                  options={[
+                    "Planning",
+                    "In Progress",
+                    "On Hold",
+                    "Completed",
+                    "Cancelled",
+                  ]}
                 />
 
                 <InputField
@@ -378,7 +401,6 @@ const EditProject = (props) => {
                   label="Start Date"
                   type="date"
                   name="startDate"
-
                   value={dateFormet(formData.startDate || "")}
                   onChange={handleInputChange}
                   error={errors.startDate}
@@ -438,7 +460,6 @@ const EditProject = (props) => {
                 handleInputChange={handleInputChange}
               />
             )}
-
           </div>
 
           <div className="flex justify-center gap-4 items-center pt-2">
@@ -448,7 +469,7 @@ const EditProject = (props) => {
               onClick={handleSubmit}
               className="px-4 py-2.5 text-[14px] bg-custom-yellow text-black cursor-pointer  disabled:cursor-not-allowed rounded-lg transition-colors flex items-center gap-2"
             >
-              {loading ? 'Saving...' : 'Save Changes'}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
             <button
               type="button"
@@ -468,7 +489,8 @@ const EditProject = (props) => {
                     Cancel Changes?
                   </h2>
                   <p className="text-sm text-gray-500 mb-6">
-                    Are you sure you want to cancel? All unsaved changes will be lost.
+                    Are you sure you want to cancel? All unsaved changes will be
+                    lost.
                   </p>
 
                   <div className="flex justify-center gap-4">
@@ -489,7 +511,6 @@ const EditProject = (props) => {
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>

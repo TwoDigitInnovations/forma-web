@@ -34,48 +34,81 @@ function TakingOverCertificate(props) {
     return `${formattedType} - ${dateStr}`;
   };
 
-  const downloadPDF = async () => {
-    const input = contentRef.current;
-    if (!input) return;
+  // const downloadPDF = async () => {
+  //   const input = contentRef.current;
+  //   if (!input) return;
 
-    setIsGenerating(true);
+  //   setIsGenerating(true);
 
-    try {
-      await new Promise((res) => setTimeout(res, 300));
+  //   try {
+  //     await new Promise((res) => setTimeout(res, 300));
 
-      const html2canvas = (await import("html2canvas")).default;
-      const jsPDF = (await import("jspdf")).default;
+  //     const html2canvas = (await import("html2canvas")).default;
+  //     const jsPDF = (await import("jspdf")).default;
 
-      const canvas = await html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
+  //     const canvas = await html2canvas(input, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //     });
 
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imgData = canvas.toDataURL("image/png");
-      const imgWidth = pdfWidth;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const imgWidth = pdfWidth;
+  //     let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      if (imgHeight > pdfHeight) {
-        imgHeight = pdfHeight - 2;
-      }
+  //     if (imgHeight > pdfHeight) {
+  //       imgHeight = pdfHeight - 2;
+  //     }
 
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+  //     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-      // Auto Name
-      const fileName = generateDocumentName(router.query.type || "Document");
-      pdf.save(`${fileName}.pdf`);
-    } catch (error) {
-      console.error("PDF Error:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  //     // Auto Name
+  //     const fileName = generateDocumentName(router.query.type || "Document");
+  //     pdf.save(`${fileName}.pdf`);
+  //   } catch (error) {
+  //     console.error("PDF Error:", error);
+  //   } finally {
+  //     setIsGenerating(false);
+  //   }
+  // };
 
+  const downloadPDF = useReactToPrint({
+    // content: () => contentRef.current,
+    contentRef,
+    documentTitle: "Meeting Minutes Report",
+    copyStyles: true,
+    // print: true,
+    bodyClass: "bg-black",
+    pageStyle: `@media print {
+        .d_none{
+            display: none !important;
+          }
+          .grid{
+            display: flex !important;
+          }
+          .d_flex{
+            display: flex !important;
+          }
+          .j_between{
+            justify-content: space-between !important;
+          }
+          .black:{
+            color: black !important;
+          }
+          .f_bold{
+            font-weight: 700 !important;
+          }
+          .breaker {page-break-after: always;}
+          .flexWraper{
+            inline-size: 300px !important; 
+          }
+         
+      }`,
+  });
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
     if (stored) {

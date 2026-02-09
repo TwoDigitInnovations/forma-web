@@ -136,6 +136,20 @@ body {
   margin-bottom: 4px;
 }
 
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  .print-container {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    page-break-inside: avoid;
+  }
+}
+
 
 
 

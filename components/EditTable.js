@@ -33,7 +33,7 @@ const EditableTable = ({ activities, setActivities }) => {
 
   const handleChange = (index, field, value) => {
     setActivities((prev) =>
-      prev.map((row, i) => (i === index ? { ...row, [field]: value } : row))
+      prev.map((row, i) => (i === index ? { ...row, [field]: value } : row)),
     );
   };
 
@@ -122,7 +122,7 @@ const EditableTable = ({ activities, setActivities }) => {
           startDate: earliest,
           endDate: latest,
         };
-      })
+      }),
     );
   }, [activities]);
 
@@ -163,12 +163,24 @@ const EditableTable = ({ activities, setActivities }) => {
                 <td className="text-center py-2">{num}</td>
 
                 <td className="py-2 px-3">
-                  <input
+                  {/* <input
                     value={row.description || ""}
                     onChange={(e) =>
                       handleChange(i, "description", e.target.value)
                     }
                     className="w-full bg-transparent border-none outline-none text-gray-800"
+                  /> */}
+
+                  <textarea
+                    rows={1}
+                    value={row.description || ""}
+                    onChange={(e) => {
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+                      handleChange(i, "description", e.target.value);
+                    }}
+                    className="w-full bg-transparent outline-none resize-none overflow-hidden text-black leading-relaxed"
+                    // placeholder="Describe action item"
                   />
                 </td>
 

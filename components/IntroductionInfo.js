@@ -36,7 +36,7 @@ function IntroductionInfo({ formData, handleInputChange, setFormData }) {
         <p className="text-gray-200 text-sm font-medium">Executive Summary</p>
         <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
           <JoditEditor
-            value={formData.LetterContent}
+            value={formData.ExcuetiveSummary}
             config={{
               ...editorConfig,
               placeholder: `Executive Summary`,

@@ -57,7 +57,6 @@ const ProjectDetailsPage = (props) => {
     }
   }, [router.isReady, router.query.id, projectDetails]);
 
-
   const getProjectbyId = async (id) => {
     props.loader(true);
     Api("get", `project/getProjectById/${id}`, "", router)
@@ -210,6 +209,13 @@ const ProjectDetailsPage = (props) => {
     );
   };
 
+  const remainingAmount = Number(
+    (
+      (Number(projectDetails?.contractAmount) || 0) -
+      (Number(projectDetails?.paidAmount) || 0)
+    ).toFixed(2),
+  );
+
   return (
     <div className="h-screen bg-black text-white ">
       <div className="max-w-7xl mx-auto w-full h-full md:h-[95vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-3 md:p-0 md:py-4">
@@ -307,10 +313,7 @@ const ProjectDetailsPage = (props) => {
           />
           <SecondCard
             title="Balance"
-            value={
-              (Number(projectDetails?.contractAmount) || 0) -
-              (Number(projectDetails?.paidAmount) || 0)
-            }
+            value={remainingAmount}
             subtitle="Remaining funds"
           />
 

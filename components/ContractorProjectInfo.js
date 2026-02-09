@@ -15,6 +15,8 @@ function ContractorProjectInfo({
   const fileInputRef = useRef(null);
   const [currentTab, setCurrentTab] = useState("contractorDetails");
   const router = useRouter();
+  const [editIndex, setEditIndex] = useState(null);
+
   const [newMember, setNewMember] = useState({
     name: "",
     qualification: "",
@@ -34,6 +36,14 @@ function ContractorProjectInfo({
       ...prev,
       [name]: value,
     }));
+  };
+  const handleEditMember = (member, index) => {
+    setNewMember({
+      name: member.name,
+      qualification: member.qualification,
+      designation: member.designation,
+    });
+    setEditIndex(index);
   };
 
   const handleFileChange = (event, i) => {
@@ -68,7 +78,7 @@ function ContractorProjectInfo({
               console.log(err);
               loader(false);
               toast.error(res?.data?.message || res?.message);
-            }
+            },
           );
         },
       });
@@ -83,15 +93,29 @@ function ContractorProjectInfo({
   };
 
   const handleAddMember = () => {
-    if (!newMember.name || !newMember.qualification || !newMember.designation)
+    if (!newMember.name || !newMember.qualification || !newMember.designation) {
       return;
+    }
+
+    let updatedMembers = [...(contractorDetails?.teamMembers || [])];
+
+    if (editIndex !== null) {
+      updatedMembers[editIndex] = newMember;
+      setEditIndex(null);
+    } else {
+      updatedMembers.push(newMember);
+    }
 
     setContractorDetails((prev) => ({
       ...prev,
-      teamMembers: [...(prev.teamMembers || []), newMember],
+      teamMembers: updatedMembers,
     }));
 
-    setNewMember({ name: "", qualification: "", designation: "" });
+    setNewMember({
+      name: "",
+      qualification: "",
+      designation: "",
+    });
   };
 
   const handleDeleteMember = (index) => {
@@ -242,10 +266,11 @@ function ContractorProjectInfo({
               onClick={handleAddMember}
               className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
             >
-              <Plus size={18} /> Add Personnel
+              <Plus size={18} />
+              {editIndex !== null ? "Update Personnel" : "Add Personnel"}
             </button>
           </div>
-          {/* Team Members Table */}
+
           <div className="mt-8 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-gray-200 border-collapse">
@@ -281,12 +306,21 @@ function ContractorProjectInfo({
                         {member.designation}
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
-                        <button
-                          onClick={() => handleDeleteMember(index)}
-                          className="bg-red-500 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-red-600 transition-all flex items-center gap-2"
-                        >
-                          <Trash size={18} /> Delete
-                        </button>
+                        <td className="px-6 py-3 whitespace-nowrap flex gap-2">
+                          <button
+                            onClick={() => handleEditMember(member, index)}
+                            className="bg-custom-yellow text-black cursor-pointer px-4 py-1.5 rounded-lg text-sm  transition-all"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            onClick={() => handleDeleteMember(index)}
+                            className="bg-red-500 text-white cursor-pointer px-4 py-1.5 rounded-lg text-sm hover:bg-red-600 transition-all flex items-center gap-2"
+                          >
+                            <Trash size={18} /> Delete
+                          </button>
+                        </td>
                       </td>
                     </tr>
                   ))}

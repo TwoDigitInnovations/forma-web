@@ -52,13 +52,14 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
           <div className="border-2 border-gray-300 rounded-lg p-4">
             <div
               ref={contentRef}
+              className="print-container"
               style={{
                 width: "800px",
                 minHeight: "1120px",
                 background: "white",
                 color: "black",
                 fontFamily: "Arial, sans-serif",
-                padding: "20px 40px",
+                padding: "20px 20px",
               }}
             >
               {/* Header */}

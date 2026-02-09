@@ -151,7 +151,7 @@ function Dashboard(props) {
       })
       .catch((err) => {
         props.loader(false);
-        toast.error(err?.message || "An error occurred");
+        // toast.error(err?.message || "An error occurred");
       });
   };
 

@@ -529,7 +529,7 @@ const MonthlyProgressReportPdf = ({
                     </div>
                   </div>
 
-                  {/* Budget Used */}
+                
                   <div>
                     <p style={{ fontSize: "13px", color: "#777" }}>
                       Budget Used

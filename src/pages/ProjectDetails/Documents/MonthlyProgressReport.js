@@ -61,7 +61,6 @@ function MonthlyProgressReport(props) {
     }`,
   });
 
-
   const generateDocumentName = (type) => {
     const formattedType = type
       .split("-")

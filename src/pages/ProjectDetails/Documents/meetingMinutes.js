@@ -7,6 +7,7 @@ import { Api } from "@/services/service";
 import MeetingMinutesPdf from "../../../../components/documents/MeetingMintuesPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
 import dynamic from "next/dynamic";
+import { useReactToPrint } from "react-to-print";
 
 function MeetingMinutes(props) {
   const router = useRouter();
@@ -16,49 +17,85 @@ function MeetingMinutes(props) {
   const [isGenerating, setIsGenerating] = useState(false);
   const contentRef = useRef(null);
 
-  const downloadPDF = async () => {
-    const input = contentRef.current;
-    if (!input) return;
+  // const downloadPDF = async () => {
+  //   const input = contentRef.current;
+  //   if (!input) return;
 
-    setIsGenerating(true);
+  //   setIsGenerating(true);
 
-    try {
-      await new Promise((res) => setTimeout(res, 300));
+  //   try {
+  //     await new Promise((res) => setTimeout(res, 300));
 
-      const html2canvas = (await import("html2canvas")).default;
-      const jsPDF = (await import("jspdf")).default;
+  //     const html2canvas = (await import("html2canvas")).default;
+  //     const jsPDF = (await import("jspdf")).default;
 
-      const canvas = await html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
+  //     const canvas = await html2canvas(input, {
+  //       scale: 2,
+  //       useCORS: true,
+  //       backgroundColor: "#ffffff",
+  //     });
 
-      const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdf = new jsPDF("p", "mm", "a4");
 
-      const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
-      const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+  //     const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+  //     const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
 
-      // Convert canvas to image
-      const imgData = canvas.toDataURL("image/png");
+  //     // Convert canvas to image
+  //     const imgData = canvas.toDataURL("image/png");
 
-      const imgWidth = pdfWidth;
-      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     const imgWidth = pdfWidth;
+  //     let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-      // 🔥 MAIN FIX — Force image height to fit exactly inside A4
-      if (imgHeight > pdfHeight) {
-        imgHeight = pdfHeight - 2; // remove 1–2mm margin
-      }
+  //     // 🔥 MAIN FIX — Force image height to fit exactly inside A4
+  //     if (imgHeight > pdfHeight) {
+  //       imgHeight = pdfHeight - 2; // remove 1–2mm margin
+  //     }
 
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+  //     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-      pdf.save(`meeting-mintues.pdf`);
-    } catch (error) {
-      console.error("PDF Error:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
+  //     pdf.save(`meeting-mintues.pdf`);
+  //   } catch (error) {
+  //     console.error("PDF Error:", error);
+  //   } finally {
+  //     setIsGenerating(false);
+  //   }
+  // };
+
+  const downloadPDF = useReactToPrint({
+    // content: () => contentRef.current,
+    contentRef,
+    documentTitle: "Meeting Minutes Report",
+    copyStyles: true,
+    // print: true,
+    bodyClass: "bg-black",
+    pageStyle: `@media print {
+      .d_none{
+          display: none !important;
+        }
+        .grid{
+          display: flex !important;
+        }
+        .d_flex{
+          display: flex !important;
+        }
+        .j_between{
+          justify-content: space-between !important;
+        }
+        .black:{
+          color: black !important;
+        }
+        .f_bold{
+          font-weight: 700 !important;
+        }
+        .breaker {page-break-after: always;}
+        .flexWraper{
+          inline-size: 300px !important; 
+        }
+       
+    }`,
+  });
+
+
   const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
   const editorConfig = {
     height: 250,
@@ -148,6 +185,7 @@ function MeetingMinutes(props) {
 
     return `${formattedType} - ${dateStr}`;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
