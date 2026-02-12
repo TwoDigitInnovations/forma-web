@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, X, Save, Download } from "lucide-react";
 import { useRouter } from "next/router";
 import InputField from "../../../../components/UI/InputField";
-import TextAreaField from "../../../../components/UI/TextAreaField";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
-import InstructionLetterPdf from "../../../../components/documents/InstructionLetterPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
 import CommencementOrderPdf from "../../../../components/documents/CommencementOrderPdf";
 import { useReactToPrint } from "react-to-print";
@@ -15,10 +13,8 @@ function InstructionLetter(props) {
   const [projectId, setProjectId] = useState("");
   const [editId, setEditId] = useState("");
   const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
-  const [isGenerating, setIsGenerating] = useState(false);
   const contentRef = useRef(null);
 
-  // 🚀 Generate Auto Document Name
   const generateDocumentName = (type) => {
     const formattedType = type
       .split("-")
