@@ -50,10 +50,9 @@ const Navbar = ({ setOpenTab, openTab }) => {
   };
 
   return (
-    <nav className="w-full bg-custom-black z-0 sticky top-0 max-w-screen shadow-sm">
-      <div className="container mx-auto px-4 md:px-0">
+    <nav className="w-full bg-custom-black z-0  shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:ps-8 xl:ps-6 ">
         <div className="flex items-center justify-between md:h-20 h-18">
-          {/* Logo */}
           <div className="flex items-center gap-4">
             {/* <img 
               className="h-10 w-auto object-contain" 
@@ -67,7 +66,6 @@ const Navbar = ({ setOpenTab, openTab }) => {
             <p className="text-md text-white font-medium ">Construction Management</p>
             </div>
           </div>
-
 
           {user?._id && (
           <div className="hidden md:flex items-center justify-end flex-1">
@@ -127,7 +125,6 @@ const Navbar = ({ setOpenTab, openTab }) => {
         </div>
       </div>
 
-     
     </nav>
   );
 };

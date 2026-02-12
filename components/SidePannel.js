@@ -135,13 +135,15 @@ const SidePannel = ({ setOpenTab, openTab }) => {
     ${isSidebarOpen ? "w-[260px] h-screen" : "h-10"}
   `}
       >
-        <div className="flex items-center justify-start ps-6 py-5">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-custom-yellow text-2xl cursor-pointer"
-          >
-            {isSidebarOpen ? <X /> : <Menu />}
-          </button>
+        <div className="flex items-center justify-start md:ps-6 py-5">
+          {user && (
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="text-custom-yellow text-2xl cursor-pointer"
+            >
+              {isSidebarOpen ? <X /> : <Menu />}
+            </button>
+          )}
         </div>
 
         <div className="flex-1 overflow-y-auto scrollbar-hide">

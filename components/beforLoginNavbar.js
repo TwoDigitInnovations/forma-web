@@ -52,7 +52,7 @@ function BeforeLoginNavbar() {
         </div>
         {user?._id ? (
           <div className="relative hidden md:flex">
-            {/* Profile button */}
+            
             <div
               className="flex items-center gap-2 cursor-pointer text-white"
               onClick={() => setProfileOpen(!profileOpen)}

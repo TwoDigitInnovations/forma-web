@@ -229,10 +229,20 @@ const MonthlyProgressReportPdf = ({
                 )}
               </div>
             </div>
-            <div style={{ marginTop: "56px" }}>
+            <div
+              style={{
+                marginTop: "56px",
+                height: "1520px", // A4 height
+                margin: "0 auto",
+                padding: "20px",
+                boxSizing: "border-box",
+                overflow: "hidden", // extra content next page me nahi jayega
+                background: "#fff",
+              }}
+            >
               <h3
                 style={{
-                  fontSize: "18px",
+                  fontSize: "28px",
                   fontWeight: "bold",
                   marginBottom: "20px",
                 }}
@@ -240,7 +250,7 @@ const MonthlyProgressReportPdf = ({
                 TABLE OF CONTENTS
               </h3>
 
-              <div style={{ fontSize: "14px", lineHeight: "24px" }}>
+              <div style={{ fontSize: "25px", lineHeight: "44px" }}>
                 <p style={{ fontWeight: 600 }}>1. INTRODUCTION</p>
                 <p style={{ marginLeft: "20px" }}>1.1 Project Summary</p>
                 <p style={{ marginLeft: "20px", marginBottom: "12px" }}>
@@ -259,7 +269,7 @@ const MonthlyProgressReportPdf = ({
                 <p style={{ marginLeft: "20px" }}>4.1 Overall Progress</p>
                 <p style={{ marginLeft: "20px" }}>4.2 Work Progress</p>
                 <p style={{ marginLeft: "20px", marginBottom: "10px" }}>
-                  4.3 Financial Progress
+                  4.1 Financial Progress
                 </p>
 
                 <p style={{ fontWeight: 600, marginTop: "10px" }}>
@@ -276,10 +286,6 @@ const MonthlyProgressReportPdf = ({
 
                 <p style={{ fontWeight: 600, marginTop: "10px" }}>
                   8. CONTRACTOR'S EQUIPMENT
-                </p>
-
-                <p style={{ fontWeight: 600, marginTop: "10px" }}>
-                  9. ISSUES AND CONCERNS
                 </p>
               </div>
             </div>
@@ -394,6 +400,9 @@ const MonthlyProgressReportPdf = ({
                     ],
                     ["13. Advance Payment", `$${Summary?.advancePayment}`],
                     ["14. Percentage of amount certified to date", "0%"],
+                    ["15. Budget Used", `${Summary?.progress}%`],
+                    ["16. Completion Status", `${data?.actualProgress ?? 0}%`],
+                    ["17. Days Elapsed", "150 / 239 days"],
                   ].map(([item, value], index) => (
                     <tr key={index}>
                       <td
@@ -455,7 +464,6 @@ const MonthlyProgressReportPdf = ({
                 4. PROGRESS
               </h2>
 
-              {/* 4.1 Overall Progress */}
               <p
                 style={{
                   fontSize: "15px",
@@ -463,122 +471,7 @@ const MonthlyProgressReportPdf = ({
                   marginBottom: "20px",
                 }}
               >
-                4.1 Overall Progress
-              </p>
-
-              <div style={{ width: "1000px", marginBottom: "24px" }}>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
-                    gap: "40px",
-                  }}
-                >
-                  <div>
-                    <p style={{ fontSize: "13px", color: "#777" }}>
-                      Completion Status
-                    </p>
-
-                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>
-                      {data?.actualProgress ?? 0}%
-                    </p>
-
-                    <div
-                      style={{
-                        width: "100%",
-                        background: "#d1d5db",
-                        height: "12px",
-                        borderRadius: "10px",
-                        marginTop: "8px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "12px",
-                          width: `${Math.min(data?.actualProgress || 0, 100)}%`,
-                          background: "#fbbf24",
-                          borderRadius: "10px",
-                          transition: "width 0.3s ease",
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Days Elapsed */}
-                  <div>
-                    <p style={{ fontSize: "13px", color: "#777" }}>
-                      Days Elapsed
-                    </p>
-                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>63%</p>
-                    <p
-                      style={{
-                        fontSize: "13px",
-                        color: "#777",
-                        marginTop: "5px",
-                      }}
-                    >
-                      150 / 239 days
-                    </p>
-
-                    <div
-                      style={{
-                        width: "100%",
-                        background: "#d1d5db",
-                        height: "12px",
-                        borderRadius: "10px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "12px",
-                          width: "63%",
-                          background: "#fbbf24",
-                          borderRadius: "10px",
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p style={{ fontSize: "13px", color: "#777" }}>
-                      Budget Used
-                    </p>
-                    <p style={{ fontSize: "26px", fontWeight: "bold" }}>
-                      {Summary?.progress}%
-                    </p>
-
-                    <div
-                      style={{
-                        width: "100%",
-                        background: "#d1d5db",
-                        height: "12px",
-                        borderRadius: "10px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: "12px",
-                          width: Summary?.progress + "%",
-                          background: "#fbbf24",
-                          borderRadius: "10px",
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <p
-                style={{
-                  fontSize: "15px",
-                  color: "#666",
-                  marginBottom: "20px",
-                }}
-              >
-                4.2 Financial Progress
+                4.1 Financial Progress
               </p>
 
               <div style={{ width: "100%" }}>
@@ -916,7 +809,7 @@ const MonthlyProgressReportPdf = ({
                 6. CLIENT PERSONNEL
               </h2>
 
-              {data?.clientPersonnel ? (
+              {data?.clientPersonnel?.teamMembers ? (
                 <table
                   style={{
                     width: "100%",
@@ -927,13 +820,7 @@ const MonthlyProgressReportPdf = ({
                 >
                   <thead>
                     <tr style={{ backgroundColor: "#EFF6FF" }}>
-                      {[
-                        "Client Name",
-                        "Email",
-                        "Contact Person",
-                        "Contact",
-                        "Address",
-                      ].map((item) => (
+                      {["Name", "Qualification", "Designation"].map((item) => (
                         <th
                           key={item}
                           style={{
@@ -950,23 +837,14 @@ const MonthlyProgressReportPdf = ({
                   </thead>
 
                   <tbody>
-                    <tr style={{ backgroundColor: "#fff" }}>
-                      <td style={tdStyle}>
-                        {data.clientPersonnel?.ClientName || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data.clientPersonnel?.Email || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data.clientPersonnel?.contactPerson || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data.clientPersonnel?.phone || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data.clientPersonnel?.Address || "-"}
-                      </td>
-                    </tr>
+                    {" "}
+                    {data.clientPersonnel?.teamMembers.map((member, index) => (
+                      <tr key={index}>
+                        <td style={tdStyle}>{member.name || "-"}</td>
+                        <td style={tdStyle}>{member?.qualification || "-"}</td>
+                        <td style={tdStyle}>{member?.designation || "-"}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               ) : (
@@ -993,7 +871,7 @@ const MonthlyProgressReportPdf = ({
                 7. CONTRACTOR PERSONNEL
               </h2>
 
-              {data?.contractorPersonnel ? (
+              {data?.contractorPersonnel?.teamMembers ? (
                 <table
                   style={{
                     width: "100%",
@@ -1004,39 +882,35 @@ const MonthlyProgressReportPdf = ({
                 >
                   <thead>
                     <tr style={{ backgroundColor: "#FFFBEB" }}>
-                      {["Name", "Email", "Contact Person", "Contact"].map(
-                        (item) => (
-                          <th
-                            key={item}
-                            style={{
-                              border: "1px solid #D1D5DB",
-                              padding: "12px",
-                              textAlign: "left",
-                              fontWeight: 600,
-                            }}
-                          >
-                            {item}
-                          </th>
-                        ),
-                      )}
+                      {["Name", "Qualification", "Designation"].map((item) => (
+                        <th
+                          key={item}
+                          style={{
+                            border: "1px solid #D1D5DB",
+                            padding: "12px",
+                            textAlign: "left",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item}
+                        </th>
+                      ))}
                     </tr>
                   </thead>
 
                   <tbody>
-                    <tr>
-                      <td style={tdStyle}>
-                        {data?.contractorPersonnel?.contractorName || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data?.contractorPersonnel?.Email || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data?.contractorPersonnel?.contactPerson || "-"}
-                      </td>
-                      <td style={tdStyle}>
-                        {data?.contractorPersonnel?.phone || "-"}
-                      </td>
-                    </tr>
+                    {" "}
+                    {data.contractorPersonnel?.teamMembers.map(
+                      (member, index) => (
+                        <tr key={index}>
+                          <td style={tdStyle}>{member.name || "-"}</td>
+                          <td style={tdStyle}>
+                            {member?.qualification || "-"}
+                          </td>
+                          <td style={tdStyle}>{member?.designation || "-"}</td>
+                        </tr>
+                      ),
+                    )}
                   </tbody>
                 </table>
               ) : (
@@ -1052,7 +926,6 @@ const MonthlyProgressReportPdf = ({
               )}
             </div>
 
-            {/* 8. CONTRACTOR EQUIPMENT */}
             <div style={{ marginTop: "32px" }}>
               <h2
                 style={{
@@ -1122,75 +995,7 @@ const MonthlyProgressReportPdf = ({
                 </p>
               )}
             </div>
-
-            {/* 9. ISSUES AND CONCERNS */}
-            <div style={{ marginTop: "40px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
-                9. ISSUES AND CONCERNS
-              </h2>
-
-              {data?.issuesConcern && data.issuesConcern.length > 0 ? (
-                data.issuesConcern.map((issue, key) => (
-                  <div
-                    key={key}
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      borderRadius: "8px",
-                      border: "1px solid #E5E7EB",
-                      background: "#F3FDF3",
-                      marginTop: "12px",
-                    }}
-                  >
-                    <p
-                      style={{
-                        color: "#1F2937",
-                        fontWeight: 500,
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {issue.description}
-                    </p>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          padding: "4px 12px",
-                          fontSize: "13px",
-                          borderRadius: "14px",
-                          background: "#FEF3C7",
-                          color: "#B45309",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {issue.status}
-                      </span>
-
-                      <span style={{ fontSize: "13px", color: "#4B5563" }}>
-                        {moment(issue.dueDate).format("DD-MM-YYYY")}
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <h3
-                  style={{
-                    fontSize: "16px",
-                    marginTop: "8px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  No issues or concerns recorded for this project.
-                </h3>
-              )}
-
-              {/* Prepared / Reviewed */}
+            <div>
               <div
                 style={{
                   display: "flex",

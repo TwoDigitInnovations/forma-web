@@ -285,9 +285,7 @@ const ProjectDetailsPage = (props) => {
                 <p className="text-xl font-bold text-custom-yellow">
                   {data || 0}
                 </p>
-                <p className="text-xl font-bold text-custom-yellow">
-                  See Pending
-                </p>
+               
 
                 <p
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200
@@ -323,111 +321,102 @@ const ProjectDetailsPage = (props) => {
             subtitle="All Advance Payment"
           />
         </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-2 bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                ↗ Progress Overview
+              </h2>
+              <p className="text-sm text-gray-400">
+                Track project completion and timeline
+              </p>
+            </div>
 
-        <div className="bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              ↗ Progress Overview
-            </h2>
-            <p className="text-sm text-gray-400">
-              Track project completion and timeline
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
-            <div className="md:col-span-2 space-y-4 group relative:">
-              <div
-                className="group-hover:cursor-pointer"
-                onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
-              >
-                <div className="flex justify-between mb-2 text-sm">
-                  <span className="group-hover:text-[#e0f349]">
-                    Physical Progress
-                  </span>
-                  <span>{physical}%</span>
-                </div>
-                <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-custom-yellow rounded-full transition-all"
-                    style={{ width: `${physical}%` }}
-                  />
-                </div>
-                <p
-                  className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+              <div className="md:col-span-3 space-y-4 group relative:">
+                <div
+                  className="group-hover:cursor-pointer"
+                  onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
                 >
-                  Click for details
-                </p>
+                  <div className="flex justify-between mb-2 text-sm">
+                    <span className="group-hover:text-[#e0f349]">
+                      Physical Progress
+                    </span>
+                    <span>{physical}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-custom-yellow rounded-full transition-all"
+                      style={{ width: `${physical}%` }}
+                    />
+                  </div>
+                  <p
+                    className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                text-gray-200 text-[13px] font-medium tracking-wide"
+                  >
+                    Click for details
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex justify-between mb-2 text-sm">
+                    <span>Time Progress</span>
+                    <span>{time}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-custom-yellow rounded-full transition-all"
+                      style={{ width: `${time}%` }}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <div className="flex justify-between mb-2 text-sm">
-                  <span>Time Progress</span>
-                  <span>{time}%</span>
-                </div>
-                <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-custom-yellow rounded-full transition-all"
-                    style={{ width: `${time}%` }}
-                  />
+              <div className="flex justify-center">
+                <div
+                  className="group relative w-28 h-28 cursor-pointer transition-transform duration-300 hover:scale-105"
+                  onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
+                >
+                  <svg className="w-full h-full rotate-[-90deg]">
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="50"
+                      stroke="#2a2a2a"
+                      strokeWidth="8"
+                      fill="none"
+                    />
+                    <circle
+                      cx="56"
+                      cy="56"
+                      r="50"
+                      stroke="#e0f349"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeDasharray={2 * Math.PI * 50}
+                      strokeDashoffset={
+                        2 * Math.PI * 50 - (financial / 100) * 2 * Math.PI * 50
+                      }
+                      strokeLinecap="round"
+                    />
+                  </svg>
+
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold group-hover:text-[#e0f349] transition-hover duration-200">
+                      {financial}%
+                    </span>
+                    <span className="text-xs text-gray-400">Financial</span>
+                  </div>
+                  <p
+                    className="text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                text-gray-200 text-[13px] font-medium tracking-wide"
+                  >
+                    Click for IPCs
+                  </p>
                 </div>
               </div>
             </div>
-
-            <div className="flex justify-center">
-              <div
-                className="group relative w-28 h-28 cursor-pointer transition-transform duration-300 hover:scale-105"
-                onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
-              >
-                <svg className="w-full h-full rotate-[-90deg]">
-                  <circle
-                    cx="56"
-                    cy="56"
-                    r="50"
-                    stroke="#2a2a2a"
-                    strokeWidth="8"
-                    fill="none"
-                  />
-                  <circle
-                    cx="56"
-                    cy="56"
-                    r="50"
-                    stroke="#e0f349"
-                    strokeWidth="8"
-                    fill="none"
-                    strokeDasharray={2 * Math.PI * 50}
-                    strokeDashoffset={
-                      2 * Math.PI * 50 - (financial / 100) * 2 * Math.PI * 50
-                    }
-                    strokeLinecap="round"
-                  />
-                </svg>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-xl font-bold group-hover:text-[#e0f349] transition-hover duration-200">
-                    {financial}%
-                  </span>
-                  <span className="text-xs text-gray-400">Financial</span>
-                </div>
-                <p
-                  className="text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
-                >
-                  Click for IPCs
-                </p>
-              </div>
-            </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          {/* <ActionCard
-            title="Milestones"
-            subtitle="Upcoming and overdue"
-            icon={<Clock1 size={20} className="text-custom-yellow" />}
-            text="No milestones due soon"
-            open={() => setMilestones(true)}
-          /> */}
           <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
@@ -435,6 +424,23 @@ const ProjectDetailsPage = (props) => {
             text="No overdue action points"
             open={() => setActionOpen(true)}
           />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-0">
+          {/* <ActionCard
+            title="Milestones"
+            subtitle="Upcoming and overdue"
+            icon={<Clock1 size={20} className="text-custom-yellow" />}
+            text="No milestones due soon"
+            open={() => setMilestones(true)}
+          /> */}
+          {/* <ActionCard
+            title=" Overdue Action Points"
+            subtitle="Missed deadlines"
+            icon={<CircleAlert size={20} className="text-custom-yellow" />}
+            text="No overdue action points"
+            open={() => setActionOpen(true)}
+          /> */}
           {/* <ActionCard
             title="Open incidents"
             subtitle="World Bank ESF compliance"

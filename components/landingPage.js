@@ -17,10 +17,6 @@ function TaskTrussLanding() {
   const [openFaq, setOpenFaq] = useState(0);
   const router = useRouter();
 
-
-
-
-
   
   const features = [
     {
@@ -121,7 +117,7 @@ function TaskTrussLanding() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
+      
       <section className="relative px-6 py-20 md:py-24">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-block px-6 py-2 mb-8 border border-[#e0f349] rounded-full">
