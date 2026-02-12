@@ -79,7 +79,7 @@ function TakingOverCertificate(props) {
   const downloadPDF = useReactToPrint({
     // content: () => contentRef.current,
     contentRef,
-    documentTitle: "Meeting Minutes Report",
+    documentTitle: "Taking over Certificate",
     copyStyles: true,
     // print: true,
     bodyClass: "bg-black",

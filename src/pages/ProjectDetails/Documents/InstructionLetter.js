@@ -104,7 +104,7 @@ function InstructionLetter(props) {
    const downloadPDF = useReactToPrint({
       // content: () => contentRef.current,
       contentRef,
-      documentTitle: "Meeting Minutes Report",
+      documentTitle: "Instruction Letter",
       copyStyles: true,
       // print: true,
       bodyClass: "bg-black",
