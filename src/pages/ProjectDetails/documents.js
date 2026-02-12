@@ -100,13 +100,13 @@ const documents = (props) => {
   ];
 
   const routeMap = {
-    "meeting-minutes": "/ProjectDetails/Documents/meetingMinutes",
-    "instruction-letter": "/ProjectDetails/Documents/InstructionLetter",
+    "meeting-minutes": "/ProjectDetails/documents/meetingMinutes",
+    "instruction-letter": "/ProjectDetails/documents/InstructionLetter",
     "monthly-progress-report":
-      "/ProjectDetails/Documents/MonthlyProgressReport",
+      "/ProjectDetails/documents/MonthlyProgressReport",
     "taking-over-certificate":
-      "/ProjectDetails/Documents/TakingOverCertificate",
-    "commencement-order": "/ProjectDetails/Documents/CommencementOrder",
+      "/ProjectDetails/documents/TakingOverCertificate",
+    "commencement-order": "/ProjectDetails/documents/CommencementOrder",
   };
 
   const handleRoute = (doc) => {

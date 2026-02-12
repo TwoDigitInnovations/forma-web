@@ -18,7 +18,12 @@ function PreConstruction(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteId, setDeleteId] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    totalPages: 1,
+    currentPage: 1,
+    itemsPerPage: 5,
+  });
   const [stats, setStats] = useState({
     total: 0,
     submitted: 0,
@@ -33,16 +38,16 @@ function PreConstruction(props) {
     const total = allCheckListItem.length;
 
     const submitted = allCheckListItem.filter(
-      (item) => item.status === "Submitted"
+      (item) => item.status === "Submitted",
     ).length;
     const pending = allCheckListItem.filter(
-      (item) => item.status === "Pending"
+      (item) => item.status === "Pending",
     ).length;
     const approved = allCheckListItem.filter(
-      (item) => item.status === "Approved"
+      (item) => item.status === "Approved",
     ).length;
     const rejected = allCheckListItem.filter(
-      (item) => item.status === "Rejected" || item.status === "Expired"
+      (item) => item.status === "Rejected" || item.status === "Expired",
     ).length;
 
     setStats({
@@ -127,12 +132,12 @@ function PreConstruction(props) {
               value === "Approved"
                 ? "bg-green-100 text-green-700"
                 : value === "Submitted"
-                ? "bg-blue-100 text-blue-700"
-                : value === "Rejected"
-                ? "bg-red-100 text-red-700"
-                : value === "Expired"
-                ? "bg-gray-300 text-gray-700"
-                : "bg-yellow-100 text-yellow-700"
+                  ? "bg-blue-100 text-blue-700"
+                  : value === "Rejected"
+                    ? "bg-red-100 text-red-700"
+                    : value === "Expired"
+                      ? "bg-gray-300 text-gray-700"
+                      : "bg-yellow-100 text-yellow-700"
             }`}
           >
             {value}
@@ -177,7 +182,7 @@ function PreConstruction(props) {
         ),
       },
     ],
-    []
+    [],
   );
 
   const StatsCard = ({ label, value, color }) => {
@@ -240,10 +245,11 @@ function PreConstruction(props) {
             color="#d11a1a"
           />
         </div>
-        
+
         <div className="bg-custom-black py-5 mt-5 rounded-2xl px-5">
           <p className="text-md font-medium">
-            Track required documents and approvals before project commencement{" "}
+            Track required documents and approvals before project
+            commencement{" "}
           </p>
           {allCheckListItem.length === 0 ? (
             <div className="flex flex-col justify-center items-center min-h-[400px] text-center">
@@ -254,7 +260,13 @@ function PreConstruction(props) {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <Table columns={columns} data={allCheckListItem} />
+              <Table
+                columns={columns}
+                data={allCheckListItem}
+                pagination={pagination}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
             </div>
           )}
         </div>

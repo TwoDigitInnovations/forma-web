@@ -175,7 +175,7 @@ function Dashboard(props) {
   console.log(AllBehiendProject);
 
   return (
-    <section className=" bg-[#000000] md:py-4 py-4 p-3 text-white h-screen">
+    <section className=" bg-[#000000] md:py-4 py-4 p-3 text-white h-screen z-0">
       <div className="h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
         <div className="bg-custom-black md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
           <div>

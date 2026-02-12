@@ -99,7 +99,7 @@ const MonthlyProgressReportPdf = ({
             ref={contentRef}
             style={{
               width: "300mm",
-              minHeight: "297mm",
+              // minHeight: "297mm",
               backgroundColor: "#ffffff",
               color: "#000000",
               fontFamily: "sans-serif",
@@ -110,13 +110,86 @@ const MonthlyProgressReportPdf = ({
               boxSizing: "border-box",
             }}
           >
-            <div style={{ textAlign: "center", marginBottom: "40px" }}>
-              {data.LogoImage && (
-                <img
-                  src={data.LogoImage}
-                  alt="Logo"
+            <div
+              style={{
+                width: "794px",
+                height: "1520px", // A4 height
+                margin: "0 auto",
+                padding: "40px",
+                boxSizing: "border-box",
+                overflow: "hidden", // extra content next page me nahi jayega
+                background: "#fff",
+              }}
+            >
+              <div style={{ textAlign: "center", marginBottom: "40px" }}>
+                {data.LogoImage && (
+                  <img
+                    src={data.LogoImage}
+                    alt="Logo"
+                    style={{
+                      maxWidth: "220px",
+                      height: "auto",
+                      margin: "0 auto 32px auto",
+                      display: "block",
+                    }}
+                  />
+                )}
+
+                <h1
                   style={{
-                    maxWidth: "120px",
+                    fontSize: "22px",
+                    fontWeight: "bold",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {data.clientName}
+                </h1>
+
+                <div
+                  style={{
+                    display: "inline-block",
+                    // background: "#FCD34D",
+                    padding: "8px 0px",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                  }}
+                >
+                  {data.projectTitle}
+                </div>
+              </div>
+
+              <div style={{ textAlign: "center", margin: "40px 0" }}>
+                <div
+                  style={{
+                    display: "inline-block",
+                    // background: "#2563EB",
+                    padding: "16px 28px",
+                    borderRadius: "10px",
+                    boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <h2
+                    style={{
+                      fontSize: "22px",
+                      color: "black",
+                      fontWeight: "bold",
+                      letterSpacing: "1px",
+                      margin: 0,
+                    }}
+                  >
+                    MONTHLY PROGRESS REPORT – {data.reportMonth}{" "}
+                    {data.reportYear}
+                  </h2>
+                </div>
+              </div>
+
+              {data?.coverUrl && (
+                <img
+                  src={data?.coverUrl}
+                  alt="Cover"
+                  style={{
+                    maxWidth: "620px",
                     height: "auto",
                     margin: "0 auto 32px auto",
                     display: "block",
@@ -124,99 +197,38 @@ const MonthlyProgressReportPdf = ({
                 />
               )}
 
-              <h1
-                style={{
-                  fontSize: "22px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                }}
-              >
-                {data.clientName}
-              </h1>
+              <div style={{ textAlign: "center", margin: "30px 0" }}>
+                <p style={{ fontSize: "18px", fontWeight: 600 }}>
+                  {data.reportMonth}, {data.reportYear}
+                </p>
+              </div>
 
               <div
                 style={{
-                  display: "inline-block",
-                  // background: "#FCD34D",
-                  padding: "8px 0px",
-                  borderRadius: "6px",
-                  fontSize: "14px",
-                  fontWeight: 500,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "20px",
+                  margin: "40px 0",
                 }}
               >
-                {data.projectTitle}
+                {data?.leftLogo && (
+                  <img
+                    src={data?.leftLogo}
+                    alt="Left Logo"
+                    style={{ maxWidth: "210px", height: "auto" }}
+                  />
+                )}
+
+                {data?.rightLogo && (
+                  <img
+                    src={data?.rightLogo}
+                    alt="Right Logo"
+                    style={{ maxWidth: "210px", height: "auto" }}
+                  />
+                )}
               </div>
             </div>
-
-            <div style={{ textAlign: "center", margin: "40px 0" }}>
-              <div
-                style={{
-                  display: "inline-block",
-                  // background: "#2563EB",
-                  padding: "16px 28px",
-                  borderRadius: "10px",
-                  boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
-                }}
-              >
-                <h2
-                  style={{
-                    fontSize: "22px",
-                    color: "black",
-                    fontWeight: "bold",
-                    letterSpacing: "1px",
-                    margin: 0,
-                  }}
-                >
-                  MONTHLY PROGRESS REPORT – {data.reportMonth} {data.reportYear}
-                </h2>
-              </div>
-            </div>
-
-            {data?.coverUrl && (
-              <img
-                src={data?.coverUrl}
-                alt="Cover"
-                style={{
-                  maxWidth: "420px",
-                  height: "auto",
-                  margin: "0 auto 32px auto",
-                  display: "block",
-                }}
-              />
-            )}
-
-            <div style={{ textAlign: "center", margin: "30px 0" }}>
-              <p style={{ fontSize: "18px", fontWeight: 600 }}>
-                {data.reportMonth}, {data.reportYear}
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "20px",
-                margin: "40px 0",
-              }}
-            >
-              {data?.leftLogo && (
-                <img
-                  src={data?.leftLogo}
-                  alt="Left Logo"
-                  style={{ maxWidth: "110px", height: "auto" }}
-                />
-              )}
-
-              {data?.rightLogo && (
-                <img
-                  src={data?.rightLogo}
-                  alt="Right Logo"
-                  style={{ maxWidth: "110px", height: "auto" }}
-                />
-              )}
-            </div>
-
             <div style={{ marginTop: "56px" }}>
               <h3
                 style={{
@@ -529,7 +541,6 @@ const MonthlyProgressReportPdf = ({
                     </div>
                   </div>
 
-                
                   <div>
                     <p style={{ fontSize: "13px", color: "#777" }}>
                       Budget Used
@@ -705,7 +716,7 @@ const MonthlyProgressReportPdf = ({
                             // padding: "4px 10px",
                             // background: "#1f2937",
                             color: "black",
-                            fontWeight:"600",
+                            fontWeight: "600",
                             fontSize: "12px",
                             borderRadius: "50px",
                           }}
@@ -759,7 +770,7 @@ const MonthlyProgressReportPdf = ({
                                 // padding: "4px 10px",
                                 // background: "#e5e7eb",
                                 color: "#555",
-                                fontWeight:"600",
+                                fontWeight: "600",
                                 fontSize: "12px",
                                 borderRadius: "50px",
                               }}

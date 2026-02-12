@@ -261,7 +261,7 @@ function MonthlyProgressReport(props) {
 
       if (res?.status) {
         toast.success(editId ? "Documents updated!" : "Documents created!");
-        router.push(`/ProjectDetails/Documents`);
+        router.push(`/ProjectDetails/documents`);
         const data = res.data?.data?.data;
         setEditData(data);
       } else {

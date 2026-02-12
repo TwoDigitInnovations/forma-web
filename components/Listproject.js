@@ -57,7 +57,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
   };
 
   return (
-    <div className="bg-custom-black min-h-[400px] rounded-2xl border border-[#1f1f1f] p-6 text-white ">
+    <div className="bg-custom-black min-h-[500px] rounded-2xl border border-[#1f1f1f] p-6 text-white ">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Active Projects</h2>
         <button
@@ -77,7 +77,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto z-0">
+        <div className="overflow-x-auto z-0 min-h-[500px]">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-400 border-b-[1px] border-gray-600 ">
@@ -131,7 +131,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                   </td>
 
                   <td>
-                    <div className="relative overflow-visible">
+                    <div className="relative ">
                       <button
                         onClick={() =>
                           setOpenMenuId(
