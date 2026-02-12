@@ -325,8 +325,8 @@ const ProjectDetailsPage = (props) => {
             subtitle="All Advance Payment"
           />
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+          <div className="md:col-span-2 bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
             <div className="mb-6">
               <h2 className="text-xl font-semibold flex items-center gap-2">
                 ↗ Progress Overview

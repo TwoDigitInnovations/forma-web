@@ -266,11 +266,12 @@ const MonthlyProgressReportPdf = ({
                 <p style={{ fontWeight: 600, marginTop: "10px" }}>
                   4. PROGRESS
                 </p>
-                <p style={{ marginLeft: "20px" }}>4.1 Overall Progress</p>
-                <p style={{ marginLeft: "20px" }}>4.2 Work Progress</p>
+               
+                
                 <p style={{ marginLeft: "20px", marginBottom: "10px" }}>
                   4.1 Financial Progress
                 </p>
+                <p style={{ marginLeft: "20px" }}>4.2 Physical Progress</p>
 
                 <p style={{ fontWeight: 600, marginTop: "10px" }}>
                   5. WORK PLAN
@@ -700,6 +701,17 @@ const MonthlyProgressReportPdf = ({
                   </tbody>
                 </table>
               </div>
+
+               <p
+                style={{
+                  fontSize: "15px",
+                  color: "#666",
+                  marginBottom: "20px",
+                  marginTop:"20px"
+                }}
+              >
+                4.2 Physical Progress
+              </p>
             </div>
 
             <div style={{ marginTop: "32px" }}>

@@ -224,8 +224,6 @@ function RoadLineTracker({ loader }) {
                     {layer?.sides?.map((sideObj, index) => {
                       const totalKm = Number(road?.lengthKm || 0);
                       const history = sideObj?.history || [];
-
-                      // 🔹 Calculate completed KM from history
                       const calculatedCompletedKm = history.reduce(
                         (sum, item) => {
                           const start = Number(item.start || 0);
@@ -233,7 +231,7 @@ function RoadLineTracker({ loader }) {
 
                           return sum + Math.max(0, end - start);
                         },
-                        0
+                        0,
                       );
 
                       const safeCompletedKm =
@@ -244,7 +242,7 @@ function RoadLineTracker({ loader }) {
                       const percentage =
                         totalKm > 0
                           ? Number(
-                              ((safeCompletedKm / totalKm) * 100).toFixed(2)
+                              ((safeCompletedKm / totalKm) * 100).toFixed(2),
                             )
                           : 0;
 
@@ -255,21 +253,33 @@ function RoadLineTracker({ loader }) {
                               {sideObj.side === "Left"
                                 ? "LHS"
                                 : sideObj.side === "Right"
-                                ? "RHS"
-                                : ""}{" "}
+                                  ? "RHS"
+                                  : ""}{" "}
                               {percentage.toFixed(2)}%
                             </p>
                           </div>
-
                           <div className="w-full bg-gray-600/40 h-6 rounded-full overflow-hidden relative">
-                            <div
-                              className={`h-full rounded-full transition-all ${
-                                sideObj.side === "Right"
-                                  ? "bg-custom-yellow"
-                                  : "bg-custom-yellow"
-                              }`}
-                              style={{ width: `${percentage}%` }}
-                            ></div>
+                            {sideObj?.history?.map((item, i) => {
+                              const start = Number(item.start || 0);
+                              const end = Number(item.end || 0);
+
+                              if (totalKm === 0) return null;
+
+                              const leftPercent = (start / totalKm) * 100;
+                              const widthPercent =
+                                ((end - start) / totalKm) * 100;
+
+                              return (
+                                <div
+                                  key={i}
+                                  className="absolute top-0 h-full bg-custom-yellow"
+                                  style={{
+                                    left: `${leftPercent}%`,
+                                    width: `${widthPercent}%`,
+                                  }}
+                                />
+                              );
+                            })}
 
                             <p className="text-[12px] absolute bottom-[2px] left-2 text-white">
                               {calculatedCompletedKm} KM
@@ -279,6 +289,7 @@ function RoadLineTracker({ loader }) {
                               {totalKm} KM
                             </p>
                           </div>
+
                           <div className="mt-2 mb-2 ms-2">
                             {sideObj?.history?.map((historyItem, histIndex) => (
                               <div
