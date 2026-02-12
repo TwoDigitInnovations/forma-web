@@ -7,6 +7,7 @@ import { Api } from "@/services/service";
 import { ProjectDetailsContext } from "@/pages/_app";
 import TakingOverCertificatePdf from "../../../../components/documents/TakingOverCertificatePdf";
 import dynamic from "next/dynamic";
+import { useReactToPrint } from "react-to-print";
 
 function TakingOverCertificate(props) {
   const router = useRouter();

@@ -8,6 +8,7 @@ import { Api } from "@/services/service";
 import InstructionLetterPdf from "../../../../components/documents/InstructionLetterPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
 import dynamic from "next/dynamic";
+import { useReactToPrint } from "react-to-print";
 
 function InstructionLetter(props) {
   const router = useRouter();

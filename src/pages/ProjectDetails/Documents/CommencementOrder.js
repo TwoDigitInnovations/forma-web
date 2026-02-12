@@ -8,6 +8,7 @@ import { Api } from "@/services/service";
 import InstructionLetterPdf from "../../../../components/documents/InstructionLetterPdf";
 import { ProjectDetailsContext } from "@/pages/_app";
 import CommencementOrderPdf from "../../../../components/documents/CommencementOrderPdf";
+import { useReactToPrint } from "react-to-print";
 
 function InstructionLetter(props) {
   const router = useRouter();
