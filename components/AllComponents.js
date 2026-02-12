@@ -454,10 +454,8 @@ export const Certificates = ({
           placeholder="Amount"
           value={cert.amount}
           onChange={(e) => setCert({ ...cert, amount: e.target.value })}
-          className={`border p-2 rounded-md  ${
-            cert.status === "Paid" ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={cert.status === "Paid"}
+          className={`border p-2 rounded-md `}
+          // disabled={cert.status === "Paid"}
         />
 
         <select

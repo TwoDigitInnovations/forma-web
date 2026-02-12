@@ -285,7 +285,7 @@ const WorkPlan = (props) => {
 
         {open && (
           <div className="fixed backdrop-blur-sm inset-0 z-50 flex items-center justify-center bg-black/80">
-            <div className="w-[95%] max-w-6xl bg-[#111] rounded-2xl shadow-xl border border-gray-800 overflow-hidden">
+            <div className="w-[95%] max-w-6xl bg-[#111] rounded-2xl shadow-xl border border-gray-800  h-[90vh] overflow-y-scroll scrollbar-hide pb-5">
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-[#1a1a1a]">
                 <h2 className="text-lg font-semibold text-white">

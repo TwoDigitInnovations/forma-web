@@ -215,6 +215,11 @@ const ProjectDetailsPage = (props) => {
       (Number(projectDetails?.paidAmount) || 0)
     ).toFixed(2),
   );
+  const formatUSNumber = (value) => {
+    const num = Number(value);
+    if (isNaN(num)) return "";
+    return num.toLocaleString("en-US");
+  };
 
   return (
     <div className="h-screen bg-black text-white ">
@@ -285,7 +290,6 @@ const ProjectDetailsPage = (props) => {
                 <p className="text-xl font-bold text-custom-yellow">
                   {data || 0}
                 </p>
-               
 
                 <p
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200
@@ -300,24 +304,24 @@ const ProjectDetailsPage = (props) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-3 gap-2 mb-3">
           <SecondCard
             title="Contract Amount"
-            value={projectDetails?.contractAmount}
+            value={formatUSNumber(projectDetails?.contractAmount)}
             subtitle="Total project value"
           />
 
           <SecondCard
             title="Amount Spent"
-            value={projectDetails?.paidAmount || 0}
+            value={formatUSNumber(projectDetails?.paidAmount || 0)}
             subtitle="From payment certificates"
           />
           <SecondCard
             title="Balance"
-            value={remainingAmount}
+            value={formatUSNumber(remainingAmount)}
             subtitle="Remaining funds"
           />
 
           <SecondCard
             title="Advance Payment"
-            value={projectDetails?.advancePayment || 0}
+            value={formatUSNumber(projectDetails?.advancePayment || 0)}
             subtitle="All Advance Payment"
           />
         </div>
