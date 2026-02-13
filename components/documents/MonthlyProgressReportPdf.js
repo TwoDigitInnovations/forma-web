@@ -242,7 +242,7 @@ const MonthlyProgressReportPdf = ({
             >
               <h3
                 style={{
-                  fontSize: "28px",
+                  fontSize: "18px",
                   fontWeight: "bold",
                   marginBottom: "20px",
                 }}
@@ -250,7 +250,7 @@ const MonthlyProgressReportPdf = ({
                 TABLE OF CONTENTS
               </h3>
 
-              <div style={{ fontSize: "25px", lineHeight: "44px" }}>
+              <div style={{ fontSize: "15px", lineHeight: "36px" }}>
                 <p style={{ fontWeight: 600 }}>1. INTRODUCTION</p>
                 <p style={{ marginLeft: "20px" }}>1.1 Project Summary</p>
                 <p style={{ marginLeft: "20px", marginBottom: "12px" }}>
@@ -266,8 +266,7 @@ const MonthlyProgressReportPdf = ({
                 <p style={{ fontWeight: 600, marginTop: "10px" }}>
                   4. PROGRESS
                 </p>
-               
-                
+
                 <p style={{ marginLeft: "20px", marginBottom: "10px" }}>
                   4.1 Financial Progress
                 </p>
@@ -702,16 +701,115 @@ const MonthlyProgressReportPdf = ({
                 </table>
               </div>
 
-               <p
+              <p
                 style={{
                   fontSize: "15px",
                   color: "#666",
                   marginBottom: "20px",
-                  marginTop:"20px"
+                  marginTop: "20px",
                 }}
               >
                 4.2 Physical Progress
               </p>
+
+              <div>
+                {data?.physicalprogress?.map((tracker, tIndex) => (
+                  <div key={tIndex} style={{ marginBottom: "30px", }}>
+                    {/* Tracker Name */}
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      {tracker.trackerName}
+                    </p>
+
+                    
+                    <div
+                      style={{
+                        display: "flex",
+                        // background: "#e6f04a",
+                        padding: "10px",
+                        border:"1px solid #eee",
+                        fontWeight: "600",
+                        fontSize: "13px",
+                      }}
+                    >
+                      <div style={{ flex: 2 }}>Description</div>
+                      <div style={{ flex: 1 }}>Qty in BOQ</div>
+                      <div style={{ flex: 1 }}>Rate</div>
+                      <div style={{ flex: 1 }}>Amount</div>
+                      <div style={{ flex: 1 }}>Qty Done</div>
+                      <div style={{ flex: 1 }}>Amount Done</div>
+                      <div style={{ flex: 1 }}>Progress</div>
+                    </div>
+
+                    
+                    {tracker?.trackerActivityProgress?.map(
+                      (section, sIndex) => (
+                        <div key={sIndex}>
+                         
+                          <div
+                            style={{
+                              background: "#f5f5f5",
+                              padding: "8px 10px",
+                              fontWeight: "600",
+                              border: "1px solid #ddd",
+                            }}
+                          >
+                            {section.name}
+                          </div>
+
+                          
+                          {section?.activities?.map((act, aIndex) => {
+                            const progress =
+                              act.qtyInBOQ > 0
+                                ? ((act.qtyDone / act.qtyInBOQ) * 100).toFixed(
+                                    2,
+                                  )
+                                : 0;
+
+                            return (
+                              <div
+                                key={aIndex}
+                                style={{
+                                  display: "flex",
+                                  padding: "10px",
+                                  borderBottom: "1px solid #eee",
+                                  fontSize: "13px",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <div style={{ flex: 2 }}>{act.name}</div>
+                                <div style={{ flex: 1 }}>{act.qtyInBOQ}</div>
+                                <div style={{ flex: 1 }}>{act.Rate}</div>
+                                <div style={{ flex: 1 }}>{act.Amount}</div>
+                                <div style={{ flex: 1 }}>{act.qtyDone}</div>
+                                <div style={{ flex: 1 }}>{act.amountDone}</div>
+
+                                
+                                <div style={{ flex: 1 }}>
+                                
+                                  <p
+                                    style={{
+                                      fontSize: "13px",
+                                      marginTop: "2px",
+                                    }}
+                                  >
+                                    {progress}%
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div style={{ marginTop: "32px" }}>

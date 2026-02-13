@@ -9,7 +9,6 @@ import Compressor from "compressorjs";
 import { ApiFormData } from "@/services/service";
 import { useReactToPrint } from "react-to-print";
 
-
 function MonthlyProgressReport(props) {
   const router = useRouter();
   const [projectId, setProjectId] = useState("");
@@ -19,6 +18,7 @@ function MonthlyProgressReport(props) {
   const [topLogo, setTopLogo] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [leftLogo, setLeftLogo] = useState("");
+   const [allTrackerData, setAllTrackerData] = useState([]);
   const [rightLogo, setRightLogo] = useState("");
   const [editData, setEditData] = useState("");
   const [allItems, setAllItems] = useState([]);
@@ -84,6 +84,7 @@ function MonthlyProgressReport(props) {
       setProjectId(project._id);
       getAllActionPoints(project._id);
       getAllPlanByProjectId(project._id);
+      getAllTracker(project._id)
     }
   }, []);
 
@@ -148,7 +149,7 @@ function MonthlyProgressReport(props) {
       clientPersonnel: projectDetails?.clientInfo || {},
       issuesConcern: allItems,
       workplan: allPlanData,
-
+      physicalprogress:allTrackerData,
       actualProgress: projectDetails?.actualProgress,
     };
 
@@ -172,6 +173,24 @@ function MonthlyProgressReport(props) {
     editId,
     editData,
   ]);
+
+  const getAllTracker = async (id) => {
+    props.loader(true);
+    let url = `tracker/getAll?ProjectId=${id}`;
+    Api("get", url, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllTrackerData(res?.data?.data || res?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch trackers");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   // const downloadPDF = async () => {
   //   const input = contentRef.current;
