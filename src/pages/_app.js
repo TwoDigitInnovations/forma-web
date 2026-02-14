@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { Api } from "@/services/service";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const userContext = createContext();
 export const ProjectDetailsContext = createContext();
@@ -43,8 +44,7 @@ export default function App({ Component, pageProps }) {
         const res = await Api("get", "auth/profile", "", router);
         localStorage.setItem("userDetail", JSON.stringify(res.data));
         setUser(res.data);
-      } 
-      catch {
+      } catch {
         // localStorage.clear();
         // setUser({})
         // router.push("/login");
@@ -52,20 +52,24 @@ export default function App({ Component, pageProps }) {
     }
   };
 
-  return (
-    <userContext.Provider value={[user, setUser]}>
-      <ProjectDetailsContext.Provider
-        value={[projectDetails, setProjectdetails]}
-      >
-        <Loader open={open} />
-        <ToastContainer position="top-right" autoClose={3000} />
+ console.log("Google Client ID:", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
 
-        <Layout loader={setOpen}>
-          {user !== null && (
-            <Component {...pageProps} loader={setOpen} user={user} />
-          )}
-        </Layout>
-      </ProjectDetailsContext.Provider>
-    </userContext.Provider>
+  return (
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+      <userContext.Provider value={[user, setUser]}>
+        <ProjectDetailsContext.Provider
+          value={[projectDetails, setProjectdetails]}
+        >
+          <Loader open={open} />
+          <ToastContainer position="top-right" autoClose={3000} />
+
+          <Layout loader={setOpen}>
+            {user !== null && (
+              <Component {...pageProps} loader={setOpen} user={user} />
+            )}
+          </Layout>
+        </ProjectDetailsContext.Provider>
+      </userContext.Provider>
+    </GoogleOAuthProvider>
   );
 }

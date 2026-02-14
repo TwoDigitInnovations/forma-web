@@ -6,9 +6,8 @@ import MeetingHistory from "../../components/MeetingHistory";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
-import moment from "moment";
+import AddAttendeeGroupForm from "../../components/AddAttendeeGroupForm";
 import { ConfirmModal } from "../../components/AllComponents";
-
 import Meetingmintues from "../../components/meetingmintues";
 
 const MeetingDocumentation = (props) => {
@@ -20,10 +19,13 @@ const MeetingDocumentation = (props) => {
   const [editId, setEditId] = useState("");
   const [editData, setEditData] = useState({});
   const router = useRouter();
+  const [allGroups, setAllGroups] = useState([]);
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     getAllMeetings();
+    getAllGroups();
   }, []);
 
   const handleDeleteConfirm = async () => {
@@ -67,6 +69,20 @@ const MeetingDocumentation = (props) => {
     }
   };
 
+  const getAllGroups = async () => {
+    props.loader(true);
+    try {
+      const res = await Api("get", `attendee/getAll`, {}, router);
+      if (res?.status === true) {
+        setAllGroups(res?.data?.data || []);
+      }
+    } catch (err) {
+      console.error("Failed to load meetings");
+    } finally {
+      props.loader(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="md:px-0 px-4 py-6">
@@ -86,7 +102,7 @@ const MeetingDocumentation = (props) => {
         </div>
       </div>
 
-      <div className="px-4 md:px-0 flex justify-between gap-8 border-b-1 border-gray-800 pb-2">
+      <div className="px-4 md:px-0 flex md:flex-row flex-col justify-between gap-4 md:gap-8 border-b-1 border-gray-800 pb-2">
         <button
           onClick={() => {
             setActiveTab("new");
@@ -100,16 +116,28 @@ const MeetingDocumentation = (props) => {
           <FileText size={18} />
           Meetings
         </button>
-        <button
-          onClick={() => {
-            setOpen(true);
-          }}
-          className={`flex border-transparent rounded-md bg-custom-yellow  py-3 px-4 text-black items-center gap-2 cursor-pointer transition-colors
+        <div className="flex flex-row  gap-2 md:gap-4">
+          <button
+            onClick={() => {
+              setOpen(true);
+            }}
+            className={`flex border-transparent rounded-md bg-custom-yellow text-sm md:text-md py-3 md:px-4 px-2 text-black items-center gap-2 cursor-pointer transition-colors
             `}
-        >
-          <Plus size={18} />
-          New Meeting Mintues
-        </button>
+          >
+            <Plus size={18} />
+            New Meeting Mintues
+          </button>
+          <button
+            onClick={() => {
+              setIsOpen(true);
+            }}
+            className={`flex border-transparent rounded-md bg-custom-yellow  text-sm md:text-md py-3 md:px-4 px-2 text-black items-center gap-2 cursor-pointer transition-colors
+            `}
+          >
+            <Plus size={18} />
+            New Attendee Group
+          </button>
+        </div>
       </div>
 
       <div className="p-4 md:py-6 md:p-0">
@@ -126,6 +154,7 @@ const MeetingDocumentation = (props) => {
         <Meetingmintues
           setEditData={setEditData}
           editData={editData}
+          allGroups={allGroups}
           setOpen={setOpen}
           close={() => setOpen(false)}
           editId={editId}
@@ -143,6 +172,14 @@ const MeetingDocumentation = (props) => {
         yesText="Yes, Delete"
         noText="Cancel"
       />
+
+      {isOpen && (
+        <AddAttendeeGroupForm
+          loader={props.loader}
+          getAllGroups={getAllGroups}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </div>
   );
 };

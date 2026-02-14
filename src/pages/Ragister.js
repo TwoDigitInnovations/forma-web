@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ArrowRight, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useGoogleLogin } from "@react-oauth/google";
+import Image from "next/image";
+import { userContext } from "./_app";
 
 function Signup() {
   const [role, setRole] = useState("User");
@@ -12,7 +15,7 @@ function Signup() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
-
+  const [user, setUser] = useContext(userContext);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -60,6 +63,72 @@ function Signup() {
     }
   };
 
+  const googleSignup = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+
+        const res = await Api(
+          "post",
+          "auth/googleAuth",
+          {
+            token: tokenResponse.access_token,
+          },
+          router,
+        );
+        if (res?.token) {
+          const user = res.user;
+          if (
+            user.role === "Admin" ||
+            user.role === "Organization" ||
+            user.role === "TeamsMember" ||
+            user.role === "User"
+          ) {
+            localStorage.setItem("userDetail", JSON.stringify(user));
+            localStorage.setItem("token", res?.token);
+            setUser(user);
+
+            toast.success(res.message);
+
+            let hasActiveSubscription = false;
+
+            if (user.role === "TeamsMember" && user.OrganizationId) {
+              const org = user.OrganizationId;
+
+              hasActiveSubscription =
+                org.status === "active" &&
+                org.subscription &&
+                org.subscription.status === "active" &&
+                org.subscription.planEndDate &&
+                new Date(org.subscription.planEndDate) > new Date();
+            } else {
+              hasActiveSubscription =
+                user.subscription &&
+                user.subscription.status === "active" &&
+                user.subscription.planEndDate &&
+                new Date(user.subscription.planEndDate) > new Date();
+            }
+
+            if (hasActiveSubscription) {
+              router.push("/dashboard");
+            } else {
+              router.push("/PlanPage");
+            }
+          } else {
+            toast.error(res.data.message || "You are not authorized");
+          }
+        } else {
+          toast.error("Login failed");
+        }
+      } catch (err) {
+        toast.error(err.message || "Google signup failed");
+      } finally {
+        setLoading(false);
+      }
+    },
+    onError: () => toast.error("Google login failed"),
+  });
+
   return (
     <div className="min-h-screen bg-black flex justify-center items-center md:px-6 px-4 py-14">
       <div className="">
@@ -74,6 +143,8 @@ function Signup() {
           <div className="w-full mx-auto shadow-2xl flex justify-center items-center">
             <div className="md:min-w-lg min-w-[350px]">
               <div className="mb-6 py-6 bg-custom-black border rounded-3xl border-green-500/20  md:p-5 p-3">
+               
+
                 <div className="flex flex-col justify-center items-center mb-4 gap-2">
                   <h2 className="text-white text-2xl font-bold ">
                     Create User Account
@@ -168,6 +239,25 @@ function Signup() {
                     </>
                   )}
                 </button>
+                 <div className="flex items-center my-4">
+                  <div className="flex-1 h-[1px] bg-gray-700"></div>
+                  <span className="text-gray-400 px-3 text-sm">OR</span>
+                  <div className="flex-1 h-[1px] bg-gray-700"></div>
+                </div>
+                 <button
+                  onClick={() => googleSignup()}
+                  className="w-full flex items-center justify-center gap-3 bg-custom-yellow cursor-pointer text-black py-3 rounded-xl font-semibold hover:scale-[1.02] transition"
+                >
+                  <Image
+                    src="/google.png"
+                    alt="Google"
+                    width={20}
+                    height={20}
+                  />
+                  Continue with Google
+                </button>
+
+               
 
                 <p className="text-white text-md mt-6 text-center">
                   {" "}
