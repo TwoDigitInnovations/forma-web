@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { userContext } from "./_app";
 import isAuth from "../../components/isAuth";
 import { ConfirmModal } from "../../components/AllComponents";
-import CreateProgram from "../../components/createProgram";
+import CreateProgram from "../../components/CreateProgram";
 
 const Program = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,12 +49,10 @@ const Program = (props) => {
     getAllProgram();
   }, []);
 
-  // Search filter (frontend)
   const filteredPrograms = AllProgramData.filter((p) =>
     p.name?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  // Delete
   const handleDeleteConfirm = async () => {
     props.loader(true);
     Api("delete", `program/delete/${editId}`, "", router)
@@ -78,11 +76,16 @@ const Program = (props) => {
     <div className="h-screen p-3 md:px-0 bg-black text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll scrollbar-hide pb-28">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>
-            Program
-          </h1>
-
+        <div className="flex flex-col md:flex-row items-start gap-3 justify-between mb-8 mt-4">
+          <div className="">
+            <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>
+              Program
+            </h1>
+            <p className="text-sm text-gray-300 mt-2">
+              Create multiple programs to organize your projects. Each project
+              is managed under a specific program.
+            </p>
+          </div>
           <button
             className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium"
             style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
@@ -118,14 +121,6 @@ const Program = (props) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-
-          <button
-            className="w-[140px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 text-sm"
-            style={{ backgroundColor: "#FFFFFF75" }}
-          >
-            <FolderKanban size={22} />
-            All Program
-          </button>
         </div>
 
         <h2 className="text-xl font-semibold mb-6">All Program</h2>
@@ -156,22 +151,21 @@ const Program = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
+                <div className="flex w-full flex-row sm:justify-end gap-2">
                   <button
-                    className="p-2 rounded-lg cursor-pointer bg-gray-800 text-gray-300 flex items-center justify-center gap-2"
+                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-gray-800 text-gray-300 flex items-center justify-center gap-2"
                     onClick={() => {
                       setEditId(Program._id);
                       setIsOpen(true);
                       setProgramDetails(Program);
                       console.log(Program);
-                      
                     }}
                   >
                     Edit <Edit2 size={16} />
                   </button>
 
                   <button
-                    className="p-2 rounded-lg cursor-pointer bg-red-500/10 text-red-400 flex items-center justify-center gap-2"
+                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-red-500/10 text-red-400 flex items-center justify-center gap-2"
                     onClick={() => {
                       setEditId(Program._id);
                       setIsConfirmOpen(true);

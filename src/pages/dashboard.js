@@ -198,15 +198,24 @@ function Dashboard(props) {
               Key financial and project metrics overview.
             </p>
           </div>
-
-          <button
-            className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
-            onClick={() => setIsOpen(true)}
-          >
-            <FolderPlus size={28} />
-            New Project
-          </button>
+          <div className="flex justify-start gap-4">
+            <button
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+              onClick={() => router.push('/program')}
+            >
+              <FolderPlus size={28} />
+              Add Program
+            </button>
+            <button
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+              onClick={() => setIsOpen(true)}
+            >
+              <FolderPlus size={28} />
+              New Project
+            </button>
+          </div>
 
           {isOpen && (
             <CreateProject

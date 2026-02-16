@@ -42,7 +42,7 @@ const CreateProgram = ({
       .then((res) => {
         loader(false);
         if (res?.status === true) {
-          toast.success("Program created successfully");
+          toast.success(`Program ${editId ? "Updated" : "created"} successfully`);
           setName("");
           setIsOpen(false);
           refreshList(); // parent list refresh
@@ -89,7 +89,7 @@ const CreateProgram = ({
               className="px-4 py-2 rounded-lg font-medium"
               style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
             >
-              Create
+            {editId ? "Update" : "Create"}  
             </button>
           </div>
         </form>

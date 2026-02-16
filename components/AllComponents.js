@@ -1174,13 +1174,13 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
     projectName,
     projectType,
     projectNo,
+    programType,
     status,
     defectsLiability,
     startDate,
     endDate,
     location,
     ProjectScope,
-
     ExcuetiveSummary,
     description,
   } = projectInfo;
@@ -1270,6 +1270,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
             </div>
 
             <Info1 label="Duration" value={duration} />
+            <Info1 label="Program Type" value={programType}/>
             <Info1
               label="Defects Liability"
               value={defectsLiability || "Not set"}

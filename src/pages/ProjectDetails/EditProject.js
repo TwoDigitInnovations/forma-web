@@ -11,9 +11,12 @@ import ClientProjectInfo from "../../../components/ClientProjectInfo";
 import ContractorProjectInfo from "../../../components/ContractorProjectInfo";
 import IntroductionInfo from "../../../components/IntroductionInfo";
 import moment from "moment";
+import program from "../program";
 
 const EditProject = (props) => {
   const [formData, setFormData] = useState({
+    programType: "",
+    programId: "",
     projectName: "",
     projectNo: "",
     description: "",
@@ -29,6 +32,7 @@ const EditProject = (props) => {
     ExcuetiveSummary: "",
     LocationSummary: "",
   });
+  const [AllProgramData, setAllProgramData] = useState([]);
   const [clientDetails, setClientDetails] = useState({
     ClientName: "",
     Email: "",
@@ -94,6 +98,26 @@ const EditProject = (props) => {
     }
   }, [formData.endDate]);
 
+  const getAllProgram = async () => {
+    props.loader(true);
+    Api("get", `program/getAll`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllProgramData(res.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch programs");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  useEffect(() => {
+    getAllProgram();
+  }, []);
   const getProjectbyId = async (id) => {
     props.loader(true);
     Api("get", `project/getProjectById/${id}`, "", router)
@@ -117,6 +141,8 @@ const EditProject = (props) => {
             LocationSummary: project?.LocationSummary || "",
             ProjectScope: project?.ProjectScope || "",
             ExcuetiveSummary: project?.ExcuetiveSummary || "",
+            programType: project?.programType || "",
+            programId: project?.programId || "",
           });
           const contracter = project?.contractorInfo;
           setContractorDetails({
@@ -220,9 +246,12 @@ const EditProject = (props) => {
 
     setLoading(true);
     props.loader(true);
-
+    const selectedProgram = AllProgramData.find(
+      (p) => p._id === formData.programId,
+    );
     const data = {
       ...formData,
+      programType: selectedProgram.name,
       clientInfo: clientDetails,
       contractorInfo: contractorDetails,
       userId: user._id,
@@ -311,6 +340,26 @@ const EditProject = (props) => {
 
             {currentTab === "basicInfo" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 mt-8">
+                <div className="md:col-span-1 col-span-2">
+                  <label className="text-white text-sm pb-2">
+                    Program Type
+                  </label>
+
+                  <select
+                    name="programId"
+                    value={formData.programId}
+                    onChange={handleInputChange}
+                    required
+                    className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+                  >
+                    <option value="">Select Program Type</option>
+                    {AllProgramData.map((type) => (
+                      <option key={type._id} value={type._id}>
+                        {type.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <InputField
                   label="Project Name"
                   name="projectName"
