@@ -23,8 +23,8 @@ import { ConfirmModal } from "../../components/AllComponents";
 
 const Projects = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const [isOpen, setIsOpen] = useState(false);
+  const [AllProgramData, setAllProgramData] = useState([]);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [AllProjectData, setAllProjectData] = useState([]);
@@ -101,6 +101,27 @@ const Projects = (props) => {
         toast.error(err?.data?.message || "An error occurred");
       });
   };
+    const getAllProgram = async () => {
+      props.loader(true);
+      Api("get", `program/getAll`, "", router)
+        .then((res) => {
+          props.loader(false);
+          if (res?.status === true) {
+            setAllProgramData(res.data?.data || []);
+          } else {
+            toast.error(res?.message || "Failed to fetch programs");
+          }
+        })
+        .catch((err) => {
+          props.loader(false);
+          toast.error(err?.message || "An error occurred");
+        });
+    };
+  
+    useEffect(() => {
+      getAllProgram();
+    }, []);
+  
 
   return (
     <div className="h-screen p-3 md:px-0 bg-black text-white">
@@ -124,6 +145,7 @@ const Projects = (props) => {
             setIsOpen={setIsOpen}
             loader={props.loader}
             getAllProject={getAllProject}
+            AllProgramData={AllProgramData}
           />
         )}
 

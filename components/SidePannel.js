@@ -48,6 +48,12 @@ const SidePannel = ({ setOpenTab, openTab }) => {
       img: <Building size={25} />,
       access: ["Organization", "User", "TeamsMember"],
     },
+     {
+      href: "/program",
+      title: "Program",
+      img: <Building size={25} />,
+      access: ["Organization", "User", "TeamsMember"],
+    },
 
     {
       href: "/teams",

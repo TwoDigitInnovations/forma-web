@@ -37,7 +37,7 @@ function Dashboard(props) {
   const [actionOpen, setActionOpen] = useState(false);
   const [projectBehind, setProjectBehind] = useState(false);
   const [grievancesOpen, setGrievancesOpen] = useState(false);
-
+  const [AllProgramData, setAllProgramData] = useState([]);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
@@ -73,11 +73,25 @@ function Dashboard(props) {
     setChecking(false);
   }, []);
 
-  // if (checking) {
-  //   return <div className="text-white">Loading dashboard...</div>;
-  // }
+  const getAllProgram = async () => {
+    props.loader(true);
+    Api("get", `program/getAll`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllProgramData(res.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch programs");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   useEffect(() => {
+    getAllProgram();
     getAllProject();
   }, []);
 
@@ -199,6 +213,7 @@ function Dashboard(props) {
               setIsOpen={setIsOpen}
               loader={props?.loader}
               getAllProject={getAllProject}
+              AllProgramData={AllProgramData}
             />
           )}
         </div>

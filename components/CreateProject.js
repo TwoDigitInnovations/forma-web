@@ -3,11 +3,19 @@ import { Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { userContext } from "@/pages/_app";
+import program from "@/pages/program";
 
-const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
+const CreateProjectForm = ({
+  setIsOpen,
+  loader,
+  getAllProject,
+  AllProgramData,
+}) => {
   const router = useRouter();
   const [user] = useContext(userContext);
   const [formData, setFormData] = useState({
+    programType: "",
+    programId: "",
     projectName: "",
     description: "",
     location: "",
@@ -36,18 +44,22 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
     "Infrastructure",
     "Other",
   ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.projectType?.trim()) {
-      return toast.error("Please select Project Type");
-    }
 
-    loader(true);
+    const selectedProgram = AllProgramData.find(
+      (p) => p._id === formData.programId,
+    );
 
     const data = {
       ...formData,
       userId: user._id,
+      programType: selectedProgram?.name || "",
     };
+
+    loader(true);
+
     Api("post", "project/createProject", data, router)
       .then((res) => {
         loader(false);
@@ -65,6 +77,7 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
       });
   };
 
+
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
       <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl ">
@@ -74,6 +87,22 @@ const CreateProjectForm = ({ setIsOpen, loader, getAllProject }) => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <label className="text-white text-sm">Program Type</label>
+
+          <select
+            name="programId"
+            value={formData.programId}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+          >
+            <option value="">Select Program Type</option>
+            {AllProgramData.map((type) => (
+              <option key={type._id} value={type._id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
           <label className="text-white text-sm "> Project Name</label>
           <input
             type="text"
