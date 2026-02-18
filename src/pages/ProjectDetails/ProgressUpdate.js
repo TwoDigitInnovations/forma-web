@@ -251,9 +251,6 @@ const ProgressUpdate = (props) => {
     setActivities(sections);
   }, [selectedTracker]);
 
-  console.log("all", activities);
-  console.log("progress", progress);
-
   return (
     <div className="h-screen bg-black text-white">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3 md:px-8 mx-auto">

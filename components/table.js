@@ -1,5 +1,5 @@
 import React from "react";
-import { useState ,useMemo} from "react";
+import { useState, useMemo } from "react";
 import {
   useTable,
   useFilters,
@@ -37,17 +37,13 @@ function GlobalFilter({
   };
 
   return (
-    <label className="w-full flex justify-end items-center gap-x-2 md:items-baseline md:px-0 py-5">
-     
-    </label>
+    <label className="w-full flex justify-end items-center gap-x-2 md:items-baseline md:px-0 py-5"></label>
   );
 }
-
 
 export function SelectColumnFilter({
   column: { filterValue, setFilter, preFilteredRows, id, render },
 }) {
-  
   const options = useMemo(() => {
     const options = new Set();
     preFilteredRows.forEach((row) => {
@@ -89,7 +85,7 @@ export function StatusPill({ value }) {
 export function IndexID({ rowIndex, currentPage, itemsPerPage }) {
   console.log("Row Index:", rowIndex, "CurrentPage:", currentPage);
   const serialNumber = (currentPage - 1) * itemsPerPage + rowIndex + 1;
-  
+
   return (
     <div className="text-center">
       <p>{serialNumber}</p>
@@ -119,13 +115,12 @@ function Table({
   currentPage,
   itemsPerPage,
 }) {
-
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows, 
+    rows,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -146,7 +141,7 @@ function Table({
     useFilters,
     useGlobalFilter,
     useSortBy,
-    usePagination
+    usePagination,
   );
 
   const defaultExpandedRows = data.map((element, index) => {
@@ -166,15 +161,16 @@ function Table({
               <div className="mt-2 sm:mt-0" key={column.id}>
                 {column.render("Filter")}
               </div>
-            ) : null
-          )
+            ) : null,
+          ),
         )}
       </div>
       {/* table */}
       <div className="flex flex-col rounded-xl border-[#B9B9B9] border-[1px]">
-        <div className="-my-2 overflow-x-auto ">
+        <div className="-my-2 overflow-x-auto overflow-y-visible z-0">
+
           <div className="py-1 align-middle inline-block min-w-full ">
-            <div className="shadow overflow-hidden  sm:rounded-lg">
+            <div className="shadow overflow-visible sm:rounded-lg">
               <table
                 {...getTableProps()}
                 className="min-w-full rounded-xl"
@@ -187,9 +183,9 @@ function Table({
                         <th
                           key={index}
                           scope="col"
-                          className="group pl-2 py-3 bg-custom-yellow  text-md font-medium text-black text-left tracking-wider"
+                          className="group pl-2 py-3 bg-custom-yellow  text-md font-medium text-black text-left tracking-wider "
                           {...column.getHeaderProps(
-                            column.getSortByToggleProps()
+                            column.getSortByToggleProps(),
                           )}
                         >
                           <div className="flex items-center justify-center">
@@ -214,7 +210,7 @@ function Table({
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-[#B9B9B9] "
+                  className="bg-white divide-y divide-[#B9B9B9]  "
                 >
                   {rows.map((row, i) => {
                     // new
@@ -274,7 +270,6 @@ function Table({
         </div>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div className="flex gap-x-2 items-baseline">
-         
             <span className="text-sm text-black bg-custom-yellow p-2 rounded-xl px-4">
               Page <span className="font-medium">{currentPage}</span> of{" "}
               <span className="font-medium">{pagination?.totalPages}</span>
@@ -310,7 +305,6 @@ function Table({
                 className="rounded-l-md bg-custom-yellow"
                 onClick={() => onPageChange(1)}
                 disabled={pagination?.currentPage === 1}
-                
               >
                 <span className="sr-only">First</span>
                 <MdOutlineKeyboardDoubleArrowLeft
@@ -350,7 +344,6 @@ function Table({
                 className="rounded-r-md bg-custom-yellow"
                 onClick={() => onPageChange(pagination?.totalPages)}
                 disabled={pagination?.currentPage === pagination?.totalPages}
-                
               >
                 <span className="sr-only">Last</span>
                 <MdOutlineKeyboardDoubleArrowRight
@@ -362,8 +355,6 @@ function Table({
           </div>
         </div>
       </div>
-
-      
     </>
   );
 }

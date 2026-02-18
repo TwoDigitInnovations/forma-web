@@ -26,10 +26,13 @@ const Projects = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [AllProgramData, setAllProgramData] = useState([]);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [programId, setProgramId] = useState("");
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [AllProjectData, setAllProjectData] = useState([]);
   const [editId, setEditId] = useState("");
   const router = useRouter();
+  const [openMenuId, setOpenMenuId] = useState(null);
+
   const [user, setUser] = useContext(userContext);
   const isTeamsMember = user?.role === "TeamsMember";
 
@@ -53,7 +56,7 @@ const Projects = (props) => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchTerm]);
+  }, [searchTerm, programId]);
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
@@ -64,9 +67,9 @@ const Projects = (props) => {
     props.loader(true);
     Api(
       "get",
-      `project/getAllProjects?OrganizationId=${user._id}&search=${searchTerm}`,
+      `project/getAllProjects?OrganizationId=${user._id}&search=${searchTerm}&programId=${programId}`,
       "",
-      router
+      router,
     )
       .then((res) => {
         props.loader(false);
@@ -101,30 +104,29 @@ const Projects = (props) => {
         toast.error(err?.data?.message || "An error occurred");
       });
   };
-    const getAllProgram = async () => {
-      props.loader(true);
-      Api("get", `program/getAll`, "", router)
-        .then((res) => {
-          props.loader(false);
-          if (res?.status === true) {
-            setAllProgramData(res.data?.data || []);
-          } else {
-            toast.error(res?.message || "Failed to fetch programs");
-          }
-        })
-        .catch((err) => {
-          props.loader(false);
-          toast.error(err?.message || "An error occurred");
-        });
-    };
-  
-    useEffect(() => {
-      getAllProgram();
-    }, []);
-  
+  const getAllProgram = async () => {
+    props.loader(true);
+    Api("get", `program/getAll`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllProgramData(res.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch programs");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
+
+  useEffect(() => {
+    getAllProgram();
+  }, []);
 
   return (
-    <div className="h-screen p-3 md:px-0 bg-black text-white">
+    <div className="h-screen p-3 md:px-0 bg-black text-white z-0">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>
@@ -166,150 +168,184 @@ const Projects = (props) => {
           </div>
 
           <div className="flex justify-start items-center gap-2">
-            <button
-              className=" w-[140px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
-              style={{ backgroundColor: "#FFFFFF75" }}
-            >
-              <FolderKanban size={26} />
-              All Projects
-            </button>
-            <button
-              className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
-              style={{ backgroundColor: "#FFFFFF75" }}
-            >
+            <div className="md:col-span-1 col-span-2 mb-2">
+              <select
+                name="programId"
+                value={programId}
+                onChange={(e) => setProgramId(e.target.value)}
+                required
+                className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+              >
+                <option value="">Select Program Type</option>
+                {AllProgramData.map((type) => (
+                  <option key={type._id} value={type._id}>
+                    {type.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 bg-custom-yellow text-black cursor-pointer transition-colors text-sm md:text-md">
               <CircleDashed size={26} />
               All Status
-            </button>
-            <button
-              className=" w-[160px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors text-sm md:text-md"
-              style={{ backgroundColor: "#FFFFFF75" }}
-            >
-              <ClockArrowDown size={26} />
-              Last Updated
             </button>
           </div>
         </div>
 
         <h2 className="text-xl font-semibold mb-6">All Projects</h2>
 
-        <div className="space-y-4">
-          {AllProjectData.map((project, key) => (
-            <div
-              key={key}
-              className="rounded-[16px] border border-gray-700 p-4 bg-[#2a2a2a] hover:border-gray-600 transition-colors hover:bg-[#dff34940]"
-            >
-              <div className="flex flex-col gap-4">
-                {/* Top Section */}
-                <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                  {/* Left Content */}
-                  <div className="flex flex-col gap-2">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="text-lg font-semibold text-white">
-                        {project?.projectName}
+        <div className="overflow-x-auto bg-custom-black rounded-xl min-h-[450px]">
+          <table className="min-w-[800px] w-full text-sm text-left text-gray-300">
+            <thead className="border-b border-gray-700 text-gray-400">
+              <tr>
+                <th className="p-3">Project</th>
+                <th className="p-3">Status</th>
+                <th className="p-3">Location</th>
+                <th className="p-3">Last Updated</th>
+                <th className="p-3">Progress</th>
+                <th className="p-3 text-center">Action</th>
+              </tr>
+            </thead>
+            {AllProjectData.length === 0 ? (
+              <tbody>
+                <tr>
+                  <td colSpan={6} className="p-0">
+                    <div className="flex flex-col justify-center items-center text-center space-y-3 min-h-[450px] bg-custom-black">
+                      <FileCode2 size={68} className="text-gray-400" />
+
+                      <h3 className="text-xl font-medium text-white">
+                        No Project Found
                       </h3>
+
+                      <p className="text-gray-300">
+                        Try creating a new Project or adjusting your filters.
+                      </p>
+
+                      <button
+                        className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition"
+                        style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+                        onClick={() => setIsOpen(true)}
+                      >
+                        <FolderPlus size={20} />
+                        New Project
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody>
+                {AllProjectData.map((project) => (
+                  <tr
+                    key={project._id}
+                    className="border-b border-gray-800 hover:bg-[#e0f34915] transition"
+                  >
+                    <td className="p-3">
+                      <div className="font-semibold text-white">
+                        {project?.projectName}
+                      </div>
+                    </td>
+
+                    <td className="p-3">
                       <span className={getStatusBadge(project?.status)}>
                         {project?.status}
                       </span>
-                    </div>
+                    </td>
 
-                    <div className="flex flex-col gap-2 text-sm text-white">
-                      <div className="flex items-center gap-1">
-                        <MapPin size={18} />
-                        <span>{project?.location}</span>
+                    <td className="p-3">{project?.location}</td>
+
+                    <td className="p-3">
+                      {new Date(project?.updatedAt).toLocaleString()}
+                    </td>
+
+                    <td className="p-3 min-w-[150px]">
+                      <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div
+                          className="h-2 rounded-full"
+                          style={{
+                            width: `${project?.actualProgress || 0}%`,
+                            backgroundColor: "#e0f349",
+                          }}
+                        />
                       </div>
-                      <div className="flex items-center gap-1">
-                        <CalendarClock size={18} />
-                        <span>
-                          Last Updated:{" "}
-                          {new Date(project?.updatedAt).toLocaleString()}
-                        </span>
+                      <div className="text-right text-xs mt-1 text-[#e0f349]">
+                        {project?.actualProgress || 0}%
                       </div>
-                    </div>
-                  </div>
+                    </td>
 
-                  {/* Progress Section */}
-                  <div className="w-full md:w-48">
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                      <div
-                        className="h-2 rounded-full transition-all duration-300"
-                        style={{
-                          width: `${project?.progress || 80}%`,
-                          backgroundColor: "#e0f349",
-                        }}
-                      />
-                    </div>
-                    <div className="text-right mt-1">
-                      <span className="text-lg font-bold text-[#e0f349]">
-                        {project?.progress || 80}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                    <td className="p-3 text-center relative">
+                      <button
+                        className="p-2 hover:bg-gray-700 rounded cursor-pointer"
+                        onClick={() =>
+                          setOpenMenuId(
+                            openMenuId === project._id ? null : project._id,
+                          )
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-400"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </button>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
-                  <button
-                    className="w-full sm:w-auto p-2 rounded-lg bg-custom-yellow text-black flex items-center justify-center gap-2 cursor-pointer"
-                    onClick={() => {
-                      router.push(`/ProjectDetails/overview?id=${project._id}`);
-                      setProjectdetails(project);
-                      localStorage.setItem(
-                        "projectDetails",
-                        JSON.stringify(project)
-                      );
-                    }}
-                  >
-                    See Details <Eye size={16} />
-                  </button>
+                      {/* Dropdown */}
+                      {openMenuId === project._id && (
+                        <div className="absolute right-2 mt-2 bg-white text-black rounded-lg shadow-lg w-36 z-30">
+                          <button
+                            className="block w-full text-left cursor-pointer px-4 py-2 hover:bg-gray-100"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              router.push(
+                                `/ProjectDetails/overview?id=${project._id}`,
+                              );
+                              setProjectdetails(project);
+                              localStorage.setItem(
+                                "projectDetails",
+                                JSON.stringify(project),
+                              );
+                            }}
+                          >
+                            View
+                          </button>
 
-                  <button
-                    className="w-full sm:w-auto p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white flex items-center justify-center gap-2 cursor-pointer"
-                    onClick={() => {
-                      setProjectdetails(project);
-                      localStorage.setItem(
-                        "projectDetails",
-                        JSON.stringify(project)
-                      );
-                      setEditId(project?._id);
-                      router.push("/ProjectDetails/EditProject");
-                    }}
-                  >
-                    Edit <Edit2 size={16} />
-                  </button>
+                          <button
+                            className="block w-full text-left cursor-pointer px-4 py-2 hover:bg-gray-100"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              setProjectdetails(project);
+                              localStorage.setItem(
+                                "projectDetails",
+                                JSON.stringify(project),
+                              );
+                              setEditId(project?._id);
+                              router.push("/ProjectDetails/EditProject");
+                            }}
+                          >
+                            Edit
+                          </button>
 
-                  <button
-                    className="w-full sm:w-auto p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 flex items-center justify-center gap-2 cursor-pointer"
-                    onClick={() => {
-                      setEditId(project._id);
-                      setIsConfirmOpen(true);
-                    }}
-                  >
-                    Delete <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+                          <button
+                            className="block w-full cursor-pointer text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              setEditId(project._id);
+                              setIsConfirmOpen(true);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </table>
         </div>
-
-        {AllProjectData.length === 0 && (
-          <div className="flex bg-custom-black flex-col rounded-3xl justify-center items-center md:min-h-[450px] min-h-[700px] text-center space-y-3">
-            <FileCode2 size={68} />
-            <h3 className="text-xl font-medium text-white">No Project Found</h3>
-            <p className="text-gray-300">
-              Try creating a new Project or adjusting your filters.
-            </p>
-
-            <button
-              className="flex cursor-pointer items-center gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
-              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
-              onClick={() => setIsOpen(true)}
-            >
-              <FolderPlus size={28} />
-              New Project
-            </button>
-          </div>
-        )}
       </div>
       <ConfirmModal
         isOpen={isConfirmOpen}

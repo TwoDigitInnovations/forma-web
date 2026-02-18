@@ -33,6 +33,7 @@ function Dashboard(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [allProjectData, setAllProjectData] = useState([]);
   const [dashboardData, setDashboardData] = useState({});
+  const [programId, setProgramId] = useState("");
   const [incidentOpen, setIncidentOpen] = useState(false);
   const [actionOpen, setActionOpen] = useState(false);
   const [projectBehind, setProjectBehind] = useState(false);
@@ -93,7 +94,7 @@ function Dashboard(props) {
   useEffect(() => {
     getAllProgram();
     getAllProject();
-  }, []);
+  }, [programId]);
 
   const [AllActionPoints, setAllActionPoints] = useState([]);
   const [AllActionPointsLength, setAllActionPointsLength] = useState([]);
@@ -171,7 +172,12 @@ function Dashboard(props) {
 
   const getAllProject = async () => {
     props?.loader(true);
-    Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)
+    Api(
+      "get",
+      `project/getAllProjects?OrganizationId=${user?._id}&programId=${programId}`,
+      "",
+      router,
+    )
       .then((res) => {
         props?.loader(false);
         if (res?.status === true) {
@@ -188,6 +194,11 @@ function Dashboard(props) {
 
   console.log(AllBehiendProject);
 
+  const formatUSNumber = (value) => {
+    const num = Number(value);
+    if (isNaN(num)) return "";
+    return num.toLocaleString("en-US");
+  };
   return (
     <section className=" bg-[#000000] md:py-4 py-4 p-3 text-white h-screen z-0">
       <div className="h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
@@ -202,7 +213,7 @@ function Dashboard(props) {
             <button
               className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
               style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
-              onClick={() => router.push('/program')}
+              onClick={() => router.push("/program")}
             >
               <FolderPlus size={28} />
               Add Program
@@ -230,19 +241,19 @@ function Dashboard(props) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-2">
           <DarkStatsCard
             title="Total Contracts"
-            value={dashboardData?.TotalContracts || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalContracts || "100.00")}
             subtitle="Sum of all contract amounts"
             icon={<DollarSign size={35} />}
           />
           <DarkStatsCard
             title="IPCs Paid"
-            value={dashboardData?.TotalPaid || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalPaid || "100.00")}
             subtitle="Total payment certificates"
             icon={<Dock size={35} />}
           />
           <DarkStatsCard
             title="Balance"
-            value={dashboardData?.TotalBalance || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalBalance || "100.00")}
             subtitle="Contracts - IPCs paid"
             icon={<PiggyBank size={35} />}
           />
@@ -385,6 +396,9 @@ function Dashboard(props) {
           allProjectData={allProjectData}
           loader={props.loader}
           getAllProject={getAllProject}
+          programId={programId}
+          setProgramId={setProgramId}
+          AllProgramData={AllProgramData}
         />
       </div>
     </section>

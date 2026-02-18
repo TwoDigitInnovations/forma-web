@@ -22,6 +22,7 @@ import {
   Calendar,
   MapPin,
   ClipboardList,
+  MoreVertical,
 } from "lucide-react";
 
 import { Api } from "@/services/service";
@@ -152,7 +153,7 @@ export const Certificates = ({
   const [pendingId, setPendingId] = useState(null);
   const [pendingAmount, setPendingAmount] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const [cert, setCert] = useState({
@@ -184,14 +185,14 @@ export const Certificates = ({
           date: cert.date,
           status: cert.status,
         },
-        router
+        router,
       );
       if (cert?.status === "Paid") {
         await Api(
           "post",
           `project/update-payment-paid/${projectId}`,
           { paidAmount: Number(cert?.amount) },
-          router
+          router,
         );
       }
       loader(false);
@@ -250,7 +251,7 @@ export const Certificates = ({
           date: cert.date,
           status: cert.status,
         },
-        router
+        router,
       );
 
       loader(false);
@@ -276,7 +277,7 @@ export const Certificates = ({
         "post",
         `project/update-certificate-status/${id}/${projectId}`,
         { status },
-        router
+        router,
       );
 
       if (res?.status !== true) {
@@ -289,7 +290,7 @@ export const Certificates = ({
           "post",
           `project/update-payment-paid/${projectId}`,
           { paidAmount: Number(amount) },
-          router
+          router,
         );
       }
 
@@ -326,7 +327,7 @@ export const Certificates = ({
         "delete",
         `project/deleteCertificate/${projectId}/${deleteId}`,
         "",
-        router
+        router,
       );
 
       loader(false);
@@ -351,7 +352,7 @@ export const Certificates = ({
         "post",
         `project/update-advance-payment/${projectId}`,
         { advanceAmount: amount },
-        router
+        router,
       );
 
       loader(false);
@@ -577,7 +578,7 @@ export const Certificates = ({
                     : "-"}
                 </td>
 
-                <td className="p-3">
+                <td className="p-3 z-0">
                   <select
                     value={item.status}
                     disabled={item.status === "Paid"}
@@ -605,22 +606,39 @@ export const Certificates = ({
                   </select>
                 </td>
 
-                <td className="p-3 flex gap-3 justify-center">
-                  {item.status !== "Paid" && (
-                    <button
-                      className="text-red-600 hover:text-red-800 cursor-pointer text-xl"
-                      onClick={() => onDeleteClick(item._id)}
-                    >
-                      <Trash />
-                    </button>
-                  )}
-
+                <td className="p-3 text-center relative">
+                  {/* Three Dot Button */}
                   <button
-                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                    onClick={() => onEditData(item._id)}
+                    className="text-gray-200 hover:text-gray-300 cursor-pointer"
+                    onClick={() => setOpen(!open)}
                   >
-                    <Edit />
+                    <MoreVertical size={20} />
                   </button>
+
+                
+                  {open && (
+                    <div className="absolute right-4 mt-2 w-32 bg-white border rounded shadow-lg z-20">
+                      <button
+                        className="flex items-center text-black gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
+                        onClick={() => {
+                          onEditData(item._id);
+                          setOpen(false);
+                        }}
+                      >
+                        <Edit size={16} /> Edit
+                      </button>
+
+                      <button
+                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        onClick={() => {
+                          onDeleteClick(item._id);
+                          setOpen(false);
+                        }}
+                      >
+                        <Trash size={16} /> Delete
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
@@ -689,7 +707,7 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
           email,
           organizationId: user._id,
         },
-        router
+        router,
       );
       console.log(res);
 
@@ -877,7 +895,6 @@ export const ProjectBehind = ({ onclose, loader }) => {
           </button>
         </div>
 
-        
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
           <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
         </div>
@@ -1270,7 +1287,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
             </div>
 
             <Info1 label="Duration" value={duration} />
-            <Info1 label="Program Type" value={programType}/>
+            <Info1 label="Program Type" value={programType} />
             <Info1
               label="Defects Liability"
               value={defectsLiability || "Not set"}

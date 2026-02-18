@@ -119,8 +119,8 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
 
       <div className="border rounded-xl shadow bg-custom-black overflow-hidden">
         {/* Table Header */}
-        <div className="hidden sm:grid grid-cols-7 gap-4 px-4 py-3 text-black text-sm font-semibold bg-custom-yellow">
-          <div>Description</div>
+        <div className="hidden sm:grid grid-cols-10 gap-4 px-4 py-3 text-black text-sm font-semibold bg-custom-yellow">
+          <div className="col-span-4">Description</div>
           <div>Qty in BOQ</div>
           <div>Rate</div>
           <div>Amount</div>
@@ -132,7 +132,7 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
         <AnimatePresence>
           {data?.map((section) => (
             <React.Fragment key={section.id}>
-              {/* Section Row */}
+      
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -256,8 +256,8 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                       </div>
                     </div>
 
-                    <div className="hidden sm:grid grid-cols-7 gap-4 items-center">
-                      <div>{act.name}</div>
+                    <div className="hidden md:grid grid-cols-10 gap-4 items-center">
+                      <div className="col-span-4">{act.name}</div>
 
                       <input
                         type="number"
