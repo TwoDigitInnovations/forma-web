@@ -89,7 +89,7 @@ const EditActivity = (props) => {
     };
 
     return (
-        <div className="h-screen bg-black text-white md:p-0 md:py-6 p-3">
+        <div className="h-screen bg-black text-white md:p-6 p-3">
             <button
                 onClick={handleGoBack}
                 className="py-2 flex items-center underline text-sm cursor-pointer rounded-lg transition-colors pb-2 text-white hover:text-[#e0f349]"

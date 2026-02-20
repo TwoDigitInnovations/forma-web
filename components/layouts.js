@@ -53,7 +53,7 @@ const Layout = ({ children }) => {
           <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
 
           <div className="w-full ">
-            <div className="flex-1 xl:pl-70 md:pl-62.5 sm:pl-50">
+            <div className="flex-1 lg:pl-70 ">
               <Navbar setOpenTab={setOpenTab} openTab={openTab} />
               <main className="flex-1">{children}</main>
             </div>
