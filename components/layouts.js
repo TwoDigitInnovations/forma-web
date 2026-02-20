@@ -53,8 +53,8 @@ const Layout = ({ children }) => {
           <SidePannel setOpenTab={setOpenTab} openTab={openTab} />
 
           <div className="w-full ">
-            <Navbar setOpenTab={setOpenTab} openTab={openTab} />
-            <div className="mx-auto max-w-8xl  md:pr-10 md:pl-20">
+            <div className="flex-1 xl:pl-70 md:pl-62.5 sm:pl-50">
+              <Navbar setOpenTab={setOpenTab} openTab={openTab} />
               <main className="flex-1">{children}</main>
             </div>
           </div>

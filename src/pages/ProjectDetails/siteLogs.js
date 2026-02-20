@@ -135,7 +135,7 @@ function SiteLogs(props) {
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 md:px-8">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         {/* HEADER */}
         <div className="bg-[#DFF34940] py-4 md:px-6 px-3 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between md:items-center">
           <div className="flex flex-wrap items-center gap-3">

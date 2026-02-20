@@ -60,11 +60,11 @@ const Navbar = ({ setOpenTab, openTab }) => {
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
+            {/* <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
             <div className="flex items-start flex-col">  
             <p className="text-2xl text-white font-bold">Forma</p>
             <p className="text-md text-white font-medium ">Construction Management</p>
-            </div>
+            </div> */}
           </div>
 
           {user?._id && (
@@ -114,7 +114,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
           )}
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden flex">
             <button
               onClick={() => setOpenTab(!openTab)}
               className="p-2 rounded-md text-white hover:bg-gray-100 focus:outline-none"

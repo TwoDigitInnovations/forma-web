@@ -106,7 +106,7 @@ const Projects = (props) => {
   };
   const getAllProgram = async (projectId) => {
     props.loader(true);
-    Api("get", `program/getAll/${projectId}`, "", router)
+    Api("get", `program/getAll?projectId=${projectId}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -126,7 +126,7 @@ const Projects = (props) => {
   }, [projectDetails?._id]);
 
   return (
-    <div className="h-screen p-3 md:px-0 bg-black text-white z-0">
+    <div className="h-screen p-4 md:px-6 bg-black text-white z-0">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>

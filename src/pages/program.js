@@ -84,7 +84,7 @@ const Program = (props) => {
   };
 
   return (
-    <div className="h-screen p-3 md:px-0 bg-black text-white">
+    <div className="h-screen p-4 md:px-6 bg-black text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll scrollbar-hide pb-28">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start gap-3 justify-between mb-8 mt-4">

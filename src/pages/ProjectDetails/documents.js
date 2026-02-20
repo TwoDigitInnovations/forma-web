@@ -157,7 +157,7 @@ const documents = (props) => {
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-0 md:py-6 p-4  mx-auto">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4  mx-auto">
         <div className="bg-[#DFF34940] py-4 px-6  rounded-[16px] ">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
             <div className="flex flex-wrap items-center md:gap-4 gap-1">

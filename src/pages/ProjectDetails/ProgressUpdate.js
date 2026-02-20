@@ -253,7 +253,7 @@ const ProgressUpdate = (props) => {
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3 md:px-8 mx-auto">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
         <div className="bg-[#DFF34940] py-4 md:px-6 px-3 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-between">
           <div className="flex flex-wrap items-center gap-4 gap-1">
             <p className="md:text-[32px] text-[24px] text-white mt-1">

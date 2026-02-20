@@ -190,7 +190,7 @@ const isEditor = currentUserRole === "editor";
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 md:px-0">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         <div className="bg-[#DFF34940] p-4 md:px-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
          
           <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">

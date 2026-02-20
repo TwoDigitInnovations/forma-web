@@ -216,7 +216,7 @@ const WorkPlan = (props) => {
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3 md:px-0 mx-auto">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
         <div className="bg-custom-green py-6 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
           <div>
             <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">

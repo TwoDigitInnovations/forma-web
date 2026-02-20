@@ -85,7 +85,7 @@ const MeetingDocumentation = (props) => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="md:px-0 px-4 py-6">
+      <div className="md:px-6 px-4 py-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-400 mb-2">
@@ -102,7 +102,7 @@ const MeetingDocumentation = (props) => {
         </div>
       </div>
 
-      <div className="px-4 md:px-0 flex md:flex-row flex-col justify-between gap-4 md:gap-8 border-b-1 border-gray-800 pb-2">
+      <div className="px-4 md:px-6 flex md:flex-row flex-col justify-between gap-4 md:gap-8 border-b-1 border-gray-800 pb-2">
         <button
           onClick={() => {
             setActiveTab("new");
@@ -140,7 +140,7 @@ const MeetingDocumentation = (props) => {
         </div>
       </div>
 
-      <div className="p-4 md:py-6 md:p-0">
+      <div className="p-4 md:py-6 md:p-6">
         <MeetingHistory
           meetings={meetings}
           setActiveTab={setActiveTab}
