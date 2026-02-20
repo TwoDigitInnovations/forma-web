@@ -12,7 +12,7 @@ function Teams(props) {
   const [user] = useContext(userContext);
 
   const [team, setTeam] = useState([]);
-const dropdownRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const [selectedUserId, setSelectedUserId] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -32,21 +32,18 @@ const dropdownRef = useRef(null);
   }, []);
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target)
-    ) {
-      setShowDropdown(false);
-    }
-  };
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
 
-  document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (user?._id && projectDetails?.members?.length) {
@@ -62,11 +59,8 @@ const dropdownRef = useRef(null);
     }
   }, [user, projectDetails]);
 
-  // useEffect(( ) =>{
-  //   if(user._id){
-  //     mujhe is project me member ki list me se userki id uthani hai find krna hai and role chahiye owner hai ya editor hai uske hisab se mujhe condition lagani hai ki agar userki id member list me hai aur role owner hai to remove button na dikhe aur owner likha aaye aur agar userki id member list me hai aur role editor hai to remove button dikhe aur agar userki id member list me nahi hai to remove button na dikhe
-  //   }
-  // })
+console.log(team);
+
 
   useEffect(() => {
     if (projectId) {
@@ -185,16 +179,14 @@ const dropdownRef = useRef(null);
     }
   };
 
-const isOwner = currentUserRole === "owner";
-const isEditor = currentUserRole === "editor";
+  const isOwner = currentUserRole === "owner";
+  const isEditor = currentUserRole === "editor";
 
   return (
     <div className="h-screen bg-black text-white">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         <div className="bg-[#DFF34940] p-4 md:px-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-         
           <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
-            
             <h1 className="text-sm md:text-base font-semibold text-gray-100 break-words">
               {projectDetails?.projectName}
             </h1>
@@ -212,7 +204,6 @@ const isEditor = currentUserRole === "editor";
             Invite Collaborator
           </h2>
 
-         
           {isEditor && (
             <p className="text-sm text-gray-400 mt-1">
               You have editor access. You can only view the member list and
@@ -230,10 +221,10 @@ const isEditor = currentUserRole === "editor";
                   placeholder="Enter collaborator email"
                   className="flex-1  px-3 py-2 outline-none text-black"
                   value={searchQuery}
-                  onChange={(e) =>{
-                    setSearchQuery(e.target.value)
-                    setShowDropdown(false)
-                  } }
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setShowDropdown(false);
+                  }}
                   onFocus={() => searchQuery && setShowDropdown(true)}
                 />
               </div>
@@ -300,7 +291,7 @@ const isEditor = currentUserRole === "editor";
 
                   {isOwner && member.role !== "owner" && (
                     <button
-                      onClick={() => removeMember(member.userId._id)}
+                      onClick={() => removeMember(member?.id)}
                       className="text-red-600 flex items-center gap-1 hover:text-red-800"
                     >
                       <Trash2 className="w-5 h-5" />
