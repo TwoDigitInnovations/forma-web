@@ -57,7 +57,7 @@ const EditProject = (props) => {
   const [showCancelBox, setShowCancelBox] = useState(false);
   const [errors, setErrors] = useState({});
   const [currentTab, setCurrentTab] = useState("basicInfo");
-  const [projectId, setProjectId] = useState(null);
+  const [projectId, setProjectId] = useState("");
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [user] = useContext(userContext);
 
@@ -67,6 +67,7 @@ const EditProject = (props) => {
       const project = JSON.parse(stored);
       setProjectId(project._id);
       getProjectbyId(project._id);
+      getAllProgram(project._id);
     }
   }, []);
 
@@ -98,9 +99,9 @@ const EditProject = (props) => {
     }
   }, [formData.endDate]);
 
-  const getAllProgram = async () => {
+  const getAllProgram = async (projectId) => {
     props.loader(true);
-    Api("get", `program/getAll`, "", router)
+     Api("get", `program/getAll?projectId=${projectId}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -115,9 +116,6 @@ const EditProject = (props) => {
       });
   };
 
-  useEffect(() => {
-    getAllProgram();
-  }, []);
   const getProjectbyId = async (id) => {
     props.loader(true);
     Api("get", `project/getProjectById/${id}`, "", router)

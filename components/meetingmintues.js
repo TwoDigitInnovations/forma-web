@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import moment from "moment";
 import { userContext } from "@/pages/_app";
+import AddAttendeeGroupForm from "./AddAttendeeGroupForm";
 
 function meetingmintues({
   setOpen,
@@ -396,6 +397,18 @@ function meetingmintues({
     }
   };
 
+  const AddAttendee = () => {
+    setMembersPresent([
+      ...membersPresent,
+      {
+        name: "",
+        designation: "",
+        organization: "",
+      },
+    ]);
+  };
+  console.log(membersPresent);
+  
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4">
       <div className="w-full h-full overflow-y-auto scrollbar-hide flex items-center justify-center py-6 ">
@@ -435,7 +448,6 @@ function meetingmintues({
 
           <div className="bg-custom-black rounded-lg p-3 md:p-6 border border-gray-800">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 rounded-xl p-4 shadow-sm">
-            
               <div className="flex items-center gap-2">
                 <div className="bg-black/5 rounded-lg">
                   <Users size={18} className="text-white" />
@@ -444,25 +456,36 @@ function meetingmintues({
                   MEMBERS PRESENT
                 </p>
               </div>
-
-              <div className="relative w-full sm:w-56">
-                <select
-                  className="w-full h-[42px] border border-gray-300 rounded-lg px-3 pr-8 outline-none bg-custom-green text-white text-sm font-medium focus:border-black transition"
-                  value={selectedGroupId}
-                  onChange={handleGroupChange}
+              <div className="flex gap-4">
+                <button
+                  className="bg-custom-green px-4 cursor-pointer rounded-md"
+                  onClick={AddAttendee}
                 >
-                  <option value="">Select Group</option>
+                  Add Attendees
+                </button>
+                <div className="relative w-full sm:w-56">
+                  <select
+                    className="w-full h-[42px] border border-gray-300 rounded-lg px-3 pr-8 outline-none bg-custom-green text-white text-sm font-medium focus:border-black transition"
+                    value={selectedGroupId}
+                    onChange={handleGroupChange}
+                  >
+                    <option value="">Select Group</option>
 
-                  {allGroups?.map((group) => (
-                    <option key={group._id} value={group._id} className="text-black">
-                      {group.title}
-                    </option>
-                  ))}
-                </select>
+                    {allGroups?.map((group) => (
+                      <option
+                        key={group._id}
+                        value={group._id}
+                        className="text-black"
+                      >
+                        {group.title}
+                      </option>
+                    ))}
+                  </select>
 
-                {/* Custom Arrow */}
-                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                  ▼
+                  {/* Custom Arrow */}
+                  <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                    ▼
+                  </div>
                 </div>
               </div>
             </div>

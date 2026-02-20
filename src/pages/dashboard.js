@@ -75,6 +75,7 @@ function Dashboard(props) {
   }, []);
 
   const getAllProgram = async () => {
+    
     props.loader(true);
     Api("get", `program/getAll`, "", router)
       .then((res) => {

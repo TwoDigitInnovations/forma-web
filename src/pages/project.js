@@ -104,9 +104,9 @@ const Projects = (props) => {
         toast.error(err?.data?.message || "An error occurred");
       });
   };
-  const getAllProgram = async () => {
+  const getAllProgram = async (projectId) => {
     props.loader(true);
-    Api("get", `program/getAll`, "", router)
+    Api("get", `program/getAll/${projectId}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -122,8 +122,8 @@ const Projects = (props) => {
   };
 
   useEffect(() => {
-    getAllProgram();
-  }, []);
+    getAllProgram(projectDetails?._id);
+  }, [projectDetails?._id]);
 
   return (
     <div className="h-screen p-3 md:px-0 bg-black text-white z-0">
@@ -240,7 +240,19 @@ const Projects = (props) => {
                     className="border-b border-gray-800 hover:bg-[#e0f34915] transition"
                   >
                     <td className="p-3">
-                      <div className="font-semibold text-white">
+                      <div
+                        className="font-semibold text-white hover:underline cursor-pointer"
+                        onClick={() => {
+                          router.push(
+                            `/ProjectDetails/overview?id=${project._id}`,
+                          );
+                          setProjectdetails(project);
+                          localStorage.setItem(
+                            "projectDetails",
+                            JSON.stringify(project),
+                          );
+                        }}
+                      >
                         {project?.projectName}
                       </div>
                     </td>

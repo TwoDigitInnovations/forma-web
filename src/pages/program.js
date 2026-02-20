@@ -13,13 +13,14 @@ import {
 import { useRouter } from "next/router";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
-import { userContext } from "./_app";
+import { ProjectDetailsContext, userContext } from "./_app";
 import isAuth from "../../components/isAuth";
 import { ConfirmModal } from "../../components/AllComponents";
 import CreateProgram from "../../components/CreateProgram";
 
 const Program = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [projectId, setProjectId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [AllProgramData, setAllProgramData] = useState([]);
@@ -27,10 +28,20 @@ const Program = (props) => {
   const [programDetails, setProgramDetails] = useState({});
   const [user] = useContext(userContext);
   const router = useRouter();
+  const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("projectDetails");
+    if (stored) {
+      const project = JSON.parse(stored);
+      setProjectdetails(project);
+      setProjectId(project._id);
+    }
+  }, []);
 
   const getAllProgram = async () => {
     props.loader(true);
-    Api("get", `program/getAll`, "", router)
+    Api("get", `program/getAll?projectId=${projectId}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {

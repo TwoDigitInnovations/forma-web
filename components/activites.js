@@ -24,11 +24,21 @@ const getOverallProgress = (sections) => {
   return ((totalQty / totalBoq) * 100).toFixed(2);
 };
 
-const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) => {
+const WorkplanProgress = ({
+  activities,
+  progress,
+  setActivities,
+  setProgress,
+}) => {
   if (!activities) return;
   const [data, setData] = useState(activities || []);
+  const [openSectionId, setOpenSectionId] = useState(null);
+
   useEffect(() => {
     setData(activities);
+    if (activities && activities.length > 0) {
+      setOpenSectionId(activities[0].id); // first section open
+    }
   }, [activities]);
 
   const handleChange = (sectionId, actId, field, value) => {
@@ -61,7 +71,6 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
             numericValue = 0;
           }
 
-          // ✅ LIMIT TO 2 DECIMAL PLACES (MAIN FIX)
           numericValue = Math.floor(numericValue * 100) / 100;
 
           updated[field] = numericValue;
@@ -132,18 +141,23 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
         <AnimatePresence>
           {data?.map((section) => (
             <React.Fragment key={section.id}>
-      
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="px-4 py-3 bg-gray-800 border-b text-white font-bold"
+                onClick={() =>
+                  setOpenSectionId(
+                    openSectionId === section.id ? null : section.id,
+                  )
+                }
+                className="px-4 py-3 bg-gray-800 border-b text-white font-bold flex justify-between items-center cursor-pointer"
               >
-                {section.name}
+                <span>{section.name}</span>
+
+                <span>{openSectionId === section.id ? "▲" : "▼"}</span>
               </motion.div>
 
-              {/* Activity Rows */}
-              {section.activities.map((act) => {
+              {openSectionId === section.id && section.activities.map((act) => {
                 const progress = getActivityProgress(act);
 
                 return (
