@@ -9,7 +9,7 @@ import { userContext } from "./_app";
 import AddAttendeeGroupForm from "../../components/AddAttendeeGroupForm";
 import { ConfirmModal } from "../../components/AllComponents";
 import Meetingmintues from "../../components/meetingmintues";
-import AttendeeGroupHistory from "./attendeegroupHistory";
+import AttendeeGroupHistory from "../../components/AttendeeGroupHistory";
 
 const MeetingDocumentation = (props) => {
   const [activeTab, setActiveTab] = useState("meetings");
