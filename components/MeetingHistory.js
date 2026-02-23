@@ -16,7 +16,7 @@ function MeetingHistory({
           <FileText size={64} className="mx-auto text-custom-yellow mb-4" />
           <p className="text-gray-400 mb-4">No meeting minutes recorded yet.</p>
           <button
-            onClick={() => setActiveTab("new")}
+            onClick={() => setOpen(true)}
             className="text-black bg-custom-yellow px-4 py-2 rounded-lg"
           >
             Record your first meeting

@@ -9,10 +9,13 @@ const AddAttendeeGroupForm = ({
   loader,
   getAllGroups,
   editItem,
+  setEditItem,
+  setEditId,
+  editId,
 }) => {
   const router = useRouter();
   const [user] = useContext(userContext);
-  const [editId, setEditId] = useState(null);
+  // const [editId, setEditId] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -105,7 +108,7 @@ const AddAttendeeGroupForm = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-1">
           {editId ? "Update" : "Add"} Attendee Group
         </h2>

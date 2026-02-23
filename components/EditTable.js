@@ -1,21 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { EllipsisVertical, Trash } from "lucide-react";
+import { EllipsisVertical, Search, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import moment from "moment";
 
 const EditableTable = ({ activities, setActivities }) => {
   const [menuIndex, setMenuIndex] = useState(null);
-  const [openSectionId, setOpenSectionId] = useState(null);
-
-  useEffect(() => {
-    const firstSectionIndex = activities.findIndex(
-      (row) => row.rowType === "section",
-    );
-    if (firstSectionIndex !== -1) {
-      setOpenSectionId(firstSectionIndex);
-    }
-  }, [activities.length]);
+  const [displayData, setDisplayData] = useState("displayAll");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleAddRow = (type = "activity", insertIndex = null) => {
     const newRow = {
@@ -133,8 +125,53 @@ const EditableTable = ({ activities, setActivities }) => {
 
   const hasSection = activities.some((a) => a.rowType === "section");
 
+  const filteredActivities = activities.filter((row) => {
+    const query = searchQuery.toLowerCase();
+
+    if (searchQuery) {
+      return (
+        row.rowType === "section" &&
+        row.description?.toLowerCase().includes(query)
+      );
+    }
+
+    if (displayData === "section") {
+      return row.rowType === "section";
+    }
+
+    return true;
+  });
+
   return (
-    <div className="bg-white rounded-lg shadow-md mt-4 overflow-y-scroll scrollbar-hide pb-28">
+    <div className="bg-white rounded-2xl shadow-md mt-4 overflow-y-scroll scrollbar-hide pb-28">
+      <div className="flex flex-col md:flex-row gap-2 mb-4 mt-4 md:items-center justify-start px-4 ">
+        <div className="relative ">
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+          />
+          <input
+            type="text"
+            placeholder="Search Section..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-[320px] ps-8 text-[14px] px-4 py-2 bg-white text-black rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+          />
+        </div>
+
+        <select
+          value={displayData}
+          onChange={(e) => {
+            setDisplayData(e.target.value);
+            setSearchQuery(""); // reset search when changing mode
+          }}
+          className="w-[220px] text-[14px] px-4 py-2.5 cursor-pointer bg-white text-black rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+        >
+          <option value="displayAll">Display All</option>
+          <option value="section">Display Only Sections</option>
+        </select>
+      </div>
+
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-custom-yellow text-gray-700">
@@ -148,13 +185,22 @@ const EditableTable = ({ activities, setActivities }) => {
         </thead>
 
         <tbody>
-          {activities.map((row, i) => {
-            const num = getNumbering(i);
+          {filteredActivities.map((row, i) => {
+            const originalIndex = activities.indexOf(row);
+            const num = getNumbering(originalIndex);
             const isSection = row.rowType === "section";
             const duration =
               row.startDate && row.endDate
-                ? moment(row.endDate).diff(moment(row.startDate), "months")
+                ? Math.max(
+                    0,
+                    moment(row.endDate).diff(
+                      moment(row.startDate),
+                      "months",
+                      true,
+                    ),
+                  )
                 : "";
+
             if (row.rowType === "activity") {
               let sectionIndex = -1;
               for (let j = i; j >= 0; j--) {
@@ -163,17 +209,11 @@ const EditableTable = ({ activities, setActivities }) => {
                   break;
                 }
               }
-              if (sectionIndex !== openSectionId) return null;
             }
 
             return (
               <tr
                 key={i}
-                onClick={() => {
-                  if (isSection) {
-                    setOpenSectionId(openSectionId === i ? null : i);
-                  }
-                }}
                 className={`border-b ${
                   isSection
                     ? "bg-gray-100 text-black font-semibold cursor-pointer"
@@ -183,27 +223,18 @@ const EditableTable = ({ activities, setActivities }) => {
                 <td className="text-center py-2">{num}</td>
 
                 <td className="py-2 px-3">
-                  {isSection && (
-                    <div className="flex justify-between items-center">
-                      <span>{row.description}</span>
-                      <span className="ml-2">
-                        {openSectionId === i ? "▲" : "▼"}
-                      </span>
-                    </div>
-                  )}
-
-                  {!isSection && (
-                    <textarea
-                      rows={1}
-                      value={row.description || ""}
-                      onChange={(e) => {
-                        e.target.style.height = "auto";
-                        e.target.style.height = `${e.target.scrollHeight}px`;
-                        handleChange(i, "description", e.target.value);
-                      }}
-                      className="w-full bg-transparent outline-none resize-none overflow-hidden text-black leading-relaxed"
-                    />
-                  )}
+                  <textarea
+                    rows={1}
+                    value={row.description || ""}
+                    onChange={(e) => {
+                      e.target.style.height = "auto";
+                      e.target.style.height = `${e.target.scrollHeight}px`;
+                      handleChange(i, "description", e.target.value);
+                    }}
+                    className={`w-full bg-transparent outline-none resize-none overflow-hidden leading-relaxed ${
+                      isSection ? "font-semibold text-black" : "text-black"
+                    }`}
+                  />
                 </td>
 
                 <td className="text-center">
