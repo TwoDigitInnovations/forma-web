@@ -21,7 +21,6 @@ const EditActivity = (props) => {
   const [activities, setActivities] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [planData, setPlanData] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
   const PlanId = router.query.PlanId;
   const [pagination, setPagination] = useState({
@@ -108,6 +107,7 @@ const EditActivity = (props) => {
       </button>
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-20   mx-auto">
         <div className="bg-custom-green py-6 md:px-6 p-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
+          
           <div>
             <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
               {projectDetails?.projectName}

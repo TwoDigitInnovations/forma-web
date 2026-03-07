@@ -154,6 +154,8 @@ export const Certificates = ({
   const [pendingAmount, setPendingAmount] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openId, setOpenId] = useState(null);
+
   const router = useRouter();
 
   const [cert, setCert] = useState({
@@ -272,7 +274,23 @@ export const Certificates = ({
 
   const handleStatusChange = async (id, status, amount) => {
     loader(true);
+
     try {
+      // 1️⃣ Pehle paid amount update hoga
+      if (status === "Paid") {
+        const paymentRes = await Api(
+          "post",
+          `project/update-payment-paid/${projectId}`,
+          { paidAmount: Number(amount) || 0 },
+          router,
+        );
+
+        if (paymentRes?.status !== true) {
+          loader(false);
+          return toast.error("Failed to update paid amount");
+        }
+      }
+
       const res = await Api(
         "post",
         `project/update-certificate-status/${id}/${projectId}`,
@@ -283,15 +301,6 @@ export const Certificates = ({
       if (res?.status !== true) {
         loader(false);
         return toast.error("Failed to update status");
-      }
-
-      if (status === "Paid") {
-        await Api(
-          "post",
-          `project/update-payment-paid/${projectId}`,
-          { paidAmount: Number(amount) },
-          router,
-        );
       }
 
       loader(false);
@@ -525,36 +534,34 @@ export const Certificates = ({
           </thead>
 
           <tbody>
-            {advanceAmount ||
-              (showAdvanceAmount && (
-                <tr className="border-b transition">
-                  <td className="p-3">{"Advance Payment"}</td>
+            {(advanceAmount > 0 || showAdvanceAmount > 0) && (
+              <tr className="border-b transition">
+                <td className="p-3">Advance Payment</td>
 
-                  <td className="p-3">{"-"}</td>
+                <td className="p-3">-</td>
 
-                  <td className="p-3">{"-"}</td>
+                <td className="p-3">-</td>
 
-                  <td className="p-3 ">${showAdvanceAmount || "-"}</td>
+                <td className="p-3">${showAdvanceAmount}</td>
 
-                  <td className="p-3 ">
-                    <p className="border p-2 rounded cursor-pointer text-white w-26">
-                      {" "}
-                      {"Paid"}
-                    </p>
-                  </td>
+                <td className="p-3">
+                  <p className="border p-2 rounded cursor-pointer text-white w-26">
+                    Paid
+                  </p>
+                </td>
 
-                  <td className="p-3 flex gap-3 justify-center">
-                    <button
-                      className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                      onClick={() =>
-                        setAdvanceAmount(summary.advancePayment || 0)
-                      }
-                    >
-                      <Edit />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                <td className="p-3 flex gap-3 justify-center">
+                  <button
+                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                    onClick={() =>
+                      setAdvanceAmount(summary.advancePayment || 0)
+                    }
+                  >
+                    <Edit />
+                  </button>
+                </td>
+              </tr>
+            )}
 
             {certificates?.map((item) => (
               <tr key={item._id} className="border-b transition">
@@ -607,22 +614,22 @@ export const Certificates = ({
                 </td>
 
                 <td className="p-3 text-center relative">
-                  {/* Three Dot Button */}
                   <button
                     className="text-gray-200 hover:text-gray-300 cursor-pointer"
-                    onClick={() => setOpen(!open)}
+                    onClick={() =>
+                      setOpenId(openId === item._id ? null : item._id)
+                    }
                   >
                     <MoreVertical size={20} />
                   </button>
 
-                
-                  {open && (
+                  {openId === item._id && (
                     <div className="absolute right-4 mt-2 w-32 bg-white border rounded shadow-lg z-20">
                       <button
                         className="flex items-center text-black gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
                         onClick={() => {
                           onEditData(item._id);
-                          setOpen(false);
+                          setOpenId(null);
                         }}
                       >
                         <Edit size={16} /> Edit
@@ -632,7 +639,7 @@ export const Certificates = ({
                         className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100"
                         onClick={() => {
                           onDeleteClick(item._id);
-                          setOpen(false);
+                          setOpenId(null);
                         }}
                       >
                         <Trash size={16} /> Delete
@@ -642,6 +649,7 @@ export const Certificates = ({
                 </td>
               </tr>
             ))}
+
             <tr className=" font-semibold">
               <td className="p-3 text-left">Total:</td>
               <td className="p-3">${totalSubmitted}</td>

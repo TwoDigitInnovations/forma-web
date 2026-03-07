@@ -713,102 +713,102 @@ const MonthlyProgressReportPdf = ({
               </p>
 
               <div>
-                {data?.physicalprogress?.map((tracker, tIndex) => (
-                  <div key={tIndex} style={{ marginBottom: "30px", }}>
-                    {/* Tracker Name */}
-                    <p
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      {tracker.trackerName}
-                    </p>
+                {data?.physicalprogress?.length > 0 ? (
+                  data?.physicalprogress?.map((tracker, tIndex) => (
+                    <div key={tIndex} style={{ marginBottom: "30px" }}>
+                      
+                      <p
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {tracker.trackerName}
+                      </p>
 
-                    
-                    <div
-                      style={{
-                        display: "flex",
-                        // background: "#e6f04a",
-                        padding: "10px",
-                        border:"1px solid #eee",
-                        fontWeight: "600",
-                        fontSize: "13px",
-                      }}
-                    >
-                      <div style={{ flex: 2 }}>Description</div>
-                      <div style={{ flex: 1 }}>Qty in BOQ</div>
-                      <div style={{ flex: 1 }}>Rate</div>
-                      <div style={{ flex: 1 }}>Amount</div>
-                      <div style={{ flex: 1 }}>Qty Done</div>
-                      <div style={{ flex: 1 }}>Amount Done</div>
-                      <div style={{ flex: 1 }}>Progress</div>
-                    </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          padding: "10px",
+                          border: "1px solid #eee",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                        }}
+                      >
+                        <div style={{ flex: 2 }}>Description</div>
+                        <div style={{ flex: 1 }}>Qty in BOQ</div>
+                        <div style={{ flex: 1 }}>Rate</div>
+                        <div style={{ flex: 1 }}>Amount</div>
+                        <div style={{ flex: 1 }}>Qty Done</div>
+                        <div style={{ flex: 1 }}>Amount Done</div>
+                        <div style={{ flex: 1 }}>Progress</div>
+                      </div>
 
-                    
-                    {tracker?.trackerActivityProgress?.map(
-                      (section, sIndex) => (
-                        <div key={sIndex}>
-                         
-                          <div
-                            style={{
-                              background: "#f5f5f5",
-                              padding: "8px 10px",
-                              fontWeight: "600",
-                              border: "1px solid #ddd",
-                            }}
-                          >
-                            {section.name}
-                          </div>
+                      {tracker?.trackerActivityProgress?.map(
+                        (section, sIndex) => (
+                          <div key={sIndex}>
+                            <div
+                              style={{
+                                background: "#f5f5f5",
+                                padding: "8px 10px",
+                                fontWeight: "600",
+                                border: "1px solid #ddd",
+                              }}
+                            >
+                              {section.name}
+                            </div>
 
-                          
-                          {section?.activities?.map((act, aIndex) => {
-                            const progress =
-                              act.qtyInBOQ > 0
-                                ? ((act.qtyDone / act.qtyInBOQ) * 100).toFixed(
-                                    2,
-                                  )
-                                : 0;
+                            {section?.activities?.map((act, aIndex) => {
+                              const progress =
+                                act.qtyInBOQ > 0
+                                  ? (
+                                      (act.qtyDone / act.qtyInBOQ) *
+                                      100
+                                    ).toFixed(2)
+                                  : 0;
 
-                            return (
-                              <div
-                                key={aIndex}
-                                style={{
-                                  display: "flex",
-                                  padding: "10px",
-                                  borderBottom: "1px solid #eee",
-                                  fontSize: "13px",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <div style={{ flex: 2 }}>{act.name}</div>
-                                <div style={{ flex: 1 }}>{act.qtyInBOQ}</div>
-                                <div style={{ flex: 1 }}>{act.Rate}</div>
-                                <div style={{ flex: 1 }}>{act.Amount}</div>
-                                <div style={{ flex: 1 }}>{act.qtyDone}</div>
-                                <div style={{ flex: 1 }}>{act.amountDone}</div>
+                              return (
+                                <div
+                                  key={aIndex}
+                                  style={{
+                                    display: "flex",
+                                    padding: "10px",
+                                    borderBottom: "1px solid #eee",
+                                    fontSize: "13px",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <div style={{ flex: 2 }}>{act.name}</div>
+                                  <div style={{ flex: 1 }}>{act.qtyInBOQ}</div>
+                                  <div style={{ flex: 1 }}>{act.Rate}</div>
+                                  <div style={{ flex: 1 }}>{act.Amount}</div>
+                                  <div style={{ flex: 1 }}>{act.qtyDone}</div>
+                                  <div style={{ flex: 1 }}>
+                                    {act.amountDone}
+                                  </div>
 
-                                
-                                <div style={{ flex: 1 }}>
-                                
-                                  <p
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "2px",
-                                    }}
-                                  >
-                                    {progress}%
-                                  </p>
+                                  <div style={{ flex: 1 }}>
+                                    <p
+                                      style={{
+                                        fontSize: "13px",
+                                        marginTop: "2px",
+                                      }}
+                                    >
+                                      {progress}%
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ),
-                    )}
-                  </div>
-                ))}
+                              );
+                            })}
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p>No physical progress recorded for this project.</p>
+                )}
               </div>
             </div>
 
@@ -818,100 +818,114 @@ const MonthlyProgressReportPdf = ({
               </h2>
 
               <div style={{ width: "100%", borderRadius: "10px" }}>
-                {data?.workplan?.map((plan, key) => (
-                  <div
-                    key={key}
-                    style={{ marginBottom: "24px", marginTop: "16px" }}
-                  >
-                    <p
-                      style={{
-                        fontWeight: "600",
-                        fontSize: "16px",
-                        marginBottom: "10px",
-                      }}
+                {data?.workplan?.length > 0 ? (
+                  data?.workplan?.map((plan, key) => (
+                    <div
+                      key={key}
+                      style={{ marginBottom: "24px", marginTop: "16px" }}
                     >
-                      {plan.planName}
-                    </p>
+                      <p
+                        style={{
+                          fontWeight: "600",
+                          fontSize: "16px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        {plan.planName}
+                      </p>
 
-                    <table
-                      style={{
-                        width: "100%",
-                        fontSize: "14px",
-                        borderCollapse: "collapse",
-                      }}
-                    >
-                      <thead>
-                        <tr style={{ borderBottom: "1px solid #ddd" }}>
-                          <th style={{ padding: "8px", fontWeight: "600" }}>
-                            Activity Name
-                          </th>
-                          <th style={{ padding: "8px", fontWeight: "600" }}>
-                            Start Date
-                          </th>
-                          <th style={{ padding: "8px", fontWeight: "600" }}>
-                            Duration
-                          </th>
-                          <th style={{ padding: "8px", fontWeight: "600" }}>
-                            End Date
-                          </th>
-                        </tr>
-                      </thead>
+                      <table
+                        style={{
+                          width: "100%",
+                          fontSize: "14px",
+                          borderCollapse: "collapse",
+                        }}
+                      >
+                        <thead>
+                          <tr style={{ borderBottom: "1px solid #ddd" }}>
+                            <th style={{ padding: "8px", fontWeight: "600" }}>
+                              Activity Name
+                            </th>
+                            <th style={{ padding: "8px", fontWeight: "600" }}>
+                              Start Date
+                            </th>
+                            <th style={{ padding: "8px", fontWeight: "600" }}>
+                              Duration
+                            </th>
+                            <th style={{ padding: "8px", fontWeight: "600" }}>
+                              End Date
+                            </th>
+                          </tr>
+                        </thead>
 
-                      <tbody>
-                        {plan?.workActivities?.length > 0 ? (
-                          plan.workActivities.map((item, index) => (
-                            <tr
-                              key={index}
-                              style={{ borderBottom: "1px solid #ddd" }}
-                            >
-                              <td style={{ padding: "8px" }}>
-                                {item.description || "-"}
-                              </td>
-                              <td style={{ padding: "8px" }}>
-                                {item.startDate
-                                  ? moment(item.startDate).format(
-                                      "MMMM DD, YYYY",
-                                    )
-                                  : "-"}
-                              </td>
-                              <td style={{ padding: "8px" }}>
-                                {item.duration
-                                  ? `${item.duration} days`
-                                  : "days"}
-                              </td>
-                              <td style={{ padding: "8px" }}>
-                                {item.endDate
-                                  ? moment(item.endDate).format("MMMM DD, YYYY")
-                                  : "-"}
+                        <tbody>
+                          {plan?.workActivities?.length > 0 ? (
+                            plan.workActivities.map((item, index) => (
+                              <tr
+                                key={index}
+                                style={{ borderBottom: "1px solid #ddd" }}
+                              >
+                                <td style={{ padding: "8px" }}>
+                                  {item.description || "-"}
+                                </td>
+                                <td style={{ padding: "8px" }}>
+                                  {item.startDate
+                                    ? moment(item.startDate).format(
+                                        "MMMM DD, YYYY",
+                                      )
+                                    : "-"}
+                                </td>
+                                <td style={{ padding: "8px" }}>
+                                  {item.duration
+                                    ? `${item.duration} days`
+                                    : "days"}
+                                </td>
+                                <td style={{ padding: "8px" }}>
+                                  {item.endDate
+                                    ? moment(item.endDate).format(
+                                        "MMMM DD, YYYY",
+                                      )
+                                    : "-"}
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan={4}
+                                style={{
+                                  textAlign: "center",
+                                  padding: "12px",
+                                  color: "#666",
+                                  fontStyle: "italic",
+                                }}
+                              >
+                                No activities available for this workplan.
                               </td>
                             </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan={4}
-                              style={{
-                                textAlign: "center",
-                                padding: "12px",
-                                color: "#666",
-                                fontStyle: "italic",
-                              }}
-                            >
-                              No activities available for this workplan.
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      color: "#4B5563",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    No work plan recorded for this project.
+                  </p>
+                )}
               </div>
             </div>
 
             <div style={{ marginTop: "32px" }}>
               <h2
                 style={{
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontWeight: "bold",
                   marginBottom: "16px",
                 }}
@@ -919,7 +933,7 @@ const MonthlyProgressReportPdf = ({
                 6. CLIENT PERSONNEL
               </h2>
 
-              {data?.clientPersonnel?.teamMembers ? (
+              {data?.clientPersonnel?.teamMembers.length > 0 ? (
                 <table
                   style={{
                     width: "100%",
@@ -973,7 +987,7 @@ const MonthlyProgressReportPdf = ({
             <div style={{ marginTop: "32px" }}>
               <h2
                 style={{
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontWeight: "bold",
                   marginBottom: "16px",
                 }}
@@ -981,7 +995,7 @@ const MonthlyProgressReportPdf = ({
                 7. CONTRACTOR PERSONNEL
               </h2>
 
-              {data?.contractorPersonnel?.teamMembers ? (
+              {data?.contractorPersonnel?.teamMembers.length > 0 ? (
                 <table
                   style={{
                     width: "100%",
@@ -1039,7 +1053,7 @@ const MonthlyProgressReportPdf = ({
             <div style={{ marginTop: "32px" }}>
               <h2
                 style={{
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontWeight: "bold",
                   marginBottom: "16px",
                 }}

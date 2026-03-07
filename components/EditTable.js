@@ -3,11 +3,26 @@ import React, { useState, useEffect } from "react";
 import { EllipsisVertical, Search, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useRef } from "react";
 
 const EditableTable = ({ activities, setActivities }) => {
   const [menuIndex, setMenuIndex] = useState(null);
   const [displayData, setDisplayData] = useState("displayAll");
   const [searchQuery, setSearchQuery] = useState("");
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuIndex(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleAddRow = (type = "activity", insertIndex = null) => {
     const newRow = {
@@ -65,7 +80,7 @@ const EditableTable = ({ activities, setActivities }) => {
         const row = updated[i];
         if (row.rowType === "activity" && row.startDate && row.duration) {
           updated[i].endDate = moment(row.startDate)
-            .add(Number(row.duration), "months")
+            .add(Number(row.duration), "days")
             .format("YYYY-MM-DD");
         } else if (row.rowType === "activity") {
           updated[i].endDate = row.endDate || "";
@@ -75,8 +90,9 @@ const EditableTable = ({ activities, setActivities }) => {
       for (let i = 0; i < updated.length - 1; i++) {
         const curr = updated[i];
         const next = updated[i + 1];
+
         if (curr.rowType === "activity" && next.rowType === "activity") {
-          if (curr.endDate) {
+          if (curr.endDate && !next.startDate) {
             updated[i + 1].startDate = curr.endDate;
           }
         }
@@ -177,7 +193,7 @@ const EditableTable = ({ activities, setActivities }) => {
           <tr className="bg-custom-yellow text-gray-700">
             <th className="py-3 px-3 text-left w-[100px]">Item No</th>
             <th className="py-3 px-3 text-left min-w-[250px]">Description</th>
-            <th className="py-3 px-3 text-center w-[120px]">Duration (M)</th>
+            <th className="py-3 px-3 text-center w-[120px]">Duration (D)</th>
             <th className="py-3 px-3 text-center w-[150px]">Start Date</th>
             <th className="py-3 px-3 text-center w-[150px]">End Date</th>
             <th className="py-3 px-3 text-center w-[150px]">Actions</th>
@@ -193,11 +209,7 @@ const EditableTable = ({ activities, setActivities }) => {
               row.startDate && row.endDate
                 ? Math.max(
                     0,
-                    moment(row.endDate).diff(
-                      moment(row.startDate),
-                      "months",
-                      true,
-                    ),
+                    moment(row.endDate).diff(moment(row.startDate), "days"),
                   )
                 : "";
 
@@ -317,7 +329,7 @@ const EditableTable = ({ activities, setActivities }) => {
                   </button>
 
                   {menuIndex === i && (
-                    <div className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20">
+                    <div ref={menuRef} className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20">
                       <button
                         onClick={() => {
                           handleAddRow("section");

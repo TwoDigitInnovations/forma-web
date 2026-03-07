@@ -189,8 +189,12 @@ const SidePannel = ({ openTab, setOpenTab }) => {
               item.access.includes(user?.role) && (
                 <div
                   key={i}
-                  onClick={() => router.push(item.href)}
-                  className={`flex items-center gap-3 mx-3 my-1 px-3 py-3 rounded cursor-pointer
+                  onClick={() => {
+                    console.log("clicked");
+                    console.log(item.href);
+                    router.push(item.href);
+                  }}
+                  className={`relative z-10 flex items-center gap-3 mx-3 my-1 px-3 py-3 rounded cursor-pointer
                   ${
                     isActive(item.href)
                       ? "bg-custom-green text-white"

@@ -151,7 +151,7 @@ const WorkPlan = (props) => {
               </button>
 
               {isOpen && (
-                <div className="absolute right-0 top-10 w-40 bg-white border rounded-lg shadow-lg z-50">
+                <div className="absolute right-0 top-10 w-40 bg-white border rounded-lg shadow-lg z-[999]">
                   <button
                     className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
                     onClick={() => {
@@ -261,14 +261,105 @@ const WorkPlan = (props) => {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table
-                columns={columns}
-                data={allPlanData}
-                pagination={pagination}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-              />
+            <div className="bg-white rounded-2xl shadow-md mt-4 overflow-x-auto ">
+              <div className="bg-white rounded-2xl shadow-md  overflow-x-auto h-[400px]">
+                <table className="w-full min-w-[600px] ">
+                  <thead>
+                    <tr className="bg-custom-yellow text-gray-700 text-sm">
+                      <th className="py-3 px-4 text-center">Work Plan Name</th>
+                      <th className="py-3 px-4 text-center">Last Updated</th>
+                      <th className="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {allPlanData?.map((row) => {
+                      const isOpen = openMenuId === row._id;
+
+                      return (
+                        <tr key={row._id} className="border-b hover:bg-gray-50">
+                          {/* Plan Name */}
+                          <td className="py-3 px-4 text-center">
+                            <p
+                              className="text-black underline cursor-pointer text-[15px] font-semibold truncate"
+                              title={row.planName}
+                              onClick={() =>
+                                router.push(
+                                  `/ProjectDetails/EditActivity?PlanId=${row._id}`,
+                                )
+                              }
+                            >
+                              {row.planName || "—"}
+                            </p>
+                          </td>
+
+                          {/* Last Updated */}
+                          <td className="py-3 px-4 text-center text-gray-700 text-[14px]">
+                            {row.updatedAt
+                              ? moment(row.updatedAt).format(
+                                  "DD MMM YYYY, hh:mm A",
+                                )
+                              : "—"}
+                          </td>
+
+                          {/* Actions */}
+                          <td className="py-3 px-4 text-center relative">
+                            <button
+                              className="p-2 rounded-md text-black cursor-pointer hover:bg-gray-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenMenuId((prev) =>
+                                  prev === row._id ? null : row._id,
+                                );
+                              }}
+                            >
+                              <MoreVertical size={18} />
+                            </button>
+
+                            {isOpen && (
+                              <div className="absolute right-6 top-10 w-40 bg-white border rounded-lg shadow-lg z-[999]">
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 text-black"
+                                  onClick={() => {
+                                    setWorkPlan(row);
+                                    setOpen(true);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Eye size={16} /> View Details
+                                </button>
+
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 text-black"
+                                  onClick={() => {
+                                    router.push(
+                                      `/ProjectDetails/EditActivity?PlanId=${row._id}`,
+                                    );
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Edit size={16} /> Edit Plan
+                                </button>
+
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100 "
+                                  onClick={() => {
+                                    setShowDeleteModal(true);
+                                    setPlanId(row._id);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Trash2 size={16} /> Delete Plan
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
