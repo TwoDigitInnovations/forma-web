@@ -106,8 +106,8 @@ const EditableTable = ({ activities, setActivities }) => {
   ]);
 
   useEffect(() => {
-    setActivities((prev) =>
-      prev.map((row, idx) => {
+    setActivities((prev) => {
+      const updated = prev.map((row, idx) => {
         if (row.rowType !== "section") return row;
 
         let earliest = null;
@@ -122,6 +122,7 @@ const EditableTable = ({ activities, setActivities }) => {
                 earliest = prev[i].startDate;
               }
             }
+
             if (prev[i].endDate) {
               if (!latest || moment(prev[i].endDate).isAfter(latest)) {
                 latest = prev[i].endDate;
@@ -130,13 +131,22 @@ const EditableTable = ({ activities, setActivities }) => {
           }
         }
 
+        if (row.startDate === earliest && row.endDate === latest) {
+          return row; // ❗ no change
+        }
+
         return {
           ...row,
           startDate: earliest,
           endDate: latest,
         };
-      }),
-    );
+      });
+
+      // ❗ check if array actually changed
+      const changed = JSON.stringify(prev) !== JSON.stringify(updated);
+
+      return changed ? updated : prev;
+    });
   }, [activities]);
 
   const hasSection = activities.some((a) => a.rowType === "section");
@@ -329,7 +339,10 @@ const EditableTable = ({ activities, setActivities }) => {
                   </button>
 
                   {menuIndex === i && (
-                    <div ref={menuRef} className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20">
+                    <div
+                      ref={menuRef}
+                      className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20"
+                    >
                       <button
                         onClick={() => {
                           handleAddRow("section");

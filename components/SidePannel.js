@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "@/pages/_app";
 import Swal from "sweetalert2";
 
+
 import {
   Menu,
   X,
@@ -57,9 +58,6 @@ const SidePannel = ({ openTab, setOpenTab }) => {
     });
   };
 
-  // ======================
-  // Main Menu
-  // ======================
   const menuItems = [
     {
       href: "/dashboard",
@@ -99,9 +97,6 @@ const SidePannel = ({ openTab, setOpenTab }) => {
     },
   ];
 
-  // ======================
-  // Project Details Menu
-  // ======================
   const menuItemsProject = [
     {
       href: "/ProjectDetails/overview",
@@ -187,23 +182,19 @@ const SidePannel = ({ openTab, setOpenTab }) => {
           {currentMenuItems.map(
             (item, i) =>
               item.access.includes(user?.role) && (
-                <div
-                  key={i}
-                  onClick={() => {
-                    console.log("clicked");
-                    console.log(item.href);
-                    router.push(item.href);
-                  }}
-                  className={`relative z-10 flex items-center gap-3 mx-3 my-1 px-3 py-3 rounded cursor-pointer
-                  ${
-                    isActive(item.href)
-                      ? "bg-custom-green text-white"
-                      : "text-white hover:bg-white/10"
-                  }`}
-                >
-                  <span className="text-custom-yellow">{item.img}</span>
-                  <span className="whitespace-nowrap">{item.title}</span>
-                </div>
+                <Link key={i} href={item.href}>
+                  <div
+                    className={`relative z-10 flex items-center gap-3 mx-3 my-1 px-3 py-3 rounded cursor-pointer
+          ${
+            isActive(item.href)
+              ? "bg-custom-green text-white"
+              : "text-white hover:bg-white/10"
+          }`}
+                  >
+                    <span className="text-custom-yellow">{item.img}</span>
+                    <span className="whitespace-nowrap">{item.title}</span>
+                  </div>
+                </Link>
               ),
           )}
 
@@ -279,7 +270,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-custom-yellow">{item.img}</span>
+                    <span className="">{item.img}</span>
                     {item.title}
                   </div>
                 </div>
