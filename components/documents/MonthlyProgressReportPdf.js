@@ -933,7 +933,7 @@ const MonthlyProgressReportPdf = ({
                 6. CLIENT PERSONNEL
               </h2>
 
-              {data?.clientPersonnel?.teamMembers.length > 0 ? (
+              {data?.clientPersonnel?.teamMembers?.length > 0 ? (
                 <table
                   style={{
                     width: "100%",
@@ -995,7 +995,7 @@ const MonthlyProgressReportPdf = ({
                 7. CONTRACTOR PERSONNEL
               </h2>
 
-              {data?.contractorPersonnel?.teamMembers.length > 0 ? (
+              {data?.contractorPersonnel?.teamMembers?.length > 0 ? (
                 <table
                   style={{
                     width: "100%",
