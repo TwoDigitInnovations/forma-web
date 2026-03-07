@@ -56,8 +56,7 @@ function PricingPage() {
     console.log("why", hasActiveSubscription);
 
     if (hasActiveSubscription) {
-      console.log("why ander", hasActiveSubscription);
-
+    
       router.push("/dashboard");
     }
   }, []);

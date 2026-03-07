@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
+import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
 import {
   NotebookPen,
   MapPin,
@@ -7,7 +7,9 @@ import {
   Trash2,
   FileCode2,
   X,
+  MoreVertical,
 } from "lucide-react";
+
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import isAuth from "../../../components/isAuth";
@@ -22,6 +24,8 @@ const WorkPlan = (props) => {
   const [projectDetails, setProjectDetails] = useContext(ProjectDetailsContext);
   const [projectId, setProjectId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [allPlanData, setAllPlanData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,11 +33,25 @@ const WorkPlan = (props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [planId, setPlanId] = useState("");
   const [workPlan, setWorkPlan] = useState({});
+  const [openMenu, setOpenMenu] = useState(false);
   const [pagination, setPagination] = useState({
     totalPages: 1,
     currentPage: 1,
     itemsPerPage: 5,
   });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("projectDetails");
@@ -76,16 +94,28 @@ const WorkPlan = (props) => {
       });
   };
 
+  useEffect(() => {
+    const handleClick = () => setOpenMenuId(null);
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   const columns = useMemo(
     () => [
       {
         Header: "Work Plan Name",
         accessor: "planName",
         width: "220px",
-        Cell: ({ value }) => (
+        Cell: ({ value, row }) => (
           <p
-            className="text-black text-[15px] font-semibold text-center truncate min-w-[180px]"
+            className="text-black underline cursor-pointer text-[15px] font-semibold text-center truncate min-w-[180px]"
             title={value}
+            onClick={() => {
+              router.push(
+                `/ProjectDetails/EditActivity?PlanId=${row.original._id}`,
+              );
+              setOpenMenu(false);
+            }}
           >
             {value || "—"}
           </p>
@@ -100,72 +130,69 @@ const WorkPlan = (props) => {
           </p>
         ),
       },
-      {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ value }) => (
-          <span
-            className={`min-w-[120px] px-4 py-1 rounded-full text-sm font-semibold text-center inline-block ${
-              value === "Active"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : value === "Completed"
-                ? "bg-blue-100 text-blue-700 border border-blue-300"
-                : "bg-gray-200 text-gray-600 border border-gray-300"
-            }`}
-          >
-            {value || "Pending"}
-          </span>
-        ),
-      },
-      {
-        Header: "Total Activities",
-        accessor: "workActivities",
-        Cell: ({ value }) => (
-          <p className="min-w-[140px] text-center text-[15px] font-medium text-gray-800">
-            {value?.length || 0}
-          </p>
-        ),
-      },
+
       {
         Header: "Actions",
-        Cell: ({ row }) => (
-          <div className="flex items-center justify-center gap-2 min-w-[150px]">
-            <button
-              className="p-2 rounded-md cursor-pointer hover:bg-green-100 hover:text-green-700 transition-all"
-              title="View Details"
-              onClick={() => {
-                setWorkPlan(row.original);
-                setOpen(true);
-              }}
-            >
-              <Eye size={18} />
-            </button>
-            <button
-              className="p-2 rounded-md cursor-pointer hover:bg-yellow-100 hover:text-yellow-700 transition-all"
-              title="Edit Plan"
-              onClick={() =>
-                router.push(
-                  `/ProjectDetails/EditActivity?PlanId=${row.original._id}`
-                )
-              }
-            >
-              <Edit size={18} />
-            </button>
-            <button
-              className="p-2 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-600 transition-all"
-              title="Delete Plan"
-              onClick={() => {
-                setShowDeleteModal(true);
-                setPlanId(row.original._id);
-              }}
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
-        ),
+        Cell: ({ row }) => {
+          const isOpen = openMenuId === row.original._id;
+
+          return (
+            <div className="relative flex justify-center min-w-[80px]">
+              <button
+                className="p-2 rounded-md hover:bg-gray-100 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenuId((prev) =>
+                    prev === row.original._id ? null : row.original._id,
+                  );
+                }}
+              >
+                <MoreVertical size={18} />
+              </button>
+
+              {isOpen && (
+                <div className="absolute right-0 top-10 w-40 bg-white border rounded-lg shadow-lg z-[999]">
+                  <button
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
+                    onClick={() => {
+                      setWorkPlan(row.original);
+                      setOpen(true);
+                      setOpenMenuId(null);
+                    }}
+                  >
+                    <Eye size={16} /> View Details
+                  </button>
+
+                  <button
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
+                    onClick={() => {
+                      router.push(
+                        `/ProjectDetails/EditActivity?PlanId=${row.original._id}`,
+                      );
+                      setOpenMenuId(null);
+                    }}
+                  >
+                    <Edit size={16} /> Edit Plan
+                  </button>
+
+                  <button
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    onClick={() => {
+                      setShowDeleteModal(true);
+                      setPlanId(row.original._id);
+                      setOpenMenuId(null);
+                    }}
+                  >
+                    <Trash2 size={16} /> Delete Plan
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        },
       },
     ],
-    []
+    [],
   );
 
   const handleDeletePlan = (id) => {
@@ -189,7 +216,7 @@ const WorkPlan = (props) => {
 
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3 md:px-0 mx-auto">
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
         <div className="bg-custom-green py-6 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
           <div>
             <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
@@ -234,14 +261,105 @@ const WorkPlan = (props) => {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table
-                columns={columns}
-                data={allPlanData}
-                pagination={pagination}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-              />
+            <div className="bg-white rounded-2xl shadow-md mt-4 overflow-x-auto ">
+              <div className="bg-white rounded-2xl shadow-md  overflow-x-auto h-[400px]">
+                <table className="w-full min-w-[600px] ">
+                  <thead>
+                    <tr className="bg-custom-yellow text-gray-700 text-sm">
+                      <th className="py-3 px-4 text-center">Work Plan Name</th>
+                      <th className="py-3 px-4 text-center">Last Updated</th>
+                      <th className="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {allPlanData?.map((row) => {
+                      const isOpen = openMenuId === row._id;
+
+                      return (
+                        <tr key={row._id} className="border-b hover:bg-gray-50">
+                          {/* Plan Name */}
+                          <td className="py-3 px-4 text-center">
+                            <p
+                              className="text-black underline cursor-pointer text-[15px] font-semibold truncate"
+                              title={row.planName}
+                              onClick={() =>
+                                router.push(
+                                  `/ProjectDetails/EditActivity?PlanId=${row._id}`,
+                                )
+                              }
+                            >
+                              {row.planName || "—"}
+                            </p>
+                          </td>
+
+                          {/* Last Updated */}
+                          <td className="py-3 px-4 text-center text-gray-700 text-[14px]">
+                            {row.updatedAt
+                              ? moment(row.updatedAt).format(
+                                  "DD MMM YYYY, hh:mm A",
+                                )
+                              : "—"}
+                          </td>
+
+                          {/* Actions */}
+                          <td className="py-3 px-4 text-center relative">
+                            <button
+                              className="p-2 rounded-md text-black cursor-pointer hover:bg-gray-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenMenuId((prev) =>
+                                  prev === row._id ? null : row._id,
+                                );
+                              }}
+                            >
+                              <MoreVertical size={18} />
+                            </button>
+
+                            {isOpen && (
+                              <div className="absolute right-6 top-10 w-40 bg-white border rounded-lg shadow-lg z-[999]">
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 text-black"
+                                  onClick={() => {
+                                    setWorkPlan(row);
+                                    setOpen(true);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Eye size={16} /> View Details
+                                </button>
+
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 text-black"
+                                  onClick={() => {
+                                    router.push(
+                                      `/ProjectDetails/EditActivity?PlanId=${row._id}`,
+                                    );
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Edit size={16} /> Edit Plan
+                                </button>
+
+                                <button
+                                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100 "
+                                  onClick={() => {
+                                    setShowDeleteModal(true);
+                                    setPlanId(row._id);
+                                    setOpenMenuId(null);
+                                  }}
+                                >
+                                  <Trash2 size={16} /> Delete Plan
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
@@ -317,10 +435,10 @@ const WorkPlan = (props) => {
                 workPlan?.status === "Completed"
                   ? "bg-green-500/20 text-green-400"
                   : workPlan?.status === "In Progress"
-                  ? "bg-blue-500/20 text-blue-400"
-                  : workPlan?.status === "On Hold"
-                  ? "bg-orange-500/20 text-orange-400"
-                  : "bg-gray-500/20 text-gray-300"
+                    ? "bg-blue-500/20 text-blue-400"
+                    : workPlan?.status === "On Hold"
+                      ? "bg-orange-500/20 text-orange-400"
+                      : "bg-gray-500/20 text-gray-300"
               }`}
                   >
                     {workPlan?.status || "Not Started"}
@@ -375,7 +493,7 @@ const WorkPlan = (props) => {
                         <td className="px-4 py-3">
                           {row.startDate
                             ? new Date(row.startDate).toLocaleDateString(
-                                "en-GB"
+                                "en-GB",
                               )
                             : "-"}
                         </td>

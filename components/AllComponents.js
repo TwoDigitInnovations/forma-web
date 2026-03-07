@@ -22,6 +22,7 @@ import {
   Calendar,
   MapPin,
   ClipboardList,
+  MoreVertical,
 } from "lucide-react";
 
 import { Api } from "@/services/service";
@@ -152,6 +153,8 @@ export const Certificates = ({
   const [pendingId, setPendingId] = useState(null);
   const [pendingAmount, setPendingAmount] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [openId, setOpenId] = useState(null);
 
   const router = useRouter();
 
@@ -184,14 +187,14 @@ export const Certificates = ({
           date: cert.date,
           status: cert.status,
         },
-        router
+        router,
       );
       if (cert?.status === "Paid") {
         await Api(
           "post",
           `project/update-payment-paid/${projectId}`,
           { paidAmount: Number(cert?.amount) },
-          router
+          router,
         );
       }
       loader(false);
@@ -250,7 +253,7 @@ export const Certificates = ({
           date: cert.date,
           status: cert.status,
         },
-        router
+        router,
       );
 
       loader(false);
@@ -271,26 +274,33 @@ export const Certificates = ({
 
   const handleStatusChange = async (id, status, amount) => {
     loader(true);
+
     try {
+      // 1️⃣ Pehle paid amount update hoga
+      if (status === "Paid") {
+        const paymentRes = await Api(
+          "post",
+          `project/update-payment-paid/${projectId}`,
+          { paidAmount: Number(amount) || 0 },
+          router,
+        );
+
+        if (paymentRes?.status !== true) {
+          loader(false);
+          return toast.error("Failed to update paid amount");
+        }
+      }
+
       const res = await Api(
         "post",
         `project/update-certificate-status/${id}/${projectId}`,
         { status },
-        router
+        router,
       );
 
       if (res?.status !== true) {
         loader(false);
         return toast.error("Failed to update status");
-      }
-
-      if (status === "Paid") {
-        await Api(
-          "post",
-          `project/update-payment-paid/${projectId}`,
-          { paidAmount: Number(amount) },
-          router
-        );
       }
 
       loader(false);
@@ -326,7 +336,7 @@ export const Certificates = ({
         "delete",
         `project/deleteCertificate/${projectId}/${deleteId}`,
         "",
-        router
+        router,
       );
 
       loader(false);
@@ -351,7 +361,7 @@ export const Certificates = ({
         "post",
         `project/update-advance-payment/${projectId}`,
         { advanceAmount: amount },
-        router
+        router,
       );
 
       loader(false);
@@ -524,36 +534,34 @@ export const Certificates = ({
           </thead>
 
           <tbody>
-            {advanceAmount ||
-              (showAdvanceAmount && (
-                <tr className="border-b transition">
-                  <td className="p-3">{"Advance Payment"}</td>
+            {(advanceAmount > 0 || showAdvanceAmount > 0) && (
+              <tr className="border-b transition">
+                <td className="p-3">Advance Payment</td>
 
-                  <td className="p-3">{"-"}</td>
+                <td className="p-3">-</td>
 
-                  <td className="p-3">{"-"}</td>
+                <td className="p-3">-</td>
 
-                  <td className="p-3 ">${showAdvanceAmount || "-"}</td>
+                <td className="p-3">${showAdvanceAmount}</td>
 
-                  <td className="p-3 ">
-                    <p className="border p-2 rounded cursor-pointer text-white w-26">
-                      {" "}
-                      {"Paid"}
-                    </p>
-                  </td>
+                <td className="p-3">
+                  <p className="border p-2 rounded cursor-pointer text-white w-26">
+                    Paid
+                  </p>
+                </td>
 
-                  <td className="p-3 flex gap-3 justify-center">
-                    <button
-                      className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                      onClick={() =>
-                        setAdvanceAmount(summary.advancePayment || 0)
-                      }
-                    >
-                      <Edit />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                <td className="p-3 flex gap-3 justify-center">
+                  <button
+                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                    onClick={() =>
+                      setAdvanceAmount(summary.advancePayment || 0)
+                    }
+                  >
+                    <Edit />
+                  </button>
+                </td>
+              </tr>
+            )}
 
             {certificates?.map((item) => (
               <tr key={item._id} className="border-b transition">
@@ -577,7 +585,7 @@ export const Certificates = ({
                     : "-"}
                 </td>
 
-                <td className="p-3">
+                <td className="p-3 z-0">
                   <select
                     value={item.status}
                     disabled={item.status === "Paid"}
@@ -605,25 +613,43 @@ export const Certificates = ({
                   </select>
                 </td>
 
-                <td className="p-3 flex gap-3 justify-center">
-                  {item.status !== "Paid" && (
-                    <button
-                      className="text-red-600 hover:text-red-800 cursor-pointer text-xl"
-                      onClick={() => onDeleteClick(item._id)}
-                    >
-                      <Trash />
-                    </button>
-                  )}
-
+                <td className="p-3 text-center relative">
                   <button
-                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
-                    onClick={() => onEditData(item._id)}
+                    className="text-gray-200 hover:text-gray-300 cursor-pointer"
+                    onClick={() =>
+                      setOpenId(openId === item._id ? null : item._id)
+                    }
                   >
-                    <Edit />
+                    <MoreVertical size={20} />
                   </button>
+
+                  {openId === item._id && (
+                    <div className="absolute right-4 mt-2 w-32 bg-white border rounded shadow-lg z-20">
+                      <button
+                        className="flex items-center text-black gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
+                        onClick={() => {
+                          onEditData(item._id);
+                          setOpenId(null);
+                        }}
+                      >
+                        <Edit size={16} /> Edit
+                      </button>
+
+                      <button
+                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        onClick={() => {
+                          onDeleteClick(item._id);
+                          setOpenId(null);
+                        }}
+                      >
+                        <Trash size={16} /> Delete
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
+
             <tr className=" font-semibold">
               <td className="p-3 text-left">Total:</td>
               <td className="p-3">${totalSubmitted}</td>
@@ -689,7 +715,7 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
           email,
           organizationId: user._id,
         },
-        router
+        router,
       );
       console.log(res);
 
@@ -877,7 +903,6 @@ export const ProjectBehind = ({ onclose, loader }) => {
           </button>
         </div>
 
-        
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
           <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
         </div>
@@ -1174,13 +1199,13 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
     projectName,
     projectType,
     projectNo,
+    programType,
     status,
     defectsLiability,
     startDate,
     endDate,
     location,
     ProjectScope,
-
     ExcuetiveSummary,
     description,
   } = projectInfo;
@@ -1270,6 +1295,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
             </div>
 
             <Info1 label="Duration" value={duration} />
+            <Info1 label="Program Type" value={programType} />
             <Info1
               label="Defects Liability"
               value={defectsLiability || "Not set"}

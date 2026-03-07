@@ -7,12 +7,19 @@ import { ProjectDetailsContext, userContext } from "@/pages/_app";
 import { ConfirmModal } from "./AllComponents";
 import moment from "moment";
 
-export default function Listproject({ loader, allProjectData, getAllProject }) {
+export default function Listproject({
+  loader,
+  allProjectData,
+  getAllProject,
+  AllProgramData,
+  programId,
+  setProgramId
+
+}) {
   const router = useRouter();
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
   const [openMenu, setOpenMenu] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
-
   const [editId, setEditId] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -58,7 +65,7 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
 
   return (
     <div className="bg-custom-black min-h-[500px] rounded-2xl border border-[#1f1f1f] p-6 text-white ">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-semibold">Active Projects</h2>
         <button
           className="text-sm text-gray-400 hover:text-white underline text-custom-yellow cursor-pointer"
@@ -66,6 +73,23 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
         >
           View All
         </button>
+      </div>
+
+      <div className="md:col-span-1 col-span-2 mb-2">
+        <select
+          name="programId"
+          value={programId}
+          onChange={(e) => setProgramId(e.target.value)}
+          required
+          className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+        >
+          <option value="">Select Program Type</option>
+          {AllProgramData.map((type) => (
+            <option key={type._id} value={type._id}>
+              {type.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {allProjectData.length === 0 && !loader ? (
@@ -122,8 +146,12 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                     )}
                     %
                   </td>
-                  <td className="text-gray-400">{calculateTimeProgress(item?.startDate, item?.endDate)}%</td>
-                  <td className="text-gray-400">{item?.actualProgress || 0}%</td>
+                  <td className="text-gray-400">
+                    {calculateTimeProgress(item?.startDate, item?.endDate)}%
+                  </td>
+                  <td className="text-gray-400">
+                    {item?.actualProgress || 0}%
+                  </td>
                   <td className="text-gray-400">
                     {item?.endDate
                       ? moment(item.endDate).format("YYYY-MM-DD")
@@ -150,7 +178,6 @@ export default function Listproject({ loader, allProjectData, getAllProject }) {
                         </svg>
                       </button>
 
-                 
                       {openMenuId === item._id && (
                         <div className="absolute right-0 mt-2 w-32 bg-white border rounded-md shadow-lg z-100">
                           <button

@@ -53,7 +53,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
     <nav className="w-full bg-custom-black z-0  shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:ps-8 xl:ps-6 ">
         <div className="flex items-center justify-between md:h-20 h-18">
-          <div className="flex items-center gap-4">
+          <div className="lg:hidden flex items-center gap-4">
             {/* <img 
               className="h-10 w-auto object-contain" 
               src="/logo.png" 
@@ -63,7 +63,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
             <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
             <div className="flex items-start flex-col">  
             <p className="text-2xl text-white font-bold">Forma</p>
-            <p className="text-md text-white font-medium ">Construction Management</p>
+            {/* <p className="text-md text-white font-medium ">Construction Management</p> */}
             </div>
           </div>
 
@@ -114,7 +114,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
           )}
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden flex">
             <button
               onClick={() => setOpenTab(!openTab)}
               className="p-2 rounded-md text-white hover:bg-gray-100 focus:outline-none"

@@ -200,8 +200,8 @@ function PreConstruction(props) {
   };
   return (
     <div className="h-screen bg-black text-white">
-      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 md:px-0">
-        {/* HEADER */}
+      <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
+        
         <div className="bg-[#DFF34940] py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-2xl">Documents Checklist</p>

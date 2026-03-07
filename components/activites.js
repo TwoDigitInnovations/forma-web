@@ -24,9 +24,17 @@ const getOverallProgress = (sections) => {
   return ((totalQty / totalBoq) * 100).toFixed(2);
 };
 
-const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) => {
+const WorkplanProgress = ({
+  activities,
+  progress,
+  setActivities,
+  setProgress,
+}) => {
   if (!activities) return;
   const [data, setData] = useState(activities || []);
+
+  const [displayData, setDisplayData] = useState("displayAll");
+
   useEffect(() => {
     setData(activities);
   }, [activities]);
@@ -61,7 +69,6 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
             numericValue = 0;
           }
 
-          // ✅ LIMIT TO 2 DECIMAL PLACES (MAIN FIX)
           numericValue = Math.floor(numericValue * 100) / 100;
 
           updated[field] = numericValue;
@@ -92,35 +99,49 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
 
     const overall = getOverallProgress(data);
     setProgress(overall);
-  }, [data]); // 🔥 data change hote hi recalc
+  }, [data]);
 
   return (
     <div className="py-4">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="mb-8"
+        className="mb-8 bg-custom-black p-5 rounded-xl shadow-sm border"
       >
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold">Overall Progress</h1>
-          <span className="text-xl font-extrabold text-custom-yellow">
-            {progress}%
-          </span>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div className="flex items-center gap-3">
+            <h1 className="text-lg font-semibold text-white">
+              Overall Progress
+            </h1>
+            <span className="text-lg font-bold text-custom-yellow">
+              {progress}%
+            </span>
+          </div>
+
+          <select
+            value={displayData}
+            onChange={(e) => {
+              setDisplayData(e.target.value);
+            }}
+            className="w-full md:w-[220px] text-[14px] px-4 py-2.5 cursor-pointer bg-white text-black rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-custom-yellow"
+          >
+            <option value="displayAll">Display All</option>
+            <option value="section">Display Only Sections</option>
+          </select>
         </div>
 
-        <div className="w-full h-3 bg-gray-300 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-custom-yellow"
+            className="h-full bg-custom-yellow transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </motion.div>
 
       <div className="border rounded-xl shadow bg-custom-black overflow-hidden">
-        {/* Table Header */}
-        <div className="hidden sm:grid grid-cols-7 gap-4 px-4 py-3 text-black text-sm font-semibold bg-custom-yellow">
-          <div>Description</div>
+        <div className="hidden sm:grid grid-cols-10 gap-4 px-4 py-3 text-black text-sm font-semibold bg-custom-yellow">
+          <div className="col-span-4">Description</div>
           <div>Qty in BOQ</div>
           <div>Rate</div>
           <div>Amount</div>
@@ -132,37 +153,135 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
         <AnimatePresence>
           {data?.map((section) => (
             <React.Fragment key={section.id}>
-              {/* Section Row */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="px-4 py-3 bg-gray-800 border-b text-white font-bold"
+                className="px-4 py-3 bg-gray-800 border-b text-white font-bold flex justify-between items-center cursor-pointer"
               >
-                {section.name}
+                <span>{section.name}</span>
               </motion.div>
 
-              {/* Activity Rows */}
-              {section.activities.map((act) => {
-                const progress = getActivityProgress(act);
+              {displayData === "displayAll" &&
+                section.activities.map((act) => {
+                  const progress = getActivityProgress(act);
 
-                return (
-                  <motion.div
-                    key={act.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="border-b text-sm text-white px-4 py-3"
-                  >
-                    <div className="sm:hidden flex flex-col gap-3">
-                      <div className="font-semibold">{act.name}</div>
+                  return (
+                    <motion.div
+                      key={act.id}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="border-b text-sm text-white px-4 py-3"
+                    >
+                      <div className="sm:hidden flex flex-col gap-3">
+                        <div className="font-semibold">{act.name}</div>
 
-                      <div className="flex justify-between">
-                        <span>Qty in BOQ</span>
+                        <div className="flex justify-between">
+                          <span>Qty in BOQ</span>
+                          <input
+                            type="number"
+                            className="bg-gray-700 p-1 rounded w-24"
+                            value={act.qtyInBOQ}
+                            onChange={(e) =>
+                              handleChange(
+                                section.id,
+                                act.id,
+                                "qtyInBOQ",
+                                e.target.value,
+                              )
+                            }
+                          />
+                        </div>
+
+                        <div className="flex justify-between">
+                          <span>Rate</span>
+                          <input
+                            type="number"
+                            className="bg-gray-700 p-1 rounded w-20"
+                            value={act.Rate}
+                            onChange={(e) =>
+                              handleChange(
+                                section.id,
+                                act.id,
+                                "Rate",
+                                e.target.value,
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Amount</span>
+                          <input
+                            type="number"
+                            disabled
+                            className="bg-gray-700 p-1 rounded w-20"
+                            value={act.Amount}
+                            onChange={(e) =>
+                              handleChange(
+                                section.id,
+                                act.id,
+                                "Amount",
+                                e.target.value,
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Qty Done</span>
+                          <input
+                            type="number"
+                            className="bg-gray-700 p-1 rounded w-24"
+                            value={act.qtyDone}
+                            onChange={(e) =>
+                              handleChange(
+                                section.id,
+                                act.id,
+                                "qtyDone",
+                                e.target.value,
+                              )
+                            }
+                          />
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Amount Done</span>
+                          <input
+                            type="number"
+                            disabled
+                            className="bg-gray-700 p-1 rounded w-20"
+                            value={act.amountDone}
+                            onChange={(e) =>
+                              handleChange(
+                                section.id,
+                                act.id,
+                                "amountDone",
+                                e.target.value,
+                              )
+                            }
+                          />
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div>
+                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-custom-yellow rounded-full"
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
+                          <span className="text-xs font-semibold">
+                            {progress}%
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="hidden md:grid grid-cols-10 gap-4 items-center">
+                        <div className="col-span-4">{act.name}</div>
+
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-24"
+                          className="bg-gray-700 p-1 rounded w-20"
                           value={act.qtyInBOQ}
                           onChange={(e) =>
                             handleChange(
@@ -173,10 +292,7 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                             )
                           }
                         />
-                      </div>
 
-                      <div className="flex justify-between">
-                        <span>Rate</span>
                         <input
                           type="number"
                           className="bg-gray-700 p-1 rounded w-20"
@@ -190,14 +306,12 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                             )
                           }
                         />
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Amount</span>
+
                         <input
                           type="number"
-                          disabled
                           className="bg-gray-700 p-1 rounded w-20"
                           value={act.Amount}
+                          disabled
                           onChange={(e) =>
                             handleChange(
                               section.id,
@@ -207,12 +321,10 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                             )
                           }
                         />
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Qty Done</span>
+
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-24"
+                          className="bg-gray-700 p-1 rounded w-20"
                           value={act.qtyDone}
                           onChange={(e) =>
                             handleChange(
@@ -223,14 +335,12 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                             )
                           }
                         />
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Amount Done</span>
+
                         <input
                           type="number"
-                          disabled
                           className="bg-gray-700 p-1 rounded w-20"
                           value={act.amountDone}
+                          disabled
                           onChange={(e) =>
                             handleChange(
                               section.id,
@@ -240,112 +350,22 @@ const WorkplanProgress = ({ activities, progress,setActivities, setProgress }) =
                             )
                           }
                         />
-                      </div>
 
-                      {/* Progress Bar */}
-                      <div>
-                        <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-custom-yellow rounded-full"
-                            style={{ width: `${progress}%` }}
-                          />
+                        <div className="flex items-center gap-2">
+                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-custom-yellow rounded-full"
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
+                          <span className="text-xs font-semibold">
+                            {progress}%
+                          </span>
                         </div>
-                        <span className="text-xs font-semibold">
-                          {progress}%
-                        </span>
                       </div>
-                    </div>
-
-                    <div className="hidden sm:grid grid-cols-7 gap-4 items-center">
-                      <div>{act.name}</div>
-
-                      <input
-                        type="number"
-                        className="bg-gray-700 p-1 rounded w-20"
-                        value={act.qtyInBOQ}
-                        onChange={(e) =>
-                          handleChange(
-                            section.id,
-                            act.id,
-                            "qtyInBOQ",
-                            e.target.value,
-                          )
-                        }
-                      />
-
-                      <input
-                        type="number"
-                        className="bg-gray-700 p-1 rounded w-20"
-                        value={act.Rate}
-                        onChange={(e) =>
-                          handleChange(
-                            section.id,
-                            act.id,
-                            "Rate",
-                            e.target.value,
-                          )
-                        }
-                      />
-
-                      <input
-                        type="number"
-                        className="bg-gray-700 p-1 rounded w-20"
-                        value={act.Amount}
-                        disabled
-                        onChange={(e) =>
-                          handleChange(
-                            section.id,
-                            act.id,
-                            "Amount",
-                            e.target.value,
-                          )
-                        }
-                      />
-
-                      <input
-                        type="number"
-                        className="bg-gray-700 p-1 rounded w-20"
-                        value={act.qtyDone}
-                        onChange={(e) =>
-                          handleChange(
-                            section.id,
-                            act.id,
-                            "qtyDone",
-                            e.target.value,
-                          )
-                        }
-                      />
-
-                      <input
-                        type="number"
-                        className="bg-gray-700 p-1 rounded w-20"
-                        value={act.amountDone}
-                        disabled
-                        onChange={(e) =>
-                          handleChange(
-                            section.id,
-                            act.id,
-                            "amountDone",
-                            e.target.value,
-                          )
-                        }
-                      />
-
-                      <div className="flex items-center gap-2">
-                        <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-custom-yellow rounded-full"
-                            style={{ width: `${progress}%` }}
-                          />
-                        </div>
-                        <span className="text-xs font-semibold">
-                          {progress}%
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+                    </motion.div>
+                  );
+                })}
             </React.Fragment>
           ))}
         </AnimatePresence>

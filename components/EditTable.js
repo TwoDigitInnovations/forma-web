@@ -1,11 +1,28 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { EllipsisVertical, Trash } from "lucide-react";
+import { EllipsisVertical, Search, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useRef } from "react";
 
 const EditableTable = ({ activities, setActivities }) => {
   const [menuIndex, setMenuIndex] = useState(null);
+  const [displayData, setDisplayData] = useState("displayAll");
+  const [searchQuery, setSearchQuery] = useState("");
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuIndex(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleAddRow = (type = "activity", insertIndex = null) => {
     const newRow = {
@@ -55,30 +72,27 @@ const EditableTable = ({ activities, setActivities }) => {
       : "";
   };
 
-  // Calculate activity endDates from startDate + duration, then propagate each activity's endDate as the next activity's startDate
   useEffect(() => {
     setActivities((prev) => {
       const updated = prev.map((r) => ({ ...r }));
 
-      // 1) Calculate endDate for activities that have startDate and duration
       for (let i = 0; i < updated.length; i++) {
         const row = updated[i];
         if (row.rowType === "activity" && row.startDate && row.duration) {
           updated[i].endDate = moment(row.startDate)
-            .add(Number(row.duration), "months")
+            .add(Number(row.duration), "days")
             .format("YYYY-MM-DD");
         } else if (row.rowType === "activity") {
-          // if missing data, keep existing endDate or set to empty string
           updated[i].endDate = row.endDate || "";
         }
       }
 
-      // 2) Propagate endDate -> next activity's startDate (only if next row is activity)
       for (let i = 0; i < updated.length - 1; i++) {
         const curr = updated[i];
         const next = updated[i + 1];
+
         if (curr.rowType === "activity" && next.rowType === "activity") {
-          if (curr.endDate) {
+          if (curr.endDate && !next.startDate) {
             updated[i + 1].startDate = curr.endDate;
           }
         }
@@ -91,10 +105,9 @@ const EditableTable = ({ activities, setActivities }) => {
     activities.map((r) => r.duration).join(","),
   ]);
 
-  // Calculate section start & end dates (earliest activity start, latest activity end) — unchanged logic, now uses propagated dates
   useEffect(() => {
-    setActivities((prev) =>
-      prev.map((row, idx) => {
+    setActivities((prev) => {
+      const updated = prev.map((row, idx) => {
         if (row.rowType !== "section") return row;
 
         let earliest = null;
@@ -109,6 +122,7 @@ const EditableTable = ({ activities, setActivities }) => {
                 earliest = prev[i].startDate;
               }
             }
+
             if (prev[i].endDate) {
               if (!latest || moment(prev[i].endDate).isAfter(latest)) {
                 latest = prev[i].endDate;
@@ -117,25 +131,79 @@ const EditableTable = ({ activities, setActivities }) => {
           }
         }
 
+        if (row.startDate === earliest && row.endDate === latest) {
+          return row; // ❗ no change
+        }
+
         return {
           ...row,
           startDate: earliest,
           endDate: latest,
         };
-      }),
-    );
+      });
+
+      // ❗ check if array actually changed
+      const changed = JSON.stringify(prev) !== JSON.stringify(updated);
+
+      return changed ? updated : prev;
+    });
   }, [activities]);
 
   const hasSection = activities.some((a) => a.rowType === "section");
 
+  const filteredActivities = activities.filter((row) => {
+    const query = searchQuery.toLowerCase();
+
+    if (searchQuery) {
+      return (
+        row.rowType === "section" &&
+        row.description?.toLowerCase().includes(query)
+      );
+    }
+
+    if (displayData === "section") {
+      return row.rowType === "section";
+    }
+
+    return true;
+  });
+
   return (
-    <div className="bg-white rounded-lg shadow-md mt-4 overflow-y-scroll scrollbar-hide pb-28">
+    <div className="bg-white rounded-2xl shadow-md mt-4 overflow-y-scroll scrollbar-hide pb-28">
+      <div className="flex flex-col md:flex-row gap-2 mb-4 mt-4 md:items-center justify-start px-4 ">
+        <div className="relative ">
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+          />
+          <input
+            type="text"
+            placeholder="Search Section..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-[320px] ps-8 text-[14px] px-4 py-2 bg-white text-black rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+          />
+        </div>
+
+        <select
+          value={displayData}
+          onChange={(e) => {
+            setDisplayData(e.target.value);
+            setSearchQuery(""); // reset search when changing mode
+          }}
+          className="w-[220px] text-[14px] px-4 py-2.5 cursor-pointer bg-white text-black rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+        >
+          <option value="displayAll">Display All</option>
+          <option value="section">Display Only Sections</option>
+        </select>
+      </div>
+
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-custom-yellow text-gray-700">
             <th className="py-3 px-3 text-left w-[100px]">Item No</th>
             <th className="py-3 px-3 text-left min-w-[250px]">Description</th>
-            <th className="py-3 px-3 text-center w-[120px]">Duration (M)</th>
+            <th className="py-3 px-3 text-center w-[120px]">Duration (D)</th>
             <th className="py-3 px-3 text-center w-[150px]">Start Date</th>
             <th className="py-3 px-3 text-center w-[150px]">End Date</th>
             <th className="py-3 px-3 text-center w-[150px]">Actions</th>
@@ -143,34 +211,40 @@ const EditableTable = ({ activities, setActivities }) => {
         </thead>
 
         <tbody>
-          {activities.map((row, i) => {
-            const num = getNumbering(i);
+          {filteredActivities.map((row, i) => {
+            const originalIndex = activities.indexOf(row);
+            const num = getNumbering(originalIndex);
             const isSection = row.rowType === "section";
             const duration =
               row.startDate && row.endDate
-                ? moment(row.endDate).diff(moment(row.startDate), "months")
+                ? Math.max(
+                    0,
+                    moment(row.endDate).diff(moment(row.startDate), "days"),
+                  )
                 : "";
+
+            if (row.rowType === "activity") {
+              let sectionIndex = -1;
+              for (let j = i; j >= 0; j--) {
+                if (activities[j].rowType === "section") {
+                  sectionIndex = j;
+                  break;
+                }
+              }
+            }
 
             return (
               <tr
                 key={i}
                 className={`border-b ${
                   isSection
-                    ? "bg-gray-100 text-black font-semibold"
+                    ? "bg-gray-100 text-black font-semibold cursor-pointer"
                     : "bg-white text-black"
                 }`}
               >
                 <td className="text-center py-2">{num}</td>
 
                 <td className="py-2 px-3">
-                  {/* <input
-                    value={row.description || ""}
-                    onChange={(e) =>
-                      handleChange(i, "description", e.target.value)
-                    }
-                    className="w-full bg-transparent border-none outline-none text-gray-800"
-                  /> */}
-
                   <textarea
                     rows={1}
                     value={row.description || ""}
@@ -179,8 +253,9 @@ const EditableTable = ({ activities, setActivities }) => {
                       e.target.style.height = `${e.target.scrollHeight}px`;
                       handleChange(i, "description", e.target.value);
                     }}
-                    className="w-full bg-transparent outline-none resize-none overflow-hidden text-black leading-relaxed"
-                    // placeholder="Describe action item"
+                    className={`w-full bg-transparent outline-none resize-none overflow-hidden leading-relaxed ${
+                      isSection ? "font-semibold text-black" : "text-black"
+                    }`}
                   />
                 </td>
 
@@ -264,7 +339,10 @@ const EditableTable = ({ activities, setActivities }) => {
                   </button>
 
                   {menuIndex === i && (
-                    <div className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20">
+                    <div
+                      ref={menuRef}
+                      className="w-[200px] absolute right-10 top-8 bg-white shadow-lg border rounded-md py-2 z-20"
+                    >
                       <button
                         onClick={() => {
                           handleAddRow("section");

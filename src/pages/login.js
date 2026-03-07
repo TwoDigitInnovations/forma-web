@@ -6,7 +6,9 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { userContext } from "./_app";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
+import { useGoogleLogin } from "@react-oauth/google";
 
+import Image from "next/image";
 export default function Login(props) {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
@@ -64,9 +66,7 @@ export default function Login(props) {
           }
 
           if (hasActiveSubscription) {
-          
             router.push("/dashboard");
-
           } else {
             router.push("/PlanPage");
           }
@@ -84,9 +84,75 @@ export default function Login(props) {
     }
   };
 
+  const googleSignup = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+        props.loader(true);
+        const res = await Api(
+          "post",
+          "auth/googleAuth",
+          {
+            token: tokenResponse.access_token,
+          },
+          router,
+        );
+        if (res?.token) {
+          const user = res.user;
+          if (
+            user.role === "Admin" ||
+            user.role === "Organization" ||
+            user.role === "TeamsMember" ||
+            user.role === "User"
+          ) {
+            localStorage.setItem("userDetail", JSON.stringify(user));
+            localStorage.setItem("token", res?.token);
+            setUser(user);
+
+            toast.success(res.message);
+
+            let hasActiveSubscription = false;
+
+            if (user.role === "TeamsMember" && user.OrganizationId) {
+              const org = user.OrganizationId;
+
+              hasActiveSubscription =
+                org.status === "active" &&
+                org.subscription &&
+                org.subscription.status === "active" &&
+                org.subscription.planEndDate &&
+                new Date(org.subscription.planEndDate) > new Date();
+            } else {
+              hasActiveSubscription =
+                user.subscription &&
+                user.subscription.status === "active" &&
+                user.subscription.planEndDate &&
+                new Date(user.subscription.planEndDate) > new Date();
+            }
+
+            if (hasActiveSubscription) {
+              router.push("/dashboard");
+            } else {
+              router.push("/PlanPage");
+            }
+          } else {
+            toast.error(res.data.message || "You are not authorized");
+          }
+        } else {
+          toast.error("Login failed");
+        }
+      } catch (err) {
+        toast.error(err.message || "Google signup failed");
+      } finally {
+        setLoading(false);
+        props.loader(false);
+      }
+    },
+    onError: () => toast.error("Google login failed"),
+  });
+
   return (
     <div className="relative min-h-[750px] md:min-h-[620px] bg-black flex items-center justify-center px-4 py-10">
-      {/* Background Pattern */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div
           className="absolute inset-0 opacity-20"
@@ -98,10 +164,12 @@ export default function Login(props) {
         ></div>
       </div>
 
-      {/* Login Card */}
       <div className="relative w-full max-w-md z-20">
-        <div className="bg-gray-900 border rounded-3xl border-green-500/20  backdrop-blur-sm  p-6 md:p-8 shadow-2xl transition-all duration-300">
-          {/* Header */}
+        <div className=" rounded-3xl   p-6 md:p-8 transition-all duration-300 bg-[#0f1b2d]/80
+backdrop-blur-md
+border border-lime-400/20
+shadow-[0_0_30px_rgba(163,230,53,0.1)]
+">
           <div className="text-center mb-6 md:mb-8">
             <h1 className="text-xl md:text-2xl font-bold text-white">
               Welcome Back!
@@ -111,9 +179,7 @@ export default function Login(props) {
             </p>
           </div>
 
-          {/* Form Fields */}
           <div className="space-y-6">
-            {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-custom-yellow">
                 Email
@@ -127,7 +193,10 @@ export default function Login(props) {
                   onChange={(e) =>
                     setUserDetail({ ...userDetail, email: e.target.value })
                   }
-                  className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
+                  className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border   
+focus:ring-2 
+focus:ring-lime-400
+outline-none transition-all ${
                     submitted && !userDetail.email
                       ? "border-red-500 bg-red-900/20"
                       : "border-gray-700"
@@ -154,7 +223,8 @@ export default function Login(props) {
                     setUserDetail({ ...userDetail, password: e.target.value })
                   }
                   onKeyDown={(e) => e.key === "Enter" && submit()}
-                  className={`w-full pl-10 pr-12 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
+                  className={`w-full pl-10 pr-12 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 
+focus:ring-lime-400 outline-none transition-all ${
                     submitted && !userDetail.password
                       ? "border-red-500 bg-red-900/20"
                       : "border-gray-700"
@@ -181,13 +251,15 @@ export default function Login(props) {
             </div>
             <div className="flex justify-end -mt-3 mb-3">
               <span
-                className="text-custom-yellow cursor-pointer "
+                className="text-sm  hover:underline
+text-custom-yellow cursor-pointer "
                 onClick={() => router.push("/Forgotpassword")}
               >
                 {" "}
                 Forgot Password
               </span>
             </div>
+
             <button
               onClick={submit}
               disabled={loading}
@@ -203,6 +275,18 @@ export default function Login(props) {
                   Sign In <ArrowRight className="h-5 w-5" />
                 </div>
               )}
+            </button>
+            <div className="flex items-center ">
+              <div className="flex-1 h-[1px] bg-gray-700"></div>
+              <span className="text-gray-400 px-3 text-sm">OR</span>
+              <div className="flex-1 h-[1px] bg-gray-700"></div>
+            </div>
+            <button
+              onClick={() => googleSignup()}
+              className="w-full flex items-center justify-center gap-3 bg-custom-yellow cursor-pointer text-black py-3 rounded-xl font-semibold hover:scale-[1.02] transition"
+            >
+              <Image src="/google.png" alt="Google" width={20} height={20} />
+              Continue with Google
             </button>
           </div>
 

@@ -33,11 +33,12 @@ function Dashboard(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [allProjectData, setAllProjectData] = useState([]);
   const [dashboardData, setDashboardData] = useState({});
+  const [programId, setProgramId] = useState("");
   const [incidentOpen, setIncidentOpen] = useState(false);
   const [actionOpen, setActionOpen] = useState(false);
   const [projectBehind, setProjectBehind] = useState(false);
   const [grievancesOpen, setGrievancesOpen] = useState(false);
-
+  const [AllProgramData, setAllProgramData] = useState([]);
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
@@ -73,13 +74,28 @@ function Dashboard(props) {
     setChecking(false);
   }, []);
 
-  // if (checking) {
-  //   return <div className="text-white">Loading dashboard...</div>;
-  // }
+  const getAllProgram = async () => {
+    
+    props.loader(true);
+    Api("get", `program/getAll`, "", router)
+      .then((res) => {
+        props.loader(false);
+        if (res?.status === true) {
+          setAllProgramData(res.data?.data || []);
+        } else {
+          toast.error(res?.message || "Failed to fetch programs");
+        }
+      })
+      .catch((err) => {
+        props.loader(false);
+        toast.error(err?.message || "An error occurred");
+      });
+  };
 
   useEffect(() => {
+    getAllProgram();
     getAllProject();
-  }, []);
+  }, [programId]);
 
   const [AllActionPoints, setAllActionPoints] = useState([]);
   const [AllActionPointsLength, setAllActionPointsLength] = useState([]);
@@ -157,7 +173,12 @@ function Dashboard(props) {
 
   const getAllProject = async () => {
     props?.loader(true);
-    Api("get", `project/getAllProjects?OrganizationId=${user?._id}`, "", router)
+    Api(
+      "get",
+      `project/getAllProjects?OrganizationId=${user?._id}&programId=${programId}`,
+      "",
+      router,
+    )
       .then((res) => {
         props?.loader(false);
         if (res?.status === true) {
@@ -174,8 +195,13 @@ function Dashboard(props) {
 
   console.log(AllBehiendProject);
 
+  const formatUSNumber = (value) => {
+    const num = Number(value);
+    if (isNaN(num)) return "";
+    return num.toLocaleString("en-US");
+  };
   return (
-    <section className=" bg-[#000000] md:py-4 py-4 p-3 text-white h-screen z-0">
+    <section className=" bg-[#000000] md:py-4 py-4 md:p-6 p-4 text-white h-screen z-0">
       <div className="h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
         <div className="bg-custom-black md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
           <div>
@@ -184,21 +210,31 @@ function Dashboard(props) {
               Key financial and project metrics overview.
             </p>
           </div>
-
-          <button
-            className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
-            onClick={() => setIsOpen(true)}
-          >
-            <FolderPlus size={28} />
-            New Project
-          </button>
+          <div className="flex justify-start gap-4">
+            <button
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+              onClick={() => router.push("/program")}
+            >
+              <FolderPlus size={28} />
+              Add Program
+            </button>
+            <button
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+              onClick={() => setIsOpen(true)}
+            >
+              <FolderPlus size={28} />
+              New Project
+            </button>
+          </div>
 
           {isOpen && (
             <CreateProject
               setIsOpen={setIsOpen}
               loader={props?.loader}
               getAllProject={getAllProject}
+              AllProgramData={AllProgramData}
             />
           )}
         </div>
@@ -206,19 +242,19 @@ function Dashboard(props) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-6 gap-2">
           <DarkStatsCard
             title="Total Contracts"
-            value={dashboardData?.TotalContracts || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalContracts || "100.00")}
             subtitle="Sum of all contract amounts"
             icon={<DollarSign size={35} />}
           />
           <DarkStatsCard
             title="IPCs Paid"
-            value={dashboardData?.TotalPaid || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalPaid || "100.00")}
             subtitle="Total payment certificates"
             icon={<Dock size={35} />}
           />
           <DarkStatsCard
             title="Balance"
-            value={dashboardData?.TotalBalance || "100.00"}
+            value={formatUSNumber(dashboardData?.TotalBalance || "100.00")}
             subtitle="Contracts - IPCs paid"
             icon={<PiggyBank size={35} />}
           />
@@ -361,6 +397,9 @@ function Dashboard(props) {
           allProjectData={allProjectData}
           loader={props.loader}
           getAllProject={getAllProject}
+          programId={programId}
+          setProgramId={setProgramId}
+          AllProgramData={AllProgramData}
         />
       </div>
     </section>
