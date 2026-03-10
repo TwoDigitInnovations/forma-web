@@ -28,7 +28,7 @@ const ProgressUpdate = (props) => {
   const [selectedTracker, setSelectedTracker] = useState(null);
   const [activities, setActivities] = useState("");
   const [certificates, setCertificates] = useState([]);
-  const [progress,setProgress]=useState(0);
+  const [progress, setProgress] = useState(0);
   const [summary, setSummary] = useState({
     contractAmount: 0,
     amountPaid: 0,
@@ -150,7 +150,7 @@ const ProgressUpdate = (props) => {
         "delete",
         `tracker/delete/${selectedTracker._id}`,
         "",
-        router
+        router,
       );
       props.loader(false);
       if (res?.status === true) {
@@ -178,7 +178,7 @@ const ProgressUpdate = (props) => {
         "put",
         `tracker/update/${selectedTracker._id}`,
         data,
-        router
+        router,
       );
       props.loader(false);
       if (res?.status === true) {
@@ -224,14 +224,14 @@ const ProgressUpdate = (props) => {
         if (!currentSection) return;
 
         const savedActivity = allSavedActivities.find(
-          (s) => s.activityId?.toString() === item._id?.toString()
+          (s) => s.activityId?.toString() === item._id?.toString(),
         );
 
         console.log("==== MATCH CHECK ====");
         console.log("RAW:", item._id?.toString());
         console.log(
           "ALL SAVED IDS:",
-          allSavedActivities.map((x) => x.activityId)
+          allSavedActivities.map((x) => x.activityId),
         );
 
         currentSection.activities.push({
@@ -252,18 +252,18 @@ const ProgressUpdate = (props) => {
   }, [selectedTracker]);
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
-        <div className="bg-[#DFF34940] py-4 md:px-6 px-3 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-between">
+        <div className="bg-white shadow-md border border-gray-200 py-4 md:px-6 px-3 flex flex-col rounded-[16px] md:flex-row gap-4 md:items-center justify-between">
           <div className="flex flex-wrap items-center gap-4 gap-1">
-            <p className="md:text-[32px] text-[24px] text-white mt-1">
+            <p className="md:text-[32px] text-[24px] text-black mt-1">
               {currentTab === "progresstracking"
                 ? "Progress Tracking"
                 : currentTab === "roadLineTracker"
-                ? "Road Line Tracker"
-                : currentTab.charAt(0).toUpperCase() + currentTab.slice(1)}
+                  ? "Road Line Tracker"
+                  : currentTab.charAt(0).toUpperCase() + currentTab.slice(1)}
             </p>
-            <h1 className="md:text-[14px] text-[13px] font-bold text-white flex items-center gap-2">
+            <h1 className="md:text-[14px] text-[13px] font-bold text-black flex items-center gap-2">
               {projectDetails.projectName}
               <span className="ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1">
                 <MapPin size={15} /> {projectDetails.location}
@@ -272,7 +272,7 @@ const ProgressUpdate = (props) => {
           </div>
         </div>
 
-        <div className="mt-6 bg-custom-black rounded-[18px] md:px-6 px-3 pt-4 pb-6 min-h-[700px] md:min-h-[600px]">
+        <div className="mt-6 bg-white border border-gray-200 shadow-md rounded-[18px] md:px-6 px-3 pt-4 pb-6 min-h-[700px] md:min-h-[600px]">
           <div className="flex overflow-x-auto scrollbar-hide overflow-scroll justify-between items-center gap-6">
             {[
               "progresstracking",
@@ -287,15 +287,15 @@ const ProgressUpdate = (props) => {
                 onClick={() => setCurrentTab(tab)}
                 className={`relative cursor-pointer flex-1 md:min-w-[200px] min-w-[160px] text-center py-2 text-lg font-semibold transition-all duration-300 ${
                   currentTab === tab
-                    ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:rounded-3xl after:bg-[#e0f349]"
-                    : "text-gray-400 hover:text-[#e0f349]"
+                    ? "text-blue-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:rounded-3xl after:bg-[#2563eb]"
+                    : "text-gray-600 hover:text-[#2563eb]"
                 }`}
               >
                 {tab === "progresstracking"
                   ? "Progress Tracking"
                   : tab === "roadLineTracker"
-                  ? "Road Line Tracker"
-                  : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    ? "Road Line Tracker"
+                    : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </div>
@@ -305,17 +305,17 @@ const ProgressUpdate = (props) => {
               <>
                 <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-2 py-2">
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-white text-md">
+                    <h2 className="text-black text-md">
                       BOQ Progress Tracking
                     </h2>
-                    <p className="text-gray-300 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Track progress based on work plan activities
                     </p>
                   </div>
                   <div className="flex gap-2 justify-center">
                     <button
                       onClick={() => setIsOpen(true)}
-                      className="md:w-[160px] w-[160px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                      className="md:w-[160px] w-[160px] justify-center bg-blue-500 py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-600 cursor-pointer"
                     >
                       <Plus size={18} />
                       Create Tracker
@@ -323,7 +323,7 @@ const ProgressUpdate = (props) => {
                     {selectedTracker && (
                       <button
                         onClick={updateTracker}
-                        className="md:w-[160px] w-[150px] justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                        className="md:w-[160px] w-[150px] justify-center bg-blue-500 py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-600 cursor-pointer"
                       >
                         <Save size={18} />
                         Save Tracker
@@ -342,7 +342,7 @@ const ProgressUpdate = (props) => {
                         name="tracker"
                         value={selectedTracker?._id || ""}
                         onChange={handleTrackerSelect}
-                        className="w-full text-[14px] cursor-pointer px-2 py-2 bg-[#5F5F5F] rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+                        className="w-full text-[14px] cursor-pointer px-2 py-2 bg-gray-200 rounded-lg border border-gray-300 focus:outline-none text-black"
                       >
                         <option value="">Select a Tracker to view</option>
                         {allTrackerData.map((opt) => (
@@ -360,7 +360,7 @@ const ProgressUpdate = (props) => {
                     {selectedTracker && (
                       <button
                         onClick={handleDeleteClick}
-                        className="flex items-center cursor-pointer justify-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm mt-7 md:self-end transition-all duration-200"
+                        className="flex items-center cursor-pointer justify-center gap-2 bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded-lg text-sm mt-7 md:self-end transition-all duration-200"
                       >
                         <Trash2 size={16} />
                         Delete
@@ -368,7 +368,7 @@ const ProgressUpdate = (props) => {
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-400 mt-4">
+                  <p className="text-gray-600 mt-4">
                     No trackers found. Create one to get started.
                   </p>
                 )}

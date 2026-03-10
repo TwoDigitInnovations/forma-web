@@ -102,34 +102,34 @@ export const SummaryCards = ({
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Contract Amount</p>
-        <h2 className="text-2xl font-bold text-gray-100">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Contract Amount</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${contractAmount?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Amount Paid</p>
-        <h2 className="text-2xl font-bold text-white">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Amount Paid</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${amountPaid?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Amount Left</p>
-        <h2 className="text-2xl font-bold text-white">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Amount Left</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${amountLeft?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow flex flex-col">
-        <p className="text-gray-100">Financial Progress</p>
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow flex flex-col">
+        <p className="text-gray-800">Financial Progress</p>
         <h2 className="text-2xl font-bold">{progress}%</h2>
         <div className="w-full bg-gray-200 h-2 mt-2 rounded">
           <div
             style={{ width: `${progress}%` }}
-            className="h-2 bg-custom-yellow rounded"
+            className="h-2 bg-blue-500 rounded"
           ></div>
         </div>
       </div>
@@ -397,7 +397,7 @@ export const Certificates = ({
   console.log(totalPaid);
 
   return (
-    <div className="mt-10 bg-transparent py-4 rounded-xl shadow">
+    <div className="mt-10 bg-transparent py-4 rounded-xl ">
       <ConfirmModal
         isOpen={isConfirmOpen}
         setIsOpen={setIsConfirmOpen}
@@ -418,9 +418,9 @@ export const Certificates = ({
         noText="Cancel"
       />
 
-      <h2 className="text-xl font-bold mb-3">Advance Payment (USD)</h2>
+      <h2 className="text-xl font-bold mb-3 text-black">Advance Payment (USD)</h2>
 
-      <p className="text-gray-200 mb-2">
+      <p className="text-gray-600 mb-2">
         Add or update the advance payment amount for this project.
       </p>
 
@@ -435,7 +435,7 @@ export const Certificates = ({
         />
 
         <button
-          className="px-5 py-3 bg-custom-yellow text-black rounded-lg cursor-pointer font-medium"
+          className="px-5 py-3 bg-blue-500 text-white rounded-lg cursor-pointer font-medium"
           onClick={() => {
             handleAddAdvance(Number(advanceAmount));
             setAdvanceAmount("");
@@ -471,7 +471,7 @@ export const Certificates = ({
         <select
           value={cert.status}
           disabled={cert.status === "Paid"}
-          className={`border p-2 rounded text-white cursor-pointer 
+          className={`border p-2 rounded text-black cursor-pointer 
           ${cert.status === "Paid" ? "opacity-50 cursor-not-allowed" : ""}`}
           onChange={(e) => setCert({ ...cert, status: e.target.value })}
         >
@@ -490,14 +490,14 @@ export const Certificates = ({
           type="date"
           value={cert.date}
           onChange={(e) => setCert({ ...cert, date: e.target.value })}
-          className="border p-2 rounded-md text-white bg-white
+          className="border p-2 rounded-md text-black bg-white
              [&::-webkit-calendar-picker-indicator]:invert
              [&::-webkit-calendar-picker-indicator]:brightness-0
              [&::-webkit-calendar-picker-indicator]:cursor-pointer"
         />
 
         <button
-          className="px-5 py-2 bg-custom-yellow text-black rounded-lg cursor-pointer"
+          className="px-5 py-2 bg-blue-500 text-white rounded-lg cursor-pointer"
           onClick={() => {
             certId ? handleUpdateCertificate() : handleAddCertificate();
           }}
@@ -507,14 +507,10 @@ export const Certificates = ({
       </div>
 
       <h2 className="text-xl font-bold mt-8">Certificates</h2>
-      {/* {certificates.length === 0 ? (
-        <p className="min-h-[200px] flex justify-center items-center text-white">
-          No Certificate Added
-        </p>
-      ) : ( */}
+     
       <div className="w-full mt-4 overflow-x-auto rounded-t-xl border">
         <table className="w-full text-sm">
-          <thead className="bg-custom-yellow text-black sticky top-0">
+          <thead className="bg-blue-500 text-white sticky top-0">
             <tr>
               <th className="p-3 text-left whitespace-nowrap">
                 Certificate No.
@@ -535,7 +531,7 @@ export const Certificates = ({
 
           <tbody>
             {(advanceAmount > 0 || showAdvanceAmount > 0) && (
-              <tr className="border-b transition">
+              <tr className="border-b transition bg-white">
                 <td className="p-3">Advance Payment</td>
 
                 <td className="p-3">-</td>
@@ -545,14 +541,14 @@ export const Certificates = ({
                 <td className="p-3">${showAdvanceAmount}</td>
 
                 <td className="p-3">
-                  <p className="border p-2 rounded cursor-pointer text-white w-26">
+                  <p className="border p-2 rounded cursor-pointer text-black w-26">
                     Paid
                   </p>
                 </td>
 
                 <td className="p-3 flex gap-3 justify-center">
                   <button
-                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                    className="text-gray-600 hover:text-gray-400 cursor-pointer text-xl"
                     onClick={() =>
                       setAdvanceAmount(summary.advancePayment || 0)
                     }
@@ -563,8 +559,8 @@ export const Certificates = ({
               </tr>
             )}
 
-            {certificates?.map((item) => (
-              <tr key={item._id} className="border-b transition">
+            {certificates?.map((item,index) => (
+              <tr key={item._id} className={`border-b transition ${index % 2 === 0 ? "bg-white" : "bg-gray-200"}`}>
                 <td className="p-3">{item.certificateNo}</td>
 
                 <td className="p-3">
@@ -589,7 +585,7 @@ export const Certificates = ({
                   <select
                     value={item.status}
                     disabled={item.status === "Paid"}
-                    className={`border p-2 rounded cursor-pointer text-white ${
+                    className={`border p-2 rounded cursor-pointer text-black ${
                       item.status === "Paid"
                         ? "opacity-50 cursor-not-allowed"
                         : ""
@@ -615,7 +611,7 @@ export const Certificates = ({
 
                 <td className="p-3 text-center relative">
                   <button
-                    className="text-gray-200 hover:text-gray-300 cursor-pointer"
+                    className="text-gray-600 hover:text-gray-800 cursor-pointer"
                     onClick={() =>
                       setOpenId(openId === item._id ? null : item._id)
                     }
@@ -687,7 +683,7 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
         {/* Action */}
         <button
           onClick={onDashboard}
-          className="mt-6 w-full rounded-lg bg-custom-yellow px-4 py-2.5 cursor-pointer text-sm font-medium text-black transition hover:bg-black/90"
+          className="mt-6 w-full rounded-lg bg-blue-500 px-4 py-2.5 cursor-pointer text-sm font-medium text-black transition hover:bg-black/90"
         >
           My Dashboard
         </button>

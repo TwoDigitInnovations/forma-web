@@ -86,15 +86,15 @@ const AddActionPoints = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-4 text-white">
+      <div className="bg-white border- border-gray-300 text-black rounded-[38px] p-6 w-full max-w-2xl">
+        <h2 className="text-2xl font-bold mb-4 text-black">
           {editId ? "Edit Action Point" : "Add Action Point"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Description */}
           <div>
-            <label className="block text-sm font medium mb-1">
+            <label className="block text-sm font medium mb-1 text-black">
               Description *
             </label>
             <textarea
@@ -104,7 +104,7 @@ const AddActionPoints = ({
               onChange={handleChange}
               required
               placeholder="Describe the action points"
-              className="w-full border rounded-lg p-2 focus:outline-orange-500"
+              className="w-full border rounded-lg text-black p-2 focus:outline-orange-500"
             ></textarea>
           </div>
 
@@ -116,7 +116,7 @@ const AddActionPoints = ({
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full border p-2 rounded-lg focus:outline-orange-500 text-white cursor-pointer"
+                className="w-full border p-2 rounded-lg focus:outline-orange-500 text-black cursor-pointer"
               >
                 <option value="Low" className="text-black">
                   Low
@@ -136,7 +136,7 @@ const AddActionPoints = ({
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full border p-2 rounded-lg focus:outline-white cursor-pointer text-white"
+                className="w-full border p-2 rounded-lg focus:outline-white cursor-pointer text-black"
               >
                 <option value="Open" className="text-black">
                   Open
@@ -159,7 +159,7 @@ const AddActionPoints = ({
               name="assignedTo"
               value={formData.assignedTo}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2 focus:outline-orange-500"
+              className="w-full border rounded-lg p-2 text-black focus:outline-orange-500"
               placeholder="Enter person name"
             />
           </div>
@@ -172,7 +172,7 @@ const AddActionPoints = ({
               name="dueDate"
               value={formData.dueDate}
               onChange={handleChange}
-              className="w-full border rounded-lg p-2 text-white [&::-webkit-calendar-picker-indicator]:invert cursor-pointer"
+              className="w-full border rounded-lg p-2 text-black [&::-webkit-calendar-picker-indicator]:invert cursor-pointer"
             />
           </div>
 
@@ -188,7 +188,7 @@ const AddActionPoints = ({
 
             <button
               type="submit"
-              className="px-5 py-2 bg-custom-yellow text-black cursor-pointer rounded-lg hover:bg-orange-700"
+              className="px-5 py-2 bg-blue-500 text-white cursor-pointer rounded-lg"
             >
               {editId ? "Update Action Point" : "Create"}
             </button>

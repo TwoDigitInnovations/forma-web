@@ -330,7 +330,7 @@ const TeamMembers = (props) => {
 
                 {/* Role */}
                 <td className="px-6 py-4">
-                  <span className="px-3 py-1 rounded-full text-xs font-medium text-yellow-400 bg-yellow-400/10">
+                  <span className="px-3 py-1 rounded-full text-xs font-medium text-yellow-400 bg-blue-600/10">
                     Owner
                   </span>
                 </td>

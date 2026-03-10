@@ -32,8 +32,8 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
     }
   }, [editData]);
 
-    console.log(editData?.notes);
-  
+  console.log(editData?.notes);
+
   console.log(formData?.notes);
 
   const handleChange = (e) => {
@@ -66,7 +66,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
 
       if (res?.status) {
         toast.success(
-          `Daily Log ${editId ? "updated" : "created"} successfully!`
+          `Daily Log ${editId ? "updated" : "created"} successfully!`,
         );
         setIsOpen(false);
         refreshList(projectId);
@@ -79,12 +79,10 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
     }
   };
 
-
-
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-3xl  h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll">
-        <h2 className="text-2xl font-bold text-gray-100 mb-4">
+      <div className="bg-white border-gray-200 border text-white rounded-[38px] p-6 w-full max-w-3xl  h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll">
+        <h2 className="text-2xl font-bold text-black mb-4">
           {editId ? "Edit Daily Log" : "Add Daily Log"}
         </h2>
 
@@ -112,6 +110,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
             label="Work Summary"
             value={formData.workSummary}
             onChange={handleChange}
+            placeholder="Work Summary"
             rows={5}
           />
 
@@ -119,6 +118,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
             name="issues"
             label="Issues / Challenges"
             value={formData.issues}
+            placeholder="Issues / Challenges"
             onChange={handleChange}
             rows={5}
           />
@@ -127,6 +127,7 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
             name="notes"
             label="Additional Notes"
             value={formData?.notes}
+            placeholder="Additional Notes"
             onChange={handleChange}
             rows={4}
           />
@@ -135,14 +136,14 @@ const AddLogs = ({ setIsOpen, loader, refreshList, projectId, editData }) => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 rounded-lg border cursor-pointer border-gray-400 text-gray-300 hover:bg-gray-100"
+              className="px-4 py-2 rounded-lg border cursor-pointer border-gray-400 text-gray-800 hover:bg-gray-100"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-5 py-2 rounded-lg bg-custom-yellow cursor-pointer text-black font-semibold "
+              className="px-5 py-2 rounded-lg bg-blue-500 cursor-pointer text-white font-semibold "
             >
               {editId ? "Update Daily logs" : "Create"}
             </button>

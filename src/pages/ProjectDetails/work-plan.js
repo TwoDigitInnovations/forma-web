@@ -215,31 +215,31 @@ const WorkPlan = (props) => {
   };
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
-        <div className="bg-custom-green py-6 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
+        <div className="bg-white shadow-md border border-gray-200 py-6 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
           <div>
-            <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
+            <h1 className="text-black flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
               {projectDetails?.projectName}
               <span className="ms-4 text-[11px] flex items-center gap-1">
                 <MapPin size={14} /> {projectDetails?.location}
               </span>
             </h1>
-            <p className="md:text-[28px] text-[22px] text-white mt-1 font-semibold">
+            <p className="md:text-[28px] text-[22px] text-black mt-1 font-semibold">
               Work Plan
             </p>
           </div>
 
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer w-fit"
+            className="bg-[var(--custom-blue)] py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-400 cursor-pointer w-fit"
           >
             <NotebookPen size={18} />
             Create New Work Plan
           </button>
         </div>
 
-        <div className="bg-custom-black py-5 mt-5 rounded-2xl md:px-5 px-2 overflow-y-auto">
+        <div className="bg-white py-5 mt-5 rounded-2xl md:px-5 px-2 overflow-y-auto border border-gray-200 shadow-md">
           <div className="">
             <input
               className="bg-gray-100 text-black border border-gray-200 outline-none h-[40px] md:w-[400px] w-full px-5 rounded-[10px] text-base"
@@ -252,11 +252,11 @@ const WorkPlan = (props) => {
 
           {allPlanData.length === 0 ? (
             <div className="flex flex-col justify-center items-center md:min-h-[450px] min-h-[700px] text-center space-y-2">
-              <FileCode2 size={68} />
-              <h3 className="text-xl font-medium text-white">
+              <FileCode2 size={68} className="text-blue-500"/>
+              <h3 className="text-xl font-medium text-black">
                 No Work Plans Found
               </h3>
-              <p className="text-gray-300">
+              <p className="text-gray-600">
                 Try creating a new plan or adjusting your filters.
               </p>
             </div>
@@ -265,7 +265,7 @@ const WorkPlan = (props) => {
               <div className="bg-white rounded-2xl shadow-md  overflow-x-auto h-[400px]">
                 <table className="w-full min-w-[600px] ">
                   <thead>
-                    <tr className="bg-custom-yellow text-gray-700 text-sm">
+                    <tr className="bg-[var(--custom-blue)] text-white text-sm">
                       <th className="py-3 px-4 text-center">Work Plan Name</th>
                       <th className="py-3 px-4 text-center">Last Updated</th>
                       <th className="py-3 px-4 text-center">Actions</th>
@@ -273,13 +273,13 @@ const WorkPlan = (props) => {
                   </thead>
 
                   <tbody>
-                    {allPlanData?.map((row) => {
+                    {allPlanData?.map((row,index) => {
                       const isOpen = openMenuId === row._id;
 
                       return (
-                        <tr key={row._id} className="border-b hover:bg-gray-50">
-                          {/* Plan Name */}
-                          <td className="py-3 px-4 text-center">
+                        <tr key={row._id} className={`border-b hover:bg-gray-100 ${index % 2 === 0 ? "" : "bg-gray-200"}`}>
+                      
+                          <td className="py-2 px-4 text-center">
                             <p
                               className="text-black underline cursor-pointer text-[15px] font-semibold truncate"
                               title={row.planName}
@@ -293,8 +293,8 @@ const WorkPlan = (props) => {
                             </p>
                           </td>
 
-                          {/* Last Updated */}
-                          <td className="py-3 px-4 text-center text-gray-700 text-[14px]">
+                         
+                          <td className="py-2 px-4 text-center text-gray-700 text-[14px]">
                             {row.updatedAt
                               ? moment(row.updatedAt).format(
                                   "DD MMM YYYY, hh:mm A",
@@ -303,7 +303,7 @@ const WorkPlan = (props) => {
                           </td>
 
                           {/* Actions */}
-                          <td className="py-3 px-4 text-center relative">
+                          <td className="py-2 px-4 text-center relative">
                             <button
                               className="p-2 rounded-md text-black cursor-pointer hover:bg-gray-100"
                               onClick={(e) => {
@@ -392,7 +392,7 @@ const WorkPlan = (props) => {
                 </button>
                 <button
                   onClick={() => handleDeletePlan(planId)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+                  className="px-4 py-2 bg-red-600 text-black rounded-lg hover:bg-red-500"
                 >
                   Delete
                 </button>
@@ -403,61 +403,61 @@ const WorkPlan = (props) => {
 
         {open && (
           <div className="fixed backdrop-blur-sm inset-0 z-50 flex items-center justify-center bg-black/80">
-            <div className="w-[95%] max-w-6xl bg-[#111] rounded-2xl shadow-xl border border-gray-800  h-[90vh] overflow-y-scroll scrollbar-hide pb-5">
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-[#1a1a1a]">
-                <h2 className="text-lg font-semibold text-white">
+            <div className="w-[95%] max-w-6xl bg-white rounded-2xl shadow-xl border border-gray-800  h-[90vh] overflow-y-scroll scrollbar-hide pb-5">
+         
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-300 bg-white">
+                <h2 className="text-lg font-semibold text-black">
                   Work Plan Details
                 </h2>
                 <button
                   onClick={() => setOpen(false)}
-                  className="text-gray-400 hover:text-white transition cursor-pointer"
+                  className="text-gray-600 hover:text-black transition cursor-pointer"
                 >
                   <X />
                 </button>
               </div>
 
-              <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#141414]">
-                {/* Plan Name */}
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800">
-                  <p className="text-xs text-gray-400">Plan Name</p>
-                  <p className="text-white font-semibold mt-1">
+              <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 bg-white shadow-2xl">
+                
+                <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
+                  <p className="text-xs text-gray-600">Plan Name</p>
+                  <p className="text-black font-semibold mt-1">
                     {workPlan?.planName || "-"}
                   </p>
                 </div>
 
                 {/* Status */}
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800">
-                  <p className="text-xs text-gray-400">Status</p>
+                <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
+                  <p className="text-xs text-gray-600">Status</p>
                   <span
                     className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium
               ${
                 workPlan?.status === "Completed"
-                  ? "bg-green-500/20 text-green-400"
+                  ? "bg-green-500 text-green-400"
                   : workPlan?.status === "In Progress"
-                    ? "bg-[var(--custom-blue)]/20 text-blue-400"
+                    ? "bg-[var(--custom-blue)]/20 text-blue-500"
                     : workPlan?.status === "On Hold"
                       ? "bg-orange-500/20 text-orange-400"
-                      : "bg-gray-500/20 text-gray-300"
+                      : "bg-gray-700 text-gray-100"
               }`}
                   >
                     {workPlan?.status || "Not Started"}
                   </span>
                 </div>
 
-                {/* Start Date */}
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800">
-                  <p className="text-xs text-gray-400">Start Date</p>
-                  <p className="text-white mt-1">
+                
+                <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
+                  <p className="text-xs text-gray-600">Start Date</p>
+                  <p className="text-black mt-1">
                     {workPlan?.startDate
                       ? new Date(workPlan.startDate).toLocaleDateString("en-GB")
                       : "-"}
                   </p>
                 </div>
 
-                <div className="bg-[#1a1a1a] rounded-xl p-4 border border-gray-800">
-                  <p className="text-xs text-gray-400">Total Activities</p>
-                  <p className="text-white font-semibold mt-1">
+                <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
+                  <p className="text-xs text-gray-600">Total Activities</p>
+                  <p className="text-black font-semibold mt-1">
                     {workPlan?.workActivities?.length || 0}
                   </p>
                 </div>
@@ -465,7 +465,7 @@ const WorkPlan = (props) => {
 
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className="bg-custom-yellow text-black">
+                  <thead className="bg-[var(--custom-blue)] text-white">
                     <tr>
                       <th className="px-4 py-3">Item No</th>
                       <th className="px-4 py-3">Description</th>
@@ -475,29 +475,29 @@ const WorkPlan = (props) => {
                     </tr>
                   </thead>
 
-                  <tbody className="divide-y divide-gray-800">
+                  <tbody className="divide-y divide-gray-300">
                     {workPlan?.workActivities?.map((row, index) => (
                       <tr
                         key={index}
                         className={
                           row.rowType === "section"
-                            ? "bg-[#1f1f1f] font-semibold text-white"
-                            : "text-gray-300 hover:bg-[#1a1a1a]"
+                            ? "bg-gray-200 font-semibold text-black"
+                            : "text-gray-300 hover:bg-gray-100"
                         }
                       >
-                        <td className="px-4 py-3">{row.itemNo || "-"}</td>
-                        <td className="px-4 py-3">{row.description}</td>
-                        <td className="px-4 py-3 text-center">
+                        <td className="px-4 py-2 text-black">{row.itemNo || "-"}</td>
+                        <td className="px-4 py-2 text-black">{row.description}</td>
+                        <td className="px-4 py-2 text-black text-center">
                           {row.duration || "-"}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-2 text-black">
                           {row.startDate
                             ? new Date(row.startDate).toLocaleDateString(
                                 "en-GB",
                               )
                             : "-"}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-2 text-black ">
                           {row.endDate
                             ? new Date(row.endDate).toLocaleDateString("en-GB")
                             : "-"}
@@ -508,10 +508,10 @@ const WorkPlan = (props) => {
                 </table>
               </div>
 
-              <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-800 bg-[#1a1a1a]">
+              <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-300 bg-gray-100">
                 <button
                   onClick={() => setOpen(false)}
-                  className="px-5 py-2 rounded-lg cursor-pointer bg-gray-800 text-gray-300 hover:bg-gray-700 transition"
+                  className="px-5 py-2 rounded-lg cursor-pointer border border-gray-300 bg-white shadow-md text-gray-800 hover:bg-gray-100 transition"
                 >
                   Close
                 </button>

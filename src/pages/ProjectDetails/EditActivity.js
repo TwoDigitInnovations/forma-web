@@ -98,31 +98,31 @@ const EditActivity = (props) => {
   };
 
   return (
-    <div className="h-screen bg-black text-white md:p-6 p-3">
+    <div className="h-screen  bg-[var(--custom-lightGray)] text-white md:p-6 p-3">
       <button
         onClick={handleGoBack}
-        className="py-2 flex items-center underline text-sm cursor-pointer rounded-lg transition-colors pb-2 text-white hover:text-[#e0f349]"
+        className="py-2 flex items-center underline text-sm cursor-pointer rounded-lg transition-colors pb-2 text-black hover:text-blue-500"
       >
         <ChevronLeft size={20} /> Go Back
       </button>
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-20   mx-auto">
-        <div className="bg-custom-green py-6 md:px-6 p-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
+        <div className="bg-white shadow-md border border-gray-100 py-6 md:px-6 p-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
           
           <div>
-            <h1 className="text-white flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
+            <h1 className="text-black flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
               {projectDetails?.projectName}
               <span className="ms-4 text-[11px] flex items-center gap-1">
                 <MapPin size={14} /> {projectDetails?.location}
               </span>
             </h1>
-            <p className="md:text-[28px] text-[22px] text-white mt-1 font-semibold">
+            <p className="md:text-[28px] text-[22px] text-black mt-1 font-semibold">
               {planData.planName}
             </p>
           </div>
 
           <button
             onClick={() => handleSave(PlanId)}
-            className="w-fit bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+            className="w-fit bg-blue-500 py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-600 cursor-pointer"
           >
             <NotebookPen size={18} />
             Save Changes

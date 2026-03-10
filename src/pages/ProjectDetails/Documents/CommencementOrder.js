@@ -255,7 +255,7 @@ function InstructionLetter(props) {
 
             <button
               onClick={handleSubmit}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Save size={16} />
               {editId ? "Update" : "Save"} Document
@@ -263,7 +263,7 @@ function InstructionLetter(props) {
 
             <button
               onClick={downloadPDF}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />
               Download Pdf

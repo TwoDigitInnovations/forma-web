@@ -18,7 +18,7 @@ function MonthlyProgressReport(props) {
   const [topLogo, setTopLogo] = useState("");
   const [coverPhoto, setCoverPhoto] = useState("");
   const [leftLogo, setLeftLogo] = useState("");
-   const [allTrackerData, setAllTrackerData] = useState([]);
+  const [allTrackerData, setAllTrackerData] = useState([]);
   const [rightLogo, setRightLogo] = useState("");
   const [editData, setEditData] = useState("");
   const [allItems, setAllItems] = useState([]);
@@ -84,7 +84,7 @@ function MonthlyProgressReport(props) {
       setProjectId(project._id);
       getAllActionPoints(project._id);
       getAllPlanByProjectId(project._id);
-      getAllTracker(project._id)
+      getAllTracker(project._id);
     }
   }, []);
 
@@ -149,7 +149,7 @@ function MonthlyProgressReport(props) {
       clientPersonnel: projectDetails?.clientInfo || {},
       issuesConcern: allItems,
       workplan: allPlanData,
-      physicalprogress:allTrackerData,
+      physicalprogress: allTrackerData,
       actualProgress: projectDetails?.actualProgress,
     };
 
@@ -414,7 +414,7 @@ function MonthlyProgressReport(props) {
             {!editId && (
               <button
                 onClick={handleSubmit}
-                className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+                className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
               >
                 <Save size={16} />
                 {"Save"} Document
@@ -424,7 +424,7 @@ function MonthlyProgressReport(props) {
             <button
               onClick={downloadPDF}
               // disabled={props.loader}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />
               Download Pdf
