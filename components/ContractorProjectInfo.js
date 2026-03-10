@@ -160,8 +160,8 @@ function ContractorProjectInfo({
             className={`relative cursor-pointer flex-1 text-center py-2 text-md font-medium transition-all duration-300 
               ${
                 currentTab === tab
-                  ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e0f349]"
-                  : "text-gray-300 hover:text-[#e0f349]"
+                  ? "text-blue-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2563eb]"
+                  : "text-gray-600 hover:text-[#2563eb]"
               }`}
           >
             {tab === "contractorDetails"
@@ -222,7 +222,7 @@ function ContractorProjectInfo({
               <button
                 type="button"
                 onClick={() => fileInputRef.current.click()}
-                className="flex items-center gap-2 bg-gray-500 border border-gray-300 text-gray-100 px-4 py-2 rounded-lg cursor-pointer transition-all"
+                className="flex items-center gap-2 bg-gray-300 border border-gray-300 text-gray-600 px-4 py-2 rounded-lg cursor-pointer transition-all"
               >
                 <Upload className="w-5 h-5" />
                 Change Logo
@@ -242,7 +242,7 @@ function ContractorProjectInfo({
 
       {currentTab === "personal" && (
         <div>
-          {/* Add Member Form */}
+      
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6 mt-8">
             <InputField
               name="name"
@@ -264,17 +264,17 @@ function ContractorProjectInfo({
             />
             <button
               onClick={handleAddMember}
-              className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
+              className="flex justify-center items-center gap-2 rounded-lg text-white bg-blue-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
             >
               <Plus size={18} />
               {editIndex !== null ? "Update Personnel" : "Add Personnel"}
             </button>
           </div>
 
-          <div className="mt-8 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
+          <div className="mt-8 bg-white rounded-2xl shadow-md overflow-hidden border border-gray-600">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-gray-200 border-collapse">
-                <thead className="bg-[#4E4E4E] border-b border-gray-500">
+                <thead className="bg-blue-500 border-b border-gray-500">
                   <tr>
                     <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
                       Name
@@ -294,22 +294,22 @@ function ContractorProjectInfo({
                   {contractorDetails?.teamMembers?.map((member, index) => (
                     <tr
                       key={index}
-                      className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0"
+                      className="hover:bg-gray-200 transition-all border-b border-gray-600 last:border-b-0"
                     >
-                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">
+                      <td className="px-6 py-3 font-medium text-black whitespace-nowrap">
                         {member.name}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {member.qualification}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {member.designation}
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
                         <td className="px-6 py-3 whitespace-nowrap flex gap-2">
                           <button
                             onClick={() => handleEditMember(member, index)}
-                            className="bg-custom-yellow text-black cursor-pointer px-4 py-1.5 rounded-lg text-sm  transition-all"
+                            className="text-white bg-blue-500 cursor-pointer px-4 py-1.5 rounded-lg text-sm  transition-all"
                           >
                             Edit
                           </button>
@@ -328,7 +328,7 @@ function ContractorProjectInfo({
                     <tr>
                       <td
                         colSpan="4"
-                        className="text-center text-gray-400 py-6 text-sm"
+                        className="text-center text-gray-600 py-20 text-sm"
                       >
                         No members found.
                       </td>
@@ -371,16 +371,16 @@ function ContractorProjectInfo({
             />
             <button
               onClick={handleAddEquipment}
-              className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
+              className="flex justify-center items-center gap-2 rounded-lg text-white bg-blue-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
             >
               <Plus size={18} /> Add Equipment
             </button>
           </div>
 
-          <div className="mt-8 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
+          <div className="mt-8 bg-white rounded-2xl shadow-md overflow-hidden border border-gray-600">
             <div className="overflow-x-auto">
-              <table className="min-w-full text-left text-gray-200 border-collapse">
-                <thead className="bg-[#4E4E4E] border-b border-gray-500">
+              <table className="min-w-full text-left text-white border-collapse">
+                <thead className="bg-blue-500 border-b border-gray-500">
                   <tr>
                     <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
                       Equipment Name
@@ -403,18 +403,18 @@ function ContractorProjectInfo({
                   {contractorDetails?.equipment?.map((item, index) => (
                     <tr
                       key={index}
-                      className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0"
+                      className="hover:bg-gray-200 transition-all border-b border-gray-600 last:border-b-0"
                     >
-                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">
+                      <td className="px-6 py-3 font-medium text-black whitespace-nowrap">
                         {item.name}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {item.type}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {item.quantity}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {item.condition}
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
@@ -431,7 +431,7 @@ function ContractorProjectInfo({
                     <tr>
                       <td
                         colSpan="5"
-                        className="text-center text-gray-400 py-6 text-sm"
+                        className="text-center text-gray-600 py-20 text-sm"
                       >
                         No equipment found.
                       </td>

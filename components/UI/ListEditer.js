@@ -49,7 +49,7 @@ export default function RichTextEditor({
 
   return (
     <div className="flex flex-col gap-2 mb-4">
-      {label && <p className="text-gray-200 text-sm font-medium">{label}</p>}
+      {label && <p className="text-gray-600 text-sm font-medium">{label}</p>}
 
       <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
         <JoditEditor
@@ -58,10 +58,10 @@ export default function RichTextEditor({
           config={{ ...editorConfig, placeholder }}
           tabIndex={1}
           onChange={(newContent) => {
-            setContent(newContent); // local only
+            setContent(newContent); 
           }}
           onBlur={(newContent) => {
-            onChange?.(newContent); // ✅ update only once
+            onChange?.(newContent); 
           }}
         />
       </div>

@@ -16,6 +16,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --custom-lightGray: #f5f6fa;
+    --custom-blue: #2563eb;
+    --custom-deepblue: #1e40af;
+    --custom-darkslate: #1e293b;
   }
 }
 
@@ -24,6 +28,8 @@
   --custom-yellow: #e0f349;
   --custom-black: #1e1e1e;
   --custom-gold: #e0f349;
+
+  /* --custom-black: #1e293b; */
 }
 
 body {
@@ -35,6 +41,7 @@ body {
 .bg-custom-green {
   background-color: var(--custom-green);
 }
+
 .text-custom-green {
   color: var(--custom-green);
 }
@@ -109,7 +116,6 @@ body {
   font-size: 14px;
 }
 
-
 .jodit-wysiwyg ul {
   list-style-type: disc;
   padding-left: 1.5rem;
@@ -149,8 +155,3 @@ body {
     page-break-inside: avoid;
   }
 }
-
-
-
-
-

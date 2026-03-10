@@ -106,25 +106,17 @@ const MeetingDocumentation = (props) => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[var(--custom-lightGray)] text-white">
       <div className="md:px-6 px-4 py-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm text-gray-400 mb-2">
-              <span
-                className="text-custom-yellow cursor-pointer"
-                onClick={() => router.push("/dashboard")}
-              >
-                Forma
-              </span>{" "}
-              › OPERATIONS CENTER
-            </div>
-            <h1 className="text-3xl font-bold">Meeting Documentation</h1>
+            
+            <h1 className="text-3xl text-black font-bold">Meeting Documentation</h1>
           </div>
         </div>
       </div>
 
-      <div className="px-4 md:px-6 flex md:flex-row flex-col justify-between gap-4 md:gap-8 border-b-1 border-gray-800 pb-2">
+      <div className="px-4 md:px-6 flex md:flex-row flex-col justify-between gap-4 md:gap-8 border-b-1 border-gray-200 pb-2">
         <div className="flex gap-6">
           <button
             onClick={() => {
@@ -132,8 +124,8 @@ const MeetingDocumentation = (props) => {
             }}
             className={`flex items-center gap-2 py-2.5 border-b-2 cursor-pointer transition-colors ${
               activeTab === "meetings"
-                ? "border-custom-yellow text-custom-yellow cursor-pointer"
-                : "border-transparent text-gray-400 hover:text-white"
+                ? "border-blue-500 text-blue-500 cursor-pointer"
+                : "border-transparent text-gray-600 hover:text-black"
             }`}
           >
             <FileText size={18} />
@@ -145,8 +137,8 @@ const MeetingDocumentation = (props) => {
             }}
             className={`flex items-center gap-2 py-2.5 border-b-2 cursor-pointer transition-colors ${
               activeTab === "attendee"
-                ? "border-custom-yellow text-custom-yellow cursor-pointer"
-                : "border-transparent text-gray-400 hover:text-white"
+                ? "border-blue-500 text-blue-500 cursor-pointer"
+                : "border-transparent text-gray-600 hover:text-black"
             }`}
           >
             <List size={18} />
@@ -158,7 +150,7 @@ const MeetingDocumentation = (props) => {
             onClick={() => {
               setOpen(true);
             }}
-            className={`flex border-transparent rounded-md bg-custom-yellow text-sm md:text-md py-3 md:px-4 px-2 text-black items-center gap-2 cursor-pointer transition-colors
+            className={`flex border-transparent rounded-md bg-[var(--custom-blue)] text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
             `}
           >
             <Plus size={18} />
@@ -168,7 +160,7 @@ const MeetingDocumentation = (props) => {
             onClick={() => {
               setIsOpen(true);
             }}
-            className={`flex border-transparent rounded-md bg-custom-yellow  text-sm md:text-md py-3 md:px-4 px-2 text-black items-center gap-2 cursor-pointer transition-colors
+            className={`flex border-transparent rounded-md bg-[var(--custom-blue)]  text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
             `}
           >
             <Plus size={18} />

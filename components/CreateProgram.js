@@ -42,7 +42,9 @@ const CreateProgram = ({
       .then((res) => {
         loader(false);
         if (res?.status === true) {
-          toast.success(`Program ${editId ? "Updated" : "created"} successfully`);
+          toast.success(
+            `Program ${editId ? "Updated" : "created"} successfully`,
+          );
           setName("");
           setIsOpen(false);
           refreshList(); // parent list refresh
@@ -58,18 +60,18 @@ const CreateProgram = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-      <div className="bg-[#2a2a2a] rounded-2xl w-[400px] p-6 border border-gray-700">
-        <h2 className="text-xl font-semibold mb-4 text-white">
+      <div className="bg-white rounded-2xl w-[400px] p-6 border border-gray-700">
+        <h2 className="text-xl font-semibold mb-4 text-black">
           {editId ? "Update" : "Create"} Program
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm text-gray-300">Program Name</label>
+            <label className="text-sm text-black">Program Name</label>
             <input
               type="text"
               placeholder="Enter program name"
-              className="w-full mt-1 px-3 py-2 rounded-lg bg-gray-800 border border-gray-600 text-white outline-none focus:border-[#e0f349]"
+              className="w-full mt-1 px-3 py-2 rounded-lg bg-gray-200 border border-gray-200 text-black outline-none focus:border-[#e0f349]"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -79,17 +81,16 @@ const CreateProgram = ({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600"
+              className="px-4 py-2 rounded-lg bg-gray-200 cursor-pointer text-gray-800 hover:bg-gray-300"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg font-medium"
-              style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+              className="px-4 py-2 rounded-lg font-medium bg-[var(--custom-blue)] text-white"
             >
-            {editId ? "Update" : "Create"}  
+              {editId ? "Update" : "Create"}
             </button>
           </div>
         </form>

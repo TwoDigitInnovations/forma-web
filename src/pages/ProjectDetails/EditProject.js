@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Upload, X, Edit, ChevronLeft } from "lucide-react";
+import { Upload, X, Edit, ChevronLeft, XCircle } from "lucide-react";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -101,7 +101,7 @@ const EditProject = (props) => {
 
   const getAllProgram = async (projectId) => {
     props.loader(true);
-     Api("get", `program/getAll?projectId=${projectId}`, "", router)
+    Api("get", `program/getAll?projectId=${projectId}`, "", router)
       .then((res) => {
         props.loader(false);
         if (res?.status === true) {
@@ -285,21 +285,24 @@ const EditProject = (props) => {
   };
 
   const handleConfirmCancel = () => {
-    setShowCancelBox(false);
-    router.push("/ProjectDetails/overview");
+    setShowCancelBox(true);
+    //
   };
 
+  const onConfirm = () => {
+    router.push("/ProjectDetails/overview");
+  };
   return (
-    <div className="h-full bg-black text-white ">
+    <div className="h-full bg-[var(--custom-lightGray)] text-white ">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-6  mx-auto ">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between ">
           <div className="flex items-center gap-4">
             <div>
-              <h1 className="md:text-2xl text-[20px] font-bold text-custom-yellow flex items-center gap-2">
+              <h1 className="md:text-2xl text-[20px] font-bold text-blue-500 flex items-center gap-2">
                 <Edit size={24} />
                 Edit Project Information
               </h1>
-              <p className="text-gray-400 mt-1">
+              <p className="text-gray-600 mt-1">
                 Update project details, contract information, and details
               </p>
             </div>
@@ -308,13 +311,13 @@ const EditProject = (props) => {
 
         <button
           onClick={() => router.push(`/ProjectDetails/overview`)}
-          className="py-2 md:mt-0 mt-4 flex underline text-sm cursor-pointer rounded-lg transition-colors mb-4 "
+          className="py-2 md:mt-0 mt-4 flex underline text-sm cursor-pointer rounded-lg transition-colors mb-4 text-black "
         >
           <ChevronLeft size={20} /> Go back
         </button>
 
         <div onSubmit={handleSubmit} className="space-y-8 ">
-          <div className="bg-custom-black rounded-[38px] md:px-6 px-3 pt-4 pb-6 min-h-[600px]">
+          <div className="bg-white rounded-[38px] md:px-6 px-3 pt-4 pb-6 min-h-[600px]">
             <div className="flex gap-4 overflow-x-auto no-scrollbar whitespace-nowrap">
               {["basicInfo", "client", "contractor", "introduction"].map(
                 (tab) => (
@@ -324,8 +327,8 @@ const EditProject = (props) => {
                     className={`relative cursor-pointer flex-shrink-0 px-4 py-2 text-md md:text-lg font-semibold transition-all duration-300
         ${
           currentTab === tab
-            ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#e0f349]"
-            : "text-gray-400 hover:text-[#e0f349]"
+            ? "text-blue-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:bg-[#2563eb]"
+            : "text-gray-600 hover:text-[#2563eb]"
         }`}
                   >
                     {tab === "basicInfo"
@@ -339,7 +342,7 @@ const EditProject = (props) => {
             {currentTab === "basicInfo" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 mt-8">
                 <div className="md:col-span-1 col-span-2">
-                  <label className="text-white text-sm pb-2">
+                  <label className="text-black text-sm pb-2">
                     Program Type
                   </label>
 
@@ -348,7 +351,7 @@ const EditProject = (props) => {
                     value={formData.programId}
                     onChange={handleInputChange}
                     required
-                    className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+                    className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-gray-200 text-black rounded-lg"
                   >
                     <option value="">Select Program Type</option>
                     {AllProgramData.map((type) => (
@@ -377,7 +380,7 @@ const EditProject = (props) => {
                 />
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-medium mb-2 text-black">
                     Project Description
                   </label>
                   <textarea
@@ -386,9 +389,9 @@ const EditProject = (props) => {
                     onChange={handleInputChange}
                     placeholder="Enter your project description"
                     rows="4"
-                    className={`w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border ${
-                      errors.description ? "border-red-500" : "border-gray-600"
-                    } focus:outline-none focus:border-green-400`}
+                    className={`w-full text-[14px] px-4 py-2 bg-gray-200 text-black rounded-lg border ${
+                      errors.description ? "border-red-500" : "border-gray-100"
+                    } focus:outline-none `}
                   />
                   {errors.description && (
                     <p className="text-red-400 text-sm mt-1">
@@ -514,7 +517,7 @@ const EditProject = (props) => {
               type="button"
               disabled={loading}
               onClick={handleSubmit}
-              className="px-4 py-2.5 text-[14px] bg-custom-yellow text-black cursor-pointer  disabled:cursor-not-allowed rounded-lg transition-colors flex items-center gap-2"
+              className="px-4 py-2.5 text-[14px] text-white bg-blue-500 cursor-pointer  disabled:cursor-not-allowed rounded-lg transition-colors flex items-center gap-2"
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
@@ -531,11 +534,11 @@ const EditProject = (props) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
                 <div className="flex flex-col items-center">
-                  <XCircle className="w-14 h-14 text-red-500 mb-3" />
+                  <XCircle className="w-14 h-14 text-blue-500 mb-3" />
                   <h2 className="text-lg font-semibold text-gray-800 mb-1">
                     Cancel Changes?
                   </h2>
-                  <p className="text-sm text-gray-500 mb-6">
+                  <p className="text-sm text-gray-600 mb-6">
                     Are you sure you want to cancel? All unsaved changes will be
                     lost.
                   </p>
@@ -543,13 +546,13 @@ const EditProject = (props) => {
                   <div className="flex justify-center gap-4">
                     <button
                       onClick={onConfirm}
-                      className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition-all duration-200 shadow-sm"
+                      className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white px-5 py-2 rounded-lg transition-all duration-200 shadow-sm"
                     >
                       Yes, Cancel
                     </button>
                     <button
                       onClick={() => setShowCancelBox(false)}
-                      className="border border-gray-300 hover:bg-gray-100 text-gray-700 px-5 py-2 rounded-lg transition-all duration-200"
+                      className="border border-gray-300 cursor-pointer hover:bg-gray-100 text-gray-700 px-5 py-2 rounded-lg transition-all duration-200"
                     >
                       No, Go Back
                     </button>

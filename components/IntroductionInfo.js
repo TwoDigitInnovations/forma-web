@@ -33,7 +33,7 @@ function IntroductionInfo({ formData, handleInputChange, setFormData }) {
   return (
     <div className="mt-6">
       <div className="flex flex-col gap-2 mb-4">
-        <p className="text-gray-200 text-sm font-medium">Executive Summary</p>
+        <p className="text-black text-sm font-medium">Executive Summary</p>
         <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
           <JoditEditor
             value={formData.ExcuetiveSummary}
@@ -62,7 +62,7 @@ function IntroductionInfo({ formData, handleInputChange, setFormData }) {
       />
 
       <div className="flex flex-col gap-2 mb-4">
-        <p className="text-gray-200 text-sm font-medium">Scope of Work</p>
+        <p className="text-black text-sm font-medium">Scope of Work</p>
         <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
           <JoditEditor
             value={formData.ProjectScope}

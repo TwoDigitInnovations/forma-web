@@ -77,24 +77,23 @@ const CreateProjectForm = ({
       });
   };
 
-
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl ">
+      <div className="bg-white text-black rounded-[38px] p-6 w-full max-w-2xl ">
         <h2 className="text-xl font-bold mb-1">Create New Project</h2>
-        <p className="text-sm text-gray-300 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Fill in the details below to create a new construction project.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <label className="text-white text-sm">Program Type</label>
+          <label className="text-black text-sm">Program Type</label>
 
           <select
             name="programId"
             value={formData.programId}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 cursor-pointer rounded-lg"
           >
             <option value="">Select Program Type</option>
             {AllProgramData.map((type) => (
@@ -103,44 +102,44 @@ const CreateProjectForm = ({
               </option>
             ))}
           </select>
-          <label className="text-white text-sm "> Project Name</label>
+          <label className="text-black text-sm "> Project Name</label>
           <input
             type="text"
             name="projectName"
             placeholder="Project Name"
             value={formData.projectName}
             onChange={handleChange}
-            className="pt-2 w-full px-4 py-2 bg-[#5F5F5F] focus:outline-none text-sm border-gray-600 rounded-lg border"
+            className="pt-2 w-full px-4 py-2 bg-gray-200 focus:outline-none text-sm border-gray-200 text-black rounded-lg border"
             required
           />
-          <label className="text-white text-sm"> Description</label>
+          <label className="text-black text-sm"> Description</label>
           <textarea
             name="description"
             placeholder="Description"
             value={formData.description}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 rounded-lg"
             required
           />
-          <label className="text-white text-sm">Location</label>
+          <label className="text-black text-sm">Location</label>
           <input
             type="text"
             name="location"
             placeholder="Location"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 rounded-lg"
             required
           />
 
-          <label className="text-white text-sm">Project Type</label>
+          <label className="text-black text-sm">Project Type</label>
 
           <select
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 rounded-lg"
           >
             <option value="">Select Project Type</option>
             {projectTypes.map((type) => (
@@ -150,14 +149,14 @@ const CreateProjectForm = ({
             ))}
           </select>
 
-          <label className="text-white text-sm"> Contract Amount</label>
+          <label className="text-black text-sm"> Contract Amount</label>
           <input
             type="number"
             name="contractAmount"
             placeholder="Contract Amount"
             value={formData.contractAmount}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 rounded-lg"
             required
           />
 
@@ -165,13 +164,13 @@ const CreateProjectForm = ({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-gray-700 hover:bg-gray-600"
+              className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-gray-200 hover:bg-gray-300"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2.5 text-sm rounded-lg bg-custom-yellow text-black hover:bg-yellow-400 cursor-pointer"
+              className="px-4 py-2.5 text-sm rounded-lg bg-[var(--custom-blue)] text-white cursor-pointer"
             >
               Create Project
             </button>

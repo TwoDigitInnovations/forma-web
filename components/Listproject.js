@@ -13,8 +13,7 @@ export default function Listproject({
   getAllProject,
   AllProgramData,
   programId,
-  setProgramId
-
+  setProgramId,
 }) {
   const router = useRouter();
   const [projectDetails, setProjectdetails] = useContext(ProjectDetailsContext);
@@ -64,11 +63,11 @@ export default function Listproject({
   };
 
   return (
-    <div className="bg-custom-black min-h-[500px] rounded-2xl border border-[#1f1f1f] p-6 text-white ">
+    <div className="bg-[var(--custom-lightGray)] min-h-[500px] rounded-2xl p-4">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-xl font-semibold">Active Projects</h2>
+        <h2 className="text-xl text-black font-semibold">Active Projects</h2>
         <button
-          className="text-sm text-gray-400 hover:text-white underline text-custom-yellow cursor-pointer"
+          className="text-sm text-gray-600 hover:text-white underline cursor-pointer"
           onClick={() => router.push("/project")}
         >
           View All
@@ -81,7 +80,7 @@ export default function Listproject({
           value={programId}
           onChange={(e) => setProgramId(e.target.value)}
           required
-          className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+          className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-gray-200 text-black rounded-lg"
         >
           <option value="">Select Program Type</option>
           {AllProgramData.map((type) => (
@@ -102,10 +101,10 @@ export default function Listproject({
         </div>
       ) : (
         <div className="overflow-x-auto z-0 min-h-[500px]">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-gray-400 border-b-[1px] border-gray-600 ">
-                <th className="py-3 text-left min-w-[80px]">Project</th>
+          <table className="w-full text-sm ">
+            <thead className="bg-[var(--custom-blue)] px-4">
+              <tr className="text-gray-100 border-b-[1px] border-gray-600  px-4">
+                <th className="py-3 text-left min-w-[80px] ps-4">Project</th>
                 <th className="py-3 text-left min-w-[100px]">Status</th>
                 <th className="py-3 text-left min-w-[80px]">Financial</th>
                 <th className="py-3 text-left min-w-[80px]">Time</th>
@@ -118,9 +117,12 @@ export default function Listproject({
 
             <tbody>
               {allProjectData.map((item, index) => (
-                <tr key={item._id} className="border-b border-[#1f1f1f]  px-2">
+                <tr
+                  key={item._id}
+                  className={`${index % 2 === 0 ? "bg-white" : "bg-[#E2E8F0] "} hover:bg-blue-100 border-b border-[#1f1f1f]`}
+                >
                   <td
-                    className="py-4 text-blue-400 font-medium hover:underline cursor-pointer"
+                    className="py-4 ps-4 text-blue-600 font-medium hover:underline cursor-pointer"
                     onClick={() => {
                       router.push(`/ProjectDetails/overview?id=${item._id}`);
                       setProjectdetails(item);
@@ -134,25 +136,25 @@ export default function Listproject({
                   </td>
 
                   <td>
-                    <span className="bg-green-900/40 text-green-400 px-3 py-1 rounded-full text-xs">
+                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs">
                       {item?.status}
                     </span>
                   </td>
 
-                  <td className="text-gray-400">
+                  <td className="text-gray-600">
                     {calculatefinancialProgress(
                       item?.paidAmount,
                       item?.contractAmount,
                     )}
                     %
                   </td>
-                  <td className="text-gray-400">
+                  <td className="text-gray-600">
                     {calculateTimeProgress(item?.startDate, item?.endDate)}%
                   </td>
-                  <td className="text-gray-400">
+                  <td className="text-gray-600">
                     {item?.actualProgress || 0}%
                   </td>
-                  <td className="text-gray-400">
+                  <td className="text-gray-600">
                     {item?.endDate
                       ? moment(item.endDate).format("YYYY-MM-DD")
                       : "--"}

@@ -84,22 +84,19 @@ const Program = (props) => {
   };
 
   return (
-    <div className="h-screen p-4 md:px-6 bg-black text-white">
+    <div className="h-screen p-4 md:px-6 bg-[var(--custom-lightGray)] text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll scrollbar-hide pb-28">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start gap-3 justify-between mb-8 mt-4">
           <div className="">
-            <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>
-              Program
-            </h1>
-            <p className="text-sm text-gray-300 mt-2">
+            <h1 className="text-3xl font-bold text-black">Program</h1>
+            <p className="text-sm text-gray-600 mt-2">
               Create multiple programs to organize your projects. Each project
               is managed under a specific program.
             </p>
           </div>
           <button
-            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium"
-            style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+            className="flex bg-[var(--custom-blue)] text-white items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium"
             onClick={() => setIsOpen(true)}
           >
             <FolderPlus size={22} />
@@ -120,38 +117,37 @@ const Program = (props) => {
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <div className="relative flex w-[31rem]">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600"
               size={20}
             />
             <input
               type="text"
               placeholder="Search"
-              className="w-full pl-10 pr-4 py-2 rounded-[26px] border border-gray-600 focus:outline-none"
-              style={{ backgroundColor: "#FFFFFF75", color: "white" }}
+              className="w-full pl-10 pr-4 py-2 text-gray-700 rounded-[26px] border border-gray-600 focus:outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold mb-6">All Program</h2>
+        <h2 className="text-xl font-semibold mb-6 text-black">All Program</h2>
 
         <div className="space-y-4 grid-cols-1 md:grid-cols-3 grid gap-4 ">
           {filteredPrograms.map((Program) => (
             <div
               key={Program._id}
-              className="rounded-[16px] border border-gray-700 p-4 bg-[#2a2a2a] hover:bg-[#dff34940]"
+              className="rounded-[16px] border border-gray-700 p-4 bg-white hover:bg-gray-100"
             >
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col md:flex-row md:justify-between gap-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-wrap items-center gap-3">
-                      <h3 className="text-lg font-semibold text-white">
+                      <h3 className="text-lg font-semibold text-black">
                         {Program?.name}
                       </h3>
                     </div>
 
-                    <div className="flex flex-col gap-2 text-sm text-white">
+                    <div className="flex flex-col gap-2 text-sm text-black">
                       <div className="flex items-center gap-1">
                         <CalendarClock size={16} />
                         <span>
@@ -164,7 +160,7 @@ const Program = (props) => {
                 </div>
                 <div className="flex w-full flex-row sm:justify-end gap-2">
                   <button
-                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-gray-800 text-gray-300 flex items-center justify-center gap-2"
+                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-[var(--custom-blue)] text-gray-100 flex items-center justify-center gap-2"
                     onClick={() => {
                       setEditId(Program._id);
                       setIsOpen(true);
@@ -176,7 +172,7 @@ const Program = (props) => {
                   </button>
 
                   <button
-                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-red-500/10 text-red-400 flex items-center justify-center gap-2"
+                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-red-500 text-white flex items-center justify-center gap-2"
                     onClick={() => {
                       setEditId(Program._id);
                       setIsConfirmOpen(true);
@@ -191,10 +187,10 @@ const Program = (props) => {
         </div>
 
         {filteredPrograms.length === 0 && (
-          <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-3">
+          <div className="flex flex-col justify-center items-center min-h-[450px] text-center space-y-3 text-black">
             <FileCode2 size={68} />
             <h3 className="text-xl font-medium">No Program Found</h3>
-            <p className="text-white"> Try to add any program</p>
+            <p className="text-gray-600"> Try to add any program</p>
           </div>
         )}
       </div>

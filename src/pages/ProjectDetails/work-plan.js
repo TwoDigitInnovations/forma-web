@@ -435,7 +435,7 @@ const WorkPlan = (props) => {
                 workPlan?.status === "Completed"
                   ? "bg-green-500/20 text-green-400"
                   : workPlan?.status === "In Progress"
-                    ? "bg-blue-500/20 text-blue-400"
+                    ? "bg-[var(--custom-blue)]/20 text-blue-400"
                     : workPlan?.status === "On Hold"
                       ? "bg-orange-500/20 text-orange-400"
                       : "bg-gray-500/20 text-gray-300"

@@ -330,7 +330,7 @@ function SiteLogs(props) {
                                       border outline-none cursor-pointer
                                       ${
                                         item.status === "Open"
-                                          ? "bg-blue-500/10 text-blue-500 border-blue-500/30"
+                                          ? "bg-[var(--custom-blue)]/10 text-blue-500 border-blue-500/30"
                                           : item.status === "In-Progress"
                                             ? "bg-orange-500/10 text-orange-400 border-orange-500/30"
                                             : "bg-green-500/10 text-green-400 border-green-500/30"
