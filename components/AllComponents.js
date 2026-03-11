@@ -669,21 +669,21 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="w-[460px] rounded-2xl bg-white p-8 text-center shadow-2xl animate-scaleIn">
         <div className="flex justify-center mb-4">
-          <CheckCircle className="h-16 w-16 text-custom-yellow" />
+          <CheckCircle className="h-16 w-16 text-blue-500" />
         </div>
 
-        <h2 className="text-2xl font-semibold text-white">
+        <h2 className="text-2xl font-semibold text-black">
           Plan Purchased Successfully 🎉
         </h2>
 
-        <p className="mt-2 text-sm text-gray-300">
+        <p className="mt-2 text-sm text-gray-800">
           Your subscription is now active. Enjoy all premium features.
         </p>
 
         {/* Action */}
         <button
           onClick={onDashboard}
-          className="mt-6 w-full rounded-lg bg-blue-500 px-4 py-2.5 cursor-pointer text-sm font-medium text-black transition hover:bg-black/90"
+          className="mt-6 w-full rounded-lg bg-blue-500 px-4 py-2.5 cursor-pointer text-sm font-medium text-white transition hover:bg-blue-600"
         >
           My Dashboard
         </button>
@@ -857,13 +857,13 @@ export const AllIncident = ({ onclose, loader }) => {
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <StickyNote className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">Open Incidents</p>
+            <StickyNote className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">Open Incidents</p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
@@ -871,7 +871,7 @@ export const AllIncident = ({ onclose, loader }) => {
 
         {/* Body */}
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No open incidents</p>
+          <p className="text-sm text-gray-800">No open incidents</p>
         </div>
       </div>
     </div>
@@ -885,22 +885,22 @@ export const ProjectBehind = ({ onclose, loader }) => {
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">
+            <Clock className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">
               Projects Behind Schedule
             </p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
+          <p className="text-sm text-gray-800">No Projects Behind Schedule</p>
         </div>
       </div>
     </div>
@@ -914,13 +914,13 @@ export const AllGrievances = ({ onclose, loader }) => {
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">Open grievances</p>
+            <MessageSquare className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">Open grievances</p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
@@ -928,7 +928,7 @@ export const AllGrievances = ({ onclose, loader }) => {
 
         {/* Body */}
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No open grievances</p>
+          <p className="text-sm text-gray-800">No open grievances</p>
         </div>
       </div>
     </div>

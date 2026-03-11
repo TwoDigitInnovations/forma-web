@@ -165,53 +165,47 @@ function Forgotpassword(props) {
   };
 
   return (
-    <div className="relative min-h-[750px] md:min-h-[620px] bg-black flex items-center justify-center px-4 py-10">
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(223,243,73,0.15) 1px, transparent 0)",
-            backgroundSize: "30px 30px",
-          }}
-        ></div>
-      </div>
+    <div className="min-h-[650px] bg-gradient-to-b from-blue-100 via-white to-blue-100 text-white flex flex-col items-center justify-center relative overflow-hidden px-4 py-10">
+      <div className="absolute top-[-80px] left-[-80px] w-[400px] h-[400px] bg-blue-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute bottom-[-80px] right-[-80px] w-[400px] h-[400px] bg-cyan-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[160px] opacity-10 pointer-events-none"></div>
+
 
       <div className="relative w-full max-w-md z-20">
-        <div className="bg-gray-900 border rounded-3xl border-green-500/20 backdrop-blur-sm p-6 md:p-8 shadow-2xl">
-          {/* Header */}
+        <div className="bg-white border rounded-3xl border-gray-200 backdrop-blur-sm p-6 md:p-8 shadow-2xl">
+      
           <div className="text-center mb-6 md:mb-8">
-            <h1 className="text-xl md:text-2xl font-bold text-white">
+            <h1 className="text-xl md:text-2xl font-bold text-black">
               {step === 1 && "Forgot Password"}
               {step === 2 && "Verify OTP"}
               {step === 3 && "Create New Password"}
             </h1>
-            <p className="text-white text-xs md:text-sm mt-1">
+            <p className="text-black text-xs md:text-sm mt-1">
               {step === 1 && "Enter your email to receive OTP"}
               {step === 2 && "Enter the 4-digit code sent to your email"}
               {step === 3 && "Choose a strong password"}
             </p>
           </div>
 
-          {/* Step 1: Email */}
+       
           {step === 1 && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow">
+                <label className="block text-sm font-semibold text-blue-500">
                   Email Address
                 </label>
                 <div className="relative mt-1">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-custom-green pointer-events-none" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-600 pointer-events-none" />
                   <input
                     type="email"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendOTP()}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 bg-gray-100 text-black rounded-xl border focus:ring-1 focus:ring-custom-green outline-none transition-all ${
                       submitted && !email
                         ? "border-red-500 bg-red-900/20"
-                        : "border-gray-700"
+                        : "border-gray-200"
                     }`}
                   />
                 </div>
@@ -223,7 +217,7 @@ function Forgotpassword(props) {
               <button
                 onClick={sendOTP}
                 disabled={loading}
-                className="w-full bg-custom-yellow cursor-pointer text-black font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
+                className="w-full bg-blue-500 cursor-pointer text-white font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
@@ -239,7 +233,7 @@ function Forgotpassword(props) {
 
               <button
                 onClick={() => router.push("/login")}
-                className="w-full text-custom-yellow font-medium py-2 flex items-center justify-center gap-2 hover:text-white transition-colors"
+                className="w-full text-blue-500 font-medium py-2 flex items-center justify-center gap-2 hover:text-blue-500 transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to Login
@@ -247,11 +241,11 @@ function Forgotpassword(props) {
             </div>
           )}
 
-          {/* Step 2: OTP */}
+         
           {step === 2 && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow mb-4 text-center">
+                <label className="block text-sm font-semibold text-blue-500 mb-4 text-center">
                   Enter OTP
                 </label>
                 <div className="flex justify-center gap-3">
@@ -265,7 +259,7 @@ function Forgotpassword(props) {
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(index, e)}
                       onPaste={handleOtpPaste}
-                      className="w-14 h-14 text-center text-2xl font-bold bg-gray-800 text-custom-yellow rounded-xl border-2 border-gray-700 focus:border-custom-green focus:ring-2 focus:ring-custom-green outline-none transition-all"
+                      className="w-14 h-14 text-center text-2xl font-bold bg-white text-blue-500 rounded-xl border-2 border-gray-200 focus:border-custom-green focus:ring-1 focus:ring-custom-green outline-none transition-all"
                     />
                   ))}
                 </div>
@@ -274,7 +268,7 @@ function Forgotpassword(props) {
               <button
                 onClick={verifyOTP}
                 disabled={loading}
-                className="w-full bg-custom-yellow text-black font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
+                className="w-full bg-blue-500 text-white font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
@@ -292,13 +286,13 @@ function Forgotpassword(props) {
                 <button
                   onClick={sendOTP}
                   disabled={loading}
-                  className="text-custom-yellow text-sm hover:text-white transition-colors disabled:opacity-50 px-2 py-2 hover:bg-gray-600 w-full rounded-2xl cursor-pointer"
+                  className="text-blue-500 text-sm transition-colors disabled:opacity-50 px-2 py-2 hover:bg-gray-300 hover:text-black w-full rounded-2xl cursor-pointer"
                 >
                   Resend OTP
                 </button>
                 <button
                   onClick={() => setStep(1)}
-                  className="px-2 text-custom-yellow font-medium py-2 flex items-center justify-center gap-2 hover:text-white hover:bg-gray-600 transition-colors w-full rounded-2xl cursor-pointer"
+                  className="px-2 text-blue-500 font-medium py-2 flex items-center justify-center gap-2  hover:bg-gray-300 hover:text-black transition-colors w-full rounded-2xl cursor-pointer"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Change Email
@@ -310,7 +304,7 @@ function Forgotpassword(props) {
           {step === 3 && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow">
+                <label className="block text-sm font-semibold text-blue-500">
                   New Password
                 </label>
                 <div className="relative mt-1">
@@ -337,9 +331,9 @@ function Forgotpassword(props) {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
                     {showNewPass ? (
-                      <EyeOff className="h-5 w-5 text-custom-yellow" />
+                      <EyeOff className="h-5 w-5 text-blue-500" />
                     ) : (
-                      <Eye className="h-5 w-5 text-custom-yellow" />
+                      <Eye className="h-5 w-5 text-blue-500" />
                     )}
                   </button>
                 </div>
@@ -358,7 +352,7 @@ function Forgotpassword(props) {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow">
+                <label className="block text-sm font-semibold text-blue-500">
                   Confirm Password
                 </label>
                 <div className="relative mt-1">
@@ -386,9 +380,9 @@ function Forgotpassword(props) {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
                     {showConfirmPass ? (
-                      <EyeOff className="h-5 w-5 text-custom-yellow" />
+                      <EyeOff className="h-5 w-5 text-blue-500" />
                     ) : (
-                      <Eye className="h-5 w-5 text-custom-yellow" />
+                      <Eye className="h-5 w-5 text-blue-500" />
                     )}
                   </button>
                 </div>

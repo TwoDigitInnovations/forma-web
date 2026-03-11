@@ -124,7 +124,7 @@ const AddRoad = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 overflow-y-auto">
-      <div className="bg-custom-black text-white rounded-2xl md:p-6 p-3 w-full max-w-2xl">
+      <div className="bg-white border border-gray-200 text-black rounded-2xl md:p-6 p-3 w-full max-w-2xl">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold mb-2">
             {" "}
@@ -158,7 +158,7 @@ const AddRoad = ({
                 name="roadType"
                 value={formData.roadType}
                 onChange={handleChange}
-                className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border focus:outline-none"
+                className="w-full text-[14px] px-4 py-2 bg-gray-200 rounded-lg border border-gray-200 focus:outline-none"
               >
                 <option value="">Select road type</option>
                 <option value="Highway">Highway</option>
@@ -174,7 +174,7 @@ const AddRoad = ({
                 name="carriageway"
                 value={formData.carriageway}
                 onChange={handleChange}
-                className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border focus:outline-none cursor-pointer"
+                className="w-full text-[14px] px-4 py-2 bg-gray-200 rounded-lg border focus:outline-none cursor-pointer border-gray-200 "
               >
                 <option>Single Carriageway</option>
                 <option>Double Carriageway</option>
@@ -191,7 +191,7 @@ const AddRoad = ({
                 <button
                   type="button"
                   onClick={() => setIsAddingLayer(true)}
-                  className="text-yellow-400 text-sm"
+                  className="text-blue-500 text-sm"
                 >
                   + Add Layer
                 </button>
@@ -244,7 +244,7 @@ const AddRoad = ({
                       type="text"
                       value={layer.name}
                       onChange={(e) => editLayerName(index, e.target.value)}
-                      className="bg-transparent border-b border-gray-400 text-white focus:outline-none"
+                      className="bg-transparent border-b border-gray-400 text-black focus:outline-none"
                     />
                   </div>
 
@@ -272,7 +272,7 @@ const AddRoad = ({
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg cursor-pointer bg-custom-yellow text-black"
+              className="px-4 py-2 rounded-lg cursor-pointer bg-blue-500 text-white"
             >
               {roadId ? "Update" : "Add"} Road
             </button>

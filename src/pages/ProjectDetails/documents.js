@@ -227,19 +227,19 @@ const documents = (props) => {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <NotepadText className="text-custom-yellow" />
-                      <p className="font-semibold text-lg">
+                      <NotepadText className="text-blue-500" />
+                      <p className="font-semibold text-lg text-black">
                         Monthly Progress Report
                       </p>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       {documents.length} documents
                     </p>
                   </div>
                 </div>
 
-                <div className="hidden md:grid grid-cols-12 py-3 border-b border-gray-700 text-gray-300 text-sm font-medium">
-                  <div className="col-span-6 font-bold text-xl">
+                <div className="hidden md:grid grid-cols-12 py-3 border-b border-gray-700 text-black text-sm font-medium">
+                  <div className="col-span-6 font-bold text-xl text-black">
                     Document Name
                   </div>
                   <div className="col-span-3 font-bold text-xl">Created</div>
@@ -252,16 +252,16 @@ const documents = (props) => {
                       key={doc._id}
                       className="
                         grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-0
-                        py-4  rounded-lg border-b border-gray-800
+                        py-3 rounded-lg border-b border-gray-300
                         
                         transition-all
-                        text-gray-300 text-sm"
+                        text-gray-800 text-sm"
                     >
                       <div className="md:col-span-6 font-medium truncate">
                         {doc.name}
                       </div>
 
-                      <div className="md:col-span-3 text-gray-400">
+                      <div className="md:col-span-3 text-gray-800">
                         {new Date(doc.createdAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -272,7 +272,7 @@ const documents = (props) => {
                       <div className="md:col-span-3 flex gap-2 md:justify-start justify-end">
                        
                         <button
-                          className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-800 text-xs md:text-sm"
+                          className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-300 text-xs md:text-sm"
                           onClick={() => handleRoute(doc)}
                         >
                           View
