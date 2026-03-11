@@ -1059,7 +1059,7 @@ export const Milestones = ({ onclose, loader }) => {
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <Clock1 className="h-5 w-5 text-custom-yellow" />
+              <Clock1 className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">Milestones</p>
             </div>
             <p className="text-sm text-white">
@@ -1093,7 +1093,7 @@ export const OpenIncient = ({ onclose, loader }) => {
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <TriangleAlert className="h-5 w-5 text-custom-yellow" />
+              <TriangleAlert className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">Open incidents</p>
             </div>
             <p className="text-sm text-white">
@@ -1127,7 +1127,7 @@ export const ProjectGrievances = ({ onclose, loader }) => {
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-custom-yellow" />
+              <MessageSquare className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">
                 Open grievances
               </p>
@@ -1162,7 +1162,7 @@ export const ProjectActionPoints = ({ onclose, loader }) => {
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <CircleAlert className="h-5 w-5 text-custom-yellow" />
+              <CircleAlert className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">
                 Open Action Points by Project
               </p>

@@ -208,7 +208,7 @@ const AddRoad = ({
                   <button
                     type="button"
                     onClick={addNewLayer}
-                    className="px-2 py-1 text-sm bg-custom-yellow text-black rounded"
+                    className="px-2 py-1 text-sm bg-blue-500 text-white rounded"
                   >
                     Save
                   </button>

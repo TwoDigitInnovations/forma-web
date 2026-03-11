@@ -109,7 +109,7 @@ const CreateTracker = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-custom-yellow text-black hover:bg-blue-600"
+              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-blue-500 text-white hover:bg-blue-600"
             >
               Create Tracker
             </button>

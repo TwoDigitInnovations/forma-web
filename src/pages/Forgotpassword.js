@@ -319,7 +319,7 @@ function Forgotpassword(props) {
                         newPassword: e.target.value,
                       })
                     }
-                    className={`w-full pl-10 pr-12 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
+                    className={`w-full pl-10 pr-12 py-3 bg-gray-200 text-black rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
                       submitted && !passwords.newPassword
                         ? "border-red-500 bg-red-900/20"
                         : "border-gray-700"
@@ -368,7 +368,7 @@ function Forgotpassword(props) {
                       })
                     }
                     onKeyDown={(e) => e.key === "Enter" && changePassword()}
-                    className={`w-full pl-10 pr-12 py-3 bg-gray-800 text-white rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
+                    className={`w-full pl-10 pr-12 py-3 bg-gray-200 text-black rounded-xl border focus:ring-2 focus:ring-custom-green outline-none transition-all ${
                       submitted && !passwords.confirmPassword
                         ? "border-red-500 bg-red-900/20"
                         : "border-gray-700"
@@ -403,7 +403,7 @@ function Forgotpassword(props) {
               <button
                 onClick={changePassword}
                 disabled={loading}
-                className="w-full bg-custom-yellow text-black font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
+                className="w-full bg-blue-500 text-white font-semibold py-2.5 rounded-xl hover:scale-[1.02] transition-transform shadow-lg disabled:opacity-70"
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">

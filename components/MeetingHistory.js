@@ -59,7 +59,7 @@ function MeetingHistory({
               </div>
 
               <div className="flex items-center gap-2">
-                <Briefcase size={16} className="text-custom-yellow" />
+                <Briefcase size={16} className="text-blue-500" />
                 <span>
                   <span className="text-white font-medium">
                     {meeting?.projectActionRegistry?.length || 0}

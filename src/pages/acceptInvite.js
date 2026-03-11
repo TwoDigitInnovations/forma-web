@@ -115,7 +115,7 @@ function AcceptInvite() {
         {inviteStatus === "loading" && (
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-2xl">
             <div className="flex flex-col items-center justify-center space-y-4">
-              <Loader2 className="w-12 h-12 text-custom-yellow animate-spin" />
+              <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
               <p className="text-gray-300 text-lg">Verifying invitation...</p>
             </div>
           </div>
@@ -126,7 +126,7 @@ function AcceptInvite() {
             {" "}
             <button
               onClick={() => router.push("/")}
-              className="flex items-center gap-2 text-gray-600 hover:text-custom-yellow font-medium text-sm transition-all duration-300 cursor-pointer mb-6 group"
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-500 font-medium text-sm transition-all duration-300 cursor-pointer mb-6 group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back
@@ -234,7 +234,7 @@ function AcceptInvite() {
                     <button
                       type="button"
                       onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-custom-yellow transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-blue-500 transition-colors"
                     >
                       {showPass ? (
                         <EyeOff className="w-5 h-5" />
@@ -295,7 +295,7 @@ function AcceptInvite() {
               <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700">
                 <p className="text-sm text-gray-400 mb-1">Invitation for:</p>
                 <p className="text-white font-medium flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-custom-yellow" />
+                  <Mail className="w-4 h-4 text-blue-500" />
                   {inviteEmail}
                 </p>
               </div>
@@ -319,7 +319,7 @@ function AcceptInvite() {
                 localStorage.removeItem("token");
                 setInviteStatus("form");
               }}
-              className="w-full bg-custom-yellow hover:bg-yellow-500 cursor-pointer text-black font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20"
+              className="w-full bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20"
             >
               Sign Out to Continue
             </button>
@@ -340,7 +340,7 @@ function AcceptInvite() {
               </p>
               <button
                 onClick={() => router.push("/")}
-                className="inline-flex items-center gap-2 bg-custom-yellow hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
+                className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Go to Home

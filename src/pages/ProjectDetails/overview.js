@@ -434,28 +434,28 @@ const ProjectDetailsPage = (props) => {
           {/* <ActionCard
             title="Milestones"
             subtitle="Upcoming and overdue"
-            icon={<Clock1 size={20} className="text-custom-yellow" />}
+            icon={<Clock1 size={20} className="text-blue-500" />}
             text="No milestones due soon"
             open={() => setMilestones(true)}
           /> */}
           {/* <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
-            icon={<CircleAlert size={20} className="text-custom-yellow" />}
+            icon={<CircleAlert size={20} className="text-blue-500" />}
             text="No overdue action points"
             open={() => setActionOpen(true)}
           /> */}
           {/* <ActionCard
             title="Open incidents"
             subtitle="World Bank ESF compliance"
-            icon={<TriangleAlert size={20} className="text-custom-yellow" />}
+            icon={<TriangleAlert size={20} className="text-blue-500" />}
             text="No open incidents"
             open={() => setOpenIncient(true)}
           /> */}
           {/* <ActionCard
             title="No Open grievances"
             subtitle="Community complaints (GRM)"
-            icon={<MessageSquare size={20} className="text-custom-yellow" />}
+            icon={<MessageSquare size={20} className="text-blue-500" />}
             text="No open grievances"
             open={() => setGrievancesOpen(true)}
           /> */}
