@@ -183,24 +183,24 @@ console.log(team);
   const isEditor = currentUserRole === "editor";
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
-        <div className="bg-[#DFF34940] p-4 md:px-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div className="bg-white border border-gray-200 shadow-md p-4 md:px-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
-            <h1 className="text-sm md:text-base font-semibold text-gray-100 break-words">
+            <h1 className="text-sm md:text-base font-semibold text-black break-words">
               {projectDetails?.projectName}
             </h1>
 
-            <div className="flex items-center gap-1 text-xs md:text-sm text-gray-300">
+            <div className="flex items-center gap-1 text-xs md:text-sm text-gray-600">
               <MapPin size={14} className="shrink-0" />
               <span className="break-words">{projectDetails?.location}</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#DFF34940] rounded-xl md:p-5 p-3 shadow mb-6 mt-8">
+        <div className="bg-white border border-gray-200  rounded-xl md:p-5 p-3 shadow mb-6 mt-8">
           <h2 className="text-xl font-semibold flex items-center gap-2">
-            <UserPlus className="w-5 h-5 text-custom-yellow" />
+            <UserPlus className="w-5 h-5 text-blue-500" />
             Invite Collaborator
           </h2>
 
@@ -251,7 +251,7 @@ console.log(team);
 
             <button
               onClick={handleAddMember}
-              className="w-[200px] bg-custom-yellow text-black px-5 py-2 rounded-lg hover:bg-orange-600 flex items-center gap-2"
+              className="w-[200px] bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 flex items-center gap-2"
             >
               <UserPlus className="w-5 h-5" />
               Add Member
@@ -259,9 +259,9 @@ console.log(team);
           </div>
         </div>
 
-        <div className="bg-[#DFF34940] rounded-xl md:p-5 p-3 shadow">
+        <div className="bg-white border border-gray-200 shadow-md rounded-xl md:p-5 p-3 ">
           <h2 className="text-xl font-semibold flex items-center gap-2">
-            <Users className="w-5 h-5 text-custom-yellow" />
+            <Users className="w-5 h-5 text-blue-500" />
             Team Members
           </h2>
 
@@ -272,7 +272,7 @@ console.log(team);
                 className="flex items-center justify-between bg-gray-50 border border-gray-200 p-4 rounded-lg"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-700 text-white rounded-full flex items-center justify-center text-lg font-semibold">
+                  <div className="w-12 h-12 text-white  bg-blue-500 border border-gray-200 shadow  rounded-full flex items-center justify-center text-lg font-semibold">
                     {member.name?.charAt(0).toUpperCase()}
                   </div>
 

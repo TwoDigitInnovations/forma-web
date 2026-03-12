@@ -44,7 +44,7 @@ const EditLayesDetails = ({
 
     if (roadData?.carriageway === "Double Carriageway") {
       const matchedSide = existingData.sides?.find(
-        (s) => s.side === preferredSide
+        (s) => s.side === preferredSide,
       );
 
       if (matchedSide) {
@@ -101,7 +101,7 @@ const EditLayesDetails = ({
         "put",
         `roads/updateLayer/${roadId}/${layerId}`,
         data,
-        router
+        router,
       );
       loader(false);
 
@@ -121,10 +121,10 @@ const EditLayesDetails = ({
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-4 overflow-y-auto">
-      <div className="bg-custom-black text-white rounded-2xl md:p-6 p-3 w-full max-w-3xl">
+      <div className="bg-white border border-gray-300 text-white rounded-2xl md:p-6 p-3 w-full max-w-3xl">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold">Update Layer Details</h2>
-          <X className="cursor-pointer" onClick={() => setIsOpen(false)} />
+          <h2 className="text-xl font-bold text-black">Update Layer Details</h2>
+          <X className="cursor-pointer text-black" onClick={setIsOpen} />
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -158,13 +158,15 @@ const EditLayesDetails = ({
           </div>
           {roadData.carriageway === "Double Carriageway" && (
             <div>
-              <label className="text-sm mb-2">Carriageway Side</label>
+              <label className="text-sm mb-2 text-black">
+                Carriageway Side
+              </label>
 
               <select
                 name="side"
                 value={formData.side}
                 onChange={handleChange}
-                className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border cursor-pointer"
+                className="w-full text-[14px] px-4 py-2 bg-gray-200 text-black rounded-lg border-gray-200 border cursor-pointer"
               >
                 <option value="Left">Left hand Side (LHS)</option>
                 <option value="Right">Right hand Side (RHS)</option>
@@ -182,12 +184,14 @@ const EditLayesDetails = ({
             />
 
             <div>
-              <label className="block mb-2 text-sm">Quality Status</label>
+              <label className="block mb-2 text-sm text-black">
+                Quality Status
+              </label>
               <select
                 name="QualityStatus"
                 value={formData.QualityStatus}
                 onChange={handleChange}
-                className="w-full px-4 py-2 rounded-lg bg-[#5F5F5F] border border-gray-600 text-white"
+                className="w-full px-4 py-2 rounded-lg bg-gray-200 text-black  border-gray-200 border  "
               >
                 <option value="Approved">Approved</option>
                 <option value="PendingReviews">Pending Review</option>
@@ -196,13 +200,13 @@ const EditLayesDetails = ({
             </div>
           </div>
           <div>
-            <label className="block mb-1 text-sm">Notes</label>
+            <label className="block mb-1 text-sm text-black">Notes</label>
             <textarea
               name="Notes"
               value={formData.Notes}
               onChange={handleChange}
               rows={5}
-              className="w-full px-3 py-2 rounded-lg bg-[#5F5F5F] border border-gray-600 text-white"
+              className="w-full px-3 py-2 bg-gray-200 text-black rounded-lg border-gray-200 "
               placeholder="Write notes or comments..."
             ></textarea>
           </div>
@@ -211,7 +215,7 @@ const EditLayesDetails = ({
           <div className="flex justify-end gap-3 pt-3">
             <button
               type="button"
-              onClick={() => setIsOpen(false)}
+              onClick={setIsOpen}
               className="px-4 py-2 rounded-lg cursor-pointer text-black bg-gray-300"
             >
               Cancel
@@ -219,7 +223,7 @@ const EditLayesDetails = ({
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg cursor-pointer bg-custom-yellow text-black"
+              className="px-4 py-2 rounded-lg cursor-pointer bg-blue-500 text-white"
             >
               Update Layer
             </button>

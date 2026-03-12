@@ -23,7 +23,7 @@ function BeforeLoginNavbar() {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      confirmButtonColor: "#e0f349",
+      confirmButtonColor: "#2563eb",
       customClass: {
         confirmButton: "px-12 rounded-xl",
         confirmButtonText: "text-black font-medium",
@@ -41,26 +41,25 @@ function BeforeLoginNavbar() {
     });
   };
   return (
-    <header className="border-b border-gray-800 bg-black">
+    <header className="border-b border-gray-300 bg-white">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <Flame className="w-6 h-6 text-custom-yellow" />
-          <span className="text-xl font-bold text-white">Forma</span>
+          <Flame className="w-6 h-6 text-blue-500" />
+          <span className="text-xl font-bold text-black">Forma</span>
         </div>
         {user?._id ? (
           <div className="relative hidden md:flex">
-            
             <div
               className="flex items-center gap-2 cursor-pointer text-white"
               onClick={() => setProfileOpen(!profileOpen)}
             >
-              <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-full bg-gray-500 flex items-center justify-center">
                 <User2 size={18} />
               </div>
-              <span className="hidden sm:block">{user?.name}</span>
+              <span className="hidden text-black sm:block">{user?.name}</span>
               <ChevronUp
                 className={`ml-1 h-4 w-4 transition-transform ${
                   profileOpen ? "transform rotate-180" : ""
@@ -68,19 +67,18 @@ function BeforeLoginNavbar() {
               />
             </div>
 
-            {/* Dropdown */}
             {profileOpen && (
-              <div className="absolute left-0 top-8 mt-3 w-48 bg-[#0f1629] border border-gray-800 rounded-xl shadow-lg z-50">
+              <div className="absolute left-0 top-8 mt-3 w-48 bg-white border border-gray-800 rounded-xl shadow-lg z-50">
                 <button
                   onClick={() => router.push("/MyProfile")}
-                  className="flex items-center space-x-3 w-full text-left px-4 py-2.5 text-sm text-gray-200 cursor-pointer"
+                  className="flex items-center space-x-3 w-full text-left px-4 py-2.5 text-sm text-gray-600 cursor-pointer"
                 >
-                  <User2 size={20} className="text-white" />
+                  <User2 size={20} className="text-black" />
                   <span>My Profile</span>
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-white hover:bg-[#111827] rounded-xl cursor-pointer"
+                  className="w-full flex items-center text-sm gap-3 px-4 py-2.5 text-black  rounded-xl cursor-pointer"
                 >
                   <LogOut className="w-5 h-5" />
                   Sign Out
@@ -91,15 +89,14 @@ function BeforeLoginNavbar() {
         ) : (
           <div className="hidden md:flex items-center gap-3">
             <button
-              style={{ backgroundColor: "#e0f349" }}
-              className="px-5 py-2 rounded-lg text-black font-medium hover:opacity-90 transition-all cursor-pointer"
-              onClick={() => router.push("/Ragister")}
+              className="px-5 py-2 bg-blue-500 rounded-lg text-white font-medium hover:opacity-90 transition-all cursor-pointer"
+              onClick={() => router.push("/ragister")}
             >
               Get Started
             </button>
 
             <button
-              className="px-5 py-2 text-white hover:text-gray-300 border border-custom-yellow  rounded-lg transition-all cursor-pointer"
+              className="px-5 py-2 text-blue-500 hover:text-blue-600 border border-blue-500  rounded-lg transition-all cursor-pointer"
               onClick={() => router.push("/login")}
             >
               Log In
@@ -136,10 +133,9 @@ function BeforeLoginNavbar() {
           ) : (
             <div>
               <button
-                style={{ backgroundColor: "#e0f349" }}
-                className="px-5 py-2 rounded-lg text-black font-medium hover:opacity-90 w-full"
+                className="px-5 py-2 bg-blue-500 rounded-lg text-white font-medium hover:opacity-90 w-full"
                 onClick={() => {
-                  router.push("/Ragister");
+                  router.push("/ragister");
                   setMenuOpen(false);
                 }}
               >

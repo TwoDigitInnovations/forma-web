@@ -74,35 +74,35 @@ const AddChecklistForm = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl">
-        <h2 className="text-xl font-bold mb-1">
+      <div className="bg-white border border-gray-200 text-white rounded-[38px] p-6 w-full max-w-2xl">
+        <h2 className="text-xl font-bold mb-1 text-black">
           {" "}
           {editId ? "Update" : "Add"} Checklist Item
         </h2>
-        <p className="text-sm text-gray-300 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Add a new item to the pre-commencement checklist.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Item Name */}
-          <label className="text-white text-sm">Item Name</label>
+          <label className="text-black text-sm">Item Name</label>
           <input
             type="text"
             name="itemName"
             placeholder="Item Name"
             value={formData.itemName}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
             required
           />
 
           {/* Status */}
-          <label className="text-white text-sm">Status</label>
+          <label className="text-black text-sm">Status</label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
           >
             <option value="Pending">Pending</option>
             <option value="Submitted">Submitted</option>
@@ -112,35 +112,35 @@ const AddChecklistForm = ({
           </select>
 
           {/* Responsible Party */}
-          <label className="text-white text-sm">Responsible Party</label>
+          <label className="text-black text-sm">Responsible Party</label>
           <input
             type="text"
             name="responsibleParty"
             placeholder="e.g., Contractor"
             value={formData.responsibleParty}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
           />
 
           {/* Deadline */}
-          <label className="text-white text-sm">Deadline</label>
+          <label className="text-black text-sm">Deadline</label>
           <input
             type="date"
             name="deadline"
             value={formData.deadline}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
           />
 
           {/* Notes */}
-          <label className="text-white text-sm">Notes</label>
+          <label className="text-black text-sm">Notes</label>
           <textarea
             name="notes"
             placeholder="Additional notes or comments..."
             value={formData.notes}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
           />
 
           {/* Buttons */}
@@ -148,14 +148,14 @@ const AddChecklistForm = ({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 text-sm rounded-lg bg-gray-700 hover:bg-gray-600"
+              className="px-4 py-2 text-sm rounded-lg bg-gray-200 cursor-pointer hover:bg-gray-300 text-black"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-custom-yellow text-black hover:bg-yellow-400"
+              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-blue-500 text-white hover:bg-blue-500"
             >
               {editId ? "Update" : "Add"} Item
             </button>

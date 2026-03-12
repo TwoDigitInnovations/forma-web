@@ -11,13 +11,13 @@ function MeetingHistory({
 }) {
   if (!meetings.length) {
     return (
-      <div className="bg-custom-black rounded-lg border border-gray-800 flex items-center justify-center md:h-[500px] h-[650px]">
+      <div className="bg-[var(--custom-lightGray)] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
         <div className="text-center">
-          <FileText size={64} className="mx-auto text-custom-yellow mb-4" />
-          <p className="text-gray-400 mb-4">No meeting minutes recorded yet.</p>
+          <FileText size={64} className="mx-auto text-blue-500 mb-4" />
+          <p className="text-gray-600 mb-4">No meeting minutes recorded yet.</p>
           <button
             onClick={() => setOpen(true)}
-            className="text-black bg-custom-yellow px-4 py-2 rounded-lg"
+            className="text-white bg-[var(--custom-blue)] cursor-pointer px-4 py-2 rounded-lg"
           >
             Record your first meeting
           </button>
@@ -31,27 +31,27 @@ function MeetingHistory({
       {meetings.map((meeting) => (
         <div
           key={meeting._id}
-          className="bg-custom-black rounded-xl border border-gray-800 p-3 md:p-4 hover:border-custom-blue transition "
+          className="bg-white rounded-xl border shadow-2xl border-gray-200 p-3 md:p-4 hover:border-custom-blue transition "
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-custom-black bg-custom-yellow px-3 py-1 rounded-full">
+            <span className="text-xs text-white bg-[var(--custom-blue)] px-3 py-1 rounded-full">
               MINUTE REGISTRY
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-gray-800">
               {new Date(meeting.meetingDate).toLocaleDateString()}
             </span>
           </div>
 
-          <h3 className="text-white text-lg font-semibold mb-4">
+          <h3 className="text-black text-lg font-semibold mb-4">
             {meeting.meetingTitle}
           </h3>
 
           <div className="border-t border-gray-800 pt-4 mt-4 flex items-center justify-between text-sm">
-            <div className="flex gap-6 text-gray-400">
+            <div className="flex gap-6 text-gray-800">
               <div className="flex items-center gap-2">
-                <Users size={16} className="text-custom-yellow" />
+                <Users size={16} className="text-blue-500" />
                 <span>
-                  <span className="text-white font-medium">
+                  <span className="text-gray-800 font-medium">
                     {meeting.membersPresent?.length || 0}
                   </span>{" "}
                   Attendees
@@ -59,7 +59,7 @@ function MeetingHistory({
               </div>
 
               <div className="flex items-center gap-2">
-                <Briefcase size={16} className="text-custom-yellow" />
+                <Briefcase size={16} className="text-blue-500" />
                 <span>
                   <span className="text-white font-medium">
                     {meeting?.projectActionRegistry?.length || 0}

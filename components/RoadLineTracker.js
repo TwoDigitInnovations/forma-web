@@ -97,39 +97,14 @@ function RoadLineTracker({ loader }) {
 
   return (
     <div className="md:mt-0 mt-2">
-      {/* <div className="flex flex-col gap-2">
-        <div className="flex justify-between items-center mb-1">
-          <p>Planned Progress </p>
-          <p className="text-custom-yellow font-semibold">{"45"}%</p>
-        </div>
-        <div className="w-full bg-gray-600/40 h-5 rounded-full overflow-hidden relative">
-          <div
-            className="h-full bg-custom-yellow rounded-full transition-all"
-            style={{ width: `${25}%` }}
-          ></div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 mt-2.5 mb-2.5">
-        <div className="flex justify-between items-center mb-1">
-          <p className="text-md text-white">Actual Progress </p>
-          <p className="text-custom-yellow font-semibold">{"45"}%</p>
-        </div>
-        <div className="w-full bg-gray-600/40 h-4 rounded-full overflow-hidden relative">
-          <div
-            className="h-full bg-custom-green rounded-full transition-all"
-            style={{ width: `${45}%` }}
-          ></div>
-        </div>
-      </div> */}
-
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-White flex items-center justify-center gap-2">
+        <h2 className="text-lg font-semibold text-black flex items-center justify-center gap-2">
           <Construction /> Roads ({roads.length})
         </h2>
 
         <button
           onClick={() => setIsAddRoadOpen(true)}
-          className="bg-custom-yellow text-black px-4 py-2 rounded-lg transition-all cursor-pointer"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg transition-all cursor-pointer"
         >
           Add Road
         </button>
@@ -137,23 +112,23 @@ function RoadLineTracker({ loader }) {
 
       <div className="space-y-4">
         {roads?.map((road, index) => (
-          <div key={index} className="shadow-md">
+          <div key={index} className="">
             <div className="relative flex justify-between items-center">
-              <h3 className="font-semibold text-white text-xl flex items-center gap-2">
-                <TrafficCone className="text-custom-yellow" />
+              <h3 className="font-semibold text-black text-xl flex items-center gap-2">
+                <TrafficCone className="text-blue-500" />
                 {road.roadName}
-                <span className="text-custom-yellow font-normal">({5}%)</span>
+                <span className="text-blue-500 font-normal">({5}%)</span>
               </h3>
 
               <EllipsisVertical
-                className="text-white cursor-pointer hover:text-custom-yellow transition"
+                className="text-black cursor-pointer hover:text-blue-500 transition"
                 onClick={() => setOpen(!open)}
               />
 
               {open && (
                 <div
-                  className="absolute right-0 top-8 w-[180px] bg-[#1f1f1f] border border-white/10 
-              rounded-xl shadow-xl z-30 overflow-hidden animate-fadeIn"
+                  className="absolute right-0 top-8 w-[180px] bg-white border border-white/10 
+              rounded-xl shadow-2xl z-30 overflow-hidden animate-fadeIn"
                 >
                   <button
                     onClick={() => {
@@ -162,10 +137,10 @@ function RoadLineTracker({ loader }) {
                       setIsAddRoadOpen(true);
                       setOpen(false);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm text-white hover:bg-[#2a2a2a] 
+                    className="w-full text-left px-4 py-3 text-sm text-black hover:bg-gray-200 
                 transition border-b border-white/10 flex cursor-pointer items-center gap-2"
                   >
-                    <SquarePen className="text-custom-yellow" size={16} />
+                    <SquarePen className="text-blue-500" size={16} />
                     Edit Road
                   </button>
 
@@ -188,14 +163,14 @@ function RoadLineTracker({ loader }) {
               {road?.constructionLayers?.map((layer, layerIndex) => (
                 <div
                   key={layerIndex}
-                  className="bg-[#222] p-4 rounded-xl border border-white/10 shadow-sm"
+                  className="bg-gray-100 p-4 rounded-xl border border-white/10 shadow-sm"
                 >
                   <div className="flex justify-between items-center">
-                    <p className="text-gray-200 font-medium">{layer.name}</p>
+                    <p className="text-gray-800 font-medium">{layer.name}</p>
 
                     <div className="flex items-center gap-4">
                       <RotateCcw
-                        className="text-white cursor-pointer text-custom-yellow hover:text-yellow-400"
+                        className=" cursor-pointer text-blue-500 hover:text-blue-400"
                         onClick={() => {
                           setIsOpen(true);
                           setRoadId(road._id);
@@ -204,7 +179,7 @@ function RoadLineTracker({ loader }) {
                       />
 
                       <Plus
-                        className="text-custom-yellow cursor-pointer hover:text-white"
+                        className="text-blue-500 cursor-pointer hover:text-black"
                         onClick={() => {
                           setIsEditOpen(true);
                           setLayersDetails(layer);
@@ -249,7 +224,7 @@ function RoadLineTracker({ loader }) {
                       return (
                         <div className="mt-3" key={index}>
                           <div className="flex justify-between items-center mb-1">
-                            <p className="text-custom-yellow font-semibold">
+                            <p className="text-blue-500 font-semibold">
                               {sideObj.side === "Left"
                                 ? "LHS"
                                 : sideObj.side === "Right"
@@ -272,7 +247,7 @@ function RoadLineTracker({ loader }) {
                               return (
                                 <div
                                   key={i}
-                                  className="absolute top-0 h-full bg-custom-yellow"
+                                  className="absolute top-0 h-full bg-blue-500"
                                   style={{
                                     left: `${leftPercent}%`,
                                     width: `${widthPercent}%`,
@@ -281,11 +256,11 @@ function RoadLineTracker({ loader }) {
                               );
                             })}
 
-                            <p className="text-[12px] absolute bottom-[2px] left-2 text-white">
+                            <p className="text-[12px] absolute bottom-[2px] left-2 text-black">
                               {calculatedCompletedKm} KM
                             </p>
 
-                            <p className="text-[12px] absolute bottom-[1px] right-2 text-white">
+                            <p className="text-[12px] absolute bottom-[1px] right-2 text-black">
                               {totalKm} KM
                             </p>
                           </div>
@@ -296,7 +271,7 @@ function RoadLineTracker({ loader }) {
                                 key={histIndex}
                                 className="flex items-start gap-3 mb-2"
                               >
-                                <div className="h-3 w-3 rounded-full bg-custom-yellow mt-1"></div>
+                                <div className="h-3 w-3 rounded-full bg-blue-500mt-1"></div>
 
                                 <div className="flex flex-col">
                                   <p className="font-semibold text-sm">
@@ -308,7 +283,7 @@ function RoadLineTracker({ loader }) {
                             ))}
                           </div>
 
-                          <div className="text-right text-sm text-gray-300 mt-1">
+                          <div className="text-right text-sm text-gray-600 mt-1">
                             {calculatedCompletedKm?.toFixed(2)} km completed
                           </div>
                         </div>
@@ -321,7 +296,12 @@ function RoadLineTracker({ loader }) {
 
             {isEditOpen && (
               <EditLayesDetails
-                setIsOpen={setIsEditOpen}
+                setIsOpen={() => {
+                  setIsEditOpen(false);
+                  setLayersDetails("");
+                  setRoadData("");
+                  setRoadId("");
+                }}
                 loader={loader}
                 projectId={projectId}
                 getAllRoads={getAllRoads}

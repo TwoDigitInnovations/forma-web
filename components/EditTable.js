@@ -200,7 +200,7 @@ const EditableTable = ({ activities, setActivities }) => {
 
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="bg-custom-yellow text-gray-700">
+          <tr className="bg-blue-500 text-white">
             <th className="py-3 px-3 text-left w-[100px]">Item No</th>
             <th className="py-3 px-3 text-left min-w-[250px]">Description</th>
             <th className="py-3 px-3 text-center w-[120px]">Duration (D)</th>
@@ -390,7 +390,7 @@ const EditableTable = ({ activities, setActivities }) => {
       <div className="flex justify-end mt-4 gap-3 mr-4">
         <button
           onClick={() => handleAddRow("section")}
-          className="px-4 py-2 bg-custom-yellow text-black rounded-lg"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
         >
           + Add Section
         </button>
@@ -400,7 +400,7 @@ const EditableTable = ({ activities, setActivities }) => {
           onClick={() => hasSection && handleAddRow("activity")}
           className={`px-4 py-2 rounded-lg ${
             hasSection
-              ? "bg-custom-yellow text-black"
+              ? "bg-blue-500 text-white"
               : "bg-gray-300 text-gray-600 cursor-not-allowed"
           }`}
         >

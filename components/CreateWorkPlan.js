@@ -50,9 +50,9 @@ const CreateWorkPlan = ({ setIsOpen, loader, getAllProject, projectId }) => {
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-            <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl">
-                <h2 className="text-xl font-bold mb-1">Create New Work Plan</h2>
-                <p className="text-sm text-gray-300 mb-4">
+            <div className="bg-white text-white rounded-[38px] p-6 w-full max-w-2xl">
+                <h2 className="text-xl font-bold mb-1 text-black">Create New Work Plan</h2>
+                <p className="text-sm text-gray-600 mb-4">
                     Fill in the details below to start a new work plan.
                 </p>
 
@@ -88,13 +88,13 @@ const CreateWorkPlan = ({ setIsOpen, loader, getAllProject, projectId }) => {
                         <button
                             type="button"
                             onClick={() => setIsOpen(false)}
-                            className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-gray-700 hover:bg-gray-600"
+                            className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-gray-200 hover:bg-gray-300 text-black"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-custom-yellow text-black hover:bg-yellow-400"
+                            className="px-4 py-2.5 cursor-pointer text-sm rounded-lg bg-blue-500 text-white"
                         >
                             Create Plan
                         </button>

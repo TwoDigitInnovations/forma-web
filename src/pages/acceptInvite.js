@@ -106,12 +106,16 @@ function AcceptInvite() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 via-white to-blue-100 text-white flex flex-col items-center justify-center relative overflow-hidden px-4 py-10">
+      <div className="absolute top-[-80px] left-[-80px] w-[400px] h-[400px] bg-blue-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute bottom-[-80px] right-[-80px] w-[400px] h-[400px] bg-cyan-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[160px] opacity-10 pointer-events-none"></div>
+
       <div className="w-full max-w-md">
         {inviteStatus === "loading" && (
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-2xl">
             <div className="flex flex-col items-center justify-center space-y-4">
-              <Loader2 className="w-12 h-12 text-custom-yellow animate-spin" />
+              <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
               <p className="text-gray-300 text-lg">Verifying invitation...</p>
             </div>
           </div>
@@ -122,20 +126,20 @@ function AcceptInvite() {
             {" "}
             <button
               onClick={() => router.push("/")}
-              className="flex items-center gap-2 text-gray-400 hover:text-custom-yellow font-medium text-sm transition-all duration-300 cursor-pointer mb-6 group"
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-500 font-medium text-sm transition-all duration-300 cursor-pointer mb-6 group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back
             </button>
-            <div className="bg-custom-black backdrop-blur-sm rounded-2xl md:px-6 px-3 py-4 border border-gray-700 shadow-2xl">
+            <div className="bg-white backdrop-blur-sm rounded-2xl md:px-6 px-3 py-4 border border-gray-300 shadow-2xl">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-custom-yellow rounded-full mb-4">
-                  <Mail className="w-8 h-8 text-custom-black" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-full mb-4">
+                  <Mail className="w-8 h-8 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-white mb-2">
+                <h1 className="text-3xl font-bold text-black mb-2">
                   You've been invited
                 </h1>
-                <p className="text-gray-400">
+                <p className="text-gray-600">
                   Join the organization to a member account
                 </p>
               </div>
@@ -143,11 +147,11 @@ function AcceptInvite() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
                       First Name
                     </label>
                     <div className="relative">
-                      <User2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <User2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                       <input
                         type="text"
                         value={form.firstName}
@@ -156,17 +160,17 @@ function AcceptInvite() {
                         }
                         placeholder="John"
                         required
-                        className="w-full bg-gray-900/50 text-white p-3 pl-11 rounded-xl border border-gray-700 focus:border-custom-yellow focus:outline-none focus:ring-2 focus:ring-custom-yellow/20 transition-all"
+                        className="w-full bg-gray-200 text-black p-3 pl-11 rounded-xl border border-gray-200 focus:border-custom-yellow focus:outline-none focus:ring-1 focus:ring-custom-yellow/20 transition-all"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
                       Last Name
                     </label>
                     <div className="relative">
-                      <User2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <User2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                       <input
                         type="text"
                         value={form.lastName}
@@ -175,62 +179,62 @@ function AcceptInvite() {
                         }
                         placeholder="Doe"
                         required
-                        className="w-full bg-gray-900/50 text-white p-3 pl-11 rounded-xl border border-gray-700 focus:border-custom-yellow focus:outline-none focus:ring-2 focus:ring-custom-yellow/20 transition-all"
+                        className="w-full bg-gray-200 text-black p-3 pl-11 rounded-xl border border-gray-200 focus:border-custom-yellow focus:outline-none focus:ring-1 focus:ring-custom-yellow/20 transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
                     Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                     <input
                       type="email"
                       value={email}
                       disabled
-                      className="w-full bg-gray-900/30 text-gray-200 p-3 pl-11 rounded-xl border border-gray-700 cursor-not-allowed"
+                      className="w-full bg-gray-200 text-black p-3 pl-11 rounded-xl border border-gray-200 cursor-not-allowed transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
                     Phone Number
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                     <input
                       type="tel"
                       value={form.phone}
                       onChange={(e) => handleChange("phone", e.target.value)}
                       placeholder="+1 (555) 000-0000"
                       required
-                      className="w-full bg-gray-900/50 text-white p-3 pl-11 rounded-xl border border-gray-700 focus:border-custom-yellow focus:outline-none focus:ring-2 focus:ring-custom-yellow/20 transition-all"
+                      className="w-full bg-gray-200 text-black p-3 pl-11 rounded-xl border border-gray-200 focus:border-custom-yellow focus:outline-none focus:ring-1 focus:ring-custom-yellow/20 transition-all"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
                     <input
                       type={showPass ? "text" : "password"}
                       value={form.password}
                       onChange={(e) => handleChange("password", e.target.value)}
                       placeholder="Create a strong password"
                       required
-                      className="w-full bg-gray-900/50 text-white p-3 pl-11 pr-11 rounded-xl border border-gray-700 focus:border-custom-yellow focus:outline-none focus:ring-2 focus:ring-custom-yellow/20 transition-all"
+                      className="w-full bg-gray-200 text-black p-3 pl-11 rounded-xl border border-gray-200 focus:border-custom-yellow focus:outline-none focus:ring-1 focus:ring-custom-yellow/20 transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-custom-yellow transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-blue-500 transition-colors"
                     >
                       {showPass ? (
                         <EyeOff className="w-5 h-5" />
@@ -244,7 +248,7 @@ function AcceptInvite() {
                 <button
                   onClick={submitSignup}
                   disabled={loading}
-                  className="w-full bg-custom-yellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
+                  className="w-full bg-blue-500 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
                 >
                   {loading ? (
                     <>
@@ -253,17 +257,17 @@ function AcceptInvite() {
                     </>
                   ) : (
                     <>
-                      Ragister & Join Team
+                      ragister & Join Team
                       <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </button>
 
-                <p className="text-center text-gray-400 text-sm">
+                <p className="text-center text-gray-600 text-sm">
                   Already have an account?{" "}
                   <button
                     onClick={() => router.push("login")}
-                    className="text-custom-yellow hover:underline font-medium cursor-pointer"
+                    className="text-blue-500 hover:underline font-medium cursor-pointer"
                   >
                     Sign in
                   </button>
@@ -291,7 +295,7 @@ function AcceptInvite() {
               <div className="bg-gray-900/50 rounded-xl p-4 border border-gray-700">
                 <p className="text-sm text-gray-400 mb-1">Invitation for:</p>
                 <p className="text-white font-medium flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-custom-yellow" />
+                  <Mail className="w-4 h-4 text-blue-500" />
                   {inviteEmail}
                 </p>
               </div>
@@ -315,7 +319,7 @@ function AcceptInvite() {
                 localStorage.removeItem("token");
                 setInviteStatus("form");
               }}
-              className="w-full bg-custom-yellow hover:bg-yellow-500 cursor-pointer text-black font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20"
+              className="w-full bg-blue-500 hover:bg-blue-600 cursor-pointer text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20"
             >
               Sign Out to Continue
             </button>
@@ -336,7 +340,7 @@ function AcceptInvite() {
               </p>
               <button
                 onClick={() => router.push("/")}
-                className="inline-flex items-center gap-2 bg-custom-yellow hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
+                className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-custom-yellow/20 cursor-pointer"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Go to Home

@@ -46,7 +46,6 @@ const AddAttendeeGroupForm = ({
     setFormData((prev) => ({ ...prev, title: e.target.value }));
   };
 
-
   const handleAttendeeChange = (index, field, value) => {
     const updated = [...formData.attendees];
     updated[index][field] = value;
@@ -82,9 +81,7 @@ const AddAttendeeGroupForm = ({
       createdBy: user._id,
     };
 
-    const url = editId
-      ? `attendee/update/${editId}`
-      : `attendee/create`;
+    const url = editId ? `attendee/update/${editId}` : `attendee/create`;
 
     Api(editId ? "put" : "post", url, data, router)
       .then((res) => {
@@ -92,7 +89,7 @@ const AddAttendeeGroupForm = ({
 
         if (res?.status) {
           toast.success(
-            `Attendee group ${editId ? "updated" : "created"} successfully`
+            `Attendee group ${editId ? "updated" : "created"} successfully`,
           );
           getAllGroups();
           setIsOpen(false);
@@ -108,29 +105,29 @@ const AddAttendeeGroupForm = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold mb-1">
+      <div className="bg-white text-white rounded-[38px] p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <h2 className="text-xl text-black font-bold mb-1">
           {editId ? "Update" : "Add"} Attendee Group
         </h2>
-        <p className="text-sm text-gray-300 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Create a reusable attendee group for meeting minutes.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Group Title */}
-          <label className="text-sm">Group Title</label>
+          <label className="text-sm text-black">Group Title</label>
           <input
             type="text"
             value={formData.title}
             onChange={handleTitleChange}
-            className="w-full px-4 py-2 bg-[#5F5F5F] rounded-lg"
+            className="w-full px-4 py-2 bg-gray-200 text-black rounded-lg"
             placeholder="e.g. Weekly Client Meeting"
             required
           />
 
           {/* Attendees */}
           <div>
-            <label className="text-sm mb-2 block">Attendees</label>
+            <label className="text-sm mb-2 block text-black">Attendees</label>
 
             {formData.attendees.map((attendee, index) => (
               <div
@@ -144,7 +141,7 @@ const AddAttendeeGroupForm = ({
                   onChange={(e) =>
                     handleAttendeeChange(index, "name", e.target.value)
                   }
-                  className="px-3 py-2 bg-[#5F5F5F] rounded"
+                  className="px-3 py-2 bg-gray-200 text-black rounded"
                 />
 
                 <input
@@ -152,13 +149,9 @@ const AddAttendeeGroupForm = ({
                   placeholder="Designation"
                   value={attendee.designation}
                   onChange={(e) =>
-                    handleAttendeeChange(
-                      index,
-                      "designation",
-                      e.target.value
-                    )
+                    handleAttendeeChange(index, "designation", e.target.value)
                   }
-                  className="px-3 py-2 bg-[#5F5F5F] rounded"
+                  className="px-3 py-2 bg-gray-200 text-black rounded"
                 />
 
                 <div className="flex gap-2">
@@ -170,10 +163,10 @@ const AddAttendeeGroupForm = ({
                       handleAttendeeChange(
                         index,
                         "organization",
-                        e.target.value
+                        e.target.value,
                       )
                     }
-                    className="flex-1 px-3 py-2 bg-[#5F5F5F] rounded"
+                    className="flex-1 px-3 py-2 bg-gray-200 text-black rounded"
                   />
 
                   {formData.attendees.length > 1 && (
@@ -192,7 +185,7 @@ const AddAttendeeGroupForm = ({
             <button
               type="button"
               onClick={addAttendee}
-              className="mt-2 text-sm cursor-pointer bg-custom-yellow text-black px-3 py-2  rounded"
+              className="mt-2 text-sm cursor-pointer bg-[var(--custom-blue)] text-white px-3 py-2  rounded"
             >
               + Add Attendee
             </button>
@@ -203,14 +196,14 @@ const AddAttendeeGroupForm = ({
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-3 cursor-pointer  text-sm rounded-lg bg-gray-700"
+              className="px-4 py-3 cursor-pointer  text-sm rounded-lg bg-gray-200 text-black"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-4 py-3 text-sm rounded-lg cursor-pointer bg-custom-yellow text-black"
+              className="px-4 py-3 text-sm rounded-lg cursor-pointer bg-[var(--custom-blue)] text-white"
             >
               {editId ? "Update" : "Create"} Group
             </button>

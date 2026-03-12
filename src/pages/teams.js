@@ -63,7 +63,7 @@ const TeamMembers = (props) => {
         "delete",
         `auth/deleteTeamMember/${deleteId}`,
         { id: user._id },
-        router
+        router,
       );
 
       if (res?.status) {
@@ -108,7 +108,7 @@ const TeamMembers = (props) => {
         "patch",
         "auth/update-user-status",
         { userId, status },
-        router
+        router,
       );
 
       if (res?.status) {
@@ -148,7 +148,6 @@ const TeamMembers = (props) => {
   const StatusCell = ({ user, onStatusChange }) => {
     return (
       <div className="flex justify-center items-center max-w-[50px]">
-        
         {user.status === "verified" && (
           <div className="relative group cursor-pointer">
             <XCircle
@@ -162,10 +161,8 @@ const TeamMembers = (props) => {
           </div>
         )}
 
-        
         {user.status === "pending" && (
           <div className="flex items-center justify-center gap-4">
-            
             <div className="relative group cursor-pointer">
               <CheckCircle
                 size={20}
@@ -207,23 +204,20 @@ const TeamMembers = (props) => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-6 bg-black text-white">
+    <div className="min-h-screen p-4 md:p-6 bg-[var(--custom-lightGray)] text-white">
       <div className="max-w-7xl mx-auto ">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <h1
-              className="md:text-3xl text-2xl font-bold"
-              style={{ color: "#e0f349" }}
-            >
+            <h1 className="md:text-3xl text-2xl text-black font-bold">
               {user.name}'s Organization
             </h1>
 
             <div className="flex gap-3 w-full md:w-auto">
               <button
                 onClick={() => setIsInviteOpen(true)}
-                className="min-w-[180px] w-full bg-custom-yellow py-2.5 px-3 text-black 
-          rounded-[12px] flex cursor-pointer items-center justify-center gap-2 hover:bg-yellow-400"
+                className="min-w-[180px] w-full bg-[var(--custom-blue)] py-2.5 px-3 text-white 
+          rounded-[12px] flex cursor-pointer items-center justify-center gap-2 hover:bg-blue-600"
               >
                 <Plus size={18} />
                 Invite Member
@@ -232,10 +226,10 @@ const TeamMembers = (props) => {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-custom-black border border-gray-700 md:p-6 px-3 py-6 mb-6">
+        <div className="rounded-2xl bg-white shadow-2xl  md:p-6 px-3 py-6 mb-6">
           {/* Header */}
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
+            <h2 className="text-2xl font-semibold text-black flex items-center gap-2">
               {<CreditCard />} Plan & Seats
             </h2>
             <p className="text-sm text-gray-400">
@@ -245,53 +239,55 @@ const TeamMembers = (props) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Current Plan */}
-            <div className="rounded-xl bg-black p-5 border border-gray-700">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <span className="text-custom-yellow">{<CreditCard />}</span>
+            <div className="rounded-xl bg-gray-100 p-5 shadow-2xl">
+              <div className="flex items-center gap-2 text-gray-700 mb-2">
+                <span className="text-blue-500">{<CreditCard />}</span>
                 <span>Current Plan</span>
               </div>
-              <h3 className="text-2xl font-semibold text-white capitalize">
+              <h3 className="text-2xl font-semibold text-gray-500 capitalize">
                 {user?.subscription?.planName || "Free Plan"}
               </h3>
             </div>
 
             {/* Seats Used */}
-            <div className="rounded-xl bg-black p-5 border border-gray-700">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <span className="text-custom-yellow">{<User2 />}</span>
+            <div className="rounded-xl bg-gray-100 p-5 shadow-2xl">
+              <div className="flex items-center gap-2 text-gray-700 mb-2">
+                <span className="text-blue-500">{<User2 />}</span>
                 <span>Seats Used</span>
               </div>
 
-              <h3 className="text-2xl font-semibold text-white">
+              <h3 className="text-2xl font-semibold text-black">
                 {user?.subscription?.usedTeamsSize || "0"}{" "}
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-gray-500">
                   of {user?.subscription?.teamSize}{" "}
                 </span>
               </h3>
 
               <div className="mt-3 h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500" style={{ width: "0%" }} />
+                <div
+                  className="h-full bg-[var(--custom-blue)]"
+                  style={{ width: "0%" }}
+                />
               </div>
             </div>
 
-            {/* Available Seats */}
-            <div className="rounded-xl bg-black p-5 border border-gray-700">
-              <div className="flex items-center gap-2 text-gray-400 mb-2">
-                <span className="text-custom-yellow">{<Sheet />}</span>
+            <div className="rounded-xl bg-gray-100 p-5 shadow-2xl">
+              <div className="flex items-center gap-2 text-gray-600 mb-2">
+                <span className="text-blue-500">{<Sheet />}</span>
                 <span>Available Seats</span>
               </div>
 
-              <h3 className="text-2xl font-semibold text-white">
+              <h3 className="text-2xl font-semibold text-gray-500">
                 {user?.subscription?.teamSize -
                   (user?.subscription?.usedTeamsSize || 0)}
               </h3>
             </div>
           </div>
 
-          <div className="mt-6 pt-5 border-t border-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-sm text-white">
+          <div className="mt-6 pt-5 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-sm text-black">
               You can invite{" "}
-              <span className="text-white font-medium">
+              <span className="text-black font-medium">
                 {" "}
                 {user?.subscription?.teamSize -
                   (user?.subscription?.usedTeamsSize || 0)}
@@ -301,18 +297,17 @@ const TeamMembers = (props) => {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-gray-700 bg-custom-black overflow-hidden">
-          {/* Header */}
+        <div className="rounded-2xl bg-white shadow-2xl  overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-700">
-            <h2 className="text-xl font-semibold text-white">Team Members</h2>
-            <p className="text-sm text-gray-400">
+            <h2 className="text-xl font-semibold text-black">Team Members</h2>
+            <p className="text-sm text-gray-600">
               Manage your organization's team members and their roles
             </p>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="text-sm text-gray-400 border-b border-gray-700">
+              <thead className="text-sm bg-[var(--custom-blue)] text-white ">
                 <tr>
                   <th className="px-6 py-4">Member</th>
                   <th className="px-6 py-4">Role</th>
@@ -321,22 +316,21 @@ const TeamMembers = (props) => {
                 </tr>
               </thead>
 
-              <tr className="border-b border-gray-700 hover:bg-white/5 transition">
-                {/* Member */}
+              <tr className=" hover:bg-white/5 transition">
                 <td className="px-6 py-4 flex items-center gap-4">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1E293B]">
-                    <Crown size={20} className="text-yellow-400" />
+                    <Crown size={20} className="text-blue-500" />
                   </div>
 
                   <div>
-                    <p className="font-medium text-white">{user?.name}</p>
-                    <p className="text-sm text-gray-400">{user?.email}</p>
+                    <p className="font-medium text-black">{user?.name}</p>
+                    <p className="text-sm text-gray-600">{user?.email}</p>
                   </div>
                 </td>
 
                 {/* Role */}
                 <td className="px-6 py-4">
-                  <span className="px-3 py-1 rounded-full text-xs font-medium text-yellow-400 bg-yellow-400/10">
+                  <span className="px-3 py-1 rounded-full text-xs font-medium text-yellow-400 bg-blue-600/10">
                     Owner
                   </span>
                 </td>
@@ -362,8 +356,8 @@ const TeamMembers = (props) => {
                       </div>
 
                       <div>
-                        <p className="font-medium text-white">{member.name}</p>
-                        <p className="text-sm text-gray-400">{member.email}</p>
+                        <p className="font-medium text-black">{member.name}</p>
+                        <p className="text-sm text-gray-600">{member.email}</p>
                       </div>
                     </td>
 
@@ -387,7 +381,7 @@ const TeamMembers = (props) => {
                             setIsConfirmOpen(true);
                             setDeleteId(member._id);
                           }}
-                          className="p-2.5 cursor-pointer rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                          className="p-2.5 cursor-pointer rounded-lg bg-red-500/60 text-red-400 hover:bg-red-500/20"
                         >
                           <Trash2 size={20} />
                         </button>

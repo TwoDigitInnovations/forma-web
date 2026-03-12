@@ -100,8 +100,8 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
             className={`relative cursor-pointer flex-1 text-center py-2 text-md font-medium transition-all duration-300 
                             ${
                               currentTab === tab
-                                ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#e0f349]"
-                                : "text-gray-300 hover:text-[#e0f349]"
+                                ? "text-blue-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2563eb]"
+                                : "text-gray-600 hover:text-[#2563eb]"
                             }`}
           >
             {tab === "clientDetails" ? "Client Details" : "Personal"}
@@ -161,7 +161,7 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
                   className="w-28 h-28 rounded-lg object-cover border"
                 />
               ) : (
-                <div className="w-28 h-28 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+                <div className="w-28 h-28 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center text-gray-600">
                   No Logo
                 </div>
               )}
@@ -169,7 +169,7 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current.click()}
-                className="flex items-center gap-2 bg-gray-500 border border-gray-300 text-gray-100 px-4 py-2 rounded-lg cursor-pointer transition-all"
+                className="flex items-center gap-2 bg-gray-300 border border-gray-300 text-gray-600 px-4 py-2 rounded-lg cursor-pointer transition-all"
               >
                 <Upload className="w-5 h-5" />
                 Change Logo
@@ -208,15 +208,15 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
             />
             <button
               onClick={handleAddMember}
-              className="flex justify-center items-center gap-2 rounded-lg text-black bg-custom-yellow hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
+              className="flex justify-center items-center gap-2 rounded-lg  text-white bg-blue-500 hover:bg-gray-600 text-[14px] px-4 py-2 cursor-pointer transition-all"
             >
               <Plus size={18} /> Add Personnel
             </button>
           </div>
-          <div className="mt-4 bg-[#5F5F5F] rounded-2xl shadow-md overflow-hidden border border-gray-600">
+          <div className="mt-4 bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-gray-200 border-collapse">
-                <thead className="bg-[#4E4E4E] border-b border-gray-500">
+                <thead className="bg-blue-500 text-white ">
                   <tr>
                     <th className="px-6 py-3 uppercase text-sm font-semibold whitespace-nowrap">
                       Name
@@ -239,13 +239,13 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
                       key={index}
                       className="hover:bg-gray-600 transition-all border-b border-gray-600 last:border-b-0"
                     >
-                      <td className="px-6 py-3 font-medium text-gray-100 whitespace-nowrap">
+                      <td className="px-6 py-3 font-medium text-gray-600 whitespace-nowrap">
                         {member.name}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {member.qualification}
                       </td>
-                      <td className="px-6 py-3 text-gray-300 whitespace-nowrap">
+                      <td className="px-6 py-3 text-gray-600 whitespace-nowrap">
                         {member.designation}
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap">
@@ -263,7 +263,7 @@ function ClientProjectInfo({ clientDetails, setClientDetails,loader }) {
                     <tr>
                       <td
                         colSpan="4"
-                        className="text-center text-gray-400 py-6 text-sm"
+                        className="text-center text-gray-600 py-20 text-md"
                       >
                         No members found.
                       </td>

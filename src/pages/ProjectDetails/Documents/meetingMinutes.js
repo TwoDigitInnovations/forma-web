@@ -95,7 +95,6 @@ function MeetingMinutes(props) {
     }`,
   });
 
-
   const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
   const editorConfig = {
     height: 250,
@@ -257,10 +256,10 @@ function MeetingMinutes(props) {
   console.log(formData);
 
   return (
-    <div className="bg-black  md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
-      <div className="w-full bg-custom-green rounded-[16px] px-4 py-4 flex-wrap gap-4">
+    <div className="bg-[var(--custom-lightGray)]   md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
+      <div className="w-full bg-white shadow-md border border-gray-200 rounded-[16px] px-4 py-4 flex-wrap gap-4">
         <button
-          className="text-gray-400 hover:text-white flex items-center gap-2 text-sm font-medium mb-1 cursor-pointer"
+          className="text-gray-600 hover:text-black flex items-center gap-2 text-sm font-medium mb-1 cursor-pointer"
           onClick={() => router.back()}
         >
           <ArrowLeft size={18} />
@@ -270,10 +269,10 @@ function MeetingMinutes(props) {
         <div className="mt-2 flex md:flex-row flex-col md:items-center items-start gap-2 justify-between">
           <div className="flex items-center gap-4">
             <div>
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-black">
                 Meeting Minutes
               </h2>
-              <p className="text-md text-gray-300 ">
+              <p className="text-md text-gray-800 ">
                 {projectDetails.projectName}
               </p>
             </div>
@@ -281,7 +280,7 @@ function MeetingMinutes(props) {
 
           <div className="flex flex-wrap items-center gap-3">
             <button
-              className="px-4 py-2.5 cursor-pointer rounded-xl border border-gray-600 text-gray-300 hover:bg-gray-800 transition text-sm flex items-center gap-2"
+              className="px-4 py-2.5 cursor-pointer rounded-xl border border-gray-600 text-gray-800 hover:bg-gray-800 transition text-sm flex items-center gap-2"
               onClick={reset}
             >
               <X size={16} />
@@ -290,14 +289,14 @@ function MeetingMinutes(props) {
 
             <button
               onClick={handleSubmit}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              className="px-5 py-2.5 cursor-pointer bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Save size={16} />
               {editId ? "Update" : "Save"} Document
             </button>
             <button
               onClick={downloadPDF}
-              className="px-5 py-2.5 cursor-pointer bg-custom-yellow text-black font-medium hover:bg-yellow-400 rounded-xl transition text-sm flex items-center gap-2"
+              className="px-5 py-2.5 cursor-pointer bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-xl transition text-sm flex items-center gap-2"
             >
               <Download size={16} />
               Download Pdf
@@ -306,7 +305,7 @@ function MeetingMinutes(props) {
         </div>
       </div>
 
-      <div className="min-h-[450px] bg-neutral-900 md:mt-8 mt-4 rounded-xl md:p-6 p-3 border border-gray-800 ">
+      <div className="min-h-[450px] bg-neutral-100 md:mt-8 mt-4 rounded-xl md:p-6 p-3 border border-gray-800 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField
             label="Meeting Date"
@@ -337,7 +336,7 @@ function MeetingMinutes(props) {
 
         <div className="md:mt-6 mt-3">
           <div className="flex flex-col gap-2 mb-4">
-            <p className="text-gray-200 text-sm font-medium">Attendees</p>
+            <p className="text-gray-800 text-sm font-medium">Attendees</p>
             <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
               <JoditEditor
                 value={formData.attendees}
@@ -356,7 +355,7 @@ function MeetingMinutes(props) {
 
         <div className="md:mt-6 mt-3">
           <div className="flex flex-col gap-2 mb-4">
-            <p className="text-gray-200 text-sm font-medium">Agenda</p>
+            <p className="text-gray-800 text-sm font-medium">Agenda</p>
             <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
               <JoditEditor
                 value={formData.agenda}
@@ -375,7 +374,7 @@ function MeetingMinutes(props) {
 
         <div className="md:mt-6 mt-3">
           <div className="flex flex-col gap-2 mb-4">
-            <p className="text-gray-200 text-sm font-medium">
+            <p className="text-gray-800 text-sm font-medium">
               Discussions & Decisions
             </p>
             <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
@@ -396,7 +395,7 @@ function MeetingMinutes(props) {
 
         <div className="md:mt-6 mt-3">
           <div className="flex flex-col gap-2 mb-4">
-            <p className="text-gray-200 text-sm font-medium">Action Items</p>
+            <p className="text-gray-800 text-sm font-medium">Action Items</p>
             <div className="rounded-xl text-black overflow-hidden shadow-sm border border-gray-600 bg-gray-50">
               <JoditEditor
                 value={formData.actionItems}

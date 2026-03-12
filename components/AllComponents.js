@@ -54,15 +54,15 @@ export const ConfirmModal = ({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 50 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="bg-[#141414] border border-[#e0f349]/30 rounded-2xl p-6 w-full max-w-md shadow-[0_0_25px_rgba(224,243,73,0.3)]"
+            className="bg-gray-100 border border-[#000]/30 rounded-2xl p-6 w-full max-w-md shadow-[0_0_25px_rgba(224,243,73,0.3)]"
           >
             {/* Title */}
-            <h2 className="text-2xl font-semibold mb-3 text-center text-custom-yellow">
+            <h2 className="text-2xl font-semibold mb-3 text-center text-blue-500">
               {title}
             </h2>
 
             {/* Message */}
-            <p className="text-center text-gray-300 mb-6">{message}</p>
+            <p className="text-center text-gray-600 mb-6">{message}</p>
 
             {/* Buttons */}
             <div className="flex justify-center gap-4">
@@ -70,7 +70,7 @@ export const ConfirmModal = ({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 cursor-pointer bg-gray-800 border border-gray-500 text-gray-200 rounded-lg text-md hover:bg-gray-700 transition-all duration-200"
+                className="px-5 py-2 cursor-pointer bg-gray-200 border border-gray-200 text-gray-700 rounded-lg text-md hover:bg-gray-300 transition-all duration-200"
               >
                 {noText}
               </motion.button>
@@ -82,7 +82,7 @@ export const ConfirmModal = ({
                   onConfirm();
                   setIsOpen(false);
                 }}
-                className="px-5 py-2 text-md cursor-pointer bg-custom-yellow text-black font-semibold rounded-lg hover:shadow-[0_0_15px_#e0f349aa] transition-all duration-200"
+                className="px-5 py-2 text-md cursor-pointer bg-[var(--custom-blue)] text-white font-semibold rounded-lg hover:shadow-[0_0_15px_#e0f349aa] transition-all duration-200"
               >
                 {yesText}
               </motion.button>
@@ -102,34 +102,34 @@ export const SummaryCards = ({
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Contract Amount</p>
-        <h2 className="text-2xl font-bold text-gray-100">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Contract Amount</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${contractAmount?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Amount Paid</p>
-        <h2 className="text-2xl font-bold text-white">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Amount Paid</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${amountPaid?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow">
-        <p className="text-gray-100">Amount Left</p>
-        <h2 className="text-2xl font-bold text-white">
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow">
+        <p className="text-gray-800">Amount Left</p>
+        <h2 className="text-2xl font-bold text-gray-600">
           ${amountLeft?.toLocaleString()}
         </h2>
       </div>
 
-      <div className="bg-custom-green p-5 rounded-xl shadow flex flex-col">
-        <p className="text-gray-100">Financial Progress</p>
+      <div className="bg-white border border-gray-200 p-5 rounded-xl shadow flex flex-col">
+        <p className="text-gray-800">Financial Progress</p>
         <h2 className="text-2xl font-bold">{progress}%</h2>
         <div className="w-full bg-gray-200 h-2 mt-2 rounded">
           <div
             style={{ width: `${progress}%` }}
-            className="h-2 bg-custom-yellow rounded"
+            className="h-2 bg-blue-500 rounded"
           ></div>
         </div>
       </div>
@@ -397,7 +397,7 @@ export const Certificates = ({
   console.log(totalPaid);
 
   return (
-    <div className="mt-10 bg-transparent py-4 rounded-xl shadow">
+    <div className="mt-10 bg-transparent py-4 rounded-xl ">
       <ConfirmModal
         isOpen={isConfirmOpen}
         setIsOpen={setIsConfirmOpen}
@@ -418,9 +418,9 @@ export const Certificates = ({
         noText="Cancel"
       />
 
-      <h2 className="text-xl font-bold mb-3">Advance Payment (USD)</h2>
+      <h2 className="text-xl font-bold mb-3 text-black">Advance Payment (USD)</h2>
 
-      <p className="text-gray-200 mb-2">
+      <p className="text-gray-600 mb-2">
         Add or update the advance payment amount for this project.
       </p>
 
@@ -435,7 +435,7 @@ export const Certificates = ({
         />
 
         <button
-          className="px-5 py-3 bg-custom-yellow text-black rounded-lg cursor-pointer font-medium"
+          className="px-5 py-3 bg-blue-500 text-white rounded-lg cursor-pointer font-medium"
           onClick={() => {
             handleAddAdvance(Number(advanceAmount));
             setAdvanceAmount("");
@@ -471,7 +471,7 @@ export const Certificates = ({
         <select
           value={cert.status}
           disabled={cert.status === "Paid"}
-          className={`border p-2 rounded text-white cursor-pointer 
+          className={`border p-2 rounded text-black cursor-pointer 
           ${cert.status === "Paid" ? "opacity-50 cursor-not-allowed" : ""}`}
           onChange={(e) => setCert({ ...cert, status: e.target.value })}
         >
@@ -490,14 +490,14 @@ export const Certificates = ({
           type="date"
           value={cert.date}
           onChange={(e) => setCert({ ...cert, date: e.target.value })}
-          className="border p-2 rounded-md text-white bg-custom-black
+          className="border p-2 rounded-md text-black bg-white
              [&::-webkit-calendar-picker-indicator]:invert
              [&::-webkit-calendar-picker-indicator]:brightness-0
              [&::-webkit-calendar-picker-indicator]:cursor-pointer"
         />
 
         <button
-          className="px-5 py-2 bg-custom-yellow text-black rounded-lg cursor-pointer"
+          className="px-5 py-2 bg-blue-500 text-white rounded-lg cursor-pointer"
           onClick={() => {
             certId ? handleUpdateCertificate() : handleAddCertificate();
           }}
@@ -507,14 +507,10 @@ export const Certificates = ({
       </div>
 
       <h2 className="text-xl font-bold mt-8">Certificates</h2>
-      {/* {certificates.length === 0 ? (
-        <p className="min-h-[200px] flex justify-center items-center text-white">
-          No Certificate Added
-        </p>
-      ) : ( */}
+     
       <div className="w-full mt-4 overflow-x-auto rounded-t-xl border">
         <table className="w-full text-sm">
-          <thead className="bg-custom-yellow text-black sticky top-0">
+          <thead className="bg-blue-500 text-white sticky top-0">
             <tr>
               <th className="p-3 text-left whitespace-nowrap">
                 Certificate No.
@@ -535,7 +531,7 @@ export const Certificates = ({
 
           <tbody>
             {(advanceAmount > 0 || showAdvanceAmount > 0) && (
-              <tr className="border-b transition">
+              <tr className="border-b transition bg-white">
                 <td className="p-3">Advance Payment</td>
 
                 <td className="p-3">-</td>
@@ -545,14 +541,14 @@ export const Certificates = ({
                 <td className="p-3">${showAdvanceAmount}</td>
 
                 <td className="p-3">
-                  <p className="border p-2 rounded cursor-pointer text-white w-26">
+                  <p className="border p-2 rounded cursor-pointer text-black w-26">
                     Paid
                   </p>
                 </td>
 
                 <td className="p-3 flex gap-3 justify-center">
                   <button
-                    className="text-gray-300 hover:text-gray-400 cursor-pointer text-xl"
+                    className="text-gray-600 hover:text-gray-400 cursor-pointer text-xl"
                     onClick={() =>
                       setAdvanceAmount(summary.advancePayment || 0)
                     }
@@ -563,8 +559,8 @@ export const Certificates = ({
               </tr>
             )}
 
-            {certificates?.map((item) => (
-              <tr key={item._id} className="border-b transition">
+            {certificates?.map((item,index) => (
+              <tr key={item._id} className={`border-b transition ${index % 2 === 0 ? "bg-white" : "bg-gray-200"}`}>
                 <td className="p-3">{item.certificateNo}</td>
 
                 <td className="p-3">
@@ -589,7 +585,7 @@ export const Certificates = ({
                   <select
                     value={item.status}
                     disabled={item.status === "Paid"}
-                    className={`border p-2 rounded cursor-pointer text-white ${
+                    className={`border p-2 rounded cursor-pointer text-black ${
                       item.status === "Paid"
                         ? "opacity-50 cursor-not-allowed"
                         : ""
@@ -615,7 +611,7 @@ export const Certificates = ({
 
                 <td className="p-3 text-center relative">
                   <button
-                    className="text-gray-200 hover:text-gray-300 cursor-pointer"
+                    className="text-gray-600 hover:text-gray-800 cursor-pointer"
                     onClick={() =>
                       setOpenId(openId === item._id ? null : item._id)
                     }
@@ -671,23 +667,23 @@ export const PlanSuccessPopup = ({ open, onDashboard }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="w-[460px] rounded-2xl bg-custom-black p-8 text-center shadow-2xl animate-scaleIn">
+      <div className="w-[460px] rounded-2xl bg-white p-8 text-center shadow-2xl animate-scaleIn">
         <div className="flex justify-center mb-4">
-          <CheckCircle className="h-16 w-16 text-custom-yellow" />
+          <CheckCircle className="h-16 w-16 text-blue-500" />
         </div>
 
-        <h2 className="text-2xl font-semibold text-white">
+        <h2 className="text-2xl font-semibold text-black">
           Plan Purchased Successfully 🎉
         </h2>
 
-        <p className="mt-2 text-sm text-gray-300">
+        <p className="mt-2 text-sm text-gray-800">
           Your subscription is now active. Enjoy all premium features.
         </p>
 
         {/* Action */}
         <button
           onClick={onDashboard}
-          className="mt-6 w-full rounded-lg bg-custom-yellow px-4 py-2.5 cursor-pointer text-sm font-medium text-black transition hover:bg-black/90"
+          className="mt-6 w-full rounded-lg bg-blue-500 px-4 py-2.5 cursor-pointer text-sm font-medium text-white transition hover:bg-blue-600"
         >
           My Dashboard
         </button>
@@ -734,25 +730,25 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-xl bg-custom-black text-white rounded-3xl p-6 relative">
+      <div className="w-full max-w-xl bg-white text-black rounded-3xl p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400"
+          className="absolute top-4 right-4 text-gray-600"
         >
           ✕
         </button>
 
         <h2 className="text-xl font-semibold mb-1">Invite Team Member</h2>
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Send an invitation to join your organization
         </p>
 
         {/* Seats info */}
-        <div className="bg-[#1E293B] rounded-xl p-4 flex justify-between items-center mb-4">
+        <div className="bg-gray-100 rounded-xl p-4 flex justify-between items-center mb-4">
           <span>Team Seats</span>
-          <h3 className="text-xl font-semibold text-white">
+          <h3 className="text-xl font-semibold text-black">
             {user?.subscription?.usedTeamsSize + 1 || "0"}{" "}
-            <span className="text-sm text-white">
+            <span className="text-sm text-black">
               of {user?.subscription?.teamSize}{" "}
             </span>
           </h3>
@@ -760,20 +756,20 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-sm text-gray-300">Email Address</label>
+            <label className="text-sm text-gray-600">Email Address</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="colleague@company.com"
-              className="w-full mt-1 px-4 py-3 rounded-xl bg-[#1E293B] border border-gray-600 focus:outline-none"
+              className="w-full mt-1 px-4 py-3 rounded-xl bg-gray-100 border border-gray-200 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="text-sm text-gray-300">Role</label>
-            <select className="w-full mt-1 px-4 py-3 rounded-xl bg-[#1E293B] border border-gray-600">
+            <label className="text-sm text-gray-600">Role</label>
+            <select className="w-full mt-1 px-4 py-3 rounded-xl bg-gray-100 border border-gray-200">
               <option>Member</option>
             </select>
           </div>
@@ -789,7 +785,7 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
             <button
               disabled={loading}
               type="submit"
-              className="px-6 py-2 cursor-pointer rounded-lg bg-custom-yellow text-black font-medium"
+              className="px-6 py-2 cursor-pointer rounded-lg bg-[var(--custom-blue)] text-white font-medium"
             >
               Send Invitation
             </button>
@@ -808,44 +804,44 @@ export const InviteSuccessModal = ({ link, email, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-xl bg-[#0F172A] text-white rounded-3xl p-6 text-center relative">
+      <div className="w-full max-w-xl bg-white text-white rounded-3xl p-6 text-center relative">
         <button
           onClick={onClose}
-          className="absolute top-4 cursor-pointer right-4 text-gray-400"
+          className="absolute top-4 cursor-pointer right-4 text-gray-600"
         >
           <X />
         </button>
 
-        <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-2xl">
+        <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-green-500/20 flex items-center justify-center text-green-600 text-2xl">
           <CheckLine />
         </div>
 
-        <h2 className="text-xl font-semibold">Invitation Sent!</h2>
-        <p className="text-sm text-gray-400 mb-4">
+        <h2 className="text-xl text-black font-semibold">Invitation Sent!</h2>
+        <p className="text-sm text-gray-600 mb-4">
           Share this link with <span className="text-white">{email}</span>
         </p>
 
-        <div className="bg-[#1E293B] rounded-xl p-3 flex items-center gap-2">
+        <div className="bg-gray-100 rounded-xl p-3 flex items-center gap-2">
           <input
             readOnly
             value={link}
-            className="flex-1 bg-transparent text-sm outline-none"
+            className="flex-1 bg-transparent text-black text-sm outline-none"
           />
           <button
             onClick={copyLink}
-            className="p-2 bg-black/30 rounded-lg cursor-pointer"
+            className="p-2 bg-black/70 rounded-lg cursor-pointer"
           >
             <Copy />
           </button>
         </div>
 
-        <p className="text-xs text-gray-400 mt-3">
+        <p className="text-xs text-gray-600 mt-3">
           This link expires in 5 minutes. User must register with this email.
         </p>
 
         <button
           onClick={onClose}
-          className="mt-6 w-full py-3 rounded-xl cursor-pointer bg-custom-yellow text-black font-medium"
+          className="mt-6 w-full py-3 rounded-xl cursor-pointer bg-[var(--custom-blue)] text-white font-medium"
         >
           Done
         </button>
@@ -857,17 +853,17 @@ export const InviteSuccessModal = ({ link, email, onClose }) => {
 export const AllIncident = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <StickyNote className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">Open Incidents</p>
+            <StickyNote className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">Open Incidents</p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
@@ -875,7 +871,7 @@ export const AllIncident = ({ onclose, loader }) => {
 
         {/* Body */}
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No open incidents</p>
+          <p className="text-sm text-gray-800">No open incidents</p>
         </div>
       </div>
     </div>
@@ -885,26 +881,26 @@ export const AllIncident = ({ onclose, loader }) => {
 export const ProjectBehind = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <Clock className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">
+            <Clock className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">
               Projects Behind Schedule
             </p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No Projects Behind Schedule</p>
+          <p className="text-sm text-gray-800">No Projects Behind Schedule</p>
         </div>
       </div>
     </div>
@@ -914,17 +910,17 @@ export const ProjectBehind = ({ onclose, loader }) => {
 export const AllGrievances = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-5 py-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">Open grievances</p>
+            <MessageSquare className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">Open grievances</p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-800 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
@@ -932,7 +928,7 @@ export const AllGrievances = ({ onclose, loader }) => {
 
         {/* Body */}
         <div className="flex min-h-[220px] flex-col items-center justify-center px-5 py-6 text-center">
-          <p className="text-sm text-gray-500">No open grievances</p>
+          <p className="text-sm text-gray-800">No open grievances</p>
         </div>
       </div>
     </div>
@@ -950,30 +946,30 @@ export const ActionPoints = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-4xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl">
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-custom-yellow" />
-            <p className="text-lg font-semibold text-white">
+            <MessageSquare className="h-5 w-5 text-blue-500" />
+            <p className="text-lg font-semibold text-black">
               Open Action Points
             </p>
           </div>
 
           <button
             onClick={onclose}
-            className="rounded-full p-1 text-gray-100 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
+            className="rounded-full p-1 text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-800 transition"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex items-center gap-3 px-4">
-          <label className="text-sm text-gray-400">Filter by project:</label>
+          <label className="text-sm text-gray-600">Filter by project:</label>
 
           <select
             value={projectId}
             onChange={(e) => setProjectID(e.target.value)}
-            className="bg-black text-white border border-gray-700 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-custom-yellow w-[200px]"
+            className="bg-gray-200 text-gray-700 border border-gray-200 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-custom-yellow w-[200px]"
           >
             <option value="all">All Projects</option>
 
@@ -985,10 +981,10 @@ export const ActionPoints = ({
           </select>
         </div>
 
-        <div className="mt-4 overflow-x-auto md:h-[500px] h-[600px] rounded-xl border border-gray-800 bg-black">
-          <table className="min-w-full border-collapse text-sm text-gray-300 ">
+        <div className="mt-4 overflow-x-auto md:h-[500px] h-[600px] rounded-xl border border-gray-200 bg-white m-4">
+          <table className="min-w-full border-collapse border-gray-300 text-sm text-gray-300 ">
             <thead>
-              <tr className="border-b border-gray-800 text-left text-gray-400">
+              <tr className=" text-left text-white bg-blue-500">
                 <th className="px-4 py-3 w-10">#</th>
                 <th className="px-4 py-3">Project</th>
                 <th className="px-4 py-3">Description</th>
@@ -1004,7 +1000,7 @@ export const ActionPoints = ({
                 <tr>
                   <td
                     colSpan={7}
-                    className="px-4 py-6 text-center text-gray-500 min-h-[220px] flex-col items-center justify-center"
+                    className="px-4 py-6 text-center text-gray-700 min-h-[220px] flex-col items-center justify-center"
                   >
                     No Open Action Points In Any Project
                   </td>
@@ -1013,16 +1009,18 @@ export const ActionPoints = ({
                 AllActionPoints.map((item, index) => (
                   <tr
                     key={index}
-                    className="bg-custom-black border-b border-gray-800 hover:bg-gray-900 transition"
+                    className={`border-b border-gray-800 hover:bg-gray-200 transition ${index % 2 === 0 ? "bg-white" : " bg-gray-200"}`}
                   >
-                    <td className="px-4 py-3 text-white">{index + 1}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-black">{index + 1}</td>
+                    <td className="px-4 py-3 text-black">
                       {item?.projectId?.projectName}
                     </td>
-                    <td className="px-4 py-3 text-white">
+                    <td className="px-4 py-3 text-black">
                       {item?.description}
                     </td>
-                    <td className="px-4 py-3">{item?.assignedTo || "-"}</td>
+                    <td className="px-4 py-3 text-black">
+                      {item?.assignedTo || "-"}
+                    </td>
 
                     <td className="px-4 py-3">
                       <p className="text-blue-400  border-2 border-blue-400 rounded-full px-1 py-1 text-center">
@@ -1030,7 +1028,7 @@ export const ActionPoints = ({
                         {item?.priority}{" "}
                       </p>{" "}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-black">
                       {item?.dueDate
                         ? moment(item.dueDate).format("DD-MM-YYYY")
                         : "-"}
@@ -1056,12 +1054,12 @@ export const ActionPoints = ({
 export const Milestones = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <Clock1 className="h-5 w-5 text-custom-yellow" />
+              <Clock1 className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">Milestones</p>
             </div>
             <p className="text-sm text-white">
@@ -1090,12 +1088,12 @@ export const Milestones = ({ onclose, loader }) => {
 export const OpenIncient = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <TriangleAlert className="h-5 w-5 text-custom-yellow" />
+              <TriangleAlert className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">Open incidents</p>
             </div>
             <p className="text-sm text-white">
@@ -1124,12 +1122,12 @@ export const OpenIncient = ({ onclose, loader }) => {
 export const ProjectGrievances = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-custom-yellow" />
+              <MessageSquare className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">
                 Open grievances
               </p>
@@ -1159,12 +1157,12 @@ export const ProjectGrievances = ({ onclose, loader }) => {
 export const ProjectActionPoints = ({ onclose, loader }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-      <div className="w-full max-w-2xl rounded-2xl bg-custom-black shadow-xl">
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex flex-col gap-2 items-start">
             <div className="flex items-center gap-2">
-              <CircleAlert className="h-5 w-5 text-custom-yellow" />
+              <CircleAlert className="h-5 w-5 text-blue-500" />
               <p className="text-lg font-semibold text-white">
                 Open Action Points by Project
               </p>
@@ -1232,8 +1230,8 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
   const Info1 = ({ label, value }) => (
     <div>
-      <p className="mb-1 text-gray-400">{label}</p>
-      <p className="text-gray-200">{value}</p>
+      <p className="mb-1 text-gray-700">{label}</p>
+      <p className="text-gray-600">{value}</p>
     </div>
   );
 
@@ -1243,15 +1241,15 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
     return (
       <div>
-        <p className="mb-1 text-gray-400">{title}</p>
+        <p className="mb-1 text-gray-600">{title}</p>
 
         {isHTML ? (
           <div
-            className="text-gray-200 prose prose-invert max-w-none"
+            className="text-gray-600 prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: value }}
           />
         ) : (
-          <p className="text-gray-200">{value || "Not specified"}</p>
+          <p className="text-gray-600">{value || "Not specified"}</p>
         )}
       </div>
     );
@@ -1259,20 +1257,20 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-gray-800 bg-custom-black p-6">
+      <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-gray-800 bg-white p-6">
         {/* Header */}
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-2 text-lg font-semibold text-white">
+            <div className="flex items-center gap-2 text-lg font-semibold text-black">
               <ClipboardList size={20} />
               Project Information
             </div>
-            <p className="mt-1 text-sm text-gray-400">{projectName}</p>
+            <p className="mt-1 text-sm text-gray-600">{projectName}</p>
           </div>
 
           <button
             onClick={onClose}
-            className="rounded-full border cursor-pointer border-gray-700 p-1 text-gray-400 hover:text-white"
+            className="rounded-full border cursor-pointer border-gray-700 p-1 text-gray-400 hover:text-black"
           >
             <X size={18} />
           </button>
@@ -1280,7 +1278,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
         {/* Basic Details */}
         <section className="mb-8">
-          <h4 className="mb-4 text-sm font-semibold text-white">
+          <h4 className="mb-4 text-sm font-semibold text-black">
             Basic Details
           </h4>
 
@@ -1288,8 +1286,8 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
             <Info1 label="Project Type" value={projectType} />
             <Info1 label="Project Number" value={projectNo || "Not assigned"} />
             <div>
-              <p className="text-gray-400 mb-1">Status</p>
-              <span className="inline-flex rounded-full bg-green-500 px-3 py-1 text-xs font-semibold text-black">
+              <p className="text-gray-600 mb-1">Status</p>
+              <span className="inline-flex rounded-full bg-green-500 px-3 py-1 text-xs font-semibold text-white">
                 {status}
               </span>
             </div>
@@ -1306,7 +1304,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
         {/* Timeline */}
         <section className="mb-8">
-          <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+          <h4 className="mb-4 flex items-center gap-2 text-sm font-semibold text-black">
             <Calendar size={16} /> Timeline
           </h4>
 
@@ -1319,10 +1317,10 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
         {/* Location */}
         <section className="mb-8">
-          <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-white">
+          <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-black">
             <MapPin size={16} /> Location
           </h4>
-          <p className="text-sm text-gray-300">{location}</p>
+          <p className="text-sm text-gray-600">{location}</p>
         </section>
 
         {/* Divider */}
@@ -1330,7 +1328,7 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
 
         {/* Narrative Section */}
         {hasNarrative ? (
-          <section className="space-y-4 text-sm text-gray-300">
+          <section className="space-y-4 text-sm text-gray-600">
             {ProjectScope && <Narrative title="Scope" value={ProjectScope} />}
             {ExcuetiveSummary && (
               <Narrative title="Summary" value={ExcuetiveSummary} />
@@ -1342,12 +1340,12 @@ export const ProjectInformation = ({ projectInfo, onClose }) => {
         ) : (
           <div className="flex flex-col items-center justify-center py-10 text-center">
             <div className="mb-3 rounded-full border border-gray-700 p-3">
-              <FileText className="h-5 w-5 text-gray-400" />
+              <FileText className="h-5 w-5 text-gray-800" />
             </div>
-            <p className="text-sm font-medium text-gray-300">
+            <p className="text-sm font-medium text-gray-700">
               No additional narrative details
             </p>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-gray-600">
               Add scope, summary, or description in Edit Project
             </p>
           </div>
@@ -1369,8 +1367,8 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
 
   const Info = ({ label, value, icon }) => (
     <div>
-      <p className="text-gray-400 text-xs mb-1">{label}</p>
-      <p className="text-sm flex items-center gap-2 text-gray-200">
+      <p className="text-gray-700 text-xs mb-1">{label}</p>
+      <p className="text-sm flex items-center gap-2 text-gray-600">
         {icon}
         {value || "Not specified"}
       </p>
@@ -1379,22 +1377,22 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
 
   const Section = ({ title, data, columns, emptyMessage, emptyHint, icon }) => (
     <div className="mb-6">
-      <h3 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+      <h3 className="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
         {icon} {title}
       </h3>
 
       {data.length === 0 ? (
-        <div className="border border-gray-800 rounded-xl p-6 text-center text-gray-400 bg-black/40">
-          <div className="mb-2 flex justify-center">
+        <div className="border border-gray-300 shadow rounded-xl p-6 text-center text-gray-400 bg-white">
+          <div className="mb-2 flex justify-center text-black">
             <User size={26} />
           </div>
-          <p className="font-medium">{emptyMessage}</p>
-          <p className="text-xs mt-1">{emptyHint}</p>
+          <p className="font-medium text-black">{emptyMessage}</p>
+          <p className="text-xs mt-1 text-black">{emptyHint}</p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-800">
           <table className="w-full text-sm">
-            <thead className="bg-custom-green text-gray-400">
+            <thead className="bg-custom-green text-gray-600">
               <tr>
                 {columns.map((col) => (
                   <th key={col} className="px-4 py-3 text-left">
@@ -1412,7 +1410,7 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
                   {Object.values(item)
                     .slice(0, columns.length)
                     .map((val, i) => (
-                      <td key={i} className="px-4 py-2 text-gray-300">
+                      <td key={i} className="px-4 py-2 text-gray-600">
                         {val || "-"}
                       </td>
                     ))}
@@ -1427,23 +1425,23 @@ export const ContractorDetails = ({ projectInfo, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-      <div className="w-full max-w-3xl bg-custom-black rounded-2xl shadow-xl border border-gray-800 max-h-[90vh] overflow-y-auto p-6">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl border border-gray-800 max-h-[90vh] overflow-y-auto p-6">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold flex items-center gap-2 text-white">
+            <h2 className="text-lg font-semibold flex items-center gap-2 text-black">
               Contractor Details
             </h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-600">
               Contractor information overview
             </p>
           </div>
           <button onClick={onClose}>
-            <X className="text-gray-400 hover:text-white cursor-pointer" />
+            <X className="text-gray-600 hover:text-black cursor-pointer" />
           </button>
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-gray-600 mb-4 flex items-center gap-2">
             <User size={16} /> Contact Information
           </h3>
 

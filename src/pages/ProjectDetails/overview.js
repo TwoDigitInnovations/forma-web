@@ -148,20 +148,20 @@ const ProjectDetailsPage = (props) => {
     return (
       <div className="flex flex-col w-full relative group cursor-pointer ">
         <div
-          className="bg-custom-black space-y-2 rounded-2xl px-4 py-4 border hover:border-[#e0f349] border-gray-700 cursor-pointer transition-colors mb-3 z-10 min-h-[110px]"
+          className="bg-white space-y-2 rounded-2xl px-4 py-4 border border-gray-300 shadow-md cursor-pointer transition-colors mb-3 z-10 min-h-[110px]"
           onClick={Open}
         >
           <div className="flex items-start justify-start gap-3 rounded-lg">
-            <div className="bg-custom-green p-1.5 rounded-2xl">{icon}</div>
+            <div className="bg-blue-500 p-1.5 rounded-2xl">{icon}</div>
             <div>
-              <p className="text-white text-md font-medium  tracking-wide">
+              <p className="text-black text-md font-medium  tracking-wide">
                 {title}
               </p>
-              <p className="text-xl font-bold text-custom-yellow">{value}</p>
+              <p className="text-xl font-bold text-blue-500">{value}</p>
 
               <p
                 className="opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
+                text-gray-600 text-[13px] font-medium tracking-wide"
               >
                 Click for Details
               </p>
@@ -175,19 +175,19 @@ const ProjectDetailsPage = (props) => {
   const ActionCard = ({ icon, title, subtitle, text, open }) => {
     return (
       <div
-        className="bg-custom-black rounded-2xl min-h-[250px] transition-colors p-4 border border-gray-500 hover:border-[#e0f349] cursor-pointer"
+        className="bg-white rounded-2xl min-h-[250px] transition-colors p-4   border border-gray-300 shadow-md cursor-pointer"
         onClick={open}
       >
         <div className="flex flex-col justify-start items-start">
           <div className="flex justify-start items-start gap-2 space-y-2">
-            <span className="text-custom-yellow"> {icon}</span>
-            <p className="text-white text-md">{title}</p>
+            <span className="text-blue-500"> {icon}</span>
+            <p className="text-black text-md">{title}</p>
           </div>
-          <p className="text-white text-sm">{subtitle}</p>
+          <p className="text-black text-sm">{subtitle}</p>
         </div>
 
         <div className="min-h-[170px] flex justify-center items-center">
-          <p className="text-white text-md"> {text}</p>
+          <p className="text-black text-md"> {text}</p>
         </div>
       </div>
     );
@@ -195,13 +195,13 @@ const ProjectDetailsPage = (props) => {
 
   const SecondCard = ({ title, value, subtitle }) => {
     return (
-      <div className="bg-custom-black space-y-2 rounded-2xl px-4 py-4 border border-gray-700 hover:border-gray-600 transition-colors mb-3 z-10">
+      <div className="bg-white space-y-2 rounded-2xl px-4 py-4 border border-gray-300 shadow-md transition-colors mb-3 z-10">
         <div className="flex flex-col items-start justify-start gap-1 rounded-lg">
-          <p className="text-white text-md font-medium  tracking-wide">
+          <p className="text-black text-md font-medium  tracking-wide">
             {title}
           </p>
-          <p className="text-2xl font-bold text-custom-yellow">${value}</p>
-          <p className="text-gray-200 text-[13px] font-medium  tracking-wide">
+          <p className="text-2xl font-bold text-blue-500">${value}</p>
+          <p className="text-gray-600 text-[13px] font-medium  tracking-wide">
             {subtitle}
           </p>
         </div>
@@ -222,20 +222,20 @@ const ProjectDetailsPage = (props) => {
   };
 
   return (
-    <div className="h-screen bg-black text-white ">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black ">
       <div className="max-w-7xl mx-auto w-full h-full md:h-[95vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-4 md:p-6 md:py-4">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="md:text-2xl text-[20px] font-bold text-[#e0f349]">
+            <h1 className="md:text-2xl text-[20px] font-bold text-black">
               {projectDetails.projectName}
             </h1>
-            <button className="mt-1 py-1 px-4 flex text-sm cursor-pointer rounded-full bg-custom-yellow text-black">
+            <button className="mt-1 py-1 px-4 flex text-sm cursor-pointer rounded-full bg-blue-500 text-white">
               {projectDetails.status}
             </button>
           </div>
           <div className="flex items-center gap-4">
             <button
-              className="flex bg-custom-gold text-black items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm md:text-md cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex bg-blue-500 text-white items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm md:text-md cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => router.push(`/ProjectDetails/EditProject`)}
             >
               <FolderPlus size={28} />
@@ -251,7 +251,7 @@ const ProjectDetailsPage = (props) => {
             value={
               projectDetails?.contractorInfo?.contractorName || "Not Assign"
             }
-            icon={<Briefcase size={28} />}
+            icon={<Briefcase size={28} color="white" />}
           />
 
           {open && (
@@ -265,7 +265,7 @@ const ProjectDetailsPage = (props) => {
             title="Project Info/Status"
             value={projectDetails.status}
             Open={() => setIsOpen(true)}
-            icon={<FileText size={28} />}
+            icon={<FileText size={28} color="white"/>}
           />
 
           {isOpen && (
@@ -275,25 +275,25 @@ const ProjectDetailsPage = (props) => {
             />
           )}
 
-          <div className="relative group bg-custom-black space-y-2 rounded-2xl px-4 py-4 border hover:border-[#e0f349] border-gray-700 cursor-pointer transition-colors mb-3 z-10 min-h-[110px]">
+          <div className="relative group bg-white space-y-2 rounded-2xl px-4 py-4 border hover:border-gray-300 border-gray-300 shadow-md cursor-pointer transition-colors mb-3 z-10 min-h-[110px]">
             <div
               className="flex items-start justify-start gap-3 rounded-lg"
               onClick={() => router.push("/ProjectDetails/Pre-construction")}
             >
-              <div className="bg-custom-green p-1.5 rounded-2xl">
-                <ListCheck size={28} />
+              <div className="bg-blue-500 p-1.5 rounded-2xl">
+                <ListCheck size={28} color="white"/>
               </div>
               <div>
-                <p className="text-white text-md font-medium  tracking-wide">
+                <p className="text-black text-md font-medium  tracking-wide">
                   Documents Checklist
                 </p>
-                <p className="text-xl font-bold text-custom-yellow">
+                <p className="text-xl font-bold text-blue-500">
                   {data || 0}
                 </p>
 
                 <p
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
+                text-gray-600 text-[13px] font-medium tracking-wide"
                 >
                   Click for Details
                 </p>
@@ -326,12 +326,12 @@ const ProjectDetailsPage = (props) => {
           />
         </div>
         <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-          <div className="md:col-span-2 bg-custom-black border border-white/10 rounded-2xl p-6 text-white min-h-[260px] ">
+          <div className="md:col-span-2 bg-white border border-gray-300 shadow-md rounded-2xl p-6 text-black min-h-[260px] ">
             <div className="mb-6">
               <h2 className="text-xl font-semibold flex items-center gap-2">
                 ↗ Progress Overview
               </h2>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-600">
                 Track project completion and timeline
               </p>
             </div>
@@ -343,20 +343,20 @@ const ProjectDetailsPage = (props) => {
                   onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
                 >
                   <div className="flex justify-between mb-2 text-sm">
-                    <span className="group-hover:text-[#e0f349]">
+                    <span className="group-hover:text-black">
                       Physical Progress
                     </span>
                     <span>{physical}%</span>
                   </div>
                   <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-custom-yellow rounded-full transition-all"
+                      className="h-full bg-blue-500 rounded-full transition-all"
                       style={{ width: `${physical}%` }}
                     />
                   </div>
                   <p
                     className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
+                text-gray-600 text-[13px] font-medium tracking-wide"
                   >
                     Click for details
                   </p>
@@ -369,7 +369,7 @@ const ProjectDetailsPage = (props) => {
                   </div>
                   <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-custom-yellow rounded-full transition-all"
+                      className="h-full bg-blue-500 rounded-full transition-all"
                       style={{ width: `${time}%` }}
                     />
                   </div>
@@ -394,7 +394,7 @@ const ProjectDetailsPage = (props) => {
                       cx="56"
                       cy="56"
                       r="50"
-                      stroke="#e0f349"
+                      stroke="#2563eb"
                       strokeWidth="8"
                       fill="none"
                       strokeDasharray={2 * Math.PI * 50}
@@ -406,14 +406,14 @@ const ProjectDetailsPage = (props) => {
                   </svg>
 
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold group-hover:text-[#e0f349] transition-hover duration-200">
+                    <span className="text-xl font-bold group-hover:text-black transition-hover duration-200">
                       {financial}%
                     </span>
                     <span className="text-xs text-gray-400">Financial</span>
                   </div>
                   <p
                     className="text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                text-gray-200 text-[13px] font-medium tracking-wide"
+                text-gray-600 text-[13px] font-medium tracking-wide"
                   >
                     Click for IPCs
                   </p>
@@ -424,7 +424,7 @@ const ProjectDetailsPage = (props) => {
           <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
-            icon={<CircleAlert size={20} className="text-custom-yellow" />}
+            icon={<CircleAlert size={20}  />}
             text="No overdue action points"
             open={() => setActionOpen(true)}
           />
@@ -434,28 +434,28 @@ const ProjectDetailsPage = (props) => {
           {/* <ActionCard
             title="Milestones"
             subtitle="Upcoming and overdue"
-            icon={<Clock1 size={20} className="text-custom-yellow" />}
+            icon={<Clock1 size={20} className="text-blue-500" />}
             text="No milestones due soon"
             open={() => setMilestones(true)}
           /> */}
           {/* <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
-            icon={<CircleAlert size={20} className="text-custom-yellow" />}
+            icon={<CircleAlert size={20} className="text-blue-500" />}
             text="No overdue action points"
             open={() => setActionOpen(true)}
           /> */}
           {/* <ActionCard
             title="Open incidents"
             subtitle="World Bank ESF compliance"
-            icon={<TriangleAlert size={20} className="text-custom-yellow" />}
+            icon={<TriangleAlert size={20} className="text-blue-500" />}
             text="No open incidents"
             open={() => setOpenIncient(true)}
           /> */}
           {/* <ActionCard
             title="No Open grievances"
             subtitle="Community complaints (GRM)"
-            icon={<MessageSquare size={20} className="text-custom-yellow" />}
+            icon={<MessageSquare size={20} className="text-blue-500" />}
             text="No open grievances"
             open={() => setGrievancesOpen(true)}
           /> */}
@@ -488,26 +488,26 @@ const ProjectDetailsPage = (props) => {
           )}
         </div>
 
-        <div className="bg-custom-black rounded-2xl p-6 mt-6">
-          <h3 className="text-xl font-semibold text-white ">
+        <div className="bg-white rounded-2xl border border-gray-300 shadow-md p-6 mt-6">
+          <h3 className="text-xl font-semibold text-black ">
             Client & Contractor Information
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-4">
             <div>
-              <h4 className="text-white font-semibold mb-4">
+              <h4 className="text-black font-semibold mb-4">
                 Contract Details
               </h4>
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-white">Contract Amount</span>
-                  <span className="text-white">
+                  <span className="text-black">Contract Amount</span>
+                  <span className="text-black">
                     ${projectDetails?.contractAmount}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white">Duration</span>
-                  <span className="text-white">
+                  <span className="text-black">Duration</span>
+                  <span className="text-black">
                     {" "}
                     {getTotalDuration(
                       projectDetails?.startDate,
@@ -517,14 +517,14 @@ const ProjectDetailsPage = (props) => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white">Start Date</span>
-                  <span className="text-white">
+                  <span className="text-black">Start Date</span>
+                  <span className="text-black">
                     {formatTodayDate(projectDetails?.startDate)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-300">End Date</span>
-                  <span className="text-white">
+                  <span className="text-black">End Date</span>
+                  <span className="text-black">
                     {formatTodayDate(projectDetails?.endDate)}
                   </span>
                 </div>
@@ -532,26 +532,26 @@ const ProjectDetailsPage = (props) => {
             </div>
 
             <div>
-              <h4 className="text-white font-semibold mb-4">
+              <h4 className="text-black font-semibold mb-4">
                 Contractor Details
               </h4>
               <div className="space-y-3 text-sm">
                 <div>
-                  <div className="text-white">Name</div>
-                  <div className="text-white">
+                  <div className="text-black">Name</div>
+                  <div className="text-black">
                     {" "}
                     {projectDetails?.contractorInfo?.contractorName}
                   </div>
                 </div>
                 <div>
-                  <div className="text-white">Email</div>
-                  <div className="text-white">
+                  <div className="text-black">Email</div>
+                  <div className="text-black">
                     {projectDetails?.contractorInfo?.Email}
                   </div>
                 </div>
                 <div>
-                  <div className="text-white">Phone</div>
-                  <div className="text-white">
+                  <div className="text-black">Phone</div>
+                  <div className="text-black">
                     {projectDetails?.contractorInfo?.phone}
                   </div>
                 </div>
@@ -559,23 +559,23 @@ const ProjectDetailsPage = (props) => {
             </div>
 
             <div>
-              <h4 className="text-white font-semibold mb-4">Clients Details</h4>
+              <h4 className="text-black font-semibold mb-4">Clients Details</h4>
               <div className="space-y-3 text-sm">
                 <div>
-                  <div className="text-white">Name</div>
-                  <div className="text-white">
+                  <div className="text-black">Name</div>
+                  <div className="text-black">
                     {projectDetails?.clientInfo?.ClientName}
                   </div>
                 </div>
                 <div>
-                  <div className="text-white">Address</div>
-                  <div className="text-white">
+                  <div className="text-black">Address</div>
+                  <div className="text-black">
                     {projectDetails?.clientInfo?.Address}
                   </div>
                 </div>
                 <div>
-                  <div className="text-white">Phone</div>
-                  <div className="text-white">
+                  <div className="text-black">Phone</div>
+                  <div className="text-black">
                     {projectDetails?.clientInfo?.phone}
                   </div>
                 </div>

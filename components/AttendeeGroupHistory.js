@@ -11,13 +11,13 @@ function AttendeeGroupHistory({
 }) {
   if (!groups.length) {
     return (
-      <div className="bg-custom-black rounded-lg border border-gray-800 flex items-center justify-center md:h-[500px] h-[650px]">
+      <div className="bg-[var(--custom-lightGray)] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
         <div className="text-center">
-          <Users size={64} className="mx-auto text-custom-yellow mb-4" />
-          <p className="text-gray-400 mb-4">No attendee groups created yet.</p>
+          <Users size={64} className="mx-auto text-blue-500 mb-4" />
+          <p className="text-gray-800 mb-4">No attendee groups created yet.</p>
           <button
             onClick={() => setActiveTab("attendee-group")}
-            className="text-black bg-custom-yellow px-4 py-2 rounded-lg"
+            className="text-white bg-[var(--custom-blue)] px-4 py-2 rounded-lg"
           >
             Create your first group
           </button>
@@ -31,26 +31,23 @@ function AttendeeGroupHistory({
       {groups.map((group) => (
         <div
           key={group._id}
-          className="bg-custom-black rounded-xl border border-gray-800 p-4 hover:border-custom-blue hover:shadow-lg transition duration-300"
+          className="bg-white rounded-xl border border-gray-200 p-4 hover:border-custom-blue hover:shadow-lg transition duration-300"
         >
-    
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] tracking-wider text-custom-black bg-custom-yellow px-3 py-1 rounded-full font-semibold">
+            <span className="text-[10px] tracking-wider text-white bg-[var(--custom-blue)] px-3 py-1 rounded-full font-semibold">
               ATTENDEE GROUP
             </span>
 
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-black">
               {new Date(group.createdAt).toLocaleDateString()}
             </span>
           </div>
 
-        
-          <h3 className="text-white text-lg font-semibold mb-1 line-clamp-1">
+          <h3 className="text-black text-lg font-semibold mb-1 line-clamp-1">
             {group.title}
           </h3>
 
-         
-          <p className="text-sm text-gray-400 mb-3 min-h-[20px]">
+          <p className="text-sm text-gray-600 mb-3 min-h-[20px]">
             {group.attendees?.length > 0 ? (
               <>
                 {group.attendees.slice(0, 3).map((a, index) => (
@@ -66,14 +63,12 @@ function AttendeeGroupHistory({
             )}
           </p>
 
-      
           <div className="border-t border-gray-800 pt-3 mt-3 flex items-center justify-between">
-        
-            <div className="flex items-center gap-5 text-sm text-gray-400">
+            <div className="flex items-center gap-5 text-sm text-gray-800">
               <div className="flex items-center gap-2">
-                <Users size={16} className="text-custom-yellow" />
+                <Users size={16} className="text-blue-500" />
                 <span>
-                  <span className="text-white font-medium">
+                  <span className="text-gray-800 font-medium">
                     {group.attendees?.length || 0}
                   </span>{" "}
                   Members
@@ -82,14 +77,13 @@ function AttendeeGroupHistory({
 
               {group.createdBy && (
                 <div className="hidden sm:block">
-                  <span className="text-gray-500">By </span>
-                  <span className="text-white font-medium">
+                  <span className="text-gray-800">By </span>
+                  <span className="text-gray-800 font-medium">
                     {group.createdBy?.name}
                   </span>
                 </div>
               )}
             </div>
-
 
             <div className="flex items-center gap-2">
               <button

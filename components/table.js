@@ -183,7 +183,7 @@ function Table({
                         <th
                           key={index}
                           scope="col"
-                          className="group pl-2 py-3 bg-custom-yellow  text-md font-medium text-black text-left tracking-wider "
+                          className="group pl-2 py-3 bg-blue-500  text-md font-medium text-white text-left tracking-wider "
                           {...column.getHeaderProps(
                             column.getSortByToggleProps(),
                           )}
@@ -256,21 +256,21 @@ function Table({
           <Button
             onClick={() => onPageChange(pagination?.currentPage - 1)}
             disabled={pagination?.currentPage === 1}
-            className="bg-custom-yellow"
+            className="bg-blue-500"
           >
             Previous
           </Button>
           <Button
             onClick={() => onPageChange(pagination?.currentPage + 1)}
             disabled={pagination?.currentPage === pagination?.totalPages}
-            className="bg-custom-yellow"
+            className="bg-blue-500"
           >
             Next
           </Button>
         </div>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div className="flex gap-x-2 items-baseline">
-            <span className="text-sm text-black bg-custom-yellow p-2 rounded-xl px-4">
+            <span className="text-sm text-white bg-blue-500 p-2 rounded-xl px-4">
               Page <span className="font-medium">{currentPage}</span> of{" "}
               <span className="font-medium">{pagination?.totalPages}</span>
             </span>
@@ -297,12 +297,12 @@ function Table({
           </div>
           <div>
             <nav
-              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px cursor-pointer bg-custom-yellow "
+              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px cursor-pointer bg-blue-500 "
               aria-label="Pagination"
             >
               {/* First Page Button */}
               <PageButton
-                className="rounded-l-md bg-custom-yellow"
+                className="rounded-l-md bg-blue-500"
                 onClick={() => onPageChange(1)}
                 disabled={pagination?.currentPage === 1}
               >
@@ -317,7 +317,7 @@ function Table({
               <PageButton
                 onClick={() => onPageChange(pagination?.currentPage - 1)}
                 disabled={pagination?.currentPage === 1}
-                className="bg-custom-yellow"
+                className="bg-blue-500"
               >
                 <span className="sr-only cursor-pointer">Previous</span>
                 <MdKeyboardArrowLeft
@@ -330,7 +330,7 @@ function Table({
               <PageButton
                 onClick={() => onPageChange(pagination?.currentPage + 1)}
                 disabled={pagination?.currentPage === pagination?.totalPages}
-                className="bg-custom-yellow"
+                className="bg-blue-500"
               >
                 <span className="sr-only">Next</span>
                 <MdOutlineKeyboardArrowRight
@@ -341,7 +341,7 @@ function Table({
 
               {/* Last Page Button */}
               <PageButton
-                className="rounded-r-md bg-custom-yellow"
+                className="rounded-r-md bg-blue-500"
                 onClick={() => onPageChange(pagination?.totalPages)}
                 disabled={pagination?.currentPage === pagination?.totalPages}
               >

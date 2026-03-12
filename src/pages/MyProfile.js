@@ -141,7 +141,7 @@ function MyProfile(props) {
     new Date(subscription.planEndDate) > new Date();
 
   return (
-    <div className="min-h-screen bg-black py-8 px-4">
+    <div className="min-h-screen bg-[var(--custom-lightGray)] py-8 px-4">
       {/* Background Pattern */}
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div
@@ -155,25 +155,25 @@ function MyProfile(props) {
       </div>
 
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+      
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
             My Profile
           </h1>
-          <p className="text-gray-400">Manage your account information</p>
+          <p className="text-gray-600">Manage your account information</p>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-gray-900 border border-green-500/20 rounded-3xl p-4 md:p-8">
+          <div className="bg-white border border-gray-300 rounded-3xl p-4 md:p-8">
             <div className="flex md:flex-row flex-col md:items-center gap-4 justify-between mb-6">
-              <h2 className="text-xl font-bold text-custom-yellow flex items-center gap-2">
+              <h2 className="text-xl font-bold text-blue-500 flex items-center gap-2">
                 <User className="h-6 w-6" />
                 Personal Information
               </h2>
               {!isEditing ? (
                 <button
                   onClick={handleEdit}
-                  className="flex items-center gap-2 px-4 py-2 bg-custom-yellow text-black rounded-xl font-semibold hover:scale-105 w-fit cursor-pointer transition-transform"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl font-semibold hover:scale-105 w-fit cursor-pointer transition-transform"
                 >
                   <Edit2 className="h-4 w-4" />
                   Edit
@@ -190,7 +190,7 @@ function MyProfile(props) {
                   <button
                     onClick={handleSave}
                     disabled={loading}
-                    className="flex items-center gap-2 px-4 py-2 bg-custom-yellow text-black rounded-xl font-semibold hover:scale-105 transition-transform disabled:opacity-70 cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-xl font-semibold hover:scale-105 transition-transform disabled:opacity-70 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -211,11 +211,11 @@ function MyProfile(props) {
             <div className="space-y-4">
               {/* Name */}
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow mb-2">
+                <label className="block text-sm font-semibold text-blue-500 mb-2">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
                   <input
                     type="text"
                     value={userDetail.name}
@@ -223,7 +223,7 @@ function MyProfile(props) {
                       setUserDetail({ ...userDetail, name: e.target.value })
                     }
                     disabled={!isEditing}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 bg-gray-200 text-black rounded-xl border border-gray-200 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
                         : " cursor-not-allowed"
@@ -234,11 +234,11 @@ function MyProfile(props) {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow mb-2">
+                <label className="block text-sm font-semibold text-blue-500 mb-2">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
                   <input
                     type="email"
                     value={userDetail.email}
@@ -246,7 +246,7 @@ function MyProfile(props) {
                       setUserDetail({ ...userDetail, email: e.target.value })
                     }
                     disabled={!isEditing}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 bg-gray-200 text-black rounded-xl border border-gray-300 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
                         : " cursor-not-allowed"
@@ -257,11 +257,11 @@ function MyProfile(props) {
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow mb-2">
+                <label className="block text-sm font-semibold text-blue-500 mb-2">
                   Phone Number
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
                   <input
                     type="tel"
                     value={userDetail.phone}
@@ -269,7 +269,7 @@ function MyProfile(props) {
                       setUserDetail({ ...userDetail, phone: e.target.value })
                     }
                     disabled={!isEditing}
-                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 outline-none transition-all ${
+                    className={`w-full pl-10 pr-4 py-3 bg-gray-200 text-black rounded-xl border border-gray-300 outline-none transition-all ${
                       isEditing
                         ? "focus:ring-2 focus:ring-custom-green"
                         : " cursor-not-allowed"
@@ -280,24 +280,24 @@ function MyProfile(props) {
 
               {/* Role */}
               <div>
-                <label className="block text-sm font-semibold text-custom-yellow mb-2">
+                <label className="block text-sm font-semibold text-blue-500 mb-2">
                   Account Role
                 </label>
                 <div className="relative">
-                  <Shield className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
+                  <Shield className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-black" />
                   <input
                     type="text"
                     value={user?.role || "N/A"}
                     disabled
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white rounded-xl border border-gray-700 cursor-not-allowed"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-200 text-black rounded-xl border border-gray-300 cursor-not-allowed"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-900 border border-green-500/20 rounded-3xl p-4 md:p-8">
-            <h2 className="text-xl font-bold text-custom-yellow flex items-center gap-2 mb-6">
+          <div className="bg-white border border-gray-200 shadow-md  rounded-3xl p-4 md:p-8">
+            <h2 className="text-xl font-bold text-blue-500 flex items-center gap-2 mb-6">
               <CreditCard className="h-6 w-6" />
               Subscription Details
             </h2>
@@ -305,72 +305,71 @@ function MyProfile(props) {
             {hasActiveSubscription ? (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Plan Name */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Plan Name</p>
-                    <p className="text-white font-semibold text-lg">
+               
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                    <p className="text-gray-800 text-sm mb-1">Plan Name</p>
+                    <p className="text-gray-600 font-semibold text-lg">
                       {subscription.planName || "N/A"}
                     </p>
                   </div>
 
-                  {/* Status */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Status</p>
+               
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                    <p className="text-gray-800 text-sm mb-1">Status</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-custom-green rounded-full animate-pulse"></div>
-                      <p className="text-custom-yellow font-semibold text-lg capitalize">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <p className="text-blue-500 font-semibold text-lg capitalize">
                         {subscription.status}
                       </p>
                     </div>
                   </div>
 
-                  {/* Billing Type */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Billing Type</p>
-                    <p className="text-white font-semibold text-lg capitalize">
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                    <p className="text-gray-500 text-sm mb-1">Billing Type</p>
+                    <p className="text-black font-semibold text-lg capitalize">
                       {subscription.billingType || "N/A"}
                     </p>
                   </div>
 
                   {/* Team Size */}
                   {subscription.teamSize && (
-                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                      <p className="text-gray-400 text-sm mb-1">Team Size</p>
+                    <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                      <p className="text-gray-600 text-sm mb-1">Team Size</p>
                       <div className="flex items-center gap-2">
-                        <Users className="h-5 w-5 text-custom-yellow" />
-                        <p className="text-white font-semibold text-lg">
+                        <Users className="h-5 w-5 text-blue-500" />
+                        <p className="text-black font-semibold text-lg">
                           {subscription.teamSize} Members
                         </p>
                       </div>
                     </div>
                   )}
 
-                  {/* Start Date */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">Start Date</p>
+               
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                    <p className="text-gray-600 text-sm mb-1">Start Date</p>
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-custom-yellow" />
-                      <p className="text-white font-semibold">
+                      <Calendar className="h-5 w-5 text-blue-500" />
+                      <p className="text-black font-semibold">
                         {formatDate(subscription.planStartDate)}
                       </p>
                     </div>
                   </div>
 
                   {/* End Date */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                    <p className="text-gray-400 text-sm mb-1">End Date</p>
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
+                    <p className="text-gray-600 text-sm mb-1">End Date</p>
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-custom-yellow" />
-                      <p className="text-white font-semibold">
+                      <Calendar className="h-5 w-5 text-blue-500" />
+                      <p className="text-black font-semibold">
                         {formatDate(subscription.planEndDate)}
                       </p>
                     </div>
                   </div>
 
-                  {/* Auto Renew */}
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 md:col-span-2">
-                    <p className="text-gray-400 text-sm mb-1">Auto Renewal</p>
-                    <p className="text-white font-semibold text-lg">
+              
+                  <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 md:col-span-2">
+                    <p className="text-gray-600 text-sm mb-1">Auto Renewal</p>
+                    <p className="text-black font-semibold text-lg">
                       {subscription.autoRenew ? "Enabled" : "Disabled"}
                     </p>
                   </div>
@@ -378,17 +377,17 @@ function MyProfile(props) {
 
                 <button
                   onClick={() => router.push("/billingPage")}
-                  className="w-full mt-4 bg-custom-yellow text-black font-semibold py-3 rounded-xl hover:scale-[1.02] transition-transform cursor-pointer"
+                  className="w-full mt-4 bg-blue-500 text-white font-semibold py-3 rounded-xl hover:scale-[1.02] transition-transform cursor-pointer"
                 >
                   Manage Subscription
                 </button>
               </div>
             ) : (
               <div className="text-center py-12">
-                <div className="w-20 h-20 mx-auto mb-4 bg-gray-800 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
                   <CreditCard className="h-10 w-10 text-gray-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-xl font-semibold text-black mb-2">
                   No Active Subscription
                 </h3>
                 <p className="text-gray-400 mb-6">
@@ -396,7 +395,7 @@ function MyProfile(props) {
                 </p>
                 <button
                   onClick={() => router.push("/PlanPage")}
-                  className="px-8 py-3 bg-custom-yellow text-black font-semibold rounded-xl hover:scale-105 transition-transform inline-block"
+                  className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-xl hover:scale-105 transition-transform inline-block"
                 >
                   View Plans
                 </button>
@@ -407,7 +406,7 @@ function MyProfile(props) {
       </div>
 
       <div className="fixed -top-14 -left-10 w-32 h-32 rounded-full bg-custom-green blur-3xl opacity-20 pointer-events-none"></div>
-      <div className="fixed -bottom-10 -right-10 w-32 h-32 rounded-full bg-custom-yellow blur-3xl opacity-20 pointer-events-none"></div>
+      <div className="fixed -bottom-10 -right-10 w-32 h-32 rounded-full bg-blue-500 blur-3xl opacity-20 pointer-events-none"></div>
     </div>
   );
 }

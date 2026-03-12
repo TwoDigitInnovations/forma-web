@@ -134,10 +134,10 @@ function SiteLogs(props) {
   }, [projectId, currentTab]);
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         {/* HEADER */}
-        <div className="bg-[#DFF34940] py-4 md:px-6 px-3 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between md:items-center">
+        <div className="bg-white border border-gray-200 shadow-md py-4 md:px-6 px-3 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between md:items-center">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold flex items-center gap-2">
               {projectDetails?.projectName}
@@ -152,7 +152,7 @@ function SiteLogs(props) {
               setEditItem(null);
               setIsOpen(true);
             }}
-            className="w-fit bg-custom-yellow py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-black hover:bg-yellow-400 cursor-pointer"
+            className="w-fit bg-blue-500 py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-white  cursor-pointer"
           >
             <Plus size={18} />
             {currentTab === "dailylogs" ? "Add Log" : "Add Action Point"}
@@ -160,7 +160,7 @@ function SiteLogs(props) {
         </div>
 
         {/* TABS */}
-        <div className="bg-custom-black md:py-5 py-3 mt-5 rounded-2xl px-3 md:px-5">
+        <div className="bg-white border border-gray-200 shadow-md md:py-5 py-3 mt-5 rounded-2xl px-3 md:px-5">
           <div className="max-w-2xl flex overflow-x-auto scrollbar-hide justify-between items-center gap-6 mb-4">
             {["dailylogs", "actionpoints"].map((tab) => (
               <button
@@ -169,8 +169,8 @@ function SiteLogs(props) {
                 onClick={() => setCurrentTab(tab)}
                 className={`relative cursor-pointer flex-1 md:min-w-[200px] min-w-[150px] text-center py-2 text-lg font-semibold transition-all duration-300 ${
                   currentTab === tab
-                    ? "text-custom-yellow after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:rounded-3xl after:bg-[#e0f349]"
-                    : "text-gray-400 hover:text-[#e0f349]"
+                    ? "text-blue-500 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[3px] after:rounded-3xl after:bg-[#2563eb]"
+                    : "text-gray-600 hover:text-[#2563eb]"
                 }`}
               >
                 {tab === "dailylogs" ? "Daily Logs" : "Action Points"}
@@ -181,7 +181,7 @@ function SiteLogs(props) {
           {currentTab === "dailylogs" ? (
             <div>
               <p className="text-lg font-medium">Daily Site Logs</p>
-              <p className="text-md text-gray-300 font-medium">
+              <p className="text-md text-gray-600 font-medium">
                 Record daily activities, weather, and site observations
               </p>
 
@@ -200,23 +200,23 @@ function SiteLogs(props) {
                   {allItems.map((item, i) => (
                     <div
                       key={i}
-                      className="bg-[#1a1a1a] rounded-xl p-5 border border-gray-800 hover:border-custom-yellow transition-all duration-300 shadow-md"
+                      className="bg-gray-100 rounded-xl p-5 border border-gray-200 hover:border-custom-yellow transition-all duration-300 shadow-md"
                     >
                       {/* Top Row */}
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-4">
-                          <Calendar1 size={18} />
-                          <p className="text-md font-semibold text-yellow-300">
+                          <Calendar1 size={18} text-blue-500/>
+                          <p className="text-md font-semibold text-blue-500">
                             {item.date?.split("T")[0] || "--"}
                           </p>
-                          <p className="text-md text-gray-300">
+                          <p className="text-md text-gray-600">
                             {item?.weather}
                           </p>
                         </div>
                       </div>
 
                       {/* Work Summary */}
-                      <p className="mt-1 text-gray-300 text-sm leading-6">
+                      <p className="mt-1 text-gray-600 text-sm leading-6">
                         {item.workSummary}
                       </p>
 
@@ -224,7 +224,7 @@ function SiteLogs(props) {
                       <div className="flex justify-between items-center mt-2 text-gray-400 text-sm">
                         <div className="flex gap-3 justify-between items-center">
                           <CircleDot size={18} className="text-red-400" />
-                          <p className="italic text-red-100">
+                          <p className="italic text-gray-600">
                             {item.issues || ""}
                           </p>
                         </div>
@@ -235,7 +235,7 @@ function SiteLogs(props) {
                               setEditItem(item);
                               setIsOpen(true);
                             }}
-                            className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1"
+                            className="text-blue-400 hover:text-blue-500 cursor-pointer text-sm flex items-center gap-1"
                           >
                             <Edit2 size={18} /> Edit
                           </button>
@@ -245,7 +245,7 @@ function SiteLogs(props) {
                               setIsConfirmOpen(true);
                               setDeleteId(item._id);
                             }}
-                            className="text-red-400 hover:text-red-300 text-sm flex items-center gap-1"
+                            className="text-red-400 hover:text-red-500 cursor-pointer text-sm flex items-center gap-1"
                           >
                             <Trash size={18} /> Delete
                           </button>
@@ -259,7 +259,7 @@ function SiteLogs(props) {
           ) : (
             <div>
               <p className="text-lg font-medium">Action Points</p>
-              <p className="text-md text-gray-300 font-medium">
+              <p className="text-md text-gray-600 font-medium">
                 Track follow-up tasks and action items
               </p>
 
@@ -276,8 +276,8 @@ function SiteLogs(props) {
               ) : (
                 <div className="mt-4 overflow-x-auto min-h-[400px]">
                   <table className="w-full border-collapse rounded-xl ">
-                    <thead className="bg-[#111] border-b border-gray-800">
-                      <tr className="text-left text-gray-400 text-sm">
+                    <thead className="bg-blue-500 text-white border-b border-gray-800">
+                      <tr className="text-left  text-sm">
                         <th className="px-4 py-3">REF ID</th>
                         <th className="px-4 py-3">TASK DESCRIPTION</th>
                         <th className="px-4 py-3">PRIORITY</th>
@@ -291,13 +291,13 @@ function SiteLogs(props) {
                       {allItems.map((item, i) => (
                         <tr
                           key={i}
-                          className="bg-[#1a1a1a] border-b border-gray-800 hover:bg-[#202020] transition"
+                          className={`border-b border-gray-800 hover:bg-gray-100 transition ${i % 2 === 0 ? "bg-gray-200" : "bg-white"}`} 
                         >
-                          <td className="px-4 py-4 text-gray-300 text-sm">
+                          <td className="px-4 py-4 text-gray-600 text-sm">
                             AP-{i + 1}
                           </td>
 
-                          <td className="px-4 py-4 text-gray-200 text-sm">
+                          <td className="px-4 py-4 text-gray-600 text-sm">
                             {item.description}
                           </td>
 
@@ -308,15 +308,15 @@ function SiteLogs(props) {
                                 item.priority === "High"
                                   ? "bg-red-500/10 text-red-400"
                                   : item.priority === "Medium"
-                                    ? "bg-yellow-500/10 text-yellow-400"
-                                    : "bg-green-500/10 text-green-400"
+                                    ? "bg-yellow-500 text-white"
+                                    : "bg-green-500 text-green-400"
                               }`}
                             >
                               {item.priority}
                             </span>
                           </td>
 
-                          <td className="px-4 py-4 text-gray-400 text-sm">
+                          <td className="px-4 py-4 text-gray-600 text-sm">
                             {item.dueDate ? item.dueDate.split("T")[0] : "--"}
                           </td>
 
@@ -330,7 +330,7 @@ function SiteLogs(props) {
                                       border outline-none cursor-pointer
                                       ${
                                         item.status === "Open"
-                                          ? "bg-blue-500/10 text-blue-500 border-blue-500/30"
+                                          ? "bg-[var(--custom-blue)]/10 text-blue-500 border-blue-500/30"
                                           : item.status === "In-Progress"
                                             ? "bg-orange-500/10 text-orange-400 border-orange-500/30"
                                             : "bg-green-500/10 text-green-400 border-green-500/30"
@@ -345,14 +345,14 @@ function SiteLogs(props) {
 
                           <td className="px-4 py-4 text-right relative">
                             <div className="relative group inline-block">
-                              <button className="text-gray-400 hover:text-white cursor-pointer">
+                              <button className="text-gray-400 hover:text-black cursor-pointer">
                                 <MoreVertical size={18} />
                               </button>
 
                               <div
                                 className="
                               absolute right-0 mt-2 w-32
-                              bg-[#111] border border-gray-800
+                              bg-white border border-gray-300 
                               rounded-lg shadow-lg
                               opacity-0 group-hover:opacity-100
                               invisible group-hover:visible
@@ -364,7 +364,7 @@ function SiteLogs(props) {
                                     setIsOpen(true);
                                     setEditItem(item);
                                   }}
-                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-300 hover:bg-[#1f1f1f] cursor-pointer"
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer"
                                 >
                                   <Edit2 size={14} /> Edit
                                 </button>
@@ -374,7 +374,7 @@ function SiteLogs(props) {
                                     setOpen(true);
                                     setDeleteId(item._id);
                                   }}
-                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-[#1f1f1f] cursor-pointer"
+                                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-gray-100 cursor-pointer"
                                 >
                                   <Trash size={14} /> Delete
                                 </button>

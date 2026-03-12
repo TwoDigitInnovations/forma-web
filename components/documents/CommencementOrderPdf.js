@@ -38,7 +38,7 @@ const InstructionLetterPdf = ({ formData, contentRef, projectDetails }) => {
   console.log(data);
 
   return (
-    <div className="min-h-screen bg-custom-black mt-8 rounded-2xl p-6">
+    <div className="min-h-screen bg-gray-200 mt-8 rounded-2xl p-6">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
           <div className="border-2 border-gray-300 rounded-lg p-4">

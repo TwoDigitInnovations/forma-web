@@ -17,7 +17,6 @@ function TaskTrussLanding() {
   const [openFaq, setOpenFaq] = useState(0);
   const router = useRouter();
 
-  
   const features = [
     {
       icon: <BarChart3 className="w-6 h-6" />,
@@ -116,23 +115,25 @@ function TaskTrussLanding() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      
-      <section className="relative px-6 py-20 md:py-24">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-block px-6 py-2 mb-8 border border-[#e0f349] rounded-full">
-            <span className="text-custom-yellow text-sm font-medium">
+    <div className="min-h-screen bg-white text-gray-900">
+      <section className="relative px-6 py-6 min-h-[680px] flex flex-col items-center justify-center  bg-gradient-to-b from-blue-100 via-white to-blue-100 overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-30"></div>
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-600 rounded-full blur-3xl opacity-30"></div>
+
+        <div className="max-w-6xl mx-auto text-center relative z-10 ">
+          <div className="inline-block px-6 py-2 mb-8 border border-blue-500 rounded-full">
+            <span className="text-blue-500 text-sm font-medium">
               Construction Project Management
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
             Build Smarter with
             <br />
-            <span className="text-custom-yellow">Forma</span>
+            <span className="text-blue-500">Forma</span>
           </h1>
 
-          <p className="text-gray-400 text-lg md:text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-lg md:text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
             The complete project management platform for road construction,
             infrastructure, and building projects. Track progress, manage
             payments, and collaborate with your team - all in one place.
@@ -140,12 +141,15 @@ function TaskTrussLanding() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              className="bg-custom-yellow text-black px-8 py-2.5 rounded-lg font-semibold hover:bg-[#d0e339] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#e0f349]/20 cursor-pointer"
-              onClick={() => router.push("/Ragister")}
+              className="bg-blue-500 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 cursor-pointer"
+              onClick={() => router.push("/ragister")}
             >
-              Start Free <ArrowRight className="w-5 h-5" />
+              Start Free
+              <ArrowRight className="w-5 h-5" />
             </button>
-            <button className="border border-gray-700 px-8 py-2.5 rounded-lg font-semibold hover:bg-gray-900 transition-all cursor-pointer"
+
+            <button
+              className="border border-gray-300 px-8 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-all cursor-pointer text-gray-700"
               onClick={() => router.push("/login")}
             >
               Sign In
@@ -154,16 +158,15 @@ function TaskTrussLanding() {
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="px-6 py-8 border-t border-gray-900">
+      <section className="px-6 py-8 border-t border-gray-100">
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
+          <p className="text-center text-gray-600 text-sm uppercase tracking-wider mb-8">
             Trusted by teams at forward-thinking companies
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {companies.map((company, i) => (
               <div key={i} className="flex items-center gap-2 text-gray-600">
-                <div className="w-2 h-2 bg-gray-700 rounded-full"></div>
+                <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
                 <span className="text-lg">{company}</span>
               </div>
             ))}
@@ -174,10 +177,10 @@ function TaskTrussLanding() {
       {/* Features Section */}
       <section className="px-6 py-20 md:py-24">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-gray-900">
             Everything you need to manage construction projects
           </h2>
-          <p className="text-gray-400 text-center mb-16 max-w-3xl mx-auto">
+          <p className="text-gray-500 text-center mb-16 max-w-3xl mx-auto">
             From financial tracking to team collaboration, TaskTruss provides
             all the tools you need for successful project delivery.
           </p>
@@ -186,13 +189,15 @@ function TaskTrussLanding() {
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl p-8 hover:border-[#e0f349]/30 transition-all"
+                className="bg-gradient-to-b from-gray-50 to-white border border-gray-200 rounded-xl p-8 hover:border-blue-500/30 transition-all"
               >
-                <div className="w-14 h-14 bg-gradient-to-br from-[#e0f349]/20 to-transparent rounded-lg flex items-center justify-center mb-6 text-[#e0f349]">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-transparent rounded-lg flex items-center justify-center mb-6 text-blue-500">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed">
+                <h3 className="text-xl font-bold mb-3 text-gray-900">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-500 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -202,14 +207,14 @@ function TaskTrussLanding() {
       </section>
 
       {/* Benefits Section */}
-      <section className="px-6 py-8 md:py-24 bg-gradient-to-b from-black to-gray-950">
+      <section className="px-6 py-8 md:py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
                 Streamline your project lifecycle
               </h2>
-              <p className="text-gray-400 mb-8 text-lg">
+              <p className="text-gray-500 mb-8 text-lg">
                 TaskTruss helps construction teams stay organized, track
                 progress accurately, and deliver projects on time and within
                 budget.
@@ -218,16 +223,17 @@ function TaskTrussLanding() {
               <div className="space-y-4 mb-10">
                 {benefits.map((benefit, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full border-2 border-[#e0f349] flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <CheckCircle className="w-4 h-4 text-[#e0f349]" />
+                    <div className="w-6 h-6 rounded-full border-2 border-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle className="w-4 h-4 text-blue-500" />
                     </div>
-                    <span className="text-gray-300">{benefit}</span>
+                    <span className="text-gray-600">{benefit}</span>
                   </div>
                 ))}
               </div>
 
-              <button className="bg-custom-yellow text-black px-8 py-2.5 rounded-lg font-semibold hover:bg-[#d0e339] transition-all flex items-center gap-2 cursor-pointer"
-                onClick={() => router.push("/Ragister")}
+              <button
+                className="bg-blue-500 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center gap-2 cursor-pointer"
+                onClick={() => router.push("/ragister")}
               >
                 Get Started Free <ArrowRight className="w-5 h-5" />
               </button>
@@ -237,14 +243,16 @@ function TaskTrussLanding() {
               {stats.map((stat, i) => (
                 <div
                   key={i}
-                  className="bg-gradient-to-r from-gray-900 to-black border border-gray-800 rounded-xl p-8 flex items-center gap-6"
+                  className="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-xl p-8 flex items-center gap-6"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#e0f349]/20 to-transparent rounded-lg flex items-center justify-center text-[#e0f349] flex-shrink-0">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-transparent rounded-lg flex items-center justify-center text-blue-500 flex-shrink-0">
                     {stat.icon}
                   </div>
                   <div>
-                    <div className="text-4xl font-bold mb-1">{stat.value}</div>
-                    <div className="text-gray-400">{stat.label}</div>
+                    <div className="text-4xl font-bold mb-1 text-gray-900">
+                      {stat.value}
+                    </div>
+                    <div className="text-gray-500">{stat.label}</div>
                   </div>
                 </div>
               ))}
@@ -256,7 +264,7 @@ function TaskTrussLanding() {
       {/* FAQ Section */}
       <section className="px-6 py-20 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">
             Frequently Asked Questions
           </h2>
 
@@ -264,23 +272,23 @@ function TaskTrussLanding() {
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-b from-gray-900 to-black border border-gray-800 rounded-xl overflow-hidden"
+                className="bg-gradient-to-b from-gray-50 to-white border border-gray-200 rounded-xl overflow-hidden"
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
-                  className="w-full px-7 py-5 flex items-center justify-between text-left hover:bg-gray-900/50 transition-all"
+                  className="w-full px-7 py-5 flex items-center justify-between text-left hover:bg-gray-100/50 transition-all"
                 >
-                  <span className="font-semibold text-lg pr-4">
+                  <span className="font-semibold text-lg pr-4 text-gray-900">
                     {faq.question}
                   </span>
                   {openFaq === i ? (
-                    <ChevronUp className="w-5 h-5 text-[#e0f349] flex-shrink-0 cursor-pointer" />
+                    <ChevronUp className="w-5 h-5 text-blue-500 flex-shrink-0 cursor-pointer" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0 cursor-pointer" />
+                    <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0 cursor-pointer" />
                   )}
                 </button>
                 {openFaq === i && (
-                  <div className="px-7 pb-6 text-gray-400 leading-relaxed mt-2">
+                  <div className="px-7 pb-6 text-gray-500 leading-relaxed mt-2">
                     {faq.answer}
                   </div>
                 )}
@@ -291,18 +299,19 @@ function TaskTrussLanding() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-6 py-20 md:py-24 bg-gradient-to-b from-gray-950 to-black">
+      <section className="px-6 py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
             Ready to transform your project management?
           </h2>
-          <p className="text-gray-400 text-lg mb-10">
+          <p className="text-gray-500 text-lg mb-10">
             Join thousands of construction teams already using TaskTruss to
             deliver projects more efficiently.
           </p>
 
-          <button className="bg-custom-yellow text-black px-10 py-2.5 rounded-lg font-semibold hover:bg-[#d0e339] transition-all flex items-center justify-center gap-2 mx-auto text-lg shadow-xl shadow-[#e0f349]/20 cursor-pointer"
-            onClick={() => router.push("/Ragister")}
+          <button
+            className="bg-blue-500 text-white px-10 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 mx-auto text-lg shadow-xl shadow-blue-500/20 cursor-pointer"
+            onClick={() => router.push("/ragister")}
           >
             Start Free Today <ArrowRight className="w-5 h-5" />
           </button>

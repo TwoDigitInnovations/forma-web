@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
   const isPublicLayout = publicLayoutRoutes.includes(path);
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {isPublicLayout && (
         <>
           <BeforeLoginNavbar />

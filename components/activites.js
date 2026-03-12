@@ -107,14 +107,14 @@ const WorkplanProgress = ({
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="mb-8 bg-custom-black p-5 rounded-xl shadow-sm border"
+        className="mb-8 bg-white border- border-gray-300 p-5 rounded-xl shadow-sm border"
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-lg font-semibold text-white">
+            <h1 className="text-lg font-semibold text-black">
               Overall Progress
             </h1>
-            <span className="text-lg font-bold text-custom-yellow">
+            <span className="text-lg font-bold text-blue-500">
               {progress}%
             </span>
           </div>
@@ -133,15 +133,15 @@ const WorkplanProgress = ({
 
         <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-custom-yellow transition-all duration-500"
+            className="h-full bg-blue-500 transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
       </motion.div>
 
       <div className="border rounded-xl shadow bg-custom-black overflow-hidden">
-        <div className="hidden sm:grid grid-cols-10 gap-4 px-4 py-3 text-black text-sm font-semibold bg-custom-yellow">
-          <div className="col-span-4">Description</div>
+        <div className="hidden sm:grid grid-cols-10 gap-4 px-4 py-3 text-white text-sm font-semibold bg-blue-500">
+          <div className="xl:col-span-4 lg:col-span-3">Description</div>
           <div>Qty in BOQ</div>
           <div>Rate</div>
           <div>Amount</div>
@@ -157,7 +157,7 @@ const WorkplanProgress = ({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="px-4 py-3 bg-gray-800 border-b text-white font-bold flex justify-between items-center cursor-pointer"
+                className="px-4 py-3 bg-gray-200 border-b border-gray-200 text-black font-bold flex justify-between items-center cursor-pointer"
               >
                 <span>{section.name}</span>
               </motion.div>
@@ -173,7 +173,7 @@ const WorkplanProgress = ({
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="border-b text-sm text-white px-4 py-3"
+                      className="border-b border-gray-300 bg-white text-sm text-black px-4 py-3"
                     >
                       <div className="sm:hidden flex flex-col gap-3">
                         <div className="font-semibold">{act.name}</div>
@@ -182,7 +182,7 @@ const WorkplanProgress = ({
                           <span>Qty in BOQ</span>
                           <input
                             type="number"
-                            className="bg-gray-700 p-1 rounded w-24"
+                            className="bg-gray-200 p-1 rounded w-20"
                             value={act.qtyInBOQ}
                             onChange={(e) =>
                               handleChange(
@@ -199,7 +199,7 @@ const WorkplanProgress = ({
                           <span>Rate</span>
                           <input
                             type="number"
-                            className="bg-gray-700 p-1 rounded w-20"
+                            className="bg-gray-200 p-1 rounded w-20"
                             value={act.Rate}
                             onChange={(e) =>
                               handleChange(
@@ -216,7 +216,7 @@ const WorkplanProgress = ({
                           <input
                             type="number"
                             disabled
-                            className="bg-gray-700 p-1 rounded w-20"
+                            className="bg-gray-200 p-1 rounded w-20"
                             value={act.Amount}
                             onChange={(e) =>
                               handleChange(
@@ -232,7 +232,7 @@ const WorkplanProgress = ({
                           <span>Qty Done</span>
                           <input
                             type="number"
-                            className="bg-gray-700 p-1 rounded w-24"
+                            className="bg-gray-200 p-1 rounded w-20"
                             value={act.qtyDone}
                             onChange={(e) =>
                               handleChange(
@@ -249,7 +249,7 @@ const WorkplanProgress = ({
                           <input
                             type="number"
                             disabled
-                            className="bg-gray-700 p-1 rounded w-20"
+                            className="bg-gray-200 p-1 rounded w-20"
                             value={act.amountDone}
                             onChange={(e) =>
                               handleChange(
@@ -266,7 +266,7 @@ const WorkplanProgress = ({
                         <div>
                           <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-custom-yellow rounded-full"
+                              className="h-full bg-blue-500 rounded-full"
                               style={{ width: `${progress}%` }}
                             />
                           </div>
@@ -277,11 +277,11 @@ const WorkplanProgress = ({
                       </div>
 
                       <div className="hidden md:grid grid-cols-10 gap-4 items-center">
-                        <div className="col-span-4">{act.name}</div>
+                        <div className="xl:col-span-4 lg:col-span-3">{act.name}</div>
 
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-20"
+                          className="bg-gray-200 p-1 rounded xl:w-20 lg:w-14"
                           value={act.qtyInBOQ}
                           onChange={(e) =>
                             handleChange(
@@ -295,7 +295,7 @@ const WorkplanProgress = ({
 
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-20"
+                          className="bg-gray-200 p-1 rounded xl:w-20 lg:w-14"
                           value={act.Rate}
                           onChange={(e) =>
                             handleChange(
@@ -309,7 +309,7 @@ const WorkplanProgress = ({
 
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-20"
+                          className="bg-gray-200 p-1 rounded xl:w-20 lg:w-14"
                           value={act.Amount}
                           disabled
                           onChange={(e) =>
@@ -324,7 +324,7 @@ const WorkplanProgress = ({
 
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-20"
+                          className="bg-gray-200 p-1 rounded xl:w-20 lg:w-14"
                           value={act.qtyDone}
                           onChange={(e) =>
                             handleChange(
@@ -338,7 +338,7 @@ const WorkplanProgress = ({
 
                         <input
                           type="number"
-                          className="bg-gray-700 p-1 rounded w-20"
+                          className="bg-gray-200 p-1 rounded xl:w-20 lg:w-14"
                           value={act.amountDone}
                           disabled
                           onChange={(e) =>
@@ -354,7 +354,7 @@ const WorkplanProgress = ({
                         <div className="flex items-center gap-2">
                           <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-custom-yellow rounded-full"
+                              className="h-full bg-blue-500 rounded-full"
                               style={{ width: `${progress}%` }}
                             />
                           </div>

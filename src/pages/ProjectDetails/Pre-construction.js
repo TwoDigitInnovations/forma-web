@@ -187,11 +187,11 @@ function PreConstruction(props) {
 
   const StatsCard = ({ label, value, color }) => {
     return (
-      <div className="bg-custom-black rounded-xl shadow-sm p-5 flex flex-col items-start w-full">
-        <p className="text-gray-100 text-sm">{label}</p>
+      <div className="bg-white rounded-xl shadow-sm p-5 flex flex-col items-start w-full">
+        <p className="text-gray-600 text-sm">{label}</p>
         <p
-          className={`text-2xl font-semibold mt-1`}
-          style={{ color: color || "#fff" }}
+          className={`text-2xl font-semibold mt-1 text-blue-500`}
+          
         >
           {value}
         </p>
@@ -199,10 +199,10 @@ function PreConstruction(props) {
     );
   };
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         
-        <div className="bg-[#DFF34940] py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
+        <div className="bg-white shadow-md border border-gray-200 py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-2xl">Documents Checklist</p>
 
@@ -219,7 +219,7 @@ function PreConstruction(props) {
               setEditItem(null);
               setIsOpen(true);
             }}
-            className="bg-custom-yellow py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-black hover:bg-yellow-400 cursor-pointer"
+            className="bg-blue-500 py-1.5 px-4 rounded-[12px] flex items-center gap-1 text-white hover:bg-blue-600 cursor-pointer"
           >
             <NotebookPen size={18} />
             Create Item
@@ -229,24 +229,24 @@ function PreConstruction(props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-5">
           <StatsCard label="Total Items" value={stats.total} />
 
-          <StatsCard label="Pending" value={stats.pending} color="#fff" />
+          <StatsCard label="Pending" value={stats.pending} />
 
           <StatsCard
             label="Submitted"
             value={stats.submitted}
-            color="#c28807"
+            
           />
 
-          <StatsCard label="Approved" value={stats.approved} color="#1aa34a" />
+          <StatsCard label="Approved" value={stats.approved}  />
 
           <StatsCard
             label="Rejected/Expired"
             value={stats.rejected}
-            color="#d11a1a"
+          
           />
         </div>
 
-        <div className="bg-custom-black py-5 mt-5 rounded-2xl px-5">
+        <div className="bg-white border border-gray-300 py-5 mt-5 rounded-2xl px-5">
           <p className="text-md font-medium">
             Track required documents and approvals before project
             commencement{" "}
@@ -254,7 +254,7 @@ function PreConstruction(props) {
           {allCheckListItem.length === 0 ? (
             <div className="flex flex-col justify-center items-center min-h-[400px] text-center">
               <FileCode2 size={68} />
-              <h3 className="text-xl font-medium mt-2">
+              <h3 className="text-xl font-medium mt-2 text-black">
                 No Checklist Items Found
               </h3>
             </div>

@@ -36,19 +36,7 @@ const Projects = (props) => {
   const [user, setUser] = useContext(userContext);
   const isTeamsMember = user?.role === "TeamsMember";
 
-  const getStatusBadge = (status) => {
-    const baseClasses = "px-3 py-1 rounded-full text-xs font-medium";
-    switch (status) {
-      case "Planning":
-        return `${baseClasses} text-[#e0f349] bg-[#e0f349]/20`;
-      case "In Progress":
-        return `${baseClasses} text-[#00bcd4] bg-[#00bcd4]/20`;
-      case "Completed":
-        return `${baseClasses} text-[#4caf50] bg-[#4caf50]/20`;
-      default:
-        return `${baseClasses} text-gray-400 bg-gray-700`;
-    }
-  };
+
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -126,15 +114,15 @@ const Projects = (props) => {
   }, [projectDetails?._id]);
 
   return (
-    <div className="h-screen p-4 md:px-6 bg-black text-white z-0">
+    <div className="h-screen p-4 md:px-6 bg-[var(--custom-lightGray)] text-black z-0">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold" style={{ color: "#e0f349" }}>
+          <h1 className="text-3xl font-bold text-black">
             Projects
           </h1>
           <button
-            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 text-white transition-opacity bg-[var(--custom-blue)] "
+           
             onClick={() => setIsOpen(true)}
           >
             <FolderPlus size={28} />
@@ -154,14 +142,14 @@ const Projects = (props) => {
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <div className="relative flex w-[31rem]">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600"
               size={20}
             />
             <input
               type="text"
               placeholder="Search"
-              className="w-full pl-10 pr-4 py-2 rounded-[26px] border border-gray-600 focus:border-gray-500 focus:outline-none"
-              style={{ backgroundColor: "#FFFFFF75", color: "white" }}
+              className="w-full pl-10 pr-4 py-2 rounded-[26px] border text-black border-gray-600 focus:border-gray-500 focus:outline-none"
+              
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -174,7 +162,7 @@ const Projects = (props) => {
                 value={programId}
                 onChange={(e) => setProgramId(e.target.value)}
                 required
-                className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full bg-[#5F5F5F] rounded-lg"
+                className="text-[14px] mt-2 px-4 py-2.5 cursor-pointer w-full text-black bg-gray-300 rounded-lg"
               >
                 <option value="">Select Program Type</option>
                 {AllProgramData.map((type) => (
@@ -184,7 +172,7 @@ const Projects = (props) => {
                 ))}
               </select>
             </div>
-            <button className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 bg-custom-yellow text-black cursor-pointer transition-colors text-sm md:text-md">
+            <button className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 bg-[var(--custom-blue)]  text-white cursor-pointer transition-colors text-sm md:text-md">
               <CircleDashed size={26} />
               All Status
             </button>
@@ -193,9 +181,9 @@ const Projects = (props) => {
 
         <h2 className="text-xl font-semibold mb-6">All Projects</h2>
 
-        <div className="overflow-x-auto bg-custom-black rounded-xl min-h-[450px]">
+        <div className="overflow-x-auto bg-gray-100 shadow-md rounded-xl min-h-[450px]">
           <table className="min-w-[800px] w-full text-sm text-left text-gray-300">
-            <thead className="border-b border-gray-700 text-gray-400">
+            <thead className="bg-[var(--custom-blue)] border-b border-gray-700 text-gray-100">
               <tr>
                 <th className="p-3">Project</th>
                 <th className="p-3">Status</th>
@@ -209,20 +197,20 @@ const Projects = (props) => {
               <tbody>
                 <tr>
                   <td colSpan={6} className="p-0">
-                    <div className="flex flex-col justify-center items-center text-center space-y-3 min-h-[450px] bg-custom-black">
+                    <div className="flex flex-col justify-center items-center text-center space-y-3 min-h-[450px] bg-gray-100">
                       <FileCode2 size={68} className="text-gray-400" />
 
-                      <h3 className="text-xl font-medium text-white">
+                      <h3 className="text-xl font-medium text-black">
                         No Project Found
                       </h3>
 
-                      <p className="text-gray-300">
+                      <p className="text-gray-600">
                         Try creating a new Project or adjusting your filters.
                       </p>
 
                       <button
-                        className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition"
-                        style={{ backgroundColor: "#e0f349", color: "#1e1e1e" }}
+                        className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition text-gray-100 bg-[var(--custom-blue)] "
+                      
                         onClick={() => setIsOpen(true)}
                       >
                         <FolderPlus size={20} />
@@ -234,14 +222,15 @@ const Projects = (props) => {
               </tbody>
             ) : (
               <tbody>
-                {AllProjectData.map((project) => (
+                {AllProjectData.map((project,index) => (
                   <tr
                     key={project._id}
-                    className="border-b border-gray-800 hover:bg-[#e0f34915] transition"
+                    
+                    className={`${index % 2 === 0 ? "bg-white" : "bg-[#E2E8F0] "} border-b border-gray-800 text-gray-800 transition`} 
                   >
                     <td className="p-3">
                       <div
-                        className="font-semibold text-white hover:underline cursor-pointer"
+                        className="font-semibold text-gray-800 hover:underline cursor-pointer"
                         onClick={() => {
                           router.push(
                             `/ProjectDetails/overview?id=${project._id}`,
@@ -258,7 +247,7 @@ const Projects = (props) => {
                     </td>
 
                     <td className="p-3">
-                      <span className={getStatusBadge(project?.status)}>
+                      <span className="bg-green-100 text-green-800 p-2 rounded-2xl">
                         {project?.status}
                       </span>
                     </td>
@@ -272,14 +261,14 @@ const Projects = (props) => {
                     <td className="p-3 min-w-[150px]">
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
-                          className="h-2 rounded-full"
+                          className="h-2 rounded-full bg-[var(--custom-blue)]"
                           style={{
                             width: `${project?.actualProgress || 0}%`,
-                            backgroundColor: "#e0f349",
+                            
                           }}
                         />
                       </div>
-                      <div className="text-right text-xs mt-1 text-[#e0f349]">
+                      <div className="text-right text-xs mt-1 text-blue-500">
                         {project?.actualProgress || 0}%
                       </div>
                     </td>

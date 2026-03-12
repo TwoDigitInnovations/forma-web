@@ -130,148 +130,169 @@ function Signup() {
   });
 
   return (
-    <div className="min-h-screen bg-black flex justify-center items-center md:px-6 px-4 py-14">
-      <div className="">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 via-white to-blue-100 text-white flex items-center justify-center relative overflow-hidden px-4 py-10">
+      <div className="absolute top-[-80px] left-[-80px] w-[400px] h-[400px] bg-blue-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute bottom-[-80px] right-[-80px] w-[400px] h-[400px] bg-cyan-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[160px] opacity-10 pointer-events-none"></div>
+
+      <div className="relative z-10 w-full max-w-xl">
         <button
           onClick={() => router.push("/")}
-          className="flex gap-4 text-white font-semibold text-lg  rounded-xl transition-all duration-300 cursor-pointer mb-2"
+          className="flex items-center gap-2 text-black hover:text-gray-500 font-medium text-sm mb-6 transition-colors duration-200 group"
         >
-          <ArrowLeft /> Back
+          <ArrowLeft
+            size={16}
+            className="group-hover:-translate-x-1 transition-transform duration-200"
+          />
+          Back to Home
         </button>
 
         {isOpen && (
-          <div className="w-full mx-auto shadow-2xl flex justify-center items-center">
-            <div className="md:min-w-lg min-w-[350px]">
-              <div className="mb-6 py-6 bg-custom-black border rounded-3xl border-green-500/20  md:p-5 p-3">
-               
-
-                <div className="flex flex-col justify-center items-center mb-4 gap-2">
-                  <h2 className="text-white text-2xl font-bold ">
-                    Create User Account
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-2">
-                  <div>
-                    <label className="block text-white font-medium mb-2">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={form.firstName}
-                      onChange={(e) =>
-                        handleChange("firstName", e.target.value)
-                      }
-                      placeholder="John"
-                      required
-                      className="w-full bg-gray-800 text-white p-3 rounded-xl mt-1"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white font-medium mb-2">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={form.lastName}
-                      onChange={(e) => handleChange("lastName", e.target.value)}
-                      placeholder="Doe"
-                      required
-                      className="w-full bg-gray-800 text-white p-3 rounded-xl mt-1"
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-2">
-                  <label className="text-sm text-white">Email</label>
-                  <input
-                    type="email"
-                    className="w-full bg-gray-800 text-white p-3 rounded-xl mt-1"
-                    placeholder="you@example.com"
-                    value={form.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <label className="text-sm text-white">Phone No</label>
-                  <input
-                    type="number"
-                    className="w-full bg-gray-800 text-white p-3 rounded-xl mt-1"
-                    placeholder="Enter your phone no"
-                    value={form.phone}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-2 relative">
-                  <label className="text-sm text-white">Password</label>
-
-                  <input
-                    type={showPass ? "text" : "password"}
-                    className="w-full bg-gray-800 text-white p-3 pr-12 rounded-xl mt-1"
-                    placeholder="Enter password"
-                    value={form.password}
-                    onChange={(e) => handleChange("password", e.target.value)}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPass(!showPass)}
-                    className="absolute right-4 top-[38px] text-gray-400"
-                  >
-                    {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-
-                <button
-                  onClick={submitSignup}
-                  className="w-full bg-custom-yellow text-lg cursor-pointer text-black py-2.5 rounded-xl font-semibold hover:scale-102 transition flex justify-center items-center gap-2 mt-4"
+          <div className="bg-white border border-blue-100 rounded-3xl shadow-xl p-8">
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-500 border border-blue-400 rounded-2xl mb-4">
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {loading ? (
-                    <div className="animate-spin h-5 w-5 cursor-pointer border-black border-b-2 rounded-full"></div>
-                  ) : (
-                    <>
-                      Create Account
-                      <ArrowRight />
-                    </>
-                  )}
-                </button>
-                 <div className="flex items-center my-4">
-                  <div className="flex-1 h-[1px] bg-gray-700"></div>
-                  <span className="text-gray-400 px-3 text-sm">OR</span>
-                  <div className="flex-1 h-[1px] bg-gray-700"></div>
-                </div>
-                 <button
-                  onClick={() => googleSignup()}
-                  className="w-full flex items-center justify-center gap-3 bg-custom-yellow cursor-pointer text-black py-3 rounded-xl font-semibold hover:scale-[1.02] transition"
-                >
-                  <Image
-                    src="/google.png"
-                    alt="Google"
-                    width={20}
-                    height={20}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.8}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                   />
-                  Continue with Google
-                </button>
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-black tracking-tight">
+                Create Account
+              </h2>
+              {/* <p className="text-blue-300/70 text-sm mt-1">
+                Join us and get started today
+              </p> */}
+            </div>
 
-               
-
-                <p className="text-white text-md mt-6 text-center">
-                  {" "}
-                  Already have an account?{" "}
-                  <span
-                    className="text-custom-yellow cursor-pointer"
-                    onClick={() => router.push("login")}
-                  >
-                    {" "}
-                    Sign in
-                  </span>
-                </p>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className="block text-black text-sm font-semibold uppercase tracking-widest mb-2">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={form.firstName}
+                  onChange={(e) => handleChange("firstName", e.target.value)}
+                  placeholder="John"
+                  required
+                  className="w-full bg-white border border-blue-200 text-black placeholder-gray-400 p-3 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                />
+              </div>
+              <div>
+                <label className="block text-black text-sm font-semibold uppercase tracking-widest mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={(e) => handleChange("lastName", e.target.value)}
+                  placeholder="Doe"
+                  required
+                  className="w-full bg-white border border-blue-200 text-black placeholder-gray-400 p-3 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                />
               </div>
             </div>
+
+            {/* Email */}
+            <div className="mb-4">
+              <label className="block text-black text-sm font-semibold uppercase tracking-widest mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                className="w-full bg-white border border-blue-200 text-black placeholder-gray-400 p-3 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+              />
+            </div>
+
+            {/* Phone */}
+            <div className="mb-4">
+              <label className="block text-black text-xs font-semibold uppercase tracking-widest mb-2">
+                Phone No
+              </label>
+              <input
+                type="number"
+                className="w-full bg-white border border-blue-200 text-black placeholder-gray-400 p-3 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                placeholder="Enter your phone No."
+                value={form.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="mb-6 relative">
+              <label className="block text-black text-sm font-semibold uppercase tracking-widest mb-2">
+                Password
+              </label>
+              <input
+                type={showPass ? "text" : "password"}
+                className="w-full bg-white border border-blue-200 text-black placeholder-gray-400 p-3 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                placeholder="Create a strong password"
+                value={form.password}
+                onChange={(e) => handleChange("password", e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPass(!showPass)}
+                className="absolute right-3 top-[38px] text-blue-400/60 hover:text-blue-300 transition-colors duration-200"
+              >
+                {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+
+            <button
+              onClick={submitSignup}
+              className="w-full cursor-pointer bg-gradient-to-r from-blue-500 to-blue-500 hover:from-blue-400 hover:to-cyan-400 text-white py-3 rounded-xl font-semibold text-sm tracking-wide shadow-lg shadow-blue-500/25 hover:shadow-blue-400/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex justify-center items-center gap-2"
+            >
+              {loading ? (
+                <div className="animate-spin h-5 w-5 border-white/30 border-b-2 rounded-full"></div>
+              ) : (
+                <>
+                  Create Account
+                  <ArrowRight size={16} />
+                </>
+              )}
+            </button>
+
+            <div className="flex  justify-center items-center py-3">
+              <div className="flex-1 h-px bg-gray-300 "></div>
+              <span className="text-gray-400 px-3 text-xs font-medium text-center uppercase">
+                or
+              </span>
+              <div className="flex-1  h-px bg-gray-300"></div>
+            </div>
+
+            <button
+              onClick={() => googleSignup()}
+              className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 hover:bg-gray-50 text-black py-3 rounded-xl font-medium text-sm tracking-wide transition-all duration-200 cursor-pointer"
+            >
+              <Image src="/google.png" alt="Google" width={18} height={18} />
+              Continue with Google
+            </button>
+
+            {/* Sign in link */}
+            <p className="text-black text-sm mt-6 text-center">
+              Already have an account?{" "}
+              <span
+                className="text-blue-500 hover:text-blue-600 font-semibold cursor-pointer transition-colors duration-200"
+                onClick={() => router.push("login")}
+              >
+                Sign in
+              </span>
+            </p>
           </div>
         )}
       </div>

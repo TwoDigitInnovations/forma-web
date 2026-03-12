@@ -56,32 +56,35 @@ function PricingPage() {
     console.log("why", hasActiveSubscription);
 
     if (hasActiveSubscription) {
-    
       router.push("/dashboard");
     }
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <section className="max-w-6xl mx-auto px-4 pt-12 pb-8 text-center">
-        <button className="px-4 text-shadow-2xs py-2 mb-3 border border-custom-yellow bg-custom-black text-custom-yellow rounded-full hover:bg-gray-700">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 via-white to-blue-100 text-white flex flex-col items-center justify-center relative overflow-hidden px-4 py-10">
+      <div className="absolute top-[-80px] left-[-80px] w-[400px] h-[400px] bg-blue-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute bottom-[-80px] right-[-80px] w-[400px] h-[400px] bg-cyan-400 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500 rounded-full blur-[160px] opacity-10 pointer-events-none"></div>
+
+      <section className="max-w-7xl mx-auto px-4 pt-12 pb-8 text-center">
+        <button className="px-4 text-shadow-2xs py-2 mb-3 border border-custom-yellow bg-white text-blue-500 rounded-full hover:bg-gray-700">
           Welcome {user?.name}
         </button>
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">
+        <h1 className="text-5xl md:text-6xl font-bold mb-4 text-black">
           Activate Your Account
         </h1>
-        <p className="text-gray-400 text-lg mb-4 max-w-2xl mx-auto">
+        <p className="text-gray-600 text-lg mb-4 max-w-2xl mx-auto">
           Choose a subscription plan to start managing your construction
           projects, or wait for an organization invitation.
         </p>
         <div className="max-w-[200px] mx-auto">
-          <div className="flex bg-gray-800 rounded-xl p-1 mb-6">
+          <div className="flex bg-gray-700 rounded-xl p-1 mb-6">
             <button
               onClick={() => setBillingType("monthly")}
               className={`flex-1 cursor-pointer py-2 rounded-xl text-sm font-semibold transition-all
               ${
                 billingType === "monthly"
-                  ? "bg-custom-yellow text-black"
+                  ? "bg-blue-500 text-white"
                   : "text-white "
               }`}
             >
@@ -93,7 +96,7 @@ function PricingPage() {
               className={`flex-1 py-2 cursor-pointer rounded-lg text-sm font-semibold transition-all
               ${
                 billingType === "annually"
-                  ? "bg-custom-yellow text-black"
+                  ? "bg-blue-500 text-black"
                   : "text-white "
               }`}
             >
@@ -103,7 +106,7 @@ function PricingPage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 pb-20">
+      <section className="max-w-7xl mx-auto px-4 pb-20">
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
             <h3 className="text-xl font-semibold mb-2">
@@ -125,7 +128,7 @@ function PricingPage() {
               className="w-full py-3 cursor-pointer bg-gray-800 text-white rounded-lg hover:bg-gray-700 mb-6"
               onClick={() =>
                 router.push(
-                  `/Checkout?role=User&billingType=${billingType}&planId=${allPlanData[0]?._id}`
+                  `/Checkout?role=User&billingType=${billingType}&planId=${allPlanData[0]?._id}`,
                 )
               }
             >
@@ -160,11 +163,11 @@ function PricingPage() {
             </ul>
           </div>
 
-          <div className="bg-gradient-to-b from-yellow-500/20 to-gray-900 rounded-2xl p-8 border-2 border-yellow-400 relative">
+          <div className="bg-gradient-to-b from-blue-300 to-gray-400 rounded-2xl p-8 border-2 border-blue-400 relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <span
-                style={{ backgroundColor: "#e0f349" }}
-                className="px-4 py-1 rounded-full text-black text-sm font-medium"
+                
+                className="px-4 py-1 rounded-full text-whote bg-blue-500 text-sm font-medium"
               >
                 POPULAR PLAN
               </span>
@@ -185,13 +188,12 @@ function PricingPage() {
               </span>
             </div>
             <button
-              style={{ backgroundColor: "#e0f349" }}
               onClick={() =>
                 router.push(
-                  `/Checkout?role=Organization&billingType=${billingType}&planId=${allPlanData[1]?._id}`
+                  `/Checkout?role=Organization&billingType=${billingType}&planId=${allPlanData[1]?._id}`,
                 )
               }
-              className="w-full py-3 text-black cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6"
+              className="w-full py-3  cursor-pointer font-medium rounded-lg hover:opacity-90 mb-6 bg-blue-500 text-white"
             >
               Buy Now
             </button>
@@ -256,14 +258,14 @@ function PricingPage() {
             </ul>
           </div>
         </div>
-        <div className="border-px border-gray-100 mt-8 max-w-2xl mx-auto bg-[#0b0f19] text-white rounded-2xl p-6 space-y-6 shadow-lg">
+        <div className="border-px border-gray-100 mt-8 max-w-2xl mx-auto bg-blue-50 text-white rounded-2xl p-6 space-y-6 shadow-lg">
           <div className="flex items-start gap-4">
-            <div className="bg-[#111827] p-3 rounded-xl">
-              <Mail className="h-6 w-6 text-gray-300" />
+            <div className="bg-white p-3 rounded-xl">
+              <Mail className="h-6 w-6 text-gray-600" />
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-lg font-semibold text-black">
                 Waiting for an organization invitation?
               </h2>
               <p className="text-sm text-gray-400 mt-1">
@@ -274,8 +276,8 @@ function PricingPage() {
             </div>
           </div>
 
-          <div className="bg-[#0f1629] border border-[#1f2937] rounded-xl p-4 flex items-center gap-3">
-            <div className="text-gray-400">
+          <div className="bg-gray-100 border border-[#1f2937] rounded-xl p-4 flex items-center gap-3">
+            <div className="text-gray-800">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -293,11 +295,9 @@ function PricingPage() {
             </div>
 
             <div>
-              <p className="text-sm">
+              <p className="text-sm text-black">
                 Your account is registered with{" "}
-                <span className="text-yellow-400 font-medium">
-                  {user?.email}
-                </span>
+                <span className="text-blue-500 font-medium">{user?.email}</span>
               </p>
               <p className="text-xs text-gray-400 mt-1">
                 Make sure your administrator uses this email address when

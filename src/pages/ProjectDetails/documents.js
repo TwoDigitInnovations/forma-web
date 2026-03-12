@@ -156,13 +156,13 @@ const documents = (props) => {
   };
 
   return (
-    <div className="h-screen bg-black text-white">
+    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4  mx-auto">
-        <div className="bg-[#DFF34940] py-4 px-6  rounded-[16px] ">
+        <div className="bg-white shadow-md border border-gray-200 py-4 px-6  rounded-[16px] ">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
             <div className="flex flex-wrap items-center md:gap-4 gap-1">
-              <p className="text-white text-2xl"> Project Documents</p>
-              <h1 className="md:text-[14px] text-[13px] font-bold text-white flex items-center gap-2">
+              <p className="text-black text-2xl"> Project Documents</p>
+              <h1 className="md:text-[14px] text-[13px] font-bold text-black flex items-center gap-2">
                 {projectDetails.projectName}
                 <span className="ms-4 md:text-[11px] text-[11px] flex justify-center items-center gap-1">
                   <MapPin size={15} /> {projectDetails.location}
@@ -172,14 +172,14 @@ const documents = (props) => {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full justify-center bg-custom-yellow py-1.5 px-3 text-black gap-1 rounded-[12px] flex items-center hover:bg-yellow-400 cursor-pointer"
+                className="w-full justify-center bg-blue-500 py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-400 cursor-pointer"
               >
                 <Plus size={18} />
                 Create New Document
               </button>
 
               {isOpen && (
-                <div className="absolute mt-2 right-0 w-60 bg-black rounded-xl shadow-lg p-2 z-50">
+                <div className="absolute mt-2 right-0 w-60 bg-white rounded-xl shadow-lg p-2 z-50">
                   {options.map((item, index) => (
                     <div
                       key={index}
@@ -200,19 +200,19 @@ const documents = (props) => {
             </div>
           </div>
           {documents.length > 0 && (
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-sm text-gray-600 mt-1">
               {documents.length} documents created
             </p>
           )}
         </div>
-        <div className="mt-6 bg-custom-black rounded-[18px] md:px-6 px-3 pt-4 pb-6 min-h-[600px] flex flex-col">
+        <div className="mt-6 bg-white shadow-md border border-gray-200 rounded-[18px] md:px-6 px-3 pt-4 pb-6 min-h-[600px] flex flex-col">
           {documents.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center min-h-[500px]">
-              <div className="bg-neutral-800 p-4 rounded-full mb-4">
-                <FileWarning size={40} className="text-gray-300" />
+              <div className="bg-neutral-100 p-4 rounded-full mb-4">
+                <FileWarning size={40} className="text-black" />
               </div>
 
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-black">
                 No Documents Found
               </h3>
 
@@ -223,23 +223,23 @@ const documents = (props) => {
             </div>
           ) : (
             <>
-              <div className="w-full text-white min-h-[500px]">
+              <div className="w-full text-black min-h-[500px]">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <NotepadText className="text-custom-yellow" />
-                      <p className="font-semibold text-lg">
+                      <NotepadText className="text-blue-500" />
+                      <p className="font-semibold text-lg text-black">
                         Monthly Progress Report
                       </p>
                     </div>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       {documents.length} documents
                     </p>
                   </div>
                 </div>
 
-                <div className="hidden md:grid grid-cols-12 py-3 border-b border-gray-700 text-gray-300 text-sm font-medium">
-                  <div className="col-span-6 font-bold text-xl">
+                <div className="hidden md:grid grid-cols-12 py-3 border-b border-gray-700 text-black text-sm font-medium">
+                  <div className="col-span-6 font-bold text-xl text-black">
                     Document Name
                   </div>
                   <div className="col-span-3 font-bold text-xl">Created</div>
@@ -252,16 +252,16 @@ const documents = (props) => {
                       key={doc._id}
                       className="
                         grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-0
-                        py-4  rounded-lg border-b border-gray-800
+                        py-3 rounded-lg border-b border-gray-300
                         
                         transition-all
-                        text-gray-300 text-sm"
+                        text-gray-800 text-sm"
                     >
                       <div className="md:col-span-6 font-medium truncate">
                         {doc.name}
                       </div>
 
-                      <div className="md:col-span-3 text-gray-400">
+                      <div className="md:col-span-3 text-gray-800">
                         {new Date(doc.createdAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -272,7 +272,7 @@ const documents = (props) => {
                       <div className="md:col-span-3 flex gap-2 md:justify-start justify-end">
                        
                         <button
-                          className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-800 text-xs md:text-sm"
+                          className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-300 text-xs md:text-sm"
                           onClick={() => handleRoute(doc)}
                         >
                           View

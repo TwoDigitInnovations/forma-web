@@ -46,7 +46,7 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
   }, [formData, projectDetails]);
 
   return (
-    <div className="min-h-screen bg-custom-black mt-8 rounded-2xl p-6">
+    <div className="min-h-screen bg-gray-100 mt-8 rounded-2xl p-6">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-4">
           <div className="border-2 border-gray-300 rounded-lg p-4">
@@ -62,7 +62,6 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 padding: "20px 20px",
               }}
             >
-              {/* Header */}
               <div style={{ textAlign: "center", marginBottom: "30px" }}>
                 <div style={{ marginBottom: "20px" }}>
                   <div
@@ -113,7 +112,6 @@ const MeetingMinutesPdf = ({ formData, contentRef, projectDetails }) => {
                 ></div>
               </div>
 
-              {/* Title Section */}
               <div style={{ textAlign: "center", marginBottom: "30px" }}>
                 <h2
                   style={{

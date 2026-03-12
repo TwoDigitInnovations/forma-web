@@ -27,7 +27,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      confirmButtonColor: "#e0f349",
+      confirmButtonColor: "#2563eb",
       customClass: {
         confirmButton: 'px-12 rounded-xl',
         title: 'text-[20px] text-black',
@@ -50,9 +50,9 @@ const Navbar = ({ setOpenTab, openTab }) => {
   };
 
   return (
-    <nav className="w-full bg-custom-black z-0  shadow-sm">
+    <nav className="w-full bg-white z-0  shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:ps-8 xl:ps-6 ">
-        <div className="flex items-center justify-between md:h-20 h-18">
+        <div className="flex items-center justify-between h-18">
           <div className="lg:hidden flex items-center gap-4">
             {/* <img 
               className="h-10 w-auto object-contain" 
@@ -60,9 +60,9 @@ const Navbar = ({ setOpenTab, openTab }) => {
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <div className="p-2 rounded-2xl bg-custom-yellow text-black cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
+            <div className="p-2 rounded-2xl bg-[var(--custom-blue)] text-white cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
             <div className="flex items-start flex-col">  
-            <p className="text-2xl text-white font-bold">Forma</p>
+            <p className="text-2xl text-black font-bold">Forma</p>
             {/* <p className="text-md text-white font-medium ">Construction Management</p> */}
             </div>
           </div>
@@ -74,7 +74,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
                 className="flex items-center space-x-3  py-2 rounded-lg transition-colors duration-200"
               >
                 
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#e0f349] flex-shrink-0 cursor-pointer"
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 flex-shrink-0 cursor-pointer"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                   <img
@@ -85,7 +85,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
                   />
                 </div>
                 <div className="flex flex-col text-left">
-                  <p className="text-custom-yellow text-md">{user?.role}</p>
+                  <p className="text-black text-md">{user?.role}</p>
                 </div>
 
               </div>
@@ -117,7 +117,7 @@ const Navbar = ({ setOpenTab, openTab }) => {
           <div className="lg:hidden flex">
             <button
               onClick={() => setOpenTab(!openTab)}
-              className="p-2 rounded-md text-white hover:bg-gray-100 focus:outline-none"
+              className="p-2 rounded-md text-black hover:bg-gray-100 focus:outline-none"
             >
               <GiHamburgerMenu size={24} />
             </button>
