@@ -227,7 +227,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
             onClick={() => setOpenTab(false)}
           />
 
-          <p className="text-2xl text-[var(--custom-blue)] font-bold">Forma</p>
+          <p className="text-2xl text-blue-500 font-bold">Forma</p>
 
           <div className="flex items-center gap-3 mt-4">
             <div className="w-10 h-10 rounded-full bg-gray-300 flex justify-center items-center">

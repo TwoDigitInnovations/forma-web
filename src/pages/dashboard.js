@@ -270,7 +270,7 @@ function Dashboard(props) {
                 <p className="text-black text-md font-medium  tracking-wide">
                   Projects Behind
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">
+                <p className="text-2xl font-bold text-blue-500">
                   {AllBehiendProject?.totalBehindProjects || 0}
                 </p>
                 <p className="text-gray-600 text-[13px] font-medium  tracking-wide">
@@ -291,9 +291,7 @@ function Dashboard(props) {
                 <p className="text-black text-md font-medium  tracking-wide">
                   Incidents
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">
-                  0
-                </p>
+                <p className="text-2xl font-bold text-blue-500">0</p>
                 <p className="text-gray-600 text-[12px] font-medium ">
                   Severe: 0
                 </p>
@@ -318,9 +316,7 @@ function Dashboard(props) {
                 <p className="text-black text-md font-medium  tracking-wide">
                   Grievances
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">
-                  0
-                </p>
+                <p className="text-2xl font-bold text-blue-500">0</p>
                 <p className="text-gray-600 text-[12px] font-medium ">
                   Registered: 0
                 </p>
@@ -348,7 +344,7 @@ function Dashboard(props) {
                 <p className="text-black text-md font-medium  tracking-wide">
                   Action points
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">
+                <p className="text-2xl font-bold text-blue-500">
                   {AllActionPointsLength}
                 </p>
                 <p className="text-gray-600 text-[13px] font-medium  tracking-wide">
