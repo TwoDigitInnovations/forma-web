@@ -94,7 +94,7 @@ function MyProfile(props) {
         "post",
         "auth/updateProfile",
         { ...userDetail },
-        router
+        router,
       );
 
       if (res?.status) {
@@ -141,7 +141,7 @@ function MyProfile(props) {
     new Date(subscription.planEndDate) > new Date();
 
   return (
-    <div className="min-h-screen bg-[var(--custom-lightGray)] py-8 px-4">
+    <div className="min-h-screen bg-[#f5f6fa] py-8 px-4">
       {/* Background Pattern */}
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div
@@ -155,7 +155,6 @@ function MyProfile(props) {
       </div>
 
       <div className="max-w-6xl mx-auto">
-      
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
             My Profile
@@ -305,7 +304,6 @@ function MyProfile(props) {
             {hasActiveSubscription ? (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               
                   <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
                     <p className="text-gray-800 text-sm mb-1">Plan Name</p>
                     <p className="text-gray-600 font-semibold text-lg">
@@ -313,7 +311,6 @@ function MyProfile(props) {
                     </p>
                   </div>
 
-               
                   <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
                     <p className="text-gray-800 text-sm mb-1">Status</p>
                     <div className="flex items-center gap-2">
@@ -344,7 +341,6 @@ function MyProfile(props) {
                     </div>
                   )}
 
-               
                   <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-xl">
                     <p className="text-gray-600 text-sm mb-1">Start Date</p>
                     <div className="flex items-center gap-2">
@@ -366,7 +362,6 @@ function MyProfile(props) {
                     </div>
                   </div>
 
-              
                   <div className="bg-gray-100 rounded-xl p-4 border border-gray-200 md:col-span-2">
                     <p className="text-gray-600 text-sm mb-1">Auto Renewal</p>
                     <p className="text-black font-semibold text-lg">

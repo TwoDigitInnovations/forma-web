@@ -185,7 +185,7 @@ const AddAttendeeGroupForm = ({
             <button
               type="button"
               onClick={addAttendee}
-              className="mt-2 text-sm cursor-pointer bg-[var(--custom-blue)] text-white px-3 py-2  rounded"
+              className="mt-2 text-sm cursor-pointer bg-blue-500 text-white px-3 py-2  rounded"
             >
               + Add Attendee
             </button>
@@ -203,7 +203,7 @@ const AddAttendeeGroupForm = ({
 
             <button
               type="submit"
-              className="px-4 py-3 text-sm rounded-lg cursor-pointer bg-[var(--custom-blue)] text-white"
+              className="px-4 py-3 text-sm rounded-lg cursor-pointer bg-blue-500 text-white"
             >
               {editId ? "Update" : "Create"} Group
             </button>

@@ -11,13 +11,13 @@ function MeetingHistory({
 }) {
   if (!meetings.length) {
     return (
-      <div className="bg-[var(--custom-lightGray)] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
+      <div className="bg-[#f5f6fa] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
         <div className="text-center">
           <FileText size={64} className="mx-auto text-blue-500 mb-4" />
           <p className="text-gray-600 mb-4">No meeting minutes recorded yet.</p>
           <button
             onClick={() => setOpen(true)}
-            className="text-white bg-[var(--custom-blue)] cursor-pointer px-4 py-2 rounded-lg"
+            className="text-white bg-blue-500 cursor-pointer px-4 py-2 rounded-lg"
           >
             Record your first meeting
           </button>
@@ -34,7 +34,7 @@ function MeetingHistory({
           className="bg-white rounded-xl border shadow-2xl border-gray-200 p-3 md:p-4 hover:border-custom-blue transition "
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-white bg-[var(--custom-blue)] px-3 py-1 rounded-full">
+            <span className="text-xs text-white bg-blue-500 px-3 py-1 rounded-full">
               MINUTE REGISTRY
             </span>
             <span className="text-xs text-gray-800">
@@ -77,7 +77,7 @@ function MeetingHistory({
                 onClick={() => {
                   setEditId(meeting?._id);
                   setEditData(meeting);
-                  setOpen(true)
+                  setOpen(true);
                 }}
               >
                 <Edit2 size={16} />

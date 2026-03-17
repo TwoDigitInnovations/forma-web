@@ -431,14 +431,14 @@ function meetingmintues({
 
               <button
                 onClick={saveMeeting}
-                className="flex items-center gap-2 px-6 md:py-3 py-2 bg-[var(--custom-blue)] text-white rounded-lg font-semibold transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-6 md:py-3 py-2 bg-blue-500 text-white rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 <Save size={18} />
                 {editId ? "Update & Sync" : "Save & Sync"}
               </button>
               <button
                 onClick={close}
-                className="flex items-center gap-2 px-6 md:py-3 py-2 bg-[var(--custom-blue)] text-white rounded-lg font-semibold transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-6 md:py-3 py-2 bg-blue-500 text-white rounded-lg font-semibold transition-colors cursor-pointer"
               >
                 <X size={18} />
                 Cancel
@@ -458,14 +458,14 @@ function meetingmintues({
               </div>
               <div className="flex gap-4">
                 <button
-                  className="bg-[var(--custom-blue)] px-4 cursor-pointer rounded-md"
+                  className="bg-blue-500 px-4 cursor-pointer rounded-md"
                   onClick={AddAttendee}
                 >
                   Add Attendees
                 </button>
                 <div className="relative w-full sm:w-56">
                   <select
-                    className="w-full h-[42px] border border-gray-300 rounded-lg px-3 pr-8 outline-none bg-[var(--custom-blue)] text-white text-sm font-medium transition"
+                    className="w-full h-[42px] border border-gray-300 rounded-lg px-3 pr-8 outline-none bg-blue-500 text-white text-sm font-medium transition"
                     value={selectedGroupId}
                     onChange={handleGroupChange}
                   >
@@ -490,7 +490,7 @@ function meetingmintues({
             </div>
 
             <div className="space-y-3">
-              <div className="grid py-4 bg-[var(--custom-blue)] grid-cols-12 gap-0 text-xs text-white uppercase font-semibold px-4">
+              <div className="grid py-4 bg-blue-500 grid-cols-12 gap-0 text-xs text-white uppercase font-semibold px-4">
                 <div className="col-span-1">#</div>
                 <div className="col-span-3">Name</div>
                 <div className="col-span-4">Designation / Role</div>
@@ -560,7 +560,7 @@ function meetingmintues({
               </div>
               <button
                 onClick={addAgenda}
-                className="flex items-center gap-2 px-4 py-2 text-white bg-[var(--custom-blue)] rounded-lg transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 text-white bg-blue-500 rounded-lg transition-colors cursor-pointer"
               >
                 <Plus size={16} />
                 Add Agenda Topic
@@ -568,7 +568,7 @@ function meetingmintues({
             </div>
 
             <div className="space-y-3">
-              <div className="grid grid-cols-12 gap-4 text-xs bg-[var(--custom-blue)] py-4 text-white uppercase font-semibold px-4">
+              <div className="grid grid-cols-12 gap-4 text-xs bg-blue-500 py-4 text-white uppercase font-semibold px-4">
                 <div className="col-span-1">#</div>
                 <div className="col-span-10">Agenda Description</div>
                 <div className="col-span-1">Action</div>
@@ -645,7 +645,7 @@ function meetingmintues({
               </div>
               <button
                 onClick={addActionItem}
-                className="flex items-center gap-2 px-4 py-2 bg-[var(--custom-blue)] text-white rounded-lg font-semibold transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold transition-colors"
               >
                 <Plus size={16} />
                 Assign Action Points to Project
@@ -668,7 +668,7 @@ function meetingmintues({
                         updateRegistry(registryIndex, "projectId", projectId);
                         setProjectID(projectId);
                       }}
-                      className="bg-[var(--custom-blue)] text-white px-4 py-2 rounded-lg outline-none"
+                      className="bg-blue-500 text-white px-4 py-2 rounded-lg outline-none"
                     >
                       <option value="">Select Project</option>
 
@@ -695,7 +695,7 @@ function meetingmintues({
                 <div className="w-full overflow-x-auto">
                   <table className="min-w-full border-separate border-spacing-y-3">
                     <thead>
-                      <tr className="text-xs  uppercase bg-[var(--custom-blue)] text-white font-semibold">
+                      <tr className="text-xs  uppercase bg-blue-500 text-white font-semibold">
                         <th className="px-4 py-4 text-left w-10">#</th>
                         <th className="px-4 py-4 text-left">
                           Action Item Description

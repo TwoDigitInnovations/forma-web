@@ -1,5 +1,5 @@
 import { userContext } from "@/pages/_app";
-import { Bell, User,Search, User2, Briefcase } from "lucide-react";
+import { Bell, User, Search, User2, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
@@ -20,7 +20,6 @@ const Navbar = ({ setOpenTab, openTab }) => {
     router.push("/login");
   };
 
-
   const handleLogout = () => {
     Swal.fire({
       text: "Are you sure you want to logout?",
@@ -29,14 +28,14 @@ const Navbar = ({ setOpenTab, openTab }) => {
       cancelButtonText: "No",
       confirmButtonColor: "#2563eb",
       customClass: {
-        confirmButton: 'px-12 rounded-xl',
-        title: 'text-[20px] text-black',
-        actions: 'swal2-actions-no-hover',
-        popup: 'rounded-[15px] shadow-lg'
+        confirmButton: "px-12 rounded-xl",
+        title: "text-[20px] text-black",
+        actions: "swal2-actions-no-hover",
+        popup: "rounded-[15px] shadow-lg",
       },
       buttonsStyling: true,
       reverseButtons: true,
-      width: '350px'
+      width: "350px",
     }).then(function (result) {
       if (result.isConfirmed) {
         logOut();
@@ -60,57 +59,59 @@ const Navbar = ({ setOpenTab, openTab }) => {
               alt="Logo"
               onClick={()=> router.push("/")}
             /> */}
-            <div className="p-2 rounded-2xl bg-[var(--custom-blue)] text-white cursor-pointer"    onClick={()=> router.push("/dashboard")}> <Briefcase size={30}/></div>
-            <div className="flex items-start flex-col">  
-            <p className="text-2xl text-black font-bold">Forma</p>
-            {/* <p className="text-md text-white font-medium ">Construction Management</p> */}
+            <div
+              className="p-2 rounded-2xl bg-blue-500 text-white cursor-pointer"
+              onClick={() => router.push("/dashboard")}
+            >
+              {" "}
+              <Briefcase size={30} />
+            </div>
+            <div className="flex items-start flex-col">
+              <p className="text-2xl text-black font-bold">Forma</p>
+              {/* <p className="text-md text-white font-medium ">Construction Management</p> */}
             </div>
           </div>
 
           {user?._id && (
-          <div className="hidden md:flex items-center justify-end flex-1">
-            <div className="relative">
-              <div
-                className="flex items-center space-x-3  py-2 rounded-lg transition-colors duration-200"
-              >
-                
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 flex-shrink-0 cursor-pointer"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                >
-                  <img
-                    src={"/office-man.png"}
-                    alt="User"
-                    className="w-full h-full object-cover"
-                    onError={imageOnError}
-                  />
-                </div>
-                <div className="flex flex-col text-left">
-                  <p className="text-black text-md">{user?.role}</p>
+            <div className="hidden md:flex items-center justify-end flex-1">
+              <div className="relative">
+                <div className="flex items-center space-x-3  py-2 rounded-lg transition-colors duration-200">
+                  <div
+                    className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 flex-shrink-0 cursor-pointer"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    <img
+                      src={"/office-man.png"}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                      onError={imageOnError}
+                    />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <p className="text-black text-md">{user?.role}</p>
+                  </div>
                 </div>
 
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10 border border-gray-100">
+                    <button
+                      onClick={() => router.push("/MyProfile")}
+                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <User2 size={16} className="text-black" />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                    >
+                      <PiSignOutFill size={16} className="text-black" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
               </div>
-
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10 border border-gray-100">
-                   <button
-                    onClick={()=> router.push("/MyProfile")}
-                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <User2 size={16} className="text-black" />
-                    <span>My Profile</span>
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <PiSignOutFill size={16} className="text-black" />
-                    <span>Sign Out</span>
-                  </button>
-
-                </div>
-              )}
             </div>
-          </div>
           )}
 
           {/* Mobile menu button */}
@@ -124,7 +125,6 @@ const Navbar = ({ setOpenTab, openTab }) => {
           </div>
         </div>
       </div>
-
     </nav>
   );
 };

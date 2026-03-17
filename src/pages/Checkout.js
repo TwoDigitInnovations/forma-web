@@ -17,7 +17,7 @@ function RoleBasedCheckout(props) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [billingType, setBillingType] = useState("monthly");
   const [price, setPrice] = useState("");
-  
+
   const [formData, setFormData] = useState({
     cardholderName: "",
     cardNumber: "",
@@ -179,7 +179,7 @@ function RoleBasedCheckout(props) {
 
   return (
     <>
-      <div className="min-h-screen bg-[var(--custom-lightGray)] text-white p-4 md:p-8">
+      <div className="min-h-screen bg-[#f5f6fa] text-white p-4 md:p-8">
         <div className="max-w-5xl mx-auto mb-8">
           <button
             className="flex items-start gap-2 cursor-pointer text-gray-800 hover:text-black transition-colors mb-8 max-w-7xl"
@@ -192,7 +192,9 @@ function RoleBasedCheckout(props) {
 
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-2xl">
-            <h2 className="text-3xl font-bold mb-6 text-black">Order Summary</h2>
+            <h2 className="text-3xl font-bold mb-6 text-black">
+              Order Summary
+            </h2>
 
             <div
               className={`flex justify-between items-center mb-6 pb-6 ${
@@ -259,7 +261,7 @@ function RoleBasedCheckout(props) {
                       />
                       <span className="text-gray-600">{feature}</span>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>

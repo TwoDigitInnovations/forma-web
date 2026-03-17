@@ -36,8 +36,6 @@ const Projects = (props) => {
   const [user, setUser] = useContext(userContext);
   const isTeamsMember = user?.role === "TeamsMember";
 
-
-
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       getAllProject();
@@ -114,15 +112,12 @@ const Projects = (props) => {
   }, [projectDetails?._id]);
 
   return (
-    <div className="h-screen p-4 md:px-6 bg-[var(--custom-lightGray)] text-black z-0">
+    <div className="h-screen p-4 md:px-6 bg-[#f5f6fa] text-black z-0">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll  scrollbar-hide overflow-scroll pb-28">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-black">
-            Projects
-          </h1>
+          <h1 className="text-3xl font-bold text-black">Projects</h1>
           <button
-            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 text-white transition-opacity bg-[var(--custom-blue)] "
-           
+            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 text-white transition-opacity bg-blue-500 "
             onClick={() => setIsOpen(true)}
           >
             <FolderPlus size={28} />
@@ -149,7 +144,6 @@ const Projects = (props) => {
               type="text"
               placeholder="Search"
               className="w-full pl-10 pr-4 py-2 rounded-[26px] border text-black border-gray-600 focus:border-gray-500 focus:outline-none"
-              
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -172,7 +166,7 @@ const Projects = (props) => {
                 ))}
               </select>
             </div>
-            <button className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 bg-[var(--custom-blue)]  text-white cursor-pointer transition-colors text-sm md:text-md">
+            <button className=" w-[130px] flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 hover:border-gray-500 bg-blue-500  text-white cursor-pointer transition-colors text-sm md:text-md">
               <CircleDashed size={26} />
               All Status
             </button>
@@ -183,7 +177,7 @@ const Projects = (props) => {
 
         <div className="overflow-x-auto bg-gray-100 shadow-md rounded-xl min-h-[450px]">
           <table className="min-w-[800px] w-full text-sm text-left text-gray-300">
-            <thead className="bg-[var(--custom-blue)] border-b border-gray-700 text-gray-100">
+            <thead className="bg-blue-500 border-b border-gray-700 text-gray-100">
               <tr>
                 <th className="p-3">Project</th>
                 <th className="p-3">Status</th>
@@ -209,8 +203,7 @@ const Projects = (props) => {
                       </p>
 
                       <button
-                        className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition text-gray-100 bg-[var(--custom-blue)] "
-                      
+                        className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-lg font-medium hover:opacity-90 transition text-gray-100 bg-blue-500 "
                         onClick={() => setIsOpen(true)}
                       >
                         <FolderPlus size={20} />
@@ -222,11 +215,10 @@ const Projects = (props) => {
               </tbody>
             ) : (
               <tbody>
-                {AllProjectData.map((project,index) => (
+                {AllProjectData.map((project, index) => (
                   <tr
                     key={project._id}
-                    
-                    className={`${index % 2 === 0 ? "bg-white" : "bg-[#E2E8F0] "} border-b border-gray-800 text-gray-800 transition`} 
+                    className={`${index % 2 === 0 ? "bg-white" : "bg-[#E2E8F0] "} border-b border-gray-800 text-gray-800 transition`}
                   >
                     <td className="p-3">
                       <div
@@ -261,10 +253,9 @@ const Projects = (props) => {
                     <td className="p-3 min-w-[150px]">
                       <div className="w-full bg-gray-700 rounded-full h-2">
                         <div
-                          className="h-2 rounded-full bg-[var(--custom-blue)]"
+                          className="h-2 rounded-full bg-blue-500"
                           style={{
                             width: `${project?.actualProgress || 0}%`,
-                            
                           }}
                         />
                       </div>

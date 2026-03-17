@@ -222,7 +222,7 @@ const ProjectDetailsPage = (props) => {
   };
 
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black ">
+    <div className="h-screen bg-[#f5f6fa] text-black ">
       <div className="max-w-7xl mx-auto w-full h-full md:h-[95vh] overflow-y-scroll  scrollbar-hide overflow-scroll pb-28 p-4 md:p-6 md:py-4">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -265,7 +265,7 @@ const ProjectDetailsPage = (props) => {
             title="Project Info/Status"
             value={projectDetails.status}
             Open={() => setIsOpen(true)}
-            icon={<FileText size={28} color="white"/>}
+            icon={<FileText size={28} color="white" />}
           />
 
           {isOpen && (
@@ -281,15 +281,13 @@ const ProjectDetailsPage = (props) => {
               onClick={() => router.push("/ProjectDetails/Pre-construction")}
             >
               <div className="bg-blue-500 p-1.5 rounded-2xl">
-                <ListCheck size={28} color="white"/>
+                <ListCheck size={28} color="white" />
               </div>
               <div>
                 <p className="text-black text-md font-medium  tracking-wide">
                   Documents Checklist
                 </p>
-                <p className="text-xl font-bold text-blue-500">
-                  {data || 0}
-                </p>
+                <p className="text-xl font-bold text-blue-500">{data || 0}</p>
 
                 <p
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200
@@ -424,7 +422,7 @@ const ProjectDetailsPage = (props) => {
           <ActionCard
             title=" Overdue Action Points"
             subtitle="Missed deadlines"
-            icon={<CircleAlert size={20}  />}
+            icon={<CircleAlert size={20} />}
             text="No overdue action points"
             open={() => setActionOpen(true)}
           />

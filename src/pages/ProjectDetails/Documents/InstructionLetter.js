@@ -251,7 +251,7 @@ function InstructionLetter(props) {
   };
 
   return (
-    <div className="bg-[var(--custom-lightGray)] md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
+    <div className="bg-[#f5f6fa] md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
       <div className="w-full bg-white shadow-md border border-gray-200 rounded-[16px] px-4 py-4 flex-wrap gap-4">
         <button
           className="text-gray-800 hover:text-black flex items-center gap-2 text-sm font-medium mb-1 cursor-pointer"
@@ -273,7 +273,6 @@ function InstructionLetter(props) {
             </div>
           </div>
 
-       
           <div className="flex flex-wrap items-center gap-3">
             <button
               className="px-4 py-2.5 cursor-pointer rounded-xl border border-gray-600 text-gray-600 hover:bg-gray-800 transition text-sm flex items-center gap-2"
@@ -302,7 +301,6 @@ function InstructionLetter(props) {
         </div>
       </div>
 
-     
       <div className="min-h-[450px] bg-white shadow-md border border-gray-200 md:mt-8 mt-4 rounded-xl md:p-6 p-3">
         <p className="text-black text-lg">Letter Details</p>
 

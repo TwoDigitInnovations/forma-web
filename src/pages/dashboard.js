@@ -202,7 +202,7 @@ function Dashboard(props) {
   return (
     <section className="  md:py-4 py-4 md:p-6 p-4 text-white h-screen z-0">
       <div className="h-full space-y-3 md:space-y-4 overflow-y-scroll scrollbar-hide overflow-scroll pb-28 ">
-        <div className="bg-[var(--custom-lightGray)] md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
+        <div className="bg-[#f5f6fa] md:py-6 py-4 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px] mb-4">
           <div>
             <h1 className="text-3xl font-bold text-black">Dashboard</h1>
             <p className="md:text-[16px] text-[14px] text-gray-600 ">
@@ -211,14 +211,14 @@ function Dashboard(props) {
           </div>
           <div className="flex justify-start gap-4">
             <button
-              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity bg-[var(--custom-blue)]"
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity bg-blue-500"
               onClick={() => router.push("/program")}
             >
               <FolderPlus size={28} />
               Add Program
             </button>
             <button
-              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 text-white transition-opacity bg-[var(--custom-blue)]"
+              className="w-fit flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium hover:opacity-80 text-white transition-opacity bg-blue-500"
               onClick={() => setIsOpen(true)}
             >
               <FolderPlus size={28} />
@@ -259,11 +259,11 @@ function Dashboard(props) {
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 md:gap-6 gap-4">
           <div
-            className="bg-[var(--custom-lightGray)]  rounded-2xl md:px-4 px-3 md:py-6 py-3 shadow-md transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            className="bg-[#f5f6fa]  rounded-2xl md:px-4 px-3 md:py-6 py-3 shadow-md transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
             onClick={() => setProjectBehind(true)}
           >
             <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
-              <div className="bg-[var(--custom-blue)] p-2 rounded-2xl">
+              <div className="bg-blue-500 p-2 rounded-2xl">
                 <Clock />
               </div>
               <div>
@@ -280,18 +280,20 @@ function Dashboard(props) {
             </div>
           </div>
           <div
-            className="bg-[var(--custom-lightGray)]  rounded-2xl px-4 py-6  transition-colors mb-3 z-10 cursor-pointer "
+            className="bg-[#f5f6fa]  rounded-2xl px-4 py-6  transition-colors mb-3 z-10 cursor-pointer "
             onClick={() => setIncidentOpen(true)}
           >
             <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
-              <div className="bg-[var(--custom-blue)] p-2 rounded-2xl">
+              <div className="bg-blue-500 p-2 rounded-2xl">
                 <StickyNote />
               </div>
               <div>
                 <p className="text-black text-md font-medium  tracking-wide">
                   Incidents
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">0</p>
+                <p className="text-2xl font-bold text-[var(--custom-blue)]">
+                  0
+                </p>
                 <p className="text-gray-600 text-[12px] font-medium ">
                   Severe: 0
                 </p>
@@ -305,18 +307,20 @@ function Dashboard(props) {
             </div>
           </div>
           <div
-            className="bg-[var(--custom-lightGray)]  rounded-2xl px-4 py-6 shadow-md  transition-colors mb-3 z-10 cursor-pointer "
+            className="bg-[#f5f6fa]  rounded-2xl px-4 py-6 shadow-md  transition-colors mb-3 z-10 cursor-pointer "
             onClick={() => setGrievancesOpen(true)}
           >
             <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
-              <div className="bg-[var(--custom-blue)] p-2 rounded-2xl">
+              <div className="bg-blue-500 p-2 rounded-2xl">
                 <MessageSquare />
               </div>
               <div>
                 <p className="text-black text-md font-medium  tracking-wide">
                   Grievances
                 </p>
-                <p className="text-2xl font-bold text-[var(--custom-blue)]">0</p>
+                <p className="text-2xl font-bold text-[var(--custom-blue)]">
+                  0
+                </p>
                 <p className="text-gray-600 text-[12px] font-medium ">
                   Registered: 0
                 </p>
@@ -330,14 +334,14 @@ function Dashboard(props) {
             </div>
           </div>
           <div
-            className="bg-[var(--custom-lightGray)]  rounded-2xl px-4 py-6 shadow-md  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
+            className="bg-[#f5f6fa]  rounded-2xl px-4 py-6 shadow-md  transition-colors mb-3 z-10 cursor-pointer hover:border-[#e0f349]"
             onClick={() => {
               getActionPoints();
               setActionOpen(true);
             }}
           >
             <div className="flex flex-col md:flex-row items-start justify-start gap-3 rounded-lg">
-              <div className="bg-[var(--custom-blue)] p-2 rounded-2xl">
+              <div className="bg-blue-500 p-2 rounded-2xl">
                 <SquareCheckBig />
               </div>
               <div>
@@ -413,9 +417,9 @@ export default isAuth(Dashboard, [
 const DarkStatsCard = ({ title, value, subtitle, icon }) => {
   return (
     <div className="flex flex-col w-full relative ">
-      <div className="bg-[var(--custom-lightGray)] space-y-2 rounded-2xl px-4 py-6 shadow-md hover:border-gray-600 transition-colors mb-3 z-10">
+      <div className="bg-[#f5f6fa] space-y-2 rounded-2xl px-4 py-6 shadow-md hover:border-gray-600 transition-colors mb-3 z-10">
         <div className="flex items-start justify-start gap-3 rounded-lg">
-          <div className="bg-[var(--custom-blue)] p-2 rounded-2xl">{icon}</div>
+          <div className="bg-blue-500 p-2 rounded-2xl">{icon}</div>
           <div>
             <p className="text-black text-md font-medium  tracking-wide">
               {title}

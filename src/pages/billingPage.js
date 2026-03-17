@@ -164,13 +164,13 @@ function BillingSubscription(props) {
   const subscriptionStatus = user?.subscription?.status;
 
   const statusStyles = {
-    active: "bg-[var(--custom-blue)] text-white border-custom-green",
+    active: "bg-blue-500 text-white border-custom-green",
     cancelled: "bg-custom-green text-yellow-200 border-yellow-400",
     expired: "bg-red-100 text-red-700 border-red-500",
   };
 
   return (
-    <div className="min-h-screen bg-[var(--custom-lightGray)] text-white md:p-6 p-3">
+    <div className="min-h-screen bg-[#f5f6fa] text-white md:p-6 p-3">
       <div className="max-w-7xl mx-auto">
         <button
           className="flex items-center gap-2 text-gray-700 hover:text-black mb-6 transition-colors cursor-pointer"
@@ -266,7 +266,7 @@ function BillingSubscription(props) {
             <div className="flex md:flex-row flex-col justify-end mt-6 gap-4 flex-wrap">
               {user?.role === "Organization" && (
                 <button
-                  className="px-8 py-2 rounded-xl bg-[var(--custom-blue)] text-white cursor-pointer border border-gray-600 hover:border-gray-500 transition-all duration-300 font-medium"
+                  className="px-8 py-2 rounded-xl bg-blue-500 text-white cursor-pointer border border-gray-600 hover:border-gray-500 transition-all duration-300 font-medium"
                   onClick={() => router.push("/teams")}
                 >
                   Manage Team
@@ -276,7 +276,7 @@ function BillingSubscription(props) {
                 <button
                   disabled={loading}
                   onClick={() => setIsOpen(true)}
-                  className="px-8 py-2 rounded-xl bg-[var(--custom-blue)] text-white cursor-pointer border border-red-500/50 hover:border-red-500 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-2 rounded-xl bg-blue-500 text-white cursor-pointer border border-red-500/50 hover:border-red-500 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Resumeing..." : "Resume Subscription"}
                 </button>
@@ -284,7 +284,7 @@ function BillingSubscription(props) {
                 <button
                   disabled={loading}
                   onClick={() => setIsConfirmOpen(true)}
-                  className="px-8 py-2 rounded-xl bg-[var(--custom-blue)] text-white cursor-pointer border border-red-500/50 hover:border-red-500 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-2 rounded-xl bg-blue-500 text-white cursor-pointer border border-red-500/50 hover:border-red-500 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "Cancelling..." : "Cancel Subscription"}
                 </button>
@@ -295,7 +295,7 @@ function BillingSubscription(props) {
 
         <div className="bg-white border border-gray-200 rounded-2xl p-4 mb-6 shadow-xl">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-[var(--custom-blue)]/20 border border-blue-500/30">
+            <div className="p-2 rounded-lg bg-blue-500/20 border border-blue-500/30">
               <Receipt className="w-5 h-5 text-blue-400" />
             </div>
             <h3 className="text-2xl font-semibold text-black">
@@ -325,7 +325,7 @@ function BillingSubscription(props) {
                           {item.billingType} Subscription
                         </p>
                         {index === 0 && (
-                          <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--custom-blue)] text-white border border-blue-500">
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-blue-500 text-white border border-blue-500">
                             Latest
                           </span>
                         )}
@@ -363,7 +363,7 @@ function BillingSubscription(props) {
             Have questions about billing or need to make changes to your
             subscription? Our support team is here to help.
           </p>
-          <button className="border bg-[var(--custom-blue)] text-white border-gray-200 hover:border-gray-300 px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 font-medium  cursor-pointer">
+          <button className="border bg-blue-500 text-white border-gray-200 hover:border-gray-300 px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 font-medium  cursor-pointer">
             Contact Support <ExternalLink className="w-4 h-4" />
           </button>
         </div>

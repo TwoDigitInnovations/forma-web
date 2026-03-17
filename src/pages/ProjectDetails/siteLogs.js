@@ -134,7 +134,7 @@ function SiteLogs(props) {
   }, [projectId, currentTab]);
 
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
+    <div className="h-screen bg-[#f5f6fa] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         {/* HEADER */}
         <div className="bg-white border border-gray-200 shadow-md py-4 md:px-6 px-3 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between md:items-center">
@@ -205,7 +205,7 @@ function SiteLogs(props) {
                       {/* Top Row */}
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-4">
-                          <Calendar1 size={18} text-blue-500/>
+                          <Calendar1 size={18} text-blue-500 />
                           <p className="text-md font-semibold text-blue-500">
                             {item.date?.split("T")[0] || "--"}
                           </p>
@@ -291,7 +291,7 @@ function SiteLogs(props) {
                       {allItems.map((item, i) => (
                         <tr
                           key={i}
-                          className={`border-b border-gray-800 hover:bg-gray-100 transition ${i % 2 === 0 ? "bg-gray-200" : "bg-white"}`} 
+                          className={`border-b border-gray-800 hover:bg-gray-100 transition ${i % 2 === 0 ? "bg-gray-200" : "bg-white"}`}
                         >
                           <td className="px-4 py-4 text-gray-600 text-sm">
                             AP-{i + 1}
@@ -330,7 +330,7 @@ function SiteLogs(props) {
                                       border outline-none cursor-pointer
                                       ${
                                         item.status === "Open"
-                                          ? "bg-[var(--custom-blue)]/10 text-blue-500 border-blue-500/30"
+                                          ? "bg-blue-500/10 text-blue-500 border-blue-500/30"
                                           : item.status === "In-Progress"
                                             ? "bg-orange-500/10 text-orange-400 border-orange-500/30"
                                             : "bg-green-500/10 text-green-400 border-green-500/30"

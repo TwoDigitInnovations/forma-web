@@ -156,7 +156,7 @@ const documents = (props) => {
   };
 
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
+    <div className="h-screen bg-[#f5f6fa] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4  mx-auto">
         <div className="bg-white shadow-md border border-gray-200 py-4 px-6  rounded-[16px] ">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
@@ -270,7 +270,6 @@ const documents = (props) => {
                       </div>
 
                       <div className="md:col-span-3 flex gap-2 md:justify-start justify-end">
-                       
                         <button
                           className="px-3 py-2 rounded-lg border cursor-pointer border-gray-600 hover:bg-gray-300 text-xs md:text-sm"
                           onClick={() => handleRoute(doc)}

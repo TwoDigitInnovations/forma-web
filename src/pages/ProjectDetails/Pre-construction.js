@@ -189,19 +189,13 @@ function PreConstruction(props) {
     return (
       <div className="bg-white rounded-xl shadow-sm p-5 flex flex-col items-start w-full">
         <p className="text-gray-600 text-sm">{label}</p>
-        <p
-          className={`text-2xl font-semibold mt-1 text-blue-500`}
-          
-        >
-          {value}
-        </p>
+        <p className={`text-2xl font-semibold mt-1 text-blue-500`}>{value}</p>
       </div>
     );
   };
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
+    <div className="h-screen bg-[#f5f6fa] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
-        
         <div className="bg-white shadow-md border border-gray-200 py-4 px-6 flex md:flex-row flex-col gap-4 rounded-[16px] justify-between items-center">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-2xl">Documents Checklist</p>
@@ -231,19 +225,11 @@ function PreConstruction(props) {
 
           <StatsCard label="Pending" value={stats.pending} />
 
-          <StatsCard
-            label="Submitted"
-            value={stats.submitted}
-            
-          />
+          <StatsCard label="Submitted" value={stats.submitted} />
 
-          <StatsCard label="Approved" value={stats.approved}  />
+          <StatsCard label="Approved" value={stats.approved} />
 
-          <StatsCard
-            label="Rejected/Expired"
-            value={stats.rejected}
-          
-          />
+          <StatsCard label="Rejected/Expired" value={stats.rejected} />
         </div>
 
         <div className="bg-white border border-gray-300 py-5 mt-5 rounded-2xl px-5">
