@@ -221,7 +221,7 @@ function InstructionLetter(props) {
   };
 
   return (
-    <div className="bg-[var(--custom-lightGray)] md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
+    <div className="bg-[#f5f6fa] md:p-6 p-3 overflow-x-auto scrollbar-hide overflow-scroll md:h-[90vh] h-[95vh] pb-28">
       <div className="w-full bg-white shadow-md border border-gray-200 rounded-[16px] px-4 py-4 flex-wrap gap-4">
         <button
           className="text-gray-800 hover:text-black flex items-center gap-2 text-sm font-medium mb-1 cursor-pointer"
@@ -299,7 +299,6 @@ function InstructionLetter(props) {
             value={formData.CommencementDate}
             onChange={handleInputChange}
             type="date"
-          
           />
 
           <InputField

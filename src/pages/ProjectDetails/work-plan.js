@@ -215,7 +215,7 @@ const WorkPlan = (props) => {
   };
 
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
+    <div className="h-screen bg-[#f5f6fa] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-3  mx-auto">
         <div className="bg-white shadow-md border border-gray-200 py-6 md:px-6 px-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
           <div>
@@ -232,7 +232,7 @@ const WorkPlan = (props) => {
 
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-[var(--custom-blue)] py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-400 cursor-pointer w-fit"
+            className="bg-blue-500 py-1.5 px-3 text-white gap-1 rounded-[12px] flex items-center hover:bg-blue-400 cursor-pointer w-fit"
           >
             <NotebookPen size={18} />
             Create New Work Plan
@@ -252,7 +252,7 @@ const WorkPlan = (props) => {
 
           {allPlanData.length === 0 ? (
             <div className="flex flex-col justify-center items-center md:min-h-[450px] min-h-[700px] text-center space-y-2">
-              <FileCode2 size={68} className="text-blue-500"/>
+              <FileCode2 size={68} className="text-blue-500" />
               <h3 className="text-xl font-medium text-black">
                 No Work Plans Found
               </h3>
@@ -265,7 +265,7 @@ const WorkPlan = (props) => {
               <div className="bg-white rounded-2xl shadow-md  overflow-x-auto h-[400px]">
                 <table className="w-full min-w-[600px] ">
                   <thead>
-                    <tr className="bg-[var(--custom-blue)] text-white text-sm">
+                    <tr className="bg-blue-500 text-white text-sm">
                       <th className="py-3 px-4 text-center">Work Plan Name</th>
                       <th className="py-3 px-4 text-center">Last Updated</th>
                       <th className="py-3 px-4 text-center">Actions</th>
@@ -273,12 +273,14 @@ const WorkPlan = (props) => {
                   </thead>
 
                   <tbody>
-                    {allPlanData?.map((row,index) => {
+                    {allPlanData?.map((row, index) => {
                       const isOpen = openMenuId === row._id;
 
                       return (
-                        <tr key={row._id} className={`border-b hover:bg-gray-100 ${index % 2 === 0 ? "" : "bg-gray-200"}`}>
-                      
+                        <tr
+                          key={row._id}
+                          className={`border-b hover:bg-gray-100 ${index % 2 === 0 ? "" : "bg-gray-200"}`}
+                        >
                           <td className="py-2 px-4 text-center">
                             <p
                               className="text-black underline cursor-pointer text-[15px] font-semibold truncate"
@@ -293,7 +295,6 @@ const WorkPlan = (props) => {
                             </p>
                           </td>
 
-                         
                           <td className="py-2 px-4 text-center text-gray-700 text-[14px]">
                             {row.updatedAt
                               ? moment(row.updatedAt).format(
@@ -404,7 +405,6 @@ const WorkPlan = (props) => {
         {open && (
           <div className="fixed backdrop-blur-sm inset-0 z-50 flex items-center justify-center bg-black/80">
             <div className="w-[95%] max-w-6xl bg-white rounded-2xl shadow-xl border border-gray-800  h-[90vh] overflow-y-scroll scrollbar-hide pb-5">
-         
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-300 bg-white">
                 <h2 className="text-lg font-semibold text-black">
                   Work Plan Details
@@ -418,7 +418,6 @@ const WorkPlan = (props) => {
               </div>
 
               <div className="px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 bg-white shadow-2xl">
-                
                 <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
                   <p className="text-xs text-gray-600">Plan Name</p>
                   <p className="text-black font-semibold mt-1">
@@ -435,7 +434,7 @@ const WorkPlan = (props) => {
                 workPlan?.status === "Completed"
                   ? "bg-green-500 text-green-400"
                   : workPlan?.status === "In Progress"
-                    ? "bg-[var(--custom-blue)]/20 text-blue-500"
+                    ? "bg-blue-500/20 text-blue-500"
                     : workPlan?.status === "On Hold"
                       ? "bg-orange-500/20 text-orange-400"
                       : "bg-gray-700 text-gray-100"
@@ -445,7 +444,6 @@ const WorkPlan = (props) => {
                   </span>
                 </div>
 
-                
                 <div className="bg-gray-100 rounded-xl p-4 border border-gray-300">
                   <p className="text-xs text-gray-600">Start Date</p>
                   <p className="text-black mt-1">
@@ -465,7 +463,7 @@ const WorkPlan = (props) => {
 
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                  <thead className="bg-[var(--custom-blue)] text-white">
+                  <thead className="bg-blue-500 text-white">
                     <tr>
                       <th className="px-4 py-3">Item No</th>
                       <th className="px-4 py-3">Description</th>
@@ -485,8 +483,12 @@ const WorkPlan = (props) => {
                             : "text-gray-300 hover:bg-gray-100"
                         }
                       >
-                        <td className="px-4 py-2 text-black">{row.itemNo || "-"}</td>
-                        <td className="px-4 py-2 text-black">{row.description}</td>
+                        <td className="px-4 py-2 text-black">
+                          {row.itemNo || "-"}
+                        </td>
+                        <td className="px-4 py-2 text-black">
+                          {row.description}
+                        </td>
                         <td className="px-4 py-2 text-black text-center">
                           {row.duration || "-"}
                         </td>

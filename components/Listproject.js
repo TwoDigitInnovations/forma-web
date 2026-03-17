@@ -63,7 +63,7 @@ export default function Listproject({
   };
 
   return (
-    <div className="bg-[var(--custom-lightGray)] min-h-[500px] rounded-2xl p-4">
+    <div className="bg-[#f5f6fa] min-h-[500px] rounded-2xl p-4">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl text-black font-semibold">Active Projects</h2>
         <button
@@ -102,7 +102,7 @@ export default function Listproject({
       ) : (
         <div className="overflow-x-auto z-0 min-h-[500px]">
           <table className="w-full text-sm ">
-            <thead className="bg-[var(--custom-blue)] px-4">
+            <thead className="bg-blue-500 px-4">
               <tr className="text-gray-100 border-b-[1px] border-gray-600  px-4">
                 <th className="py-3 text-left min-w-[80px] ps-4">Project</th>
                 <th className="py-3 text-left min-w-[100px]">Status</th>

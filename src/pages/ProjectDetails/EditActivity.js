@@ -98,7 +98,7 @@ const EditActivity = (props) => {
   };
 
   return (
-    <div className="h-screen  bg-[var(--custom-lightGray)] text-white md:p-6 p-3">
+    <div className="h-screen  bg-[#f5f6fa] text-white md:p-6 p-3">
       <button
         onClick={handleGoBack}
         className="py-2 flex items-center underline text-sm cursor-pointer rounded-lg transition-colors pb-2 text-black hover:text-blue-500"
@@ -107,7 +107,6 @@ const EditActivity = (props) => {
       </button>
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-20   mx-auto">
         <div className="bg-white shadow-md border border-gray-100 py-6 md:px-6 p-3 flex flex-col md:flex-row gap-4 md:items-center justify-between rounded-[16px]">
-          
           <div>
             <h1 className="text-black flex items-center md:gap-2 gap-16 text-sm md:text-base font-bold">
               {projectDetails?.projectName}
@@ -129,7 +128,6 @@ const EditActivity = (props) => {
           </button>
         </div>
         <div className="">
-         
           <EditableTable
             planId={PlanId}
             loader={props.loader}

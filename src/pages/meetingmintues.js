@@ -106,12 +106,13 @@ const MeetingDocumentation = (props) => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--custom-lightGray)] text-white">
+    <div className="min-h-screen bg-[#f5f6fa] text-white">
       <div className="md:px-6 px-4 py-6">
         <div className="flex items-center justify-between">
           <div>
-            
-            <h1 className="text-3xl text-black font-bold">Meeting Documentation</h1>
+            <h1 className="text-3xl text-black font-bold">
+              Meeting Documentation
+            </h1>
           </div>
         </div>
       </div>
@@ -150,7 +151,7 @@ const MeetingDocumentation = (props) => {
             onClick={() => {
               setOpen(true);
             }}
-            className={`flex border-transparent rounded-md bg-[var(--custom-blue)] text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
+            className={`flex border-transparent rounded-md bg-blue-500 text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
             `}
           >
             <Plus size={18} />
@@ -160,7 +161,7 @@ const MeetingDocumentation = (props) => {
             onClick={() => {
               setIsOpen(true);
             }}
-            className={`flex border-transparent rounded-md bg-[var(--custom-blue)]  text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
+            className={`flex border-transparent rounded-md bg-blue-500  text-sm md:text-md py-3 md:px-4 px-2 text-white items-center gap-2 cursor-pointer transition-colors
             `}
           >
             <Plus size={18} />

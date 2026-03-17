@@ -59,8 +59,7 @@ function Teams(props) {
     }
   }, [user, projectDetails]);
 
-console.log(team);
-
+  console.log(team);
 
   useEffect(() => {
     if (projectId) {
@@ -183,7 +182,7 @@ console.log(team);
   const isEditor = currentUserRole === "editor";
 
   return (
-    <div className="h-screen bg-[var(--custom-lightGray)] text-black">
+    <div className="h-screen bg-[#f5f6fa] text-black">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide pb-28 md:p-6 p-4 ">
         <div className="bg-white border border-gray-200 shadow-md p-4 md:px-6 rounded-2xl flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">

@@ -293,7 +293,7 @@ const EditProject = (props) => {
     router.push("/ProjectDetails/overview");
   };
   return (
-    <div className="h-full bg-[var(--custom-lightGray)] text-white ">
+    <div className="h-full bg-[#f5f6fa] text-white ">
       <div className="w-full h-[90vh] overflow-y-scroll scrollbar-hide overflow-scroll pb-28 md:p-6 p-4 md:px-6  mx-auto ">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between ">
           <div className="flex items-center gap-4">

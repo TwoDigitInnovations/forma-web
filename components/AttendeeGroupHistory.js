@@ -11,13 +11,13 @@ function AttendeeGroupHistory({
 }) {
   if (!groups.length) {
     return (
-      <div className="bg-[var(--custom-lightGray)] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
+      <div className="bg-[#f5f6fa] rounded-lg border border-gray-200 shadow-2xl flex items-center justify-center md:h-[500px] h-[650px]">
         <div className="text-center">
           <Users size={64} className="mx-auto text-blue-500 mb-4" />
           <p className="text-gray-800 mb-4">No attendee groups created yet.</p>
           <button
             onClick={() => setActiveTab("attendee-group")}
-            className="text-white bg-[var(--custom-blue)] px-4 py-2 rounded-lg"
+            className="text-white bg-blue-500 px-4 py-2 rounded-lg"
           >
             Create your first group
           </button>
@@ -34,7 +34,7 @@ function AttendeeGroupHistory({
           className="bg-white rounded-xl border border-gray-200 p-4 hover:border-custom-blue hover:shadow-lg transition duration-300"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] tracking-wider text-white bg-[var(--custom-blue)] px-3 py-1 rounded-full font-semibold">
+            <span className="text-[10px] tracking-wider text-white bg-blue-500 px-3 py-1 rounded-full font-semibold">
               ATTENDEE GROUP
             </span>
 

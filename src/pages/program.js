@@ -84,7 +84,7 @@ const Program = (props) => {
   };
 
   return (
-    <div className="h-screen p-4 md:px-6 bg-[var(--custom-lightGray)] text-white">
+    <div className="h-screen p-4 md:px-6 bg-[#f5f6fa] text-white">
       <div className="max-w-7xl mx-auto w-full h-full overflow-y-scroll scrollbar-hide pb-28">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start gap-3 justify-between mb-8 mt-4">
@@ -96,7 +96,7 @@ const Program = (props) => {
             </p>
           </div>
           <button
-            className="flex bg-[var(--custom-blue)] text-white items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium"
+            className="flex bg-blue-500 text-white items-center cursor-pointer gap-2 px-4 py-2 rounded-lg font-medium"
             onClick={() => setIsOpen(true)}
           >
             <FolderPlus size={22} />
@@ -160,7 +160,7 @@ const Program = (props) => {
                 </div>
                 <div className="flex w-full flex-row sm:justify-end gap-2">
                   <button
-                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-[var(--custom-blue)] text-gray-100 flex items-center justify-center gap-2"
+                    className="w-1/2 p-2 rounded-lg cursor-pointer bg-blue-500 text-gray-100 flex items-center justify-center gap-2"
                     onClick={() => {
                       setEditId(Program._id);
                       setIsOpen(true);

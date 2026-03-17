@@ -88,7 +88,7 @@ const CreateProgram = ({
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg font-medium bg-[var(--custom-blue)] text-white"
+              className="px-4 py-2 rounded-lg font-medium bg-blue-500 text-white"
             >
               {editId ? "Update" : "Create"}
             </button>

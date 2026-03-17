@@ -170,7 +170,7 @@ const CreateProjectForm = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-2.5 text-sm rounded-lg bg-[var(--custom-blue)] text-white cursor-pointer"
+              className="px-4 py-2.5 text-sm rounded-lg bg-blue-500 text-white cursor-pointer"
             >
               Create Project
             </button>

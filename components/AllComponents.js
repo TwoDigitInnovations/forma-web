@@ -82,7 +82,7 @@ export const ConfirmModal = ({
                   onConfirm();
                   setIsOpen(false);
                 }}
-                className="px-5 py-2 text-md cursor-pointer bg-[var(--custom-blue)] text-white font-semibold rounded-lg hover:shadow-[0_0_15px_#e0f349aa] transition-all duration-200"
+                className="px-5 py-2 text-md cursor-pointer bg-blue-500 text-white font-semibold rounded-lg hover:shadow-[0_0_15px_#e0f349aa] transition-all duration-200"
               >
                 {yesText}
               </motion.button>
@@ -418,7 +418,9 @@ export const Certificates = ({
         noText="Cancel"
       />
 
-      <h2 className="text-xl font-bold mb-3 text-black">Advance Payment (USD)</h2>
+      <h2 className="text-xl font-bold mb-3 text-black">
+        Advance Payment (USD)
+      </h2>
 
       <p className="text-gray-600 mb-2">
         Add or update the advance payment amount for this project.
@@ -507,7 +509,7 @@ export const Certificates = ({
       </div>
 
       <h2 className="text-xl font-bold mt-8">Certificates</h2>
-     
+
       <div className="w-full mt-4 overflow-x-auto rounded-t-xl border">
         <table className="w-full text-sm">
           <thead className="bg-blue-500 text-white sticky top-0">
@@ -559,8 +561,11 @@ export const Certificates = ({
               </tr>
             )}
 
-            {certificates?.map((item,index) => (
-              <tr key={item._id} className={`border-b transition ${index % 2 === 0 ? "bg-white" : "bg-gray-200"}`}>
+            {certificates?.map((item, index) => (
+              <tr
+                key={item._id}
+                className={`border-b transition ${index % 2 === 0 ? "bg-white" : "bg-gray-200"}`}
+              >
                 <td className="p-3">{item.certificateNo}</td>
 
                 <td className="p-3">
@@ -785,7 +790,7 @@ export const InviteMemberModal = ({ onClose, onSuccess, loader }) => {
             <button
               disabled={loading}
               type="submit"
-              className="px-6 py-2 cursor-pointer rounded-lg bg-[var(--custom-blue)] text-white font-medium"
+              className="px-6 py-2 cursor-pointer rounded-lg bg-blue-500 text-white font-medium"
             >
               Send Invitation
             </button>
@@ -841,7 +846,7 @@ export const InviteSuccessModal = ({ link, email, onClose }) => {
 
         <button
           onClick={onClose}
-          className="mt-6 w-full py-3 rounded-xl cursor-pointer bg-[var(--custom-blue)] text-white font-medium"
+          className="mt-6 w-full py-3 rounded-xl cursor-pointer bg-blue-500 text-white font-medium"
         >
           Done
         </button>

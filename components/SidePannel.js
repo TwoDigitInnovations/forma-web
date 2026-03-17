@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { userContext } from "@/pages/_app";
 import Swal from "sweetalert2";
 
-
 import {
   Menu,
   X,
@@ -153,18 +152,18 @@ const SidePannel = ({ openTab, setOpenTab }) => {
   return (
     <>
       {/* <button
-        className="lg:hidden fixed top-4 left-4 z-50 bg-[var(--custom-blue)] p-2 rounded"
+        className="lg:hidden fixed top-4 left-4 z-50 bg-blue-500 p-2 rounded"
         onClick={() => setOpenTab(true)}
       >
         <Menu className="text-white" />
       </button> */}
       <div
-        className="hidden lg:flex fixed top-0 left-0 h-screen bg-[var(--custom-darkslate)] z-40 flex-col"
+        className="hidden lg:flex fixed top-0 left-0 h-screen bg-[#1e293b] z-40 flex-col"
         style={{ width: SIDEBAR_WIDTH }}
       >
         <div className="flex items-center gap-4 mb-6 mt-4 ms-4">
           <div
-            className="p-2 rounded-2xl bg-[var(--custom-blue)] text-white cursor-pointer"
+            className="p-2 rounded-2xl bg-blue-500 text-white cursor-pointer"
             onClick={() => router.push("/dashboard")}
           >
             {" "}
@@ -187,7 +186,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
                     className={`relative z-10 flex items-center gap-3 mx-3 my-1 px-3 py-3 rounded cursor-pointer
           ${
             isActive(item.href)
-              ? "bg-[var(--custom-blue)] text-white"
+              ? "bg-blue-500 text-white"
               : "text-white hover:bg-white/10"
           }`}
                   >
@@ -201,7 +200,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
           {/* Back Button */}
           {isProjectDetailsRoute && (
             <div
-              className="m-3 bg-[var(--custom-blue)] flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3"
+              className="m-3 bg-blue-500 flex items-center gap-3 justify-center rounded-lg cursor-pointer py-3"
               onClick={() => router.push("/project")}
             >
               <MoveLeft className="text-white" />
@@ -219,7 +218,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-screen w-[260px] bg-[var(--custom-darkslate)] z-40 transform transition-transform duration-300 lg:hidden
+        className={`fixed top-0 left-0 h-screen w-[260px] bg-[#1e293b] z-40 transform transition-transform duration-300 lg:hidden
         ${openTab ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="p-4 border-b border-white/20 relative">
@@ -265,7 +264,7 @@ const SidePannel = ({ openTab, setOpenTab }) => {
                   className={`px-5 py-3 cursor-pointer
                   ${
                     isActive(item.href)
-                      ? "bg-[var(--custom-blue)] text-white rounded-xl m-2"
+                      ? "bg-blue-500 text-white rounded-xl m-2"
                       : "text-white hover:bg-white/10"
                   }`}
                 >
