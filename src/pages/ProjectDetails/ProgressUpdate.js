@@ -199,56 +199,91 @@ const ProgressUpdate = (props) => {
     const raw = selectedTracker?.WorkplanId?.workActivities || [];
     const saved = selectedTracker?.trackerActivityProgress || [];
 
-    const allSavedActivities = saved.flatMap((sec) => sec.activities || []);
+    if (!saved.length) {
+      const sections = [];
+      let currentSection = null;
+      let sectionCounter = 1;
+      let activityCounter = 1;
 
-    const sections = [];
-    let currentSection = null;
-    let sectionCounter = 1;
-    let activityCounter = 1;
+      raw.forEach((item) => {
+        if (item.rowType === "section") {
+          currentSection = {
+            id: sectionCounter++,
+            sectionId: item._id,
+            rowType: "section",
+            name: item.description,
+            activities: [],
+          };
+          sections.push(currentSection);
+          activityCounter = 1;
+        }
 
-    raw.forEach((item) => {
-      if (item.rowType === "section") {
-        currentSection = {
-          id: sectionCounter++,
-          sectionId: item._id,
+        if (item.rowType === "activity" && currentSection) {
+          currentSection.activities.push({
+            id: Number(`${currentSection.id}${activityCounter++}`),
+            activityId: item._id,
+            name: item.description,
+            rowType: "activity",
+            qtyInBOQ: "0.00",
+            qtyDone: "0.00",
+            Rate: "0.00",
+            Amount: "0.00",
+            amountDone: "0.00",
+          });
+        }
+      });
+
+      setActivities(sections.length ? sections : null);
+      return;
+    }
+
+    const sections = saved
+      .map((sec, secIndex) => {
+        const rawSection = raw.find(
+          (r) =>
+            r.rowType === "section" &&
+            r._id?.toString() === sec.sectionId?.toString(),
+        );
+
+        if (!sec.activities || !sec.activities.length) return null;
+
+        const activities = sec.activities
+          .map((act, actIndex) => {
+            const rawActivity = raw.find(
+              (r) =>
+                r.rowType === "activity" &&
+                r._id?.toString() === act.activityId?.toString(),
+            );
+
+            if (!rawActivity) return null;
+
+            return {
+              id: Number(`${secIndex + 1}${actIndex + 1}`),
+              activityId: act.activityId,
+              name: rawActivity.description,
+              rowType: "activity",
+              qtyInBOQ: act?.qtyInBOQ || "0.00",
+              qtyDone: act?.qtyDone || "0.00",
+              Rate: act?.Rate || "0.00",
+              Amount: act?.Amount || "0.00",
+              amountDone: act?.amountDone || "0.00",
+            };
+          })
+          .filter(Boolean);
+
+        if (!activities.length) return null;
+
+        return {
+          id: sec.sectionId,
+          sectionId: sec.sectionId,
           rowType: "section",
-          name: item.description,
-          activities: [],
+          name: rawSection?.description || "Section",
+          activities,
         };
+      })
+      .filter(Boolean);
 
-        sections.push(currentSection);
-        activityCounter = 1;
-      }
-
-      if (item.rowType === "activity") {
-        if (!currentSection) return;
-
-        const savedActivity = allSavedActivities.find(
-          (s) => s.activityId?.toString() === item._id?.toString(),
-        );
-
-        console.log("==== MATCH CHECK ====");
-        console.log("RAW:", item._id?.toString());
-        console.log(
-          "ALL SAVED IDS:",
-          allSavedActivities.map((x) => x.activityId),
-        );
-
-        currentSection.activities.push({
-          id: Number(`${currentSection.id}${activityCounter++}`),
-          activityId: item._id,
-          name: item.description,
-          rowType: "activity",
-          qtyInBOQ: savedActivity?.qtyInBOQ || "0.00",
-          qtyDone: savedActivity?.qtyDone || "0.00",
-          Rate: savedActivity?.Rate || "0.00",
-          Amount: savedActivity?.Amount || "0.00",
-          amountDone: savedActivity?.amountDone || "0.00",
-        });
-      }
-    });
-
-    setActivities(sections);
+    setActivities(sections.length ? sections : null);
   }, [selectedTracker]);
 
   return (
@@ -375,6 +410,7 @@ const ProgressUpdate = (props) => {
                 {selectedTracker && (
                   <WorkplanProgress
                     activities={activities}
+                    selectedTracker={selectedTracker}
                     setProgress={setProgress}
                     progress={progress}
                     setActivities={setActivities}

@@ -20,6 +20,7 @@ const CreateTracker = ({
     trackerName: "",
     description: "",
     WorkplanId: "",
+    level: "",
   });
 
   const handleChange = (e) => {
@@ -52,9 +53,9 @@ const CreateTracker = ({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-      <div className="bg-custom-black text-white rounded-[38px] p-6 w-full max-w-2xl">
+      <div className="bg-white text-black rounded-[38px] p-6 w-full max-w-2xl">
         <h2 className="text-xl font-bold mb-1">Create New Progress Tracker</h2>
-        <p className="text-sm text-gray-300 mb-4">
+        <p className="text-sm text-gray-600 mb-4">
           Fill in the details below to start a new Progress Tracker.
         </p>
 
@@ -77,7 +78,6 @@ const CreateTracker = ({
             required
           />
 
-          {/* Work Plan Dropdown */}
           <div>
             <label className="block text-sm font-medium mb-2">
               Select Work Plan
@@ -86,7 +86,7 @@ const CreateTracker = ({
               name="WorkplanId"
               value={formData.WorkplanId}
               onChange={handleChange}
-              className="w-full text-[14px] px-4 py-2 bg-[#5F5F5F] rounded-lg border border-gray-600 focus:outline-none focus:border-green-400"
+              className="w-full text-[14px] px-4 py-2 bg-gray-200 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-400"
               required
             >
               <option value="">-- Select Work Plan --</option>
@@ -98,12 +98,30 @@ const CreateTracker = ({
             </select>
           </div>
 
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Select Difficulty level
+            </label>
+            <select
+              name="level" 
+              value={formData.level}
+              onChange={handleChange}
+              className="w-full text-[14px] px-4 py-2 bg-gray-200 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-400"
+              required
+            >
+              <option value="">-- Select level --</option>
+
+              <option value="Easy">Easy</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-4">
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-gray-700 hover:bg-gray-600"
+              className="px-4 py-2 text-sm cursor-pointer rounded-lg bg-gray-200 hover:bg-gray-600"
             >
               Cancel
             </button>
