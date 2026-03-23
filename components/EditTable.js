@@ -251,7 +251,7 @@ const EditableTable = ({ activities, setActivities }) => {
                     onChange={(e) => {
                       e.target.style.height = "auto";
                       e.target.style.height = `${e.target.scrollHeight}px`;
-                      handleChange(i, "description", e.target.value);
+                      handleChange(originalIndex, "description", e.target.value);
                     }}
                     className={`w-full bg-transparent outline-none resize-none overflow-hidden leading-relaxed ${
                       isSection ? "font-semibold text-black" : "text-black"
@@ -268,7 +268,7 @@ const EditableTable = ({ activities, setActivities }) => {
                       min="1"
                       value={row.duration ?? ""}
                       onChange={(e) =>
-                        handleChange(i, "duration", e.target.value)
+                        handleChange(originalIndex, "duration", e.target.value)
                       }
                       className="md:ps-3 w-full text-center bg-transparent outline-none"
                     />
@@ -297,7 +297,7 @@ const EditableTable = ({ activities, setActivities }) => {
                           : ""
                       }
                       onChange={(e) =>
-                        handleChange(i, "startDate", e.target.value)
+                        handleChange(originalIndex, "startDate", e.target.value)
                       }
                       className="bg-transparent outline-none text-center"
                     />
@@ -345,7 +345,7 @@ const EditableTable = ({ activities, setActivities }) => {
                     >
                       <button
                         onClick={() => {
-                          handleAddRow("section");
+                          handleAddRow("section",originalIndex);
                           setMenuIndex(null);
                         }}
                         className="block w-full cursor-pointer text-left px-3 py-2 border-b hover:bg-gray-100 text-sm"
@@ -357,7 +357,7 @@ const EditableTable = ({ activities, setActivities }) => {
                         disabled={!hasSection}
                         onClick={() => {
                           if (!hasSection) return;
-                          handleAddRow("activity", i);
+                          handleAddRow("activity", originalIndex);
                           setMenuIndex(null);
                         }}
                         className={`block w-full cursor-pointer text-left px-3 py-2 border-b text-sm ${
@@ -372,7 +372,7 @@ const EditableTable = ({ activities, setActivities }) => {
                       <button
                         onClick={() => {
                           setMenuIndex(null);
-                          handleDelete(i);
+                          handleDelete(originalIndex);
                         }}
                         className="block w-full flex cursor-pointer justify-start gap-3 items-center text-left px-3 py-2 hover:bg-red-100 text-sm text-red-600"
                       >
