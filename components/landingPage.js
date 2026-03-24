@@ -142,7 +142,7 @@ function TaskTrussLanding() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               className="bg-blue-500 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 cursor-pointer"
-              onClick={() => router.push("/ragister")}
+              onClick={() => router.push("/Ragister")}
             >
               Start Free
               <ArrowRight className="w-5 h-5" />
@@ -233,7 +233,7 @@ function TaskTrussLanding() {
 
               <button
                 className="bg-blue-500 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center gap-2 cursor-pointer"
-                onClick={() => router.push("/ragister")}
+                onClick={() => router.push("/Ragister")}
               >
                 Get Started Free <ArrowRight className="w-5 h-5" />
               </button>
@@ -311,7 +311,7 @@ function TaskTrussLanding() {
 
           <button
             className="bg-blue-500 text-white px-10 py-2.5 rounded-lg font-semibold hover:bg-blue-600 transition-all flex items-center justify-center gap-2 mx-auto text-lg shadow-xl shadow-blue-500/20 cursor-pointer"
-            onClick={() => router.push("/ragister")}
+            onClick={() => router.push("/Ragister")}
           >
             Start Free Today <ArrowRight className="w-5 h-5" />
           </button>

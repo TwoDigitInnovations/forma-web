@@ -90,7 +90,7 @@ function BeforeLoginNavbar() {
           <div className="hidden md:flex items-center gap-3">
             <button
               className="px-5 py-2 bg-blue-500 rounded-lg text-white font-medium hover:opacity-90 transition-all cursor-pointer"
-              onClick={() => router.push("/ragister")}
+              onClick={() => router.push("/Ragister")}
             >
               Get Started
             </button>
@@ -135,7 +135,7 @@ function BeforeLoginNavbar() {
               <button
                 className="px-5 py-2 bg-blue-500 rounded-lg text-white font-medium hover:opacity-90 w-full"
                 onClick={() => {
-                  router.push("/ragister");
+                  router.push("/Ragister");
                   setMenuOpen(false);
                 }}
               >

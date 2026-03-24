@@ -334,7 +334,7 @@ const ProjectDetailsPage = (props) => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
               <div className="md:col-span-3 space-y-4 group relative:">
                 <div
                   className="group-hover:cursor-pointer"
@@ -346,18 +346,18 @@ const ProjectDetailsPage = (props) => {
                     </span>
                     <span>{physical}%</span>
                   </div>
-                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-5 bg-gray-100 overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 rounded-full transition-all"
+                      className="h-full bg-blue-500  transition-all"
                       style={{ width: `${physical}%` }}
                     />
                   </div>
-                  <p
+                  {/* <p
                     className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200
                 text-gray-600 text-[13px] font-medium tracking-wide"
                   >
                     Click for details
-                  </p>
+                  </p> */}
                 </div>
 
                 <div>
@@ -365,16 +365,35 @@ const ProjectDetailsPage = (props) => {
                     <span>Time Progress</span>
                     <span>{time}%</span>
                   </div>
-                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                  <div className="h-5 bg-gray-100  overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 rounded-full transition-all"
+                      className="h-full bg-blue-500  transition-all"
                       style={{ width: `${time}%` }}
                     />
                   </div>
                 </div>
+
+                <div
+                  className="group-hover:cursor-pointer"
+                  onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
+                >
+                  <div className="flex justify-between mb-2 text-sm">
+                    <span className="group-hover:text-black">
+                      Financial Progress
+                    </span>
+                    <span>{financial}%</span>
+                  </div>
+                  <div className="h-5 bg-gray-100 overflow-hidden">
+                    <div
+                      className="h-full bg-blue-500 transition-all"
+                      style={{ width: `${financial}%` }}
+                    />
+                  </div>
+                
+                </div>
               </div>
 
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <div
                   className="group relative w-28 h-28 cursor-pointer transition-transform duration-300 hover:scale-105"
                   onClick={() => router.push("/ProjectDetails/ProgressUpdate")}
@@ -384,8 +403,8 @@ const ProjectDetailsPage = (props) => {
                       cx="56"
                       cy="56"
                       r="50"
-                      stroke="#2a2a2a"
-                      strokeWidth="8"
+                      stroke="#F5F5F5"
+                      strokeWidth="12"
                       fill="none"
                     />
                     <circle
@@ -393,7 +412,7 @@ const ProjectDetailsPage = (props) => {
                       cy="56"
                       r="50"
                       stroke="#2563eb"
-                      strokeWidth="8"
+                      strokeWidth="12"
                       fill="none"
                       strokeDasharray={2 * Math.PI * 50}
                       strokeDashoffset={
@@ -416,7 +435,7 @@ const ProjectDetailsPage = (props) => {
                     Click for IPCs
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <ActionCard

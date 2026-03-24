@@ -288,7 +288,7 @@ text-blue-500 cursor-pointer "
             Don't have an account?{" "}
             <span
               className="text-blue-500 cursor-pointer"
-              onClick={() => router.push("/ragister")}
+              onClick={() => router.push("/Ragister")}
             >
               {" "}
               ragister here
