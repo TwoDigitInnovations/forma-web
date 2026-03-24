@@ -31,7 +31,10 @@ const Layout = ({ children }) => {
   ];
   const withoutLayoutRoutes = ["/ragister", "/acceptinvite"];
 
-  const isWithoutLayout = withoutLayoutRoutes.includes(path);
+  const isWithoutLayout = withoutLayoutRoutes.some(
+    (route) => route.toLowerCase() === path.toLowerCase(),
+  );
+
   const isPublicLayout = publicLayoutRoutes.includes(path);
 
   return (
